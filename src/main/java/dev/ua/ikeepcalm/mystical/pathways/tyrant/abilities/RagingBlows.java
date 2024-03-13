@@ -68,6 +68,6 @@ public class RagingBlows extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.BONE_MEAL, "Raging Blows", "20", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.BONE_MEAL, "Кулаки Люті", "20", identifier, sequence, p.getName());
     }
 }

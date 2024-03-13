@@ -17,7 +17,7 @@ public class SunPathway extends Pathway {
     public void init() {
         sequence = new SunSequence(this, optionalSequence);
         name = ColorAPI.colorize(LocalizationUtil.getLocalizedString("sun", "color") + LocalizationUtil.getLocalizedString("sun", "name"));
-        stringColor = LocalizationUtil.getLocalizedString("sun", "color");
+        stringColor = ColorAPI.colorize(LocalizationUtil.getLocalizedString("sun", "color"));
         nameNormalized = "sun";
     }
 

@@ -37,7 +37,7 @@ public class LightningBall extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.PURPLE_DYE, "Lightning Ball", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return TyrantItems.createItem(Material.PURPLE_DYE, "Громова Куля", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
     @Override

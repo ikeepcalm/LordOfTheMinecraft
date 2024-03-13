@@ -57,7 +57,7 @@ public class Lightning extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Lightning", "200", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Гуркіт Грому", "200", identifier, sequence, p.getName());
     }
 
     @Override
@@ -72,6 +72,6 @@ public class Lightning extends NpcAbility {
     @Override
     public void leftClick() {
         destruction = !destruction;
-        p.sendMessage("§aSet destruction to: §7" + destruction);
+        p.sendMessage("§aЗнищення блоків: §7" + destruction);
     }
 }

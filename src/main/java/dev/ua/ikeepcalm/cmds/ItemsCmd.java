@@ -28,17 +28,17 @@ public class ItemsCmd implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
         if (!(s instanceof Player p)) {
-            s.sendMessage("§cYou have to be a player to use this command!");
+            s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
             return true;
         }
 
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
-            s.sendMessage("§cYou have to be a Beyonder to use this command!");
+            s.sendMessage("§cВи повинні бути Потойбічним, щоб використовувати цю команду!");
             return true;
         }
 
         if (args.length != 0) {
-            s.sendMessage("§cWrong usage: Use /items!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /items!");
             return true;
         }
 

@@ -11,20 +11,20 @@ public class SpawnCmd implements CommandExecutor {
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
         if (!s.isOp()) {
-            s.sendMessage("§cYou don't have the permission to use this command!");
+            s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
             return true;
         }
         if (!(s instanceof Player p)) {
-            s.sendMessage("§cYou have to be a player to use this command!");
+            s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
             return true;
         }
         if (args.length != 1) {
-            s.sendMessage("§cWrong usage: Use /spawn <ID>!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /spawn <ID>!");
             return true;
         }
 
         if (!LordOfTheMinecraft.instance.getBeyonderMobsHandler().spawnEntity(args[0], p.getLocation(), p.getWorld()))
-            p.sendMessage("§cThere is no mob with the id: " + args[0]);
+            p.sendMessage("§cНе знайдено істоту з id: " + args[0]);
 
         return true;
     }

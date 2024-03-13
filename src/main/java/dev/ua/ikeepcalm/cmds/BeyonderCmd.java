@@ -14,15 +14,15 @@ public class BeyonderCmd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
         if (!s.isOp()) {
-            s.sendMessage("§cYou don't have the permission to use this command!");
+            s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
             return true;
         }
         if (!(s instanceof Player p)) {
-            s.sendMessage("§cYou have to be a player to use this command!");
+            s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
             return true;
         }
         if (args.length != 2) {
-            s.sendMessage("§cWrong usage: Use /beyonder <Pathway> <Sequence>!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /beyonder <Шлях> <Послідовність>!");
             return true;
         }
 
@@ -30,12 +30,12 @@ public class BeyonderCmd implements CommandExecutor {
         try {
             sequence = Integer.parseInt(args[1]);
         } catch (Exception exc) {
-            s.sendMessage("§cWrong usage: Use /beyonder <Pathway> <Sequence>!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /beyonder <Шлях> <Послідовність>!");
             return true;
         }
 
         if (sequence > 9 || sequence < 1) {
-            s.sendMessage("§cYou can only choose a sequence between 9 and 1!");
+            s.sendMessage("§cВи можете обрати послідовність тільки від 9 до 1!");
             return true;
         }
 
@@ -47,20 +47,20 @@ public class BeyonderCmd implements CommandExecutor {
             LordOfTheMinecraft.beyonders.get(p.getUniqueId()).removeBeyonder();
             Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
             if (pathway == null) {
-                p.sendMessage("§c" + args[0].toLowerCase() + " is not a valid Pathway! Removing your status as a beyonder");
+                p.sendMessage("§c" + args[0].toLowerCase() + " не є дійсним Шляхом! Видалення вашого статусу Потойбічного");
                 return true;
             }
-            p.sendMessage(pathway.getStringColor() + "Made you a Beyonder of the " + pathway.getName() + "-pathway at Sequence " + sequence);
+            p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
             return true;
         }
 
 
         Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
         if (pathway == null) {
-            p.sendMessage("§c" + args[0].toLowerCase() + " is not a valid Pathway");
+            p.sendMessage("§c" + args[0].toLowerCase() + " не є Шляхом");
             return true;
         }
-        p.sendMessage(pathway.getStringColor() + "Made you a Beyonder of the " + pathway.getName() + "-pathway at Sequence " + sequence);
+        p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
         return true;
     }
 }

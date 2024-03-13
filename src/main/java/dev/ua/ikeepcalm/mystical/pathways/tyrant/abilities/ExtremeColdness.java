@@ -86,6 +86,6 @@ public class ExtremeColdness extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.BLUE_ICE, "Extreme Coldnesss", "2000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return TyrantItems.createItem(Material.BLUE_ICE, "Крижаний Катаклізм", "2000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

@@ -153,7 +153,7 @@ public class ArmorOfLight extends Ability implements Listener {
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("§3божественний шолом, зроблений з сяючого світла");
+        lore.add("§3Божественний шолом, зроблений з сяючого світла");
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
@@ -170,7 +170,7 @@ public class ArmorOfLight extends Ability implements Listener {
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("§3божественний нагрудник, зроблений з сяючого світла");
+        lore.add("§3Божественний нагрудник, зроблений з сяючого світла");
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);

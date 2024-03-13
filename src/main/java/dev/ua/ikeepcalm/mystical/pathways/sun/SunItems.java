@@ -31,7 +31,7 @@ public class SunItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                LocalizationUtil.getLocalizedString("items-info"),
+                LocalizationUtil.getLocalizedString("general", "items-info"),
                 LocalizationUtil.getLocalizedString("sun", "abilities", "holy-song")
         );
         abilityInfo.put(9, s9);

@@ -33,8 +33,8 @@ public class SirenSong extends NpcAbility {
     }
 
     enum Category {
-        CHAOTIC("§9Chaotic song"),
-        BOOST("§9Boost your strength");
+        CHAOTIC("§9Пісня Хаосу"),
+        BOOST("§9Пісня Сили");
 
         private final String name;
 
@@ -124,7 +124,7 @@ public class SirenSong extends NpcAbility {
     @Override
     public ItemStack getItem() {
         p = pathway.getBeyonder().getPlayer();
-        return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Siren Song", "400", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Спів Сирени", "400", identifier, sequence, p.getName());
     }
 
     @Override
@@ -146,6 +146,6 @@ public class SirenSong extends NpcAbility {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Song: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана пісня: §f" + selectedCategory.name));
     }
 }

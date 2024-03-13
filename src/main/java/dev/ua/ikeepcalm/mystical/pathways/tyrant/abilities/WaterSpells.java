@@ -43,12 +43,12 @@ public class WaterSpells extends NpcAbility {
     }
 
     enum Category {
-        LIGHT("§9Aqueous Light", 7),
-        BEAM("§9Water Beam", 7),
-        BALL("§9Water Ball", 7),
-        RAIN("§9Corrosive Rain", 5),
-        WHIRL("§9Water Vortex", 5),
-        SPHERE("§9Water Sphere", 5);
+        LIGHT("§9Водяне Світло", 7),
+        BEAM("§9Водяний Промінь", 7),
+        BALL("§9Водяна Куля", 7),
+        RAIN("§9Корозійний Дощ", 5),
+        WHIRL("§9Водяний Вихор", 5),
+        SPHERE("§9Водяна Сфера", 5);
 
 
         private final String name;
@@ -129,7 +129,7 @@ public class WaterSpells extends NpcAbility {
 
     private void beam(Entity caster, double multiplier) {
         if (!npc && caster.getLocation().getBlock().getType() != Material.WATER) {
-            caster.sendMessage("§cYou have to be in water to use this");
+            caster.sendMessage("§cЗайдіть у воду, щоб використовувати це заклинання!");
             return;
         }
 
@@ -174,7 +174,7 @@ public class WaterSpells extends NpcAbility {
 
     private void vortex(Entity caster, double multiplier) {
         if (!npc && caster.getLocation().getBlock().getType() != Material.WATER) {
-            caster.sendMessage("§cYou have to be in water to use this");
+            caster.sendMessage("§cЗайдіть у воду, щоб використовувати це заклинання!");
             return;
         }
 
@@ -429,7 +429,7 @@ public class WaterSpells extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.PRISMARINE_SHARD, "Water Spells", "40", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.PRISMARINE_SHARD, "Заклинання Води", "40", identifier, sequence, p.getName());
     }
 
     @Override
@@ -446,6 +446,6 @@ public class WaterSpells extends NpcAbility {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Spell: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
     }
 }

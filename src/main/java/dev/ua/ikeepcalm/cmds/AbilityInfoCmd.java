@@ -13,22 +13,22 @@ public class AbilityInfoCmd implements CommandExecutor {
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
         if (!(s instanceof Player p)) {
-            s.sendMessage("§cYou have to be a player to use this command!");
+            s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
             return true;
         }
 
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
-            s.sendMessage("§cYou have to be a Beyonder to use this command!");
+            s.sendMessage("§cВи повинні бути Потойбічним, щоб використовувати цю команду!");
             return true;
         }
 
         if (args.length != 1) {
-            s.sendMessage("§cWrong usage: Use /ability-info [Sequence]!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /ability-info [Послідовність]!");
             return true;
         }
 
         if (!GeneralPurposeUtil.isInteger(args[0])) {
-            p.sendMessage("§cWrong usage: Use /ability-info [Sequence]!");
+            p.sendMessage("§cНеправильне використання: Використовуйте /ability-info [Послідовність]!");
             return true;
         }
 
@@ -36,7 +36,7 @@ public class AbilityInfoCmd implements CommandExecutor {
         int sequence = GeneralPurposeUtil.parseInt(args[0]);
 
         if (beyonder.getPathway().getSequence().getCurrentSequence() > sequence) {
-            p.sendMessage("§cYou have not reached Sequence " + sequence + " yet!");
+            p.sendMessage("§cВи ще не досягли " + sequence + " Послідовності!");
             return true;
         }
 

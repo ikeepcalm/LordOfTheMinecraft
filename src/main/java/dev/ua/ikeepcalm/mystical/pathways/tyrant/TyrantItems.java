@@ -4,6 +4,7 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities.*;
+import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -31,60 +32,60 @@ public class TyrantItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                "§9Physical Enhancements: §7Enhanced Strength and Resistance",
-                "§9Night vision"
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "physical-enhancements"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "night-vision")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                "§9Use: §7/items §9to get the abilities for your Sequence",
-                "§9Raging Blows: §7Unleash a barrage of blows"
+                LocalizationUtil.getLocalizedString("general", "items-info"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "raging-blows")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                "§9Water Spells: §7Gain a multitude of small water related spells",
-                "§9Switch through spells using §7Left-Click§9."
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "water-spells"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ws+wm-hint")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                "§9Wind Manipulation: §7The ability to use wind in combat by creating wind blades, binding the opponent or flying",
-                "§9Switch through spells using §7Left-Click§9."
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "wind-manipulation"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ws+wm-hint")
         );
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                "§9Lightning: §7Strike your enemies with powerful lightning bolts",
-                "§9Disable the destruction of the Lightning with §7Left-Click§9",
-                "§9Siren Song: §7Create various effects by singing",
-                "§9Switch through the different songs using §7Left-Click§9.",
-                "§9You gain a few new water spells"
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "lightning-hint"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "siren-song"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ss-hint"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "new-water-spells")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                "§9Roar: §7Unleash a roar that has enough power to cut through mountains",
-                "§9Tornado: §7Summon a Tornado",
-                "§9Tsunami: §7Summon a huge Tsunami"
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "roar"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tornado"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tsunami")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                "§9Lightning Storm: §7Create a giant lightning storm that can span several hundreds of meters",
-                "§9Enable/Disable Destruction of the Lightning Bolts using §7Left-Click§9.",
-                "§9When in water, aquatic life will now try to help you fight your enemies"
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning-storm"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ls-hint"),
+                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "aquatic-allies")
         );
         abilityInfo.put(3, s3);
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
-                "§9Extreme Coldness: §7Create an area of extreme coldness that can freeze everything within seconds"
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "extreme-coldness")
         );
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                "§9Lightning Tornado: §7Create a huge tornado made out of lightning",
-                "§9Lightning ball: §7Condense Lightning into a sphere and unleash it upon your enemy"
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning-tornado"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning-ball")
         );
         abilityInfo.put(1, s1);
     }
@@ -130,10 +131,10 @@ public class TyrantItems extends Items {
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("§5Click to use");
-        lore.add("§5Spirituality: §7" + spirituality);
+        lore.add("§5Натисніть щоб використати");
+        lore.add("§5Духовність: §7" + spirituality);
         lore.add("§8§l-----------------");
-        lore.add("§9Tyrant - Pathway (" + sequence + ")");
+        lore.add("§9Тиран - Послідовность (" + sequence + ")");
         lore.add("§8" + player);
         itemMeta.setLore(lore);
         currentItem.setItemMeta(itemMeta);

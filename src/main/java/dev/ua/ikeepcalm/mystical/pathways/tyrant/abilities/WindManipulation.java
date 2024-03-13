@@ -41,10 +41,10 @@ public class WindManipulation extends NpcAbility {
     }
 
     enum Category {
-        BLADE("§9Wind Blade"),
-        FLIGHT("§9Flight"),
-        BOOST("§9Boost"),
-        BIND("§9Wind Binding");
+        BLADE("§9Вітрове Лезо"),
+        FLIGHT("§9Політ"),
+        BOOST("§9Прискорення"),
+        BIND("§9Вітрове Знерухомлення");
 
         private final String name;
 
@@ -153,7 +153,7 @@ public class WindManipulation extends NpcAbility {
 
     private void boost(Entity caster) {
         if (!caster.isOnGround() && !flying) {
-            caster.sendMessage("§cYou have to be on ground to use this ability!");
+            caster.sendMessage("§cСтаньте на землю, щоб використовувати це заклинання!");
             return;
         }
 
@@ -314,7 +314,7 @@ public class WindManipulation extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.FEATHER, "Wind Manipulation", "varying", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.FEATHER, "Володарювання Вітром", "різниться", identifier, sequence, p.getName());
     }
 
     @Override
@@ -339,6 +339,6 @@ public class WindManipulation extends NpcAbility {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Spell: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
     }
 }
