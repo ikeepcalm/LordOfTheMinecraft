@@ -241,6 +241,8 @@ public class ArmorOfLight extends Ability implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         p = pathway.getBeyonder().getPlayer();
+        if (p == null)
+            return;
         if (!e.getEntity().getUniqueId().equals(p.getUniqueId()))
             return;
         dead = true;

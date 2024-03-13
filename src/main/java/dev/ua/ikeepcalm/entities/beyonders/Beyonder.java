@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_20_R3.boss.CraftBossBar;
@@ -83,6 +82,9 @@ public class Beyonder implements Listener {
                 0, 180, 120, 80, 70, 55, 40, 30, 25, 20
         };
 
+        bossBar = new CraftBossBar("§6Spirituality", BarColor.BLUE, BarStyle.SOLID);
+        bossBar.addPlayer(getPlayer());
+
         pathway.init();
 
         if (getPlayer() == null || !Bukkit.getOnlinePlayers().contains(getPlayer()))
@@ -95,12 +97,8 @@ public class Beyonder implements Listener {
         actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
         actingProgress = 0;
 
-        bossBar = new CraftBossBar("§6Spirituality", BarColor.BLUE, BarStyle.SEGMENTED_20, BarFlag.CREATE_FOG);
-        bossBar.addPlayer(getPlayer());
-
         pathway.initItems();
         start();
-
     }
 
     @EventHandler

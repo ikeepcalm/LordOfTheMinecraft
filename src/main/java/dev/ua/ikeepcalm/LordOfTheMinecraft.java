@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm;
 
+import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.cmds.*;
 import dev.ua.ikeepcalm.entities.beyonders.Beyonder;
 import dev.ua.ikeepcalm.handlers.ArtifactHandler;
@@ -374,6 +375,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage("§c" + exceptionAsString);
             }
         }
+    }
+
+    public void log(String message) {
+        Bukkit.getConsoleSender().sendMessage(ColorAPI.colorize(prefix + "{#ff005d}" + message));
     }
 
     public ArrayList<Potion> getPotions() {
