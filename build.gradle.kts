@@ -29,6 +29,9 @@ repositories {
     maven {
         url = uri("https://repo.alessiodp.com/releases")
     }
+    maven {
+        url = uri("https://repo.dmulloy2.net/repository/public/")
+    }
 }
 
 dependencies {
@@ -36,6 +39,9 @@ dependencies {
     compileOnly("org.spigotmc:spigot:1.20.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("net.citizensnpcs:citizens-main:2.0.33-SNAPSHOT")
     compileOnly("net.byteflux:libby-bukkit:1.1.5")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 group = "dev.ua.ikeepcalm"

@@ -7,21 +7,33 @@ import dev.ua.ikeepcalm.mystical.pathways.door.DoorPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPathway;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPathway;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public abstract class Pathway {
 
+    @Getter
     protected final UUID uuid;
+    @Setter
+    @Getter
     protected Sequence sequence;
+    @Getter
     protected String name;
+    @Setter
+    @Getter
     protected Beyonder beyonder;
     protected final int optionalSequence;
+    @Getter
     protected String stringColor;
+    @Getter
     protected String nameNormalized;
+    @Getter
     protected final int pathwayInt;
 
+    @Getter
     public Items items;
 
     public Pathway(UUID uuid, int optionalSequence, int pathwayInt) {
@@ -35,52 +47,16 @@ public abstract class Pathway {
 
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public Sequence getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Sequence sequence) {
-        this.sequence = sequence;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Beyonder getBeyonder() {
-        return beyonder;
-    }
-
-    public void setBeyonder(Beyonder beyonder) {
-        this.beyonder = beyonder;
-    }
-
-    public Items getItems() {
-        return items;
     }
 
     public void setItems(Items items) {
         this.items = items;
     }
 
-    public String getStringColor() {
-        return stringColor;
-    }
-
     public Pathway getPathway() {
         return this;
-    }
-
-    public String getNameNormalized() {
-        return nameNormalized;
     }
 
 
@@ -134,8 +110,5 @@ public abstract class Pathway {
         }
     }
 
-    public int getPathwayInt() {
-        return pathwayInt;
-    }
 }
 

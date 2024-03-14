@@ -3,6 +3,8 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
+import lombok.Getter;
+import lombok.Setter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
@@ -35,13 +37,16 @@ public class Marionette implements Listener {
     private Entity entity;
     private NPC npc;
     private final SpiritBodyThreads ability;
+    @Setter
     private MarionetteControlling marionetteControllingAbility;
 
     private boolean isAngry;
+    @Getter
     private boolean alive;
     private LivingEntity currentTarget;
     private int cooldown = 10;
 
+    @Setter
     private boolean shouldFollow;
     private boolean isBeingControlled;
 
@@ -258,10 +263,6 @@ public class Marionette implements Listener {
         alive = false;
     }
 
-    public void setMarionetteControllingAbility(MarionetteControlling marionetteControllingAbility) {
-        this.marionetteControllingAbility = marionetteControllingAbility;
-    }
-
     @EventHandler
     public void onDamageToPlayer(EntityDamageByEntityEvent e) {
         if(!alive)
@@ -325,14 +326,6 @@ public class Marionette implements Listener {
 
     public void setBeingControlled(boolean beingControlled) {
         isBeingControlled = beingControlled;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setShouldFollow(boolean shouldFollow) {
-        this.shouldFollow = shouldFollow;
     }
 
     public boolean shouldFollow() {

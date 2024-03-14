@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.mystical.parents;
 
 import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -10,8 +11,10 @@ import java.util.HashMap;
 public abstract class Items {
 
     protected Pathway pathway;
+    @Getter
     protected ArrayList<ItemStack> items;
     protected HashMap<Integer, Integer> sequenceItems;
+    @Getter
     protected HashMap<Integer, String[]> abilityInfo;
 
     public void addToSequenceItems(int index, int value) {
@@ -23,10 +26,6 @@ public abstract class Items {
     }
 
     public abstract ArrayList<ItemStack> returnItemsFromSequence(int sequence);
-
-    public ArrayList<ItemStack> getItems() {
-        return items;
-    }
 
     public void setItems(ArrayList<ItemStack> items) {
         this.items = items;
@@ -72,7 +71,4 @@ public abstract class Items {
         return formatted;
     }
 
-    public HashMap<Integer, String[]> getAbilityInfo() {
-        return abilityInfo;
-    }
 }

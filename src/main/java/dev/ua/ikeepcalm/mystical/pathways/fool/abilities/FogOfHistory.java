@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 public class FogOfHistory extends Ability implements Listener {
 
+    @Getter
     private final ArrayList<ItemStack> items;
     private final ArrayList<ItemStack> summonedItems;
     private ArrayList<Inventory> pages;
@@ -251,10 +253,6 @@ public class FogOfHistory extends Ability implements Listener {
 
     public void addItem(ItemStack item) {
         hashSet.add(item);
-    }
-
-    public ArrayList<ItemStack> getItems() {
-        return items;
     }
 
     @Override

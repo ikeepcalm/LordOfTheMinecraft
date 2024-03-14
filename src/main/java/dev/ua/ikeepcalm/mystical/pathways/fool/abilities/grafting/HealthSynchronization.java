@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import lombok.Getter;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -13,7 +14,9 @@ import java.util.Objects;
 
 public class HealthSynchronization implements Listener {
 
+    @Getter
     private Entity entity1;
+    @Getter
     private Entity entity2;
 
     private double maxHealth;
@@ -111,14 +114,6 @@ public class HealthSynchronization implements Listener {
 
         entity2 = null;
         entity1 = null;
-    }
-
-    public Entity getEntity1() {
-        return entity1;
-    }
-
-    public Entity getEntity2() {
-        return entity2;
     }
 
     public void stop() {

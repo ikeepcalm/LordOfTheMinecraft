@@ -2,13 +2,17 @@ package dev.ua.ikeepcalm.mystical.parents.abilitiies;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Ability {
+    @Getter
     protected int identifier;
+    @Getter
     protected Pathway pathway;
     protected Player p;
+    @Getter
     protected final int sequence;
     protected final Items items;
 
@@ -30,10 +34,6 @@ public abstract class Ability {
     public void leftClick() {
     }
 
-    public Pathway getPathway() {
-        return pathway;
-    }
-
     public void setPathway(Pathway pathway) {
         this.pathway = pathway;
     }
@@ -46,19 +46,11 @@ public abstract class Ability {
         this.p = p;
     }
 
-    public int getIdentifier() {
-        return identifier;
-    }
-
     public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
 
     public void removeAbility() {
-    }
-
-    public int getSequence() {
-        return sequence;
     }
 
     public double getMultiplier() {

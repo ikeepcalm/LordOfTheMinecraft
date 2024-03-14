@@ -2,6 +2,8 @@ package dev.ua.ikeepcalm.mystical.parents;
 
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -15,8 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 public abstract class Sequence {
 
+    @Setter
     protected int currentSequence;
     protected Pathway pathway;
 
@@ -126,44 +130,12 @@ public abstract class Sequence {
 
     }
 
-    public int getCurrentSequence() {
-        return currentSequence;
-    }
-
-    public void setCurrentSequence(int currentSequence) {
-        this.currentSequence = currentSequence;
-    }
-
-    public Pathway getPathway() {
-        return pathway;
-    }
-
     public void setPathway(Pathway pathway) {
         this.pathway = pathway;
     }
 
-    public HashMap<Integer, PotionEffect[]> getSequenceEffects() {
-        return sequenceEffects;
-    }
-
-    public ArrayList<Ability> getAbilities() {
-        return abilities;
-    }
-
     public void setAbilities(ArrayList<Ability> abilities) {
         this.abilities = abilities;
-    }
-
-    public boolean[] getUsesAbilities() {
-        return usesAbilities;
-    }
-
-    public HashMap<Integer, PotionEffectType[]> getSequenceResistances() {
-        return sequenceResistances;
-    }
-
-    public HashMap<Integer, Double> getSequenceMultiplier() {
-        return sequenceMultiplier;
     }
 
 }

@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting;
 
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -10,6 +11,7 @@ import org.bukkit.util.Vector;
 public class EntityToEntity {
 
     private boolean stopped;
+    @Getter
     private final Entity entity;
 
     public EntityToEntity(Entity entity, Entity target) {
@@ -42,7 +44,4 @@ public class EntityToEntity {
         stopped = true;
     }
 
-    public Entity getEntity() {
-        return entity;
-    }
 }

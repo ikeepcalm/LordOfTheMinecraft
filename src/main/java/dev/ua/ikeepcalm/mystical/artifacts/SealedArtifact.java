@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.artifacts.negativeEffects.NegativeEffects;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class SealedArtifact implements Listener {
 
+    @Getter
     private ItemStack item;
     private final int pathway;
     private final NpcAbility ability;
@@ -57,10 +59,6 @@ public class SealedArtifact implements Listener {
         );
         item.setItemMeta(itemMeta);
         this.item = item;
-    }
-
-    public ItemStack getItem() {
-        return item;
     }
 
     @EventHandler

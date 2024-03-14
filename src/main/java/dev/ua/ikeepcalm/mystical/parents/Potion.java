@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
+import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
@@ -10,7 +11,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class Potion {
+    @Getter
     protected String name;
+    @Getter
     protected String stringColor;
 
     protected HashMap<Integer, ItemStack[]> mainIngredients;
@@ -34,7 +37,7 @@ public abstract class Potion {
         potionMeta.setColor(color);
         potionMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         String[] lore;
-        if (ritual.equals("")) {
+        if (ritual.isEmpty()) {
             lore = new String[]{
                     "§5Drink this Potion to gain the powers",
                     "§5of a Sequence " + sequence + ": " + name
@@ -49,14 +52,6 @@ public abstract class Potion {
         potionMeta.setLore(Arrays.asList(lore));
         potion.setItemMeta(potionMeta);
         return potion;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getStringColor() {
-        return stringColor;
     }
 
     public void putMainIntoHashMap(int sequence, ItemStack... ingredients) {

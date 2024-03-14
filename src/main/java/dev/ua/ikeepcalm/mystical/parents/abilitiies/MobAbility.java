@@ -4,10 +4,12 @@ package dev.ua.ikeepcalm.mystical.parents.abilitiies;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import jline.internal.Nullable;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
 
+@Getter
 public abstract class MobAbility extends Ability {
 
     protected int frequency;
@@ -23,7 +25,4 @@ public abstract class MobAbility extends Ability {
 
     public abstract void useAbility(Location startLoc, Location endLoc, double multiplier, Entity user, @Nullable Entity target);
 
-    public int getFrequency() {
-        return frequency;
-    }
 }

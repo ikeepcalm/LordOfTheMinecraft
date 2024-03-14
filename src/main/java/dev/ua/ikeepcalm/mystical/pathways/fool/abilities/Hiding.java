@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
+import lombok.Getter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@Getter
 public class Hiding extends Ability implements Listener {
 
     private boolean hiding;
@@ -113,7 +115,4 @@ public class Hiding extends Ability implements Listener {
         return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "85", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
-    public boolean isHiding() {
-        return hiding;
-    }
 }

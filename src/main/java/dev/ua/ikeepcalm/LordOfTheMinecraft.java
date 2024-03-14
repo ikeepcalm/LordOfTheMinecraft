@@ -19,6 +19,8 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
 import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
+import dev.ua.ikeepcalm.utils.BossBarUtil;
+import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
@@ -45,11 +47,16 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     public static LordOfTheMinecraft instance;
     public static String prefix;
+    @Getter
     private Characteristic characteristic;
+    @Getter
     private Recipe recipe;
     private MobsHandler mobsHandler;
+    @Getter
     private RogueBeyonders rogueBeyonders;
+    @Getter
     private SpiritHandler spiritHandler;
+    @Getter
     private SealedArtifacts sealedArtifacts;
 
     public static ArrayList<RogueBeyonder> currentRogueBeyonders;
@@ -57,19 +64,25 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     public static HashMap<UUID, Beyonder> beyonders;
     public static HashMap<UUID, ServerPlayer> fakePlayers = new HashMap<>();
     public static final HashMap<UUID, FogOfHistory> fogOfHistories = new HashMap<>();
+    public static BossBarUtil bossBarUtil;
 
+    @Getter
     public FileConfiguration langConfig;
 
+    @Getter
     private ArrayList<ArrayList<Entity>> concealedEntities;
 
     private File configSaveFile;
     private FileConfiguration configSave;
     private File configSaveFileFoh;
     private FileConfiguration configSaveFoh;
+    @Getter
     private ArrayList<Potion> potions;
+    @Getter
     private Divination divination;
     public static UUID randomUUID;
 
+    @Getter
     private ArrayList<String> names;
 
     @Override
@@ -84,6 +97,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         recipe = new Recipe();
         concealedEntities = new ArrayList<>();
         names = new ArrayList<>();
+        bossBarUtil = new BossBarUtil();
     }
 
     @Override
@@ -223,7 +237,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     //            itemstack
     //        int:
     //            itemstack
-    private void saveFoH(FogOfHistory foh) throws IOException {
+    private void saveFoH(FogOfHistory foh) {
         Bukkit.getConsoleSender().sendMessage(prefix + "§aSaving Fog of History Inventories");
 
         for (int i = 0; i < foh.getItems().size(); i++) {
@@ -381,28 +395,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ColorAPI.colorize(prefix + "{#ff005d}" + message));
     }
 
-    public ArrayList<Potion> getPotions() {
-        return potions;
-    }
-
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    public Divination getDivination() {
-        return divination;
-    }
-
-    public Characteristic getCharacteristic() {
-        return characteristic;
-    }
-
     public MobsHandler getBeyonderMobsHandler() {
         return mobsHandler;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
     }
 
     public void addToConcealedEntities(ArrayList<Entity> list) {
@@ -411,14 +405,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     public void removeFromConcealedEntities(ArrayList<Entity> list) {
         concealedEntities.remove(list);
-    }
-
-    public ArrayList<ArrayList<Entity>> getConcealedEntities() {
-        return concealedEntities;
-    }
-
-    public RogueBeyonders getRogueBeyonders() {
-        return rogueBeyonders;
     }
 
     public void removeRogueBeyonder(RogueBeyonder rogueBeyonder) {
@@ -431,18 +417,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     public ArrayList<RogueBeyonder> getCurrentRogueBeyonders() {
         return currentRogueBeyonders;
-    }
-
-    public SpiritHandler getSpiritHandler() {
-        return spiritHandler;
-    }
-
-    public SealedArtifacts getSealedArtifacts() {
-        return sealedArtifacts;
-    }
-
-    public FileConfiguration getLangConfig() {
-        return langConfig;
     }
 
 }

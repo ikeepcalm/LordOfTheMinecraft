@@ -4,7 +4,7 @@ main: dev.ua.ikeepcalm.LordOfTheMinecraft
 api-version: '1.20'
 authors: [ FireCreeper82, ikeepcalm ]
 description: A Fan made Lord of the Mysteries plugin
-depend: [ Citizens ]
+depend: [ Citizens, ProtocolLib ]
 commands:
   beyonder:
     description: Make yourself a Beyonder

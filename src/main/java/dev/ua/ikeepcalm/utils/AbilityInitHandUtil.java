@@ -9,6 +9,7 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FlameControlling;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Grafting;
 import dev.ua.ikeepcalm.mystical.pathways.sun.abilities.*;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities.*;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,8 +18,11 @@ import java.util.stream.Collectors;
 
 public class AbilityInitHandUtil {
 
+    @Getter
     private static final HashMap<Integer, List<NpcAbility>> abilities = new HashMap<>();
+    @Getter
     private static final HashMap<Integer, String> colorPrefix = new HashMap<>();
+    @Getter
     private static final HashMap<Integer, String> pathwayNames = new HashMap<>();
 
     public AbilityInitHandUtil() {
@@ -107,18 +111,6 @@ public class AbilityInitHandUtil {
     public static List<NpcAbility> getAllAbilitiesUpToSequence(int pathway, int sequence) {
         List<NpcAbility> pathwayAbilities = abilities.get(pathway);
         return pathwayAbilities.stream().filter(npcAbility -> npcAbility.getSequence() >= sequence).collect(Collectors.toList());
-    }
-
-    public static HashMap<Integer, String> getColorPrefix() {
-        return colorPrefix;
-    }
-
-    public static HashMap<Integer, List<NpcAbility>> getAbilities() {
-        return abilities;
-    }
-
-    public static HashMap<Integer, String> getPathwayNames() {
-        return pathwayNames;
     }
 
 

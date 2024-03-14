@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
+import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -41,6 +42,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     private final int[] convertTimePerLevel;
 
     List<Entity> nearbyEntities;
+    @Getter
     private final List<Marionette> marionettes;
 
     private final Particle.DustOptions dustGray, dustWhite, dustPurple, dustBlue;
@@ -441,7 +443,4 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
         marionettes.remove(marionette);
     }
 
-    public List<Marionette> getMarionettes() {
-        return marionettes;
-    }
 }

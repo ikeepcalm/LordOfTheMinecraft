@@ -124,7 +124,7 @@ public class Tsunami extends NpcAbility implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            final List<Block> waterBlocksAfter = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45).stream().filter(block -> !waterBlocksBefore.contains(block)).collect(Collectors.toList());
+                            final List<Block> waterBlocksAfter = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45).stream().filter(block -> !waterBlocksBefore.contains(block)).toList();
                             for (Block b : waterBlocksAfter) {
                                 b.setType(Material.AIR);
                             }

@@ -11,6 +11,7 @@ import dev.ua.ikeepcalm.entities.abilities.sun.HolyLightSummoning;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+@Getter
 public class MobsHandler implements Listener {
 
     private final ArrayList<CustomEntity> customEntities;
@@ -135,7 +137,4 @@ public class MobsHandler implements Listener {
         }
     }
 
-    public ArrayList<CustomEntity> getCustomEntities() {
-        return customEntities;
-    }
 }

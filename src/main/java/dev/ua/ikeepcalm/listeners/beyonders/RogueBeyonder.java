@@ -4,6 +4,7 @@ package dev.ua.ikeepcalm.listeners.beyonders;
 import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
+import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.goals.WanderGoal;
 import net.citizensnpcs.api.npc.NPC;
@@ -26,12 +27,15 @@ import java.util.Random;
 public class RogueBeyonder implements Listener {
 
     private final boolean aggressive;
+    @Getter
     private final int sequence;
+    @Getter
     private final int pathway;
 
     private boolean isWandering;
 
     private final NPC beyonder;
+    @Getter
     private Entity entity;
 
     private Entity target;
@@ -50,6 +54,7 @@ public class RogueBeyonder implements Listener {
 
     private final String[][] characteristicIndex;
 
+    @Getter
     private String name;
 
     public RogueBeyonder(boolean aggressive, int sequence, int pathway) {
@@ -251,19 +256,4 @@ public class RogueBeyonder implements Listener {
         }.runTaskLater(LordOfTheMinecraft.instance, 1);
     }
 
-    public int getSequence() {
-        return sequence;
-    }
-
-    public int getPathway() {
-        return pathway;
-    }
-
-    public Entity getEntity() {
-        return entity;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import lombok.Getter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 public class DamageTransfer implements Listener {
 
+    @Getter
     private final LivingEntity receive;
     private final LivingEntity target;
 
@@ -53,7 +55,4 @@ public class DamageTransfer implements Listener {
         e.setCancelled(true);
     }
 
-    public LivingEntity getReceive() {
-        return receive;
-    }
 }

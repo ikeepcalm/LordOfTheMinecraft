@@ -7,14 +7,14 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.Record;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
-import org.bukkit.craftbukkit.v1_20_R3.boss.CraftBossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -38,22 +38,30 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
+import static dev.ua.ikeepcalm.LordOfTheMinecraft.bossBarUtil;
+
 public class Beyonder implements Listener {
 
+    @Setter
+    @Getter
     private Pathway pathway;
+    @Getter
     protected final UUID uuid;
+    @Setter
+    @Getter
     private double spirituality;
     private double maxSpirituality;
 
     private double actingProgress;
     private double actingNeeded;
     private boolean digested;
-    private BossBar bossBar;
+    @Getter
     private boolean beyonder;
     private boolean loosingControl;
     public boolean online;
     private boolean initializedOnce;
 
+    @Getter
     private Team team;
 
     private int resurrections;
@@ -81,9 +89,6 @@ public class Beyonder implements Listener {
         healthIndex = new int[]{
                 0, 180, 120, 80, 70, 55, 40, 30, 25, 20
         };
-
-        bossBar = new CraftBossBar("§6Spirituality", BarColor.BLUE, BarStyle.SOLID);
-        bossBar.addPlayer(getPlayer());
 
         pathway.init();
 
@@ -244,6 +249,7 @@ public class Beyonder implements Listener {
         new BukkitRunnable() {
             int counter = 0;
             int actingCounter = 0;
+            boolean bossBar = false;
 
             @Override
             public void run() {
@@ -276,13 +282,18 @@ public class Beyonder implements Listener {
                         spirituality = maxSpirituality;
                 }
 
-                if (spirituality < maxSpirituality){
-                    bossBar.setProgress(spirituality / maxSpirituality);
-                    if (!bossBar.isVisible()){
-                        bossBar.setVisible(true);
+                System.out.println("Spirituality: " + spirituality + " / " + maxSpirituality);
+
+                if (spirituality < maxSpirituality) {
+                    if (!bossBar) {
+                        bossBar = true;
+                        bossBarUtil.addPlayer(getPlayer(), "§6Spirituality: " + spirituality + "§6/§e" + maxSpirituality, BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
+                    } else {
+                        bossBarUtil.setProgress(getPlayer(), (float) (spirituality / maxSpirituality));
                     }
                 } else {
-                    bossBar.setVisible(false);
+                    bossBarUtil.removePlayer(getPlayer());
+                    bossBar = false;
                 }
 
                 if (loosingControl)
@@ -459,26 +470,6 @@ public class Beyonder implements Listener {
         return Bukkit.getPlayer(uuid);
     }
 
-    public Pathway getPathway() {
-        return pathway;
-    }
-
-    public void setPathway(Pathway pathway) {
-        this.pathway = pathway;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public double getSpirituality() {
-        return spirituality;
-    }
-
-    public void setSpirituality(double spirituality) {
-        this.spirituality = spirituality;
-    }
-
     public void removeBeyonder() {
         for (Ability a : pathway.getSequence().getAbilities()) {
             a.removeAbility();
@@ -488,14 +479,6 @@ public class Beyonder implements Listener {
         beyonder = false;
         pathway.setSequence(null);
         pathway = null;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public boolean isBeyonder() {
-        return beyonder;
     }
 
 }

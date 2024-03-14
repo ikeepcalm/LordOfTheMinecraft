@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting;
 
 import dev.ua.ikeepcalm.entities.beyonders.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,6 +13,7 @@ import org.bukkit.util.Vector;
 public class EntityToLocation {
 
     private boolean stopped;
+    @Getter
     private final Entity entity;
 
     public EntityToLocation(Entity entity, Location location) {
@@ -61,7 +63,4 @@ public class EntityToLocation {
         stopped = true;
     }
 
-    public Entity getEntity() {
-        return entity;
-    }
 }

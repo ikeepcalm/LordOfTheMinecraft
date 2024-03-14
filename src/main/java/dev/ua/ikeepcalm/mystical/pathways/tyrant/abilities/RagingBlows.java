@@ -45,7 +45,7 @@ public class RagingBlows extends NpcAbility {
                 Random random = new Random();
                 Location startLoc = MathVectorUtils.getRelativeLocation(caster, random.nextDouble(1, 2), random.nextDouble(-1.5, 1.5), random.nextDouble(-.5, .5));
                 for (Entity entity : world.getNearbyEntities(startLoc, 50, 50, 50)) {
-                    if (!(entity instanceof Player p))
+                    if (!(entity instanceof Player))
                         continue;
 
                     p.spawnParticle(Particle.EXPLOSION_NORMAL, startLoc, 10, 0, 0, 0, .25);
