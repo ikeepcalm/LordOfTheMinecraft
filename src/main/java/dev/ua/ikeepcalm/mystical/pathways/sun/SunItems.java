@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun;
 
+import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
@@ -144,6 +145,9 @@ public class SunItems extends Items {
         lore.add("§8" + player);
         itemMeta.setLore(lore);
         currentItem.setItemMeta(itemMeta);
+        NBT.modify(currentItem, (nbt) -> {
+            nbt.setString("spiritualityDrainage", spirituality);
+        });
         return currentItem;
     }
 }

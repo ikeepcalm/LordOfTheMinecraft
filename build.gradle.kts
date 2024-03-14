@@ -32,6 +32,9 @@ repositories {
     maven {
         url = uri("https://repo.dmulloy2.net/repository/public/")
     }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
@@ -41,6 +44,7 @@ dependencies {
     compileOnly("net.byteflux:libby-bukkit:1.1.5")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
+    compileOnly("de.tr7zw:item-nbt-api-plugin:2.12.2")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 

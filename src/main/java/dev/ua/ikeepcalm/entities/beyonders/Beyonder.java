@@ -282,14 +282,14 @@ public class Beyonder implements Listener {
                         spirituality = maxSpirituality;
                 }
 
-                System.out.println("Spirituality: " + spirituality + " / " + maxSpirituality);
 
                 if (spirituality < maxSpirituality) {
                     if (!bossBar) {
                         bossBar = true;
-                        bossBarUtil.addPlayer(getPlayer(), "§6Spirituality: " + spirituality + "§6/§e" + maxSpirituality, BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
+                        bossBarUtil.addPlayer(getPlayer(), "§6Духовність: " + spirituality + "§6/§e" + maxSpirituality , BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
                     } else {
                         bossBarUtil.setProgress(getPlayer(), (float) (spirituality / maxSpirituality));
+                        bossBarUtil.setTitle(getPlayer(), "§6Духовність: " + spirituality + "§6/§e" + maxSpirituality);
                     }
                 } else {
                     bossBarUtil.removePlayer(getPlayer());
@@ -346,9 +346,9 @@ public class Beyonder implements Listener {
         if (pathway.getSequence().getCurrentSequence() > 8)
             spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()), 2);
         else if (pathway.getSequence().getCurrentSequence() > 4)
-            spirituality = (int) Math.pow((double) (90 / pathway.getSequence().getCurrentSequence()) * 2, 2);
+            spirituality = (int) Math.pow((double) (90 / pathway.getSequence().getCurrentSequence()) * 1.4, 2);
         else if (pathway.getSequence().getCurrentSequence() < 5)
-            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()), 3);
+            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 3, 2);
         maxSpirituality = spirituality;
     }
 

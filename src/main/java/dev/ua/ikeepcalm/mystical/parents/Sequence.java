@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
+import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import lombok.Getter;
@@ -22,9 +23,11 @@ public abstract class Sequence {
 
     @Setter
     protected int currentSequence;
+    @Setter
     protected Pathway pathway;
 
     protected boolean[] usesAbilities;
+    @Setter
     protected ArrayList<Ability> abilities;
 
     protected HashMap<Integer, PotionEffect[]> sequenceEffects;
@@ -70,11 +73,16 @@ public abstract class Sequence {
 
     public void useAbility(int ability, ItemStack item) {
 
-        int spiritualityDrainage = 0;
+        String spiritualityDrainageStr = NBT.get(item, (nbt) -> {
+            return nbt.getString("spiritualityDrainage");
+        });
+
+        int spiritualityDrainage;
+
         try {
-            String line = Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).get(1);
-            spiritualityDrainage = Integer.parseInt(line.substring(18));
-        } catch (Exception ignored) {
+            spiritualityDrainage = Integer.parseInt(spiritualityDrainageStr);
+        } catch (NumberFormatException e) {
+            spiritualityDrainage = 0;
         }
 
         if (spiritualityDrainage > pathway.getBeyonder().getSpirituality())
@@ -128,14 +136,6 @@ public abstract class Sequence {
 
     public void run() {
 
-    }
-
-    public void setPathway(Pathway pathway) {
-        this.pathway = pathway;
-    }
-
-    public void setAbilities(ArrayList<Ability> abilities) {
-        this.abilities = abilities;
     }
 
 }
