@@ -157,7 +157,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
                     .filter(rb -> rb.getEntity() == currentEntity)
                     .findFirst()
                     .orElseThrow(() ->
-                            new RuntimeException("Rogue Beyonder not found"));
+                            new RuntimeException("Негідника Потойбіччя не знайдено"));
 
             return rogueBeyonder.getSequence();
         }
@@ -212,7 +212,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
                         .filter(rb -> rb.getEntity() == currentEntity)
                         .findFirst()
                         .orElseThrow(() ->
-                                new RuntimeException("Rogue Beyonder not found"));
+                                new RuntimeException("Негідника Потойбіччя не знайдено"));
 
                 pathway = rogueBeyonder.getPathway();
                 sequence = rogueBeyonder.getSequence();
@@ -330,7 +330,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
         else
             name = currentEntity.getName();
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected: §8" + name + " §r-- §5Distance: §8" + Math.round(currentEntity.getLocation().distance(p.getLocation()))));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана сутність: §8" + name + " §r-- §5Відстань: §8" + Math.round(currentEntity.getLocation().distance(p.getLocation()))));
     }
 
     private RogueBeyonder getRogueBeyonder() {
@@ -394,7 +394,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LEAD, "Spirit Body Threads", "100", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.LEAD, "Маріонетковий Ткач", "100", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
     @EventHandler

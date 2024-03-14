@@ -250,7 +250,7 @@ public class Marionette implements Listener {
 
         alive = false;
 
-        getPlayer().sendMessage("Your Marionette " + name + " §rhas been killed.");
+        getPlayer().sendMessage("Ваша маріонетка " + name + " §rбула вбита.");
 
         ability.removeMarionette(this);
         npc.destroy();

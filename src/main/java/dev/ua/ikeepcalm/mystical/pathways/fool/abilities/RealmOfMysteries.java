@@ -97,7 +97,7 @@ public class RealmOfMysteries extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.BLACK_DYE, "Realm of Mysteries", "20000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.BLACK_DYE, "Царство Таємниць", "20000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class RealmOfMysteries extends Ability implements Listener {
         if (radius > 30)
             radius = 5;
 
-        p.sendMessage("§5Radius is now " + radius);
+        p.sendMessage("§5Радіус встановлено на " + radius);
     }
 
 

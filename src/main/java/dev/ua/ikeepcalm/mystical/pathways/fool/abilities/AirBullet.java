@@ -174,7 +174,7 @@ public class AirBullet extends NpcAbility {
         if (pathway.getSequence().getCurrentSequence() > 3)
             return;
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected: §8Sequence " + sequencePower));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Послідовність: §8" + sequencePower));
     }
 
     @Override
@@ -190,6 +190,6 @@ public class AirBullet extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.GHAST_TEAR, "Air Bullet", "30", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.GHAST_TEAR, "Повітряний Снаряд", "30", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

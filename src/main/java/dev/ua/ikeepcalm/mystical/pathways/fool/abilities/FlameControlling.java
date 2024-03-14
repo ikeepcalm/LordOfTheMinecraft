@@ -111,6 +111,6 @@ public class FlameControlling extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.FIRE_CHARGE, "Flame Controlling", "45", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.FIRE_CHARGE, "Підкорення Вогню", "45", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

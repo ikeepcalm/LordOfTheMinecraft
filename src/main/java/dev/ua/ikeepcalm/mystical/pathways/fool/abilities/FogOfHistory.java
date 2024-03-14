@@ -69,13 +69,13 @@ public class FogOfHistory extends Ability implements Listener {
         barrier = new ItemStack(Material.BARRIER);
         ItemMeta tempMeta = barrier.getItemMeta();
         assert tempMeta != null;
-        tempMeta.setDisplayName("§aPrevious Page");
+        tempMeta.setDisplayName("§aПопередня сторінка");
         tempMeta.addEnchant(Enchantment.LUCK, 1, true);
         tempMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         barrier.setItemMeta(tempMeta);
 
         arrow = new ItemStack(Material.ARROW);
-        tempMeta.setDisplayName("§aNext Page");
+        tempMeta.setDisplayName("§aНаступна сторінка");
         arrow.setItemMeta(tempMeta);
 
         currentPage = 0;
@@ -154,7 +154,7 @@ public class FogOfHistory extends Ability implements Listener {
         pages = new ArrayList<>();
 
         for (int i = 0; i < pageCount; i++) {
-            pages.add(Bukkit.createInventory(p, 54, "§5Fog of History"));
+            pages.add(Bukkit.createInventory(p, 54, "§5Завіса Історії"));
         }
 
         int counter = 0;
@@ -246,7 +246,7 @@ public class FogOfHistory extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.QUARTZ, "Fog of History", "100", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.QUARTZ, "Завіса Історії", "100", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
     public void addItem(ItemStack item) {

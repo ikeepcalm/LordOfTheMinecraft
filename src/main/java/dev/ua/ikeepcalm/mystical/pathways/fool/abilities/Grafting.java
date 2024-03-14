@@ -105,12 +105,12 @@ public class Grafting extends NpcAbility implements Listener {
     }
 
     enum Category {
-        Location("Location - Location"),
-        Block("Entity - Block"),
-        Entity("Entity - Entity"),
-        Stuck("Entity - Location"),
-        Health("Health - Health"),
-        Target("Change the target of an attack");
+        Location("Локація - Локація"),
+        Block("Сутність - Блок"),
+        Entity("Сутність - Сутність"),
+        Stuck("Сутність - Локація"),
+        Health("Здоров'я - Здоров'я"),
+        Target("Змінити ціль атаки");
 
         private final String name;
 
@@ -128,7 +128,7 @@ public class Grafting extends NpcAbility implements Listener {
         if (radius > 6)
             radius = 1;
 
-        p.sendMessage("§5Set the radius to " + radius);
+        p.sendMessage("§5Радіус встановлено на " + radius);
     }
 
     private Category selectedCategory = Category.Location;
@@ -193,7 +193,7 @@ public class Grafting extends NpcAbility implements Listener {
             case Block -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cCouldn't find the entity");
+                        p.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
@@ -212,13 +212,13 @@ public class Grafting extends NpcAbility implements Listener {
             case Entity -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cCouldn't find the entity");
+                        p.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
                     for (EntityToEntity entityToEntity : entityToEntities) {
                         if (entityToEntity.getEntity() == entity) {
-                            p.sendMessage("§cRemoving Grafting");
+                            p.sendMessage("§cСкасування Алхімії");
                             entityToEntity.stop();
                             entityToEntities.remove(entityToEntity);
                             return;
@@ -242,13 +242,13 @@ public class Grafting extends NpcAbility implements Listener {
             case Stuck -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cCouldn't find the entity");
+                        p.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
                     for (EntityToLocation entityToLocation : stuckEntities) {
                         if (entityToLocation.getEntity() == entity) {
-                            p.sendMessage("§cRemoving Grafting");
+                            p.sendMessage("§cСкасування Алхімії");
                             entityToLocation.stop();
                             stuckEntities.remove(entityToLocation);
                             return;
@@ -275,7 +275,7 @@ public class Grafting extends NpcAbility implements Listener {
                         if (healthSynchronization.getEntity1() == entity || healthSynchronization.getEntity2() == entity) {
                             healthSynchronization.stop();
                             healthSynchros.remove(healthSynchronization);
-                            p.sendMessage("§cRemoving Grafting");
+                            p.sendMessage("§cСкасування Алхімії");
                         }
                     }
                 } catch (ConcurrentModificationException ignored) {
@@ -301,7 +301,7 @@ public class Grafting extends NpcAbility implements Listener {
                     tempEnt = entity;
                 } else {
                     if (entity == null) {
-                        p.sendMessage("§cCouldn't find the entity");
+                        p.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
@@ -331,7 +331,7 @@ public class Grafting extends NpcAbility implements Listener {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Use-case: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний алхімічний рецепт: §f" + selectedCategory.name));
 
         for (Map.Entry<Location[], Integer> entry : graftedLocations.entrySet()) {
             if (entry.getKey()[0].getWorld() == null || entry.getKey()[1].getWorld() == null)
@@ -366,6 +366,6 @@ public class Grafting extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.ECHO_SHARD, "Grafting", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.ECHO_SHARD, "Містична Алхімія", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

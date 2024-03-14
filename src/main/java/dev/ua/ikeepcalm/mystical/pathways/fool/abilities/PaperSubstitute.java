@@ -38,13 +38,13 @@ public class PaperSubstitute extends Ability implements Listener {
         p = pathway.getBeyonder().getPlayer();
 
         if (switching) {
-            p.sendMessage("§cYou are already using this ability");
+            p.sendMessage("§cВи вже використовуєте Техніку Підміни!");
             return;
         }
 
         //Check if Player has paper in inv
         if (!p.getInventory().contains(Material.PAPER)) {
-            p.sendMessage("§cYou need paper!");
+            p.sendMessage("§cПотрібен папір!");
             return;
         }
 
@@ -104,6 +104,6 @@ public class PaperSubstitute extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.ARMOR_STAND, "Paper Figurine Substitute", "35", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.ARMOR_STAND, "Техніка Підміни", "35", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

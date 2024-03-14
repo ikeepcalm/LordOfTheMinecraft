@@ -105,12 +105,12 @@ public class Hiding extends Ability implements Listener {
     @Override
     public void onHold() {
         if (hiding)
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Left-Click to stop hiding"));
+            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Натисніть ЛКМ щоб вийти із Завіси"));
     }
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Hiding in the Fog of History", "85", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "85", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 
     public boolean isHiding() {

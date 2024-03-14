@@ -172,7 +172,7 @@ public class MarionetteControlling extends Ability implements Listener {
                 return;
             selectedMarionette.setShouldFollow(!selectedMarionette.shouldFollow());
 
-            p.sendMessage("Set should follow to " + selectedMarionette.shouldFollow());
+            p.sendMessage("Слідування за гравцем " + selectedMarionette.shouldFollow());
             return;
         }
 
@@ -258,6 +258,6 @@ public class MarionetteControlling extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.STRING, "Marionette Controlling", "none", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.STRING, "Контроль Разуму", "не використ.", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

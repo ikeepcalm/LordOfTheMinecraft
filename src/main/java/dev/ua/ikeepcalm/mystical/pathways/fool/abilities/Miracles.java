@@ -106,17 +106,17 @@ public class Miracles extends Ability implements Listener {
 
         World world = p.getWorld();
         if (GeneralItemsUtil.getSunnyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§6The weather clears up!");
+            p.sendMessage("§6Погода прояснюється!");
             world.setClearWeatherDuration(120 * 60 * 20);
             p.closeInventory();
         } else if (GeneralItemsUtil.getRainyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§3It begins to rain!");
+            p.sendMessage("§3Починається дощ!");
             world.setClearWeatherDuration(0);
             world.setStorm(true);
             world.setThunderDuration(120 * 60 * 20);
             p.closeInventory();
         } else if (GeneralItemsUtil.getStormyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§9A storm is approaching");
+            p.sendMessage("§9Наближається шторм!");
             world.setClearWeatherDuration(0);
             world.setStorm(true);
             world.setThundering(true);
@@ -161,7 +161,7 @@ public class Miracles extends Ability implements Listener {
             final EntityType type = entityType;
 
             if (entityType == null) {
-                p.sendMessage("§c" + chatMsg + " is not a valid entity!");
+                p.sendMessage("§c" + chatMsg + " не є дійсною сутністю!");
                 return;
             }
 
@@ -199,7 +199,7 @@ public class Miracles extends Ability implements Listener {
         else if (chat == Chat.TELEPORT) {
             chat = Chat.NOTHING;
             if (e.getMessage().split(" ").length != 1 && e.getMessage().split(" ").length != 3) {
-                p.sendMessage("§cYou need to type in coordinates or a player name");
+                p.sendMessage("§cВведіть координати або ім'я гравця");
                 chat = Chat.NOTHING;
                 return;
             }
@@ -208,7 +208,7 @@ public class Miracles extends Ability implements Listener {
                 public void run() {
                     if (e.getMessage().split(" ").length == 1) {
                         if (Bukkit.getPlayer(e.getMessage()) == null) {
-                            p.sendMessage("§c" + e.getMessage() + " is not a valid player");
+                            p.sendMessage("§c" + e.getMessage() + " не є дійсним гравцем!");
                             chat = Chat.NOTHING;
                             return;
                         }
@@ -217,7 +217,7 @@ public class Miracles extends Ability implements Listener {
                     } else {
                         for (String msg : e.getMessage().split(" ")) {
                             if (!GeneralPurposeUtil.isInteger(msg)) {
-                                p.sendMessage("§cYou need to type in coordinates or a player name");
+                                p.sendMessage("§cВведіть координати або ім'я гравця");
                                 chat = Chat.NOTHING;
                                 return;
                             }
@@ -234,7 +234,7 @@ public class Miracles extends Ability implements Listener {
         else if (chat == Chat.BIOME) {
             chat = Chat.NOTHING;
             if (e.getMessage().split(" ").length != 1) {
-                p.sendMessage("§cYou need to type in the biome");
+                p.sendMessage("§cВведіть назву біома");
                 chat = Chat.NOTHING;
                 return;
             }
@@ -250,7 +250,7 @@ public class Miracles extends Ability implements Listener {
             }
 
             if (biome == null) {
-                p.sendMessage("§c" + chatMsg + " is not a valid biome!");
+                p.sendMessage("§c" + chatMsg + " не є дійсним біомом!");
                 return;
             }
 
@@ -280,7 +280,7 @@ public class Miracles extends Ability implements Listener {
                         }
                     }
                     String biomeName = String.join(" ", (biomeChange.name().substring(0, 1).toUpperCase() + biomeChange.name().substring(1).toLowerCase()).split("_"));
-                    p.sendMessage("§5Changed the Biome to " + biomeName);
+                    p.sendMessage("§5Біом змінено на " + biomeName);
                 }
             }.runTaskLater(LordOfTheMinecraft.instance, 0);
         }
@@ -308,7 +308,7 @@ public class Miracles extends Ability implements Listener {
         final ItemStack storm = GeneralItemsUtil.getStormyWeather();
 
         //Natural Disasters Inventory
-        Inventory inventoryDisaster = Bukkit.createInventory(p, 27, "§5§lNatural Disasters");
+        Inventory inventoryDisaster = Bukkit.createInventory(p, 27, "§5§lСтихійні лиха");
         for (int i = 0; i < inventoryDisaster.getSize(); i++) {
             inventoryDisaster.setItem(i, pane);
         }
@@ -319,7 +319,7 @@ public class Miracles extends Ability implements Listener {
         inventories[0] = inventoryDisaster;
 
         //Weather Inventory
-        Inventory inventoryWeather = Bukkit.createInventory(p, 27, "§5§lChange the Weather");
+        Inventory inventoryWeather = Bukkit.createInventory(p, 27, "§5§lКерування погодою");
         for (int i = 0; i < inventoryWeather.getSize(); i++) {
             inventoryWeather.setItem(i, pane);
         }
@@ -331,11 +331,11 @@ public class Miracles extends Ability implements Listener {
     }
 
     enum Category {
-        Natural_Disaster("Natural Disasters", 950),
-        Summoning("Summon Mob", 250),
-        Teleportation("Teleportation", 500),
-        Change_Biome("Change the Biome", 400),
-        Change_Weather("Change the Weather", 400);
+        Natural_Disaster("Стихійні лиха", 950),
+        Summoning("Покликати сутність", 250),
+        Teleportation("Телепортація", 500),
+        Change_Biome("Зміна біому", 400),
+        Change_Weather("Керування погодою", 400);
         //Structure("Spawn Structure", 600);
 
         private final String name;
@@ -363,15 +363,15 @@ public class Miracles extends Ability implements Listener {
         switch (selected) {
             case 1 -> {
                 chat = Chat.MOB;
-                p.sendMessage("§5Which Mob do you want to summon?");
+                p.sendMessage("§5Яку сутність ви бажаєте покликати?");
             }
             case 2 -> {
                 chat = Chat.TELEPORT;
-                p.sendMessage("§5Type the coordinates or the player you want to teleport to!");
+                p.sendMessage("§5Введіть координати або ім'я гравця, до якого ви хочете телепортуватися");
             }
             case 3 -> {
                 chat = Chat.BIOME;
-                p.sendMessage("§5To which biome would you like to switch it to");
+                p.sendMessage("§5Введіть назву нового біому");
             }
             default -> chat = Chat.NOTHING;
         }
@@ -382,7 +382,7 @@ public class Miracles extends Ability implements Listener {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Miracle: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Вища Сила: §f" + selectedCategory.name));
     }
 
     @Override
@@ -396,6 +396,6 @@ public class Miracles extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.NETHER_STAR, "Miracles", "varying", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.NETHER_STAR, "Вища Сила", "різниться", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

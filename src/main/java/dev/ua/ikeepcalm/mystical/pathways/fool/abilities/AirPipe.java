@@ -58,6 +58,6 @@ public class AirPipe extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.PRISMARINE_CRYSTALS, "Air Pipe", "5/s", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.PRISMARINE_CRYSTALS, "Подих Життя", "5/сек", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
     }
 }

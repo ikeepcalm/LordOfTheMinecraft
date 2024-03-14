@@ -19,6 +19,7 @@ import java.util.Random;
 public class LightningStorm extends NpcAbility {
 
     boolean destruction;
+    String Destruction;
     private final boolean npc;
 
     public LightningStorm(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
@@ -98,6 +99,9 @@ public class LightningStorm extends NpcAbility {
     @Override
     public void leftClick() {
         destruction = !destruction;
-        p.sendMessage("§aЗнищення блоків: §7" + destruction);
+        if (destruction)
+            Destruction = "увімкнено";
+        else Destruction = "вимкнено";
+        p.sendMessage("§aЗнищення блоків: §7" + Destruction);
     }
 }
