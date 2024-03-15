@@ -1,5 +1,7 @@
 package dev.ua.ikeepcalm.entities.beyonders;
 
+import cz.foresttech.api.ColorAPI;
+import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
@@ -11,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
@@ -26,6 +29,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -120,6 +124,17 @@ public class Beyonder implements Listener {
             pathway.initItems();
             initializedOnce = true;
         }
+
+        ItemStack item = new ItemStack(Material.CLOCK);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId()).getPathway().getName()));
+        meta.setCustomModelData(pathway.getPathwayInt());
+        item.setItemMeta(meta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("openItems", true);
+        });
+        e.getPlayer().getInventory().setItem(9, item);
+
         start();
     }
 
