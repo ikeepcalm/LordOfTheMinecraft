@@ -60,18 +60,14 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     private SealedArtifacts sealedArtifacts;
 
     public static ArrayList<RogueBeyonder> currentRogueBeyonders;
-
     public static HashMap<UUID, Beyonder> beyonders;
     public static HashMap<UUID, ServerPlayer> fakePlayers = new HashMap<>();
     public static final HashMap<UUID, FogOfHistory> fogOfHistories = new HashMap<>();
     public static BossBarUtil bossBarUtil;
-
     @Getter
     public FileConfiguration langConfig;
-
     @Getter
     private ArrayList<ArrayList<Entity>> concealedEntities;
-
     private File configSaveFile;
     private FileConfiguration configSave;
     private File configSaveFileFoh;
@@ -81,7 +77,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Getter
     private Divination divination;
     public static UUID randomUUID;
-
     @Getter
     private ArrayList<String> names;
 
@@ -149,13 +144,11 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     //register all the Listeners and CommandExecutors
     public void register() {
-        ItemsCmd itemsCmd = new ItemsCmd();
         divination = new Divination();
         mobsHandler = new MobsHandler();
 
         registerEvents(
                 new InteractListener(),
-                itemsCmd,
                 new PotionHandler(),
                 new PotionListener(),
                 new DeathListener(),
@@ -167,7 +160,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         );
 
         Objects.requireNonNull(this.getCommand("beyonder")).setExecutor(new BeyonderCmd());
-        Objects.requireNonNull(this.getCommand("items")).setExecutor(itemsCmd);
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCmd());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCmd());
         Objects.requireNonNull(this.getCommand("ability-info")).setExecutor(new AbilityInfoCmd());

@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -125,15 +126,7 @@ public class Beyonder implements Listener {
             initializedOnce = true;
         }
 
-        ItemStack item = new ItemStack(Material.CLOCK);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId()).getPathway().getName()));
-        meta.setCustomModelData(pathway.getPathwayInt());
-        item.setItemMeta(meta);
-        NBT.modify(item, (nbt) -> {
-            nbt.setBoolean("openItems", true);
-        });
-        e.getPlayer().getInventory().setItem(9, item);
+        setItemsShortcut(e.getPlayer());
 
         start();
     }
@@ -145,7 +138,22 @@ public class Beyonder implements Listener {
             return;
         if (!beyonder)
             return;
+
+        if (!e.getPlayer().getUniqueId().equals(uuid))
+            return;
+        if (!beyonder)
+            return;
         online = false;
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e){
+        if (!e.getPlayer().getUniqueId().equals(uuid))
+            return;
+        if (!beyonder)
+            return;
+
+        setItemsShortcut(e.getPlayer());
     }
 
     @EventHandler
@@ -397,6 +405,17 @@ public class Beyonder implements Listener {
         updateActing();
     }
 
+    private void setItemsShortcut(Player player) {
+        ItemStack item = new ItemStack(Material.CLOCK);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getName()));
+        meta.setCustomModelData(pathway.getPathwayInt());
+        item.setItemMeta(meta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("openItems", true);
+        });
+        player.getInventory().setItem(9, item);
+    }
 
     //lostControl: chance of surviving
     public void looseControl(int lostControl, int timeOfLoosingControl) {

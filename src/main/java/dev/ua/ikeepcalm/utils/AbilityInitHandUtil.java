@@ -95,7 +95,6 @@ public class AbilityInitHandUtil {
                 new LightningBall(0, null, 1, null, true),
                 new LightningStorm(0, null, 3, null, true),
                 new LightningTornado(0, null, 1, null, true),
-                new RagingBlows(0, null, 8, null, true),
                 new Roar(0, null, 4, null, true),
                 new Tornado(0, null, 4, null, true),
                 new WaterSpells(0, null, 7, null, true),

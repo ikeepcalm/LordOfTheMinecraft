@@ -8,37 +8,22 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    }
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-    }
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/central")
-    }
-    maven {
-        url = uri("https://maven.citizensnpcs.co/repo")
-    }
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    maven {
-        url = uri("https://jitpack.io")
-    }
-    maven {
-        url = uri("https://repo.alessiodp.com/releases")
-    }
-    maven {
-        url = uri("https://repo.dmulloy2.net/repository/public/")
-    }
-    maven {
-        url = uri("https://repo.codemc.io/repository/maven-public/")
-    }
+    maven("https://repo.xenondevs.xyz/releases")
+    maven("https://jitpack.io")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://oss.sonatype.org/content/repositories/central")
+    maven("https://maven.citizensnpcs.co/repo")
+    maven("https://repo.maven.apache.org/maven2/")
+    maven("https://jitpack.io")
+    maven("https://repo.alessiodp.com/releases")
+    maven("https://repo.dmulloy2.net/repository/public/")
+    maven("https://repo.codemc.io/repository/maven-public/")
 }
 
 dependencies {
     implementation("com.github.ForestTechMC:ForestColorAPI:1.4")
+    implementation("xyz.xenondevs.invui:invui:1.26")
     compileOnly("org.spigotmc:spigot:1.20.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("net.citizensnpcs:citizens-main:2.0.33-SNAPSHOT")
     compileOnly("net.byteflux:libby-bukkit:1.1.5")

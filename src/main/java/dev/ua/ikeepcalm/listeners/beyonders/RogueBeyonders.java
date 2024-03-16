@@ -24,22 +24,20 @@ public class RogueBeyonders implements Listener {
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
         spawnProbabilityTable = new HashMap<>();
 
-        spawnProbabilityTable.put(EntityType.COW, 1);
-        spawnProbabilityTable.put(EntityType.SHEEP, 1);
-        spawnProbabilityTable.put(EntityType.SKELETON, 1);
-        spawnProbabilityTable.put(EntityType.ZOMBIE_VILLAGER, 1);
-        spawnProbabilityTable.put(EntityType.SPIDER, 1);
-        spawnProbabilityTable.put(EntityType.HUSK, 1);
-        spawnProbabilityTable.put(EntityType.CHICKEN, 1);
-        spawnProbabilityTable.put(EntityType.WOLF, 1);
-        spawnProbabilityTable.put(EntityType.ZOMBIE, 1);
-        spawnProbabilityTable.put(EntityType.CREEPER, 1);
-        spawnProbabilityTable.put(EntityType.MAGMA_CUBE, 1);
-        spawnProbabilityTable.put(EntityType.PIGLIN, 1);
-        spawnProbabilityTable.put(EntityType.ZOMBIFIED_PIGLIN, 1);
-        spawnProbabilityTable.put(EntityType.ENDERMAN, 1);
-        spawnProbabilityTable.put(EntityType.HORSE, 1);
-        spawnProbabilityTable.put(EntityType.FOX, 1);
+
+        spawnProbabilityTable.put(EntityType.SKELETON, 5);
+        spawnProbabilityTable.put(EntityType.ZOMBIE_VILLAGER, 5);
+        spawnProbabilityTable.put(EntityType.SPIDER, 5);
+        spawnProbabilityTable.put(EntityType.HUSK, 5);
+        spawnProbabilityTable.put(EntityType.WOLF, 5);
+        spawnProbabilityTable.put(EntityType.ZOMBIE, 5);
+        spawnProbabilityTable.put(EntityType.CREEPER, 5);
+        spawnProbabilityTable.put(EntityType.MAGMA_CUBE, 5);
+        spawnProbabilityTable.put(EntityType.PIGLIN, 5);
+        spawnProbabilityTable.put(EntityType.ZOMBIFIED_PIGLIN, 5);
+        spawnProbabilityTable.put(EntityType.ENDERMAN, 5);
+        spawnProbabilityTable.put(EntityType.HORSE, 5);
+        spawnProbabilityTable.put(EntityType.FOX, 5);
 
     }
 
@@ -50,15 +48,16 @@ public class RogueBeyonders implements Listener {
         if (!spawnProbabilityTable.containsKey(e.getEntity().getType()))
             return;
 
-        if (random.nextInt(100) > spawnProbabilityTable.get(e.getEntity().getType()))
+        if (random.nextInt(200) > spawnProbabilityTable.get(e.getEntity().getType()))
             return;
 
-        boolean aggressive = (random.nextInt(4) == 0);
+        boolean aggressive = (random.nextInt(4) == 1);
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);
-        int pathway = random.nextInt(5);
+        int pathway = random.nextInt(9);
 
         if (LordOfTheMinecraft.instance.getCurrentRogueBeyonders().size() > 20) {
-            LordOfTheMinecraft.instance.removeRogueBeyonder(LordOfTheMinecraft.instance.getCurrentRogueBeyonders().get((new Random()).nextInt(LordOfTheMinecraft.instance.getCurrentRogueBeyonders().size())));
+            return;
+//            LordOfTheMinecraft.instance.removeRogueBeyonder(LordOfTheMinecraft.instance.getCurrentRogueBeyonders().get((new Random()).nextInt(LordOfTheMinecraft.instance.getCurrentRogueBeyonders().size())));
         }
 
         spawnNPC(aggressive, sequence, pathway, e.getLocation());

@@ -29,7 +29,6 @@ public class RagingBlows extends NpcAbility {
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         useNPCAbility(p.getLocation(), p, getMultiplier());
     }
 
@@ -63,7 +62,7 @@ public class RagingBlows extends NpcAbility {
                 if (counter <= 0)
                     cancel();
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 6);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 20);
     }
 
     @Override
