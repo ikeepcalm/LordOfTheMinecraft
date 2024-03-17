@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.entities.beyonders;
+package dev.ua.ikeepcalm.entities.spirits;
 
 import jline.internal.Nullable;
 import lombok.Getter;

@@ -48,7 +48,7 @@ public class RogueBeyonders implements Listener {
         if (!spawnProbabilityTable.containsKey(e.getEntity().getType()))
             return;
 
-        if (random.nextInt(200) > spawnProbabilityTable.get(e.getEntity().getType()))
+        if (random.nextInt(1000) > spawnProbabilityTable.get(e.getEntity().getType()))
             return;
 
         boolean aggressive = (random.nextInt(4) == 1);

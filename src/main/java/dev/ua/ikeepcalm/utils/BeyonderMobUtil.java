@@ -1,9 +1,8 @@
-package dev.ua.ikeepcalm.entities.beyonders;
+package dev.ua.ikeepcalm.utils;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.entities.abilities.PassiveAbilities;
+import dev.ua.ikeepcalm.entities.mob.abilities.PassiveAbilities;
 import dev.ua.ikeepcalm.entities.custom.CustomEntity;
-import dev.ua.ikeepcalm.utils.MobEffectsUtil;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
@@ -13,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BeyonderMobs {
+public class BeyonderMobUtil {
 
     public void addMob(Entity entity, CustomEntity customEntity) {
         Random random = new Random();
@@ -60,7 +59,7 @@ public class BeyonderMobs {
                 if (entity instanceof Mob mob)
                     mob.setTarget(target);
 
-                //Use abilities
+                //Use mob
                 for (MobAbility ability : customEntity.abilities()) {
                     if (random.nextInt(ability.getFrequency()) != 0)
                         continue;

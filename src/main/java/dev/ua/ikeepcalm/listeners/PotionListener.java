@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.listeners;
 
-import dev.ua.ikeepcalm.entities.beyonders.Beyonder;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;

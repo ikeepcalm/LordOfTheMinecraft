@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.mystical.pathways.disasters;
+package dev.ua.ikeepcalm.entities.disasters;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;

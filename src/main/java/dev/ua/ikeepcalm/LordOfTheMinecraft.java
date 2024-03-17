@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.cmds.*;
-import dev.ua.ikeepcalm.entities.beyonders.Beyonder;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.handlers.ArtifactHandler;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
@@ -58,7 +58,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     private SpiritHandler spiritHandler;
     @Getter
     private SealedArtifacts sealedArtifacts;
-
     public static ArrayList<RogueBeyonder> currentRogueBeyonders;
     public static HashMap<UUID, Beyonder> beyonders;
     public static HashMap<UUID, ServerPlayer> fakePlayers = new HashMap<>();

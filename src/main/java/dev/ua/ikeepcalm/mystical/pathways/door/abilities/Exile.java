@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
-import dev.ua.ikeepcalm.entities.beyonders.Beyonder;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import dev.ua.ikeepcalm.mystical.parents.Items;

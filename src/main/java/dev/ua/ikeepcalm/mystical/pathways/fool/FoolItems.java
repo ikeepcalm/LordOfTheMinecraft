@@ -35,23 +35,23 @@ public class FoolItems extends Items {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("general", "items-info"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "divination")
+                LocalizationUtil.getLocalizedString("fool", "mob", "divination")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "enhanced-attributes"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "no-fall-damage"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "paper-throw")
+                LocalizationUtil.getLocalizedString("fool", "mob", "paper-throw")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "flame-controlling"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "air-bullet"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "air-pipe"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "flaming-jump"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "paper-figurine-substitute")
+                LocalizationUtil.getLocalizedString("fool", "mob", "flame-controlling"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "air-bullet"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "air-pipe"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "flaming-jump"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "paper-figurine-substitute")
         );
         abilityInfo.put(7, s7);
 
@@ -61,10 +61,10 @@ public class FoolItems extends Items {
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "spirit-body-threads"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "spirit-body-threads"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "sbt-hint-1"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "sbt-hint-2"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "marionette-controlling"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "marionette-controlling"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mc-hint-1"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mc-hint-2"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mc-hint-3")
@@ -72,28 +72,28 @@ public class FoolItems extends Items {
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                LocalizationUtil.getLocalizedString("fool", "miscellaneous", "abilities-enhancement"),
+                LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mob-enhancement"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mc-upgrade")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "fog-of-history"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "hiding-in-the-foh"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "fog-of-history"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "hiding-in-the-foh"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "ab-upgrade")
         );
         abilityInfo.put(3, s3);
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "miracles"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "miracles"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "miracles-hint")
         );
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "grafting"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "grafting"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "grafting-hint"),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "realm-of-mysteries"),
+                LocalizationUtil.getLocalizedString("fool", "mob", "realm-of-mysteries"),
                 LocalizationUtil.getLocalizedString("fool", "miscellaneous", "rom-hint")
         );
         abilityInfo.put(1, s1);

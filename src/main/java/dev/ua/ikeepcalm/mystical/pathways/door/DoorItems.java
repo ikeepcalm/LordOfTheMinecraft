@@ -32,7 +32,7 @@ public class DoorItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                "§bUse: §7/items §bto get the abilities for your Sequence",
+                "§bUse: §7/items §bto get the mob for your Sequence",
                 "§bDoor Opening: §7Lets you pass through solid blocks"
         );
         abilityInfo.put(9, s9);

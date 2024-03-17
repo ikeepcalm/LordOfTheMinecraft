@@ -1,6 +1,6 @@
-package dev.ua.ikeepcalm.entities.spirits;
+package dev.ua.ikeepcalm.entities.spirits.impl;
 
-import dev.ua.ikeepcalm.entities.beyonders.Spirit;
+import dev.ua.ikeepcalm.entities.spirits.Spirit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;

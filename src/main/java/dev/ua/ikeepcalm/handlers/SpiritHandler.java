@@ -1,8 +1,8 @@
 package dev.ua.ikeepcalm.handlers;
 
-import dev.ua.ikeepcalm.entities.beyonders.Spirit;
+import dev.ua.ikeepcalm.entities.spirits.Spirit;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.entities.spirits.*;
+import dev.ua.ikeepcalm.entities.spirits.impl.*;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class SpiritHandler implements Listener, CommandExecutor {
         spirits.add(new FriendlySpirit(null, 15, .5f, 1, EntityType.ALLAY, false, 2, BeyonderItemsUtil.getSpiritRemains(), false, "§bSpirit"));
         spirits.add(new WeakSpirit(null, 22, .25f, 5, EntityType.VEX, false, 1, BeyonderItemsUtil.getSpiritRemains(), false, "§5Weak Spirit"));
         spirits.add(new MediumSpirit(null, 22, 2.5f, 40, EntityType.GHAST, true, 1, null, false, "§0Angry Spirit"));
-        spirits.add(new Giant(null, 50, 1, 15, EntityType.GIANT, true, 1, null, true, "§2Undead Giant"));
+        spirits.add(new GiantSpirit(null, 50, 1, 15, EntityType.GIANT, true, 1, null, true, "§2Undead Giant"));
         spirits.add(new SkeletonHorse(null, 30, .6f, 3, EntityType.SKELETON_HORSE, true, 2, null, true, "§fHorse Spirit"));
         spirits.add(new UndeadHorse(null, 30, .6f, 6, EntityType.ZOMBIE_HORSE, true, 1, null, true, "§2Undead Horse"));
         spirits.add(new TallSkeleton(null, 55, 1, 8, EntityType.SKELETON, true, 1, null, true, "§fBone Amalgamation"));

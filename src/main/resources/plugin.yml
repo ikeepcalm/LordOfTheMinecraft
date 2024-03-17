@@ -9,9 +9,6 @@ commands:
   beyonder:
     description: Make yourself a Beyonder
     usage: /<cmd>
-  items:
-    description: Give yourself the items from your pathway
-    usage: /<cmd>
   disable-threads:
     description: Choose the Spirit Body Threads you want to see
     usage: /<cmd>
@@ -31,7 +28,7 @@ commands:
     description: Spawn a custom entity
     usage: /<cmd>
   ability-info:
-    description: Get the infos about your abilities
+    description: Get the infos about your mob
     usage: /<cmd>
   spirit:
     description: Spawn a spirit

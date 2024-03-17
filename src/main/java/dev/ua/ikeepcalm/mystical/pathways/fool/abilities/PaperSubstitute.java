@@ -1,13 +1,14 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.entities.npc.RemoveOnDamageTrait;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.Trait;
+import net.citizensnpcs.api.trait.TraitName;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -105,5 +106,21 @@ public class PaperSubstitute extends Ability implements Listener {
     @Override
     public ItemStack getItem() {
         return FoolItems.createItem(Material.ARMOR_STAND, "Техніка Підміни", "35", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+    }
+}
+
+@TraitName("removeOnDamage")
+class RemoveOnDamageTrait extends Trait {
+    public RemoveOnDamageTrait() {
+        super("removeOnDamage");
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if (!npc.isSpawned())
+            return;
+
+        if (e.getEntity() == npc.getEntity())
+            npc.destroy();
     }
 }

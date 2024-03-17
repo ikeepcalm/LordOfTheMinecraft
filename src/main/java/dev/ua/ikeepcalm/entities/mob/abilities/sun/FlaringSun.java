@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.entities.abilities.sun;
+package dev.ua.ikeepcalm.entities.mob.abilities.sun;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;

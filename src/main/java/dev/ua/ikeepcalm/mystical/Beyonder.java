@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.entities.beyonders;
+package dev.ua.ikeepcalm.mystical;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
@@ -292,7 +292,7 @@ public class Beyonder implements Listener {
                 counter++;
 
                 if (spirituality <= maxSpirituality / 80 && !loosingControl) {
-                    looseControl(95, 10);
+                    looseControl(20, 10);
                 }
 
                 pathway.getSequence().run();

@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.mystical.pathways.disasters;
+package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;

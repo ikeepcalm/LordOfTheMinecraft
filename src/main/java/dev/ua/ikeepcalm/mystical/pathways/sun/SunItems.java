@@ -33,58 +33,58 @@ public class SunItems extends Items {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("general", "items-info"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "holy-song")
+                LocalizationUtil.getLocalizedString("sun", "mob", "holy-song")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "holy-light"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "illuminate")
+                LocalizationUtil.getLocalizedString("sun", "mob", "holy-light"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "illuminate")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "fire-of-light"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "holy-light-summoning"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "fire-of-light"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "holy-light-summoning"),
                 LocalizationUtil.getLocalizedString("sun", "miscellaneous", "immunity")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "holy-oath"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "cleave-of-purification")
+                LocalizationUtil.getLocalizedString("sun", "mob", "holy-oath"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "cleave-of-purification")
         );
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "light-of-holiness"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "light-of-purification")
+                LocalizationUtil.getLocalizedString("sun", "mob", "light-of-holiness"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "light-of-purification")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "unshadowed-spear"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "flaring-sun"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "unshadowed-domain"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "armor-of-light")
+                LocalizationUtil.getLocalizedString("sun", "mob", "unshadowed-spear"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "flaring-sun"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "unshadowed-domain"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "armor-of-light")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "beam-of-light")
+                LocalizationUtil.getLocalizedString("sun", "mob", "beam-of-light")
         );
         abilityInfo.put(3, s3);
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "spear-of-light"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "ocean-of-light"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "wings-of-light")
+                LocalizationUtil.getLocalizedString("sun", "mob", "spear-of-light"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "ocean-of-light"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "wings-of-light")
         );
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "day-and-night"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "solar-flare"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "day-and-night"),
+                LocalizationUtil.getLocalizedString("sun", "mob", "solar-flare"),
                 LocalizationUtil.getLocalizedString("sun", "miscellaneous", "sf-hint")
         );
         abilityInfo.put(1, s1);

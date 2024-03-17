@@ -1,20 +1,20 @@
-package dev.ua.ikeepcalm.entities.spirits;
+package dev.ua.ikeepcalm.entities.spirits.impl;
 
-import dev.ua.ikeepcalm.entities.beyonders.Spirit;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.spirits.Spirit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Giant extends Spirit {
+public class GiantSpirit extends Spirit {
 
     private Player target;
     private Enderman brain;
     private boolean hasAttacked;
 
-    public Giant(LivingEntity entity, double health, float particleOffset, int spawnRate, EntityType entityType, boolean visible, int spawnCount, ItemStack drop, boolean undead, String name) {
+    public GiantSpirit(LivingEntity entity, double health, float particleOffset, int spawnRate, EntityType entityType, boolean visible, int spawnCount, ItemStack drop, boolean undead, String name) {
         super(entity, health, particleOffset, spawnRate, entityType, visible, spawnCount, drop, undead, name);
 
         target = null;
@@ -23,7 +23,7 @@ public class Giant extends Spirit {
 
     @Override
     public Spirit initNew(LivingEntity entity) {
-        return new Giant(entity, health, particleOffset, spawnRate, entityType, visible, spawnCount, drop, undead, name);
+        return new GiantSpirit(entity, health, particleOffset, spawnRate, entityType, visible, spawnCount, drop, undead, name);
     }
 
     @Override

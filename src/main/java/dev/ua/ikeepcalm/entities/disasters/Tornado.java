@@ -1,10 +1,12 @@
-package dev.ua.ikeepcalm.mystical.pathways.disasters;
+package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
-import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,13 +18,10 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class LightningTornado extends Disaster {
+public class Tornado extends Disaster {
 
-    private final boolean npc;
-
-    public LightningTornado(LivingEntity p, boolean npc) {
+    public Tornado(LivingEntity p) {
         super(p);
-        this.npc = npc;
     }
 
     @Override
@@ -59,24 +58,19 @@ public class LightningTornado extends Disaster {
                 double spiralZ;
 
                 //Tornado rendering
-                while (height < 30) {
+                while (height < 22) {
                     spiralX = spiralRadius * Math.cos(spiral);
                     spiralZ = spiralRadius * Math.sin(spiral);
                     spiral += .25;
                     height += .15;
 
-                    if (random.nextBoolean())
-                        GeneralPurposeUtil.drawDustsForNearbyPlayers(new Location(location.getWorld(), location.getX() + spiralX, location.getY() + height, location.getZ() + spiralZ), 2, 1.25, 1.75, 1.25, new Particle.DustOptions(Color.fromRGB(143, 255, 244), 2f));
-                    else {
-                        GeneralPurposeUtil.drawDustsForNearbyPlayers(new Location(location.getWorld(), location.getX() + spiralX, location.getY() + height, location.getZ() + spiralZ), 2, 1.25, 1.75, 1.25, new Particle.DustOptions(Color.fromRGB(87, 20, 204), 2f));
-                    }
-
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.CLOUD, new Location(location.getWorld(), location.getX() + spiralX, location.getY() + height, location.getZ() + spiralZ), 2, 1.25, 1.75, 1.25, 0);
 
                     if (height >= 22) {
                         break;
                     }
 
-                    spiralRadius += .09;
+                    spiralRadius += .075;
                 }
 
                 //random tornado movement
@@ -92,9 +86,6 @@ public class LightningTornado extends Disaster {
                     tempLoc.subtract(0, 1, 0);
                     whileCounter--;
                 }
-
-                if (random.nextInt(35) == 0)
-                    TyrantSequence.spawnLighting(location.clone(), p, 7, npc, false, 1);
 
                 if (whileCounter <= 1)
                     return;
@@ -115,7 +106,7 @@ public class LightningTornado extends Disaster {
                         continue;
 
                     if (e instanceof LivingEntity livingEntity)
-                        livingEntity.damage(25, p);
+                        livingEntity.damage(4, p);
 
                     Location pLoc = e.getLocation().clone();
                     pLoc.setY(location.getY());

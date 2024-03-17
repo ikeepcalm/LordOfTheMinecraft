@@ -51,7 +51,7 @@ public class Tornado extends NpcAbility {
     public void useNPCAbility(Location loc, Entity caster, double multiplier) {
         if (!(caster instanceof LivingEntity livingEntity))
             return;
-        new dev.ua.ikeepcalm.mystical.pathways.disasters.Tornado(livingEntity).spawnDisaster(livingEntity, loc);
+        new dev.ua.ikeepcalm.entities.disasters.Tornado(livingEntity).spawnDisaster(livingEntity, loc);
     }
 
     @Override
