@@ -1,6 +1,5 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 
-import dev.ua.ikeepcalm.listeners.beyonders.RogueBeyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
@@ -141,28 +140,13 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     }
 
     private boolean targetIsBeyonder() {
-        return(
-                LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId()) ||
-                        LordOfTheMinecraft.currentRogueBeyonders
-                                .stream()
-                                .anyMatch(rogueBeyonder -> rogueBeyonder.getEntity() == currentEntity)
-        );
+        return LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId());
     }
 
     private int getTargetSequence() {
         if(LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
             return LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getSequence().getCurrentSequence();
-        }
-        else {
-            RogueBeyonder rogueBeyonder = LordOfTheMinecraft.currentRogueBeyonders
-                    .stream()
-                    .filter(rb -> rb.getEntity() == currentEntity)
-                    .findFirst()
-                    .orElseThrow(() ->
-                            new RuntimeException("Негідника Потойбіччя не знайдено"));
-
-            return rogueBeyonder.getSequence();
-        }
+        } else return -1;
     }
 
     private void startControlling(int convertTimeSeconds) {
@@ -207,18 +191,6 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
             if(LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
                 pathway = LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getPathwayInt();
                 sequence = LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getSequence().getCurrentSequence();
-            }
-            else {
-                RogueBeyonder rogueBeyonder = LordOfTheMinecraft.currentRogueBeyonders
-                        .stream()
-                        .filter(rb -> rb.getEntity() == currentEntity)
-                        .findFirst()
-                        .orElseThrow(() ->
-                                new RuntimeException("Негідника Потойбіччя не знайдено"));
-
-                pathway = rogueBeyonder.getPathway();
-                sequence = rogueBeyonder.getSequence();
-                name = rogueBeyonder.getName();
             }
         }
 
@@ -326,22 +298,9 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
                 drawLineToEntity(startLoc, entity.getLocation().add(0, .5, 0), dustGray);
         }
 
-        String name;
-        if(getRogueBeyonder() != null)
-            name = getRogueBeyonder().getName();
-        else
-            name = currentEntity.getName();
+        String name = currentEntity.getName();
 
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана сутність: §8" + name + " §r-- §5Відстань: §8" + Math.round(currentEntity.getLocation().distance(p.getLocation()))));
-    }
-
-    private RogueBeyonder getRogueBeyonder() {
-        Optional<RogueBeyonder> rogueBeyonderOptional = LordOfTheMinecraft.currentRogueBeyonders
-                .stream()
-                .filter(rb -> rb.getEntity() == currentEntity)
-                .findFirst();
-
-        return rogueBeyonderOptional.orElse(null);
     }
 
     @Override

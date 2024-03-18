@@ -1,15 +1,16 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.ua.ikeepcalm.cmds.*;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.cmds.AbilityInfoCmd;
+import dev.ua.ikeepcalm.cmds.BeyonderCmd;
+import dev.ua.ikeepcalm.cmds.SpawnCmd;
+import dev.ua.ikeepcalm.cmds.TestCmd;
 import dev.ua.ikeepcalm.handlers.ArtifactHandler;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
 import dev.ua.ikeepcalm.listeners.*;
-import dev.ua.ikeepcalm.listeners.beyonders.RogueBeyonder;
-import dev.ua.ikeepcalm.listeners.beyonders.RogueBeyonders;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.mystical.artifacts.SealedArtifacts;
 import dev.ua.ikeepcalm.mystical.parents.*;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPotions;
@@ -53,12 +54,9 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     private Recipe recipe;
     private MobsHandler mobsHandler;
     @Getter
-    private RogueBeyonders rogueBeyonders;
-    @Getter
     private SpiritHandler spiritHandler;
     @Getter
     private SealedArtifacts sealedArtifacts;
-    public static ArrayList<RogueBeyonder> currentRogueBeyonders;
     public static HashMap<UUID, Beyonder> beyonders;
     public static HashMap<UUID, ServerPlayer> fakePlayers = new HashMap<>();
     public static final HashMap<UUID, FogOfHistory> fogOfHistories = new HashMap<>();
@@ -87,7 +85,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         instance = this;
         beyonders = new HashMap<>();
         fakePlayers = new HashMap<>();
-        currentRogueBeyonders = new ArrayList<>();
         recipe = new Recipe();
         concealedEntities = new ArrayList<>();
         names = new ArrayList<>();
@@ -138,7 +135,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         spiritHandler = new SpiritHandler();
         sealedArtifacts = new SealedArtifacts();
         new AbilityInitHandUtil();
-        rogueBeyonders = new RogueBeyonders();
     }
 
     //register all the Listeners and CommandExecutors
@@ -396,18 +392,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     public void removeFromConcealedEntities(ArrayList<Entity> list) {
         concealedEntities.remove(list);
-    }
-
-    public void removeRogueBeyonder(RogueBeyonder rogueBeyonder) {
-        rogueBeyonder.remove();
-    }
-
-    public void addRogueBeyonder(RogueBeyonder rogueBeyonder) {
-        currentRogueBeyonders.add(rogueBeyonder);
-    }
-
-    public ArrayList<RogueBeyonder> getCurrentRogueBeyonders() {
-        return currentRogueBeyonders;
     }
 
 }
