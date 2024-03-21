@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class LocalizationUtil {
 
-
     public static String findLocalizedString(String key) {
         String[] split = key.split("\\.");
         if (split.length == 1) {
@@ -26,7 +25,7 @@ public class LocalizationUtil {
             LordOfTheMinecraft.instance.log("Missing key: " + key);
         }
 
-        return "Not set! Check console for errors!";
+        return s;
     }
 
     public static String getLocalizedString(String node, String key) {

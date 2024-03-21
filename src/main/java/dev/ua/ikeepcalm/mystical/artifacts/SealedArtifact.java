@@ -25,6 +25,7 @@ public class SealedArtifact implements Listener {
 
     @Getter
     private ItemStack item;
+    @Getter
     private final int pathway;
     private final NpcAbility ability;
 
@@ -93,10 +94,6 @@ public class SealedArtifact implements Listener {
 
         ability.useNPCAbility(loc, e.getPlayer(), 1.7);
 
-    }
-
-    public int getPathway() {
-        return pathway;
     }
 
     public int getSequence() {

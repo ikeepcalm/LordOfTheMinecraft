@@ -16,8 +16,8 @@ import java.util.Random;
 public class PassiveAbilities {
 
     public static void passiveAbility(String id, Entity entity) {
-        switch (id) {
-            case "rooster" -> rooster(entity);
+        if (id.equals("rooster")) {
+            rooster(entity);
         }
     }
 

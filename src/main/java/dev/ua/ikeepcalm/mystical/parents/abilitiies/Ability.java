@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class Ability {
     @Getter
-    protected int identifier;
+    protected final int identifier;
     @Getter
-    protected Pathway pathway;
+    protected final Pathway pathway;
     protected Player p;
     @Getter
     protected final int sequence;
@@ -32,22 +32,6 @@ public abstract class Ability {
     }
 
     public void leftClick() {
-    }
-
-    public void setPathway(Pathway pathway) {
-        this.pathway = pathway;
-    }
-
-    public Player getP() {
-        return p;
-    }
-
-    public void setP(Player p) {
-        this.p = p;
-    }
-
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
     }
 
     public void removeAbility() {

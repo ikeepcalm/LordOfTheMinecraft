@@ -20,6 +20,7 @@ public abstract class Pathway {
     @Setter
     @Getter
     protected Sequence sequence;
+    @Setter
     @Getter
     protected String name;
     @Setter
@@ -33,6 +34,7 @@ public abstract class Pathway {
     @Getter
     protected final int pathwayInt;
 
+    @Setter
     @Getter
     public Items items;
 
@@ -45,14 +47,6 @@ public abstract class Pathway {
 
     public void init() {
 
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setItems(Items items) {
-        this.items = items;
     }
 
     public Pathway getPathway() {

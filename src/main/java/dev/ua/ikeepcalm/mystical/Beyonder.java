@@ -6,7 +6,6 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
-import dev.ua.ikeepcalm.mystical.pathways.door.abilities.Record;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
 import lombok.Getter;
@@ -38,7 +37,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -71,8 +69,6 @@ public class Beyonder implements Listener {
 
     private int resurrections;
 
-    private final ArrayList<Record> records;
-
     private final int[] healthIndex;
 
     public Beyonder(UUID uuid, Pathway pathway) {
@@ -84,8 +80,6 @@ public class Beyonder implements Listener {
         beyonder = true;
         online = false;
         initializedOnce = false;
-
-        records = new ArrayList<>();
 
         loosingControl = false;
 
@@ -370,8 +364,7 @@ public class Beyonder implements Listener {
             spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()), 2);
         else if (pathway.getSequence().getCurrentSequence() > 4)
             spirituality = (int) Math.pow((double) (90 / pathway.getSequence().getCurrentSequence()) * 1.4, 2);
-        else if (pathway.getSequence().getCurrentSequence() < 5)
-            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 3, 2);
+        else spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 3, 2);
         maxSpirituality = spirituality;
     }
 

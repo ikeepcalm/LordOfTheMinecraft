@@ -18,6 +18,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
@@ -28,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.BlockIterator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,6 +171,21 @@ public class Miracles extends Ability implements Listener {
                 @Override
                 public void run() {
                     //Get block player is looking at
+                    Location loc = getLocation(p);
+                    World world = loc.getWorld();
+                    if (world == null)
+                        return;
+                    Entity entity = world.spawnEntity(loc, type);
+                    world.spawnParticle(Particle.SPELL_WITCH, loc, 2000, 1, 2, 1, 2);
+
+                    Team team = pathway.getBeyonder().getTeam();
+                    team.addEntry(entity.getUniqueId().toString());
+
+                    summonedMobs.add(entity);
+                }
+
+                @NotNull
+                private Location getLocation(Player p) {
                     BlockIterator iter = new BlockIterator(p, 100);
                     Block lastBlock = iter.next();
                     while (iter.hasNext()) {
@@ -181,17 +198,7 @@ public class Miracles extends Ability implements Listener {
                         break;
                     }
 
-                    Location loc = lastBlock.getLocation();
-                    World world = loc.getWorld();
-                    if (world == null)
-                        return;
-                    Entity entity = world.spawnEntity(loc, type);
-                    world.spawnParticle(Particle.SPELL_WITCH, loc, 2000, 1, 2, 1, 2);
-
-                    Team team = pathway.getBeyonder().getTeam();
-                    team.addEntry(entity.getUniqueId().toString());
-
-                    summonedMobs.add(entity);
+                    return lastBlock.getLocation();
                 }
             }.runTaskLater(LordOfTheMinecraft.instance, 0);
         }

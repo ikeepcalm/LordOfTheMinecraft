@@ -22,7 +22,6 @@ import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
 import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
-import net.citizensnpcs.api.CitizensAPI;
 import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -35,13 +34,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.*;
 
 public final class LordOfTheMinecraft extends JavaPlugin {
@@ -74,8 +71,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Getter
     private Divination divination;
     public static UUID randomUUID;
-    @Getter
-    private ArrayList<String> names;
 
     @Override
     public void onLoad() {
@@ -87,58 +82,35 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         fakePlayers = new HashMap<>();
         recipe = new Recipe();
         concealedEntities = new ArrayList<>();
-        names = new ArrayList<>();
         bossBarUtil = new BossBarUtil();
+        potions = new ArrayList<>();
+        if (!new File(getDataFolder(), "config.yml").exists())
+            saveDefaultConfig();
     }
 
     @Override
     public void onEnable() {
-
-        try {
-            characteristic = new Characteristic();
-        } catch (MalformedURLException ignored) {}
-
-        initHandlerClasses();
-
-        try {
-            createSaveConfig();
-            loadNames();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        enablePlugin();
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled Plugin");
-
-        register();
-        initPotions();
-        createSaveConfigFoH();
 
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         }
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (World world : Bukkit.getWorlds()) {
-                    for (Entity entity : world.getEntities()) {
-                        if (entity.hasMetadata("Beyonder")) {
-                            CitizensAPI.getNPCRegistry().getByUniqueId(entity.getUniqueId()).destroy();
-                        }
-                    }
-                }
-            }
-        }.runTaskLater(LordOfTheMinecraft.instance, 10);
     }
 
-    private void initHandlerClasses() {
+    private void enablePlugin() {
+        characteristic = new Characteristic();
         spiritHandler = new SpiritHandler();
         sealedArtifacts = new SealedArtifacts();
         new AbilityInitHandUtil();
-    }
+        try {
+            createBeyondersConfig();
+            createFoHConfig();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-    //register all the Listeners and CommandExecutors
-    public void register() {
         divination = new Divination();
         mobsHandler = new MobsHandler();
 
@@ -148,17 +120,28 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 new PotionListener(),
                 new DeathListener(),
                 divination,
-                mobsHandler,
                 new BlockHandler(),
                 new GenerationListener(),
                 new ArtifactHandler()
         );
 
+        if (getConfig().getBoolean("enable-mobs")) {
+            registerEvents(mobsHandler);
+        }
+
         Objects.requireNonNull(this.getCommand("beyonder")).setExecutor(new BeyonderCmd());
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCmd());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCmd());
         Objects.requireNonNull(this.getCommand("ability-info")).setExecutor(new AbilityInfoCmd());
+
+
+        potions.add(new SunPotions());
+        potions.add(new FoolPotions());
+        potions.add(new DoorPotions());
+        potions.add(new DemonessPotions());
+        potions.add(new TyrantPotions());
     }
+
 
     private void registerEvents(Listener... listeners) {
         PluginManager pl = this.getServer().getPluginManager();
@@ -167,42 +150,13 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         }
     }
 
-    //initialize the Potion Classes
-    public void initPotions() {
-        potions = new ArrayList<>();
-        potions.add(new SunPotions());
-        potions.add(new FoolPotions());
-        potions.add(new DoorPotions());
-        potions.add(new DemonessPotions());
-        potions.add(new TyrantPotions());
-    }
-
-    private void loadNames() throws InterruptedException {
-        File namesFile = new File(getDataFolder(), "names.yml");
-        FileConfiguration configNames = new YamlConfiguration();
-
-
-        if (!namesFile.exists()) {
-            saveResource("names.yml", true);
-        }
-
-        Thread.sleep(500);
-
-        try {
-            configNames.load(namesFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-        names.addAll(configNames.getStringList("names"));
-    }
-
     @Override
     //call the save function to save the beyonders.yml file and the fools.yml file
     public void onDisable() {
         try {
             save();
         } catch (IOException e) {
-            e.printStackTrace();
+            log("Failed to save beyonders.yml");
         }
 
         saveResource("fools.yml", true);
@@ -212,7 +166,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 saveFoH(foh);
                 configSaveFoh.save(configSaveFileFoh);
             } catch (IOException e) {
-                e.printStackTrace();
+                log("Failed to save fog of history");
             }
         }
     }
@@ -233,12 +187,11 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     }
 
     //create the config file if it doesn't exist and then load the config
-    public void createSaveConfig() throws InterruptedException {
+    public void createBeyondersConfig() throws InterruptedException {
         configSaveFile = new File(getDataFolder(), "beyonders.yml");
         if (!configSaveFile.exists()) {
             if (configSaveFile.getParentFile().mkdirs())
                 saveResource("beyonders.yml", false);
-
             else
                 Bukkit.getConsoleSender().sendMessage("§cSomething went wrong while saving the beyonders.yml file");
         }
@@ -251,11 +204,11 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         } catch (InvalidConfigurationException | IOException exc) {
             Bukkit.getConsoleSender().sendMessage(exc.getLocalizedMessage());
         }
-        load();
+        loadBeyonders();
     }
 
     //create the config foh file if it doesn't exist and then load the config foh
-    private void createSaveConfigFoH() {
+    private void createFoHConfig() {
         configSaveFileFoh = new File(getDataFolder(), "fools.yml");
         if (!configSaveFileFoh.exists()) {
             saveResource("fools.yml", true);
@@ -268,8 +221,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         } catch (InvalidConfigurationException | IOException exc) {
             Bukkit.getConsoleSender().sendMessage(exc.getLocalizedMessage());
         }
-
-        loadFoh();
+        loadFohConfig();
     }
 
     private void createSaveLangConfig() {
@@ -314,7 +266,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     }
 
 
-    public void loadFoh() {
+    public void loadFohConfig() {
         if (configSaveFoh.getConfigurationSection("fools") == null)
             return;
 
@@ -352,7 +304,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     }
 
     //load all the beyonders from beyonders.yml and initialize their mystical
-    public void load() {
+    public void loadBeyonders() {
         if (configSave.getConfigurationSection("beyonders") == null) {
             configSave.set("beyonders.uuid.pathway", "pathway-name");
             configSave.set("beyonders.uuid.sequence", "sequence");

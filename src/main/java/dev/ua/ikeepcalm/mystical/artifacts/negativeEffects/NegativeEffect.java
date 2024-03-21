@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.mystical.artifacts.negativeEffects;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.artifacts.SealedArtifact;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public abstract class NegativeEffect {
 
     protected final int sequence;
+    @Getter
     protected final int delay;
     protected final boolean constant;
 
@@ -52,16 +54,12 @@ public abstract class NegativeEffect {
                 }
 
                 if (instance.constant)
-                    instance.doEffect(artifact, p);
+                    instance.doEffect(p);
                 else if (p.getInventory().getItemInMainHand().isSimilar(artifact.getItem()))
-                    doEffect(artifact, p);
+                    doEffect(p);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 
-    public int getDelay() {
-        return delay;
-    }
-
-    public abstract void doEffect(SealedArtifact artifact, Player p);
+    public abstract void doEffect(Player p);
 }

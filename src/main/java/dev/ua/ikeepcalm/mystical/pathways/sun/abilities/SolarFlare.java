@@ -69,7 +69,7 @@ public class SolarFlare extends Ability {
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), 50f);
                 GeneralPurposeUtil.drawSphere(loc, (int) Math.round((i * power * 1.25)), 60, dust, null, .2);
 
-                i += tempPower * 1.25;
+                i += (int) (tempPower * 1.25);
                 if (i >= (tempPower * 1.25 * 10)) {
                     cancel();
                     loc.getWorld().createExplosion(loc, power * 10, true, true, p);

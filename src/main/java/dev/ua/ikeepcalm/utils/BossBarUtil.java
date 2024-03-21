@@ -39,13 +39,6 @@ public class BossBarUtil {
         }
     }
 
-    public void setColor(Player player, BarColor color) {
-        BossBar bossBar = bossBars.get(player.getUniqueId());
-        if (bossBar != null) {
-            bossBar.setColor(color);
-        }
-    }
-
     public void setProgress(Player player, double progress) {
         BossBar bossBar = bossBars.get(player.getUniqueId());
         if (bossBar != null) {

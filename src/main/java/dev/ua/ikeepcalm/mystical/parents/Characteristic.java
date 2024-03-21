@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.mystical.parents;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,7 +12,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +25,8 @@ public class Characteristic {
 
     private final HashMap<ItemStack, int[]> allCharacteristics;
 
-    public Characteristic() throws MalformedURLException {
+    @SneakyThrows
+    public Characteristic(){
         blocksForPathway = new HashMap<>();
         uuid = LordOfTheMinecraft.randomUUID;
         blocksForPathway.put("fool", new URL("http://textures.minecraft.net/texture/855af6c5ff21eb55631a25221d753cdc9a0f679d5cacf555b350ba0e3521e092"));

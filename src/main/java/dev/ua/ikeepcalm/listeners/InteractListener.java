@@ -52,6 +52,7 @@ public class InteractListener implements Listener {
         if (event.getSlot() == 9) {
             if (event.isLeftClick()) {
                 ItemStack item = p.getInventory().getItem(9);
+                assert item != null;
                 if (NBT.get(item, (nbt) -> {
                     return nbt.getBoolean("openItems");
                 })) {

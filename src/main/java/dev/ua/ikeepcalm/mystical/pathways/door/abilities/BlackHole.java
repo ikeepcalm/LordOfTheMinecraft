@@ -62,7 +62,6 @@ public class BlackHole extends NpcAbility {
             ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
 
             int counter = 0;
-            final int spiritCounter = 20;
 
             @Override
             public void run() {
