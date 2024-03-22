@@ -1,6 +1,5 @@
 package dev.ua.ikeepcalm.mystical.artifacts.negativeEffects.impl;
 
-import dev.ua.ikeepcalm.mystical.artifacts.SealedArtifact;
 import dev.ua.ikeepcalm.mystical.artifacts.negativeEffects.NegativeEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -13,7 +12,7 @@ public class Blindness extends NegativeEffect {
     }
 
     @Override
-    public void doEffect(SealedArtifact artifact, Player p) {
+    public void doEffect(Player p) {
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 6, 1, false, false));
     }
 }

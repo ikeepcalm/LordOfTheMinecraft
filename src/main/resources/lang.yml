@@ -1,6 +1,6 @@
 # General Strings
 general:
-  items-info: "Використовуйте /items для перегляду доступних вмінь"
+  brew-potion: "{#0cf766}Зварити зілля. Ви точно впевнені у цьому?"
 
 # Sun Pathway
 sun:

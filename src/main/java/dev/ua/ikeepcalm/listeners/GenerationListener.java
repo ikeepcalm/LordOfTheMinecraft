@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class GenerationListener implements Listener {
 
-    private static final double[] PROBABILITY_DISTRIBUTION = {0.04, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08, 0.085};
+    private static final double[] PROBABILITY_DISTRIBUTION = {0.001, 0.003, 0.004, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05};
     private static final int MIN_VALUE = 1;
 
     @EventHandler
@@ -26,7 +26,7 @@ public class GenerationListener implements Listener {
         ItemStack item;
         Random random = new Random();
 
-        if (random.nextBoolean())
+        if (random.nextInt(100) > 10)
             return;
 
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);

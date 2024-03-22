@@ -1,6 +1,5 @@
 package dev.ua.ikeepcalm.mystical.artifacts.negativeEffects.impl;
 
-import dev.ua.ikeepcalm.mystical.artifacts.SealedArtifact;
 import dev.ua.ikeepcalm.mystical.artifacts.negativeEffects.NegativeEffect;
 import org.bukkit.entity.Player;
 
@@ -10,7 +9,7 @@ public class HealthLoss extends NegativeEffect {
     }
 
     @Override
-    public void doEffect(SealedArtifact artifact, Player p) {
+    public void doEffect(Player p) {
         p.damage(p.getHealth() / 20f, p);
     }
 }
