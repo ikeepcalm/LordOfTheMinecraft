@@ -170,6 +170,6 @@ public class SpaceSwapping extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.SCULK_SENSOR, "Space Swapping", "6250", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.SCULK_SENSOR, "Space Swapping", "6250", identifier);
     }
 }

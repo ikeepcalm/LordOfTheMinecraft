@@ -112,7 +112,7 @@ public class Hiding extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "85", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "85", identifier);
     }
 
 }

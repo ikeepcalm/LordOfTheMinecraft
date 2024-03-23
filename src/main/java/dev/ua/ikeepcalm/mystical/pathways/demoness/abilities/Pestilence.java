@@ -133,6 +133,6 @@ public class Pestilence extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.BONE, "Pestilence", "50/s", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.BONE, "Pestilence", "50/s", identifier);
     }
 }

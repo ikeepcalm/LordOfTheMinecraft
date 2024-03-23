@@ -1,12 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.Bukkit;
+import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -135,7 +134,7 @@ public class WingsOfLight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.FEATHER, "Світлові Крила", "не використ.", identifier, sequence, Objects.requireNonNull(Bukkit.getPlayer(pathway.getUuid())).getName());
+        return SunItems.createItem(Material.FEATHER, "Світлові Крила", "не використ.", identifier);
     }
 
     private void drawParticles(Location loc) {

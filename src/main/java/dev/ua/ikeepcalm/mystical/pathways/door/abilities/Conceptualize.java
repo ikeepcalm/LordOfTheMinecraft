@@ -144,6 +144,6 @@ public class Conceptualize extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.FIREWORK_STAR, "Conceptualize", "increasing", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.FIREWORK_STAR, "Conceptualize", "increasing", identifier);
     }
 }

@@ -22,6 +22,6 @@ public class Divine extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.AMETHYST_SHARD, "Третє Око", "15", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.AMETHYST_SHARD, "Третє Око", "15", identifier);
     }
 }

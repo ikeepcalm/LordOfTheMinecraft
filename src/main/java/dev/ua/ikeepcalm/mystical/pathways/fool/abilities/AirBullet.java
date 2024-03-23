@@ -190,6 +190,6 @@ public class AirBullet extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.GHAST_TEAR, "Повітряний Снаряд", "30", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.GHAST_TEAR, "Повітряний Снаряд", "30", identifier);
     }
 }

@@ -137,6 +137,6 @@ public class Epidemic extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.GUNPOWDER, "Epidemic", "10/s", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.GUNPOWDER, "Epidemic", "10/s", identifier);
     }
 }

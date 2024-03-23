@@ -79,6 +79,6 @@ public class FindPlayer extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.RECOVERY_COMPASS, "Find Player", "15000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.RECOVERY_COMPASS, "Find Player", "15000", identifier);
     }
 }

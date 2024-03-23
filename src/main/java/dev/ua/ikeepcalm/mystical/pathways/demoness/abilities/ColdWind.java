@@ -83,6 +83,6 @@ public class ColdWind extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.FEATHER, "Cold Wind", "10/s", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.FEATHER, "Cold Wind", "10/s", identifier);
     }
 }

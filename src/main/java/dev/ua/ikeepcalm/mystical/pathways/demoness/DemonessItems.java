@@ -99,9 +99,9 @@ public class DemonessItems extends Items {
 
     @Override
     public void createItems() {
-        addAbility(new Instigate(1, pathway, 8, this));
-        addAbility(new Invisibility(2, pathway, 7, this));
-        addAbility(new DarkFlames(3, pathway, 7, this, false));
+        addAbility(new Instigate(1, pathway, 9, this));
+        addAbility(new Invisibility(2, pathway, 8, this));
+        addAbility(new DarkFlames(3, pathway, 8, this, false));
         addAbility(new FrostMagic(4, pathway, 7, this, false));
         addAbility(new ColdWind(5, pathway, 7, this, false));
         addAbility(new FrostSpear(6, pathway, 6, this, false));

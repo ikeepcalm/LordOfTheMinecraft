@@ -1,7 +1,6 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.ua.ikeepcalm.cmds.AbilityInfoCmd;
 import dev.ua.ikeepcalm.cmds.BeyonderCmd;
 import dev.ua.ikeepcalm.cmds.SpawnCmd;
 import dev.ua.ikeepcalm.cmds.TestCmd;
@@ -132,7 +131,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("beyonder")).setExecutor(new BeyonderCmd());
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCmd());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCmd());
-        Objects.requireNonNull(this.getCommand("ability-info")).setExecutor(new AbilityInfoCmd());
 
 
         potions.add(new SunPotions());

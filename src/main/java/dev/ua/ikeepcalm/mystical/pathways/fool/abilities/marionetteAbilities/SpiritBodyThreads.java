@@ -355,7 +355,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LEAD, "Маріонетковий Ткач", "100", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.LEAD, "Маріонетковий Ткач", "100", identifier);
     }
 
     @EventHandler

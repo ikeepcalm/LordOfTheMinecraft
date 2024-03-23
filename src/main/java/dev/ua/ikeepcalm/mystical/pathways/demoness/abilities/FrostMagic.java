@@ -170,6 +170,6 @@ public class FrostMagic extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.ICE, "Frost Magic", "35", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.ICE, "Frost Magic", "35", identifier);
     }
 }

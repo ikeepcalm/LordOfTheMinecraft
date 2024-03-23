@@ -349,6 +349,6 @@ public class FrostSpear extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.IRON_SWORD, "Frost Spear", "85", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.IRON_SWORD, "Frost Spear", "85", identifier);
     }
 }

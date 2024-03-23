@@ -193,6 +193,6 @@ public class BlackHole extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Black Hole", "10000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Black Hole", "10000", identifier);
     }
 }

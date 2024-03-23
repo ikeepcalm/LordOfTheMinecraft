@@ -1,11 +1,10 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -40,6 +39,6 @@ public class DayAndNight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.CLOCK, "День і Ніч", "1000/сек", identifier, 1, Bukkit.getPlayer(pathway.getUuid()).getName());
+        return SunItems.createItem(Material.CLOCK, "День і Ніч", "1000/сек", identifier);
     }
 }

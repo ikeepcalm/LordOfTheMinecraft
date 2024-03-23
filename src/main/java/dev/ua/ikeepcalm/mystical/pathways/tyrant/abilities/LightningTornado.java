@@ -61,6 +61,6 @@ public class LightningTornado extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.BLUE_CANDLE, "Вихор Блискавок", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return TyrantItems.createItem(Material.BLUE_CANDLE, "Вихор Блискавок", "5000", identifier);
     }
 }

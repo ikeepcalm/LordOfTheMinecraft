@@ -56,6 +56,6 @@ public class Tornado extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.WHITE_DYE, "Зов Смерчу", "500", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return TyrantItems.createItem(Material.WHITE_DYE, "Зов Смерчу", "500", identifier);
     }
 }

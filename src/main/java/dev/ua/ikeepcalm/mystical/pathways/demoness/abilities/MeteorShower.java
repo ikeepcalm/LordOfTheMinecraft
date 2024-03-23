@@ -88,6 +88,6 @@ public class MeteorShower extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.FIRE_CHARGE, "Meteor Shower", "200000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.FIRE_CHARGE, "Meteor Shower", "200000", identifier);
     }
 }

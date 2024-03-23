@@ -180,6 +180,6 @@ public class HolyLightSummoning extends MobAbility {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.BLAZE_ROD, "Holy Light Summoning", "75", identifier, 7, Objects.requireNonNull(Bukkit.getPlayer(pathway.getUuid())).getName());
+        return SunItems.createItem(Material.BLAZE_ROD, "Holy Light Summoning", "75", identifier);
     }
 }

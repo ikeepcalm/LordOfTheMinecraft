@@ -22,6 +22,6 @@ public class Divine extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.DIAMOND, "Divination", "15", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.DIAMOND, "Divination", "15", identifier);
     }
 }

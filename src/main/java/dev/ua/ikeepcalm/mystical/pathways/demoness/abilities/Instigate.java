@@ -77,6 +77,6 @@ public class Instigate extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.STONE_SWORD, "Instigate", "65", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.STONE_SWORD, "Instigate", "65", identifier);
     }
 }

@@ -105,7 +105,7 @@ public class PaperSubstitute extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.ARMOR_STAND, "Техніка Підміни", "35", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.ARMOR_STAND, "Техніка Підміни", "35", identifier);
     }
 }
 

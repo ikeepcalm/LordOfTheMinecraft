@@ -149,6 +149,6 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.DIAMOND, "Mirror World Traversal", "500", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.DIAMOND, "Mirror World Traversal", "500", identifier);
     }
 }

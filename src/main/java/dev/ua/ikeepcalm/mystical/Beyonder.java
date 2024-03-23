@@ -120,7 +120,7 @@ public class Beyonder implements Listener {
             initializedOnce = true;
         }
 
-        setItemsShortcut(e.getPlayer());
+        setAbilitiesShortcut(e.getPlayer());
 
         start();
     }
@@ -147,7 +147,7 @@ public class Beyonder implements Listener {
         if (!beyonder)
             return;
 
-        setItemsShortcut(e.getPlayer());
+        setAbilitiesShortcut(e.getPlayer());
     }
 
     @EventHandler
@@ -398,14 +398,14 @@ public class Beyonder implements Listener {
         updateActing();
     }
 
-    private void setItemsShortcut(Player player) {
-        ItemStack item = new ItemStack(Material.CLOCK);
+    private void setAbilitiesShortcut(Player player) {
+        ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getName()));
+        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getStringColor()) + "Знання");
         meta.setCustomModelData(pathway.getPathwayInt());
         item.setItemMeta(meta);
         NBT.modify(item, (nbt) -> {
-            nbt.setBoolean("openItems", true);
+            nbt.setBoolean("openAbilities", true);
         });
         player.getInventory().setItem(9, item);
     }

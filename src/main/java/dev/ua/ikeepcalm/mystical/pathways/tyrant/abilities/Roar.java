@@ -109,6 +109,6 @@ public class Roar extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.FIREWORK_STAR, "Громовий Гул", "550", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return TyrantItems.createItem(Material.FIREWORK_STAR, "Громовий Гул", "550", identifier);
     }
 }

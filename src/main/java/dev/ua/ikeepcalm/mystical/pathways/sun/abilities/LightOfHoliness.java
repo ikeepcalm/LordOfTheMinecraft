@@ -226,6 +226,6 @@ public class LightOfHoliness extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.RAW_GOLD, "Святість", "275", identifier, 5, Objects.requireNonNull(Bukkit.getPlayer(pathway.getUuid())).getName());
+        return SunItems.createItem(Material.RAW_GOLD, "Святість", "275", identifier);
     }
 }

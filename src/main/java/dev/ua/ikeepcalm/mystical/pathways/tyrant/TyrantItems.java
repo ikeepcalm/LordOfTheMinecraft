@@ -32,49 +32,39 @@ public class TyrantItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "physical-enhancements"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "night-vision")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "raging-blows")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                LocalizationUtil.getLocalizedString("general", "items-info"),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "raging-blows")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "water-spells")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "water-spells"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ws+wm-hint")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "wind-manipulation")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "wind-manipulation"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ws+wm-hint")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning")
         );
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "lightning-hint"),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "siren-song"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ss-hint"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "new-water-spells")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "siren-song")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
                 LocalizationUtil.getLocalizedString("tyrant", "abilities", "roar"),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tornado"),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tsunami")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tornado")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning-storm"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "ls-hint"),
-                LocalizationUtil.getLocalizedString("tyrant", "miscellaneous", "aquatic-allies")
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "tsunami"),
+                LocalizationUtil.getLocalizedString("tyrant", "abilities", "lightning-storm")
         );
         abilityInfo.put(3, s3);
 
@@ -103,16 +93,24 @@ public class TyrantItems extends Items {
 
     @Override
     public void createItems() {
-        addAbility(new RagingBlows(1, pathway, 8, this, false));
-        addAbility(new WaterSpells(2, pathway, 7, this, false));
-        addAbility(new WindManipulation(3, pathway, 6, this, false));
-        addAbility(new Lightning(4, pathway, 5, this, false));
+        addAbility(new RagingBlows(1, pathway, 9, this, false));
+
+        addAbility(new WaterSpells(2, pathway, 8, this, false));
+
+        addAbility(new WindManipulation(3, pathway, 7, this, false));
+
+        addAbility(new Lightning(4, pathway, 6, this, false));
+
         addAbility(new SirenSong(5, pathway, 5, this, false));
+
         addAbility(new Roar(6, pathway, 4, this, false));
         addAbility(new Tornado(7, pathway, 4, this, false));
-        addAbility(new Tsunami(8, pathway, 4, this, false));
+
+        addAbility(new Tsunami(8, pathway, 3, this, false));
         addAbility(new LightningStorm(9, pathway, 3, this, false));
+
         addAbility(new ExtremeColdness(10, pathway, 2, this, false));
+
         addAbility(new LightningTornado(11, pathway, 1, this, false));
         addAbility(new LightningBall(12, pathway, 1, this, false));
     }

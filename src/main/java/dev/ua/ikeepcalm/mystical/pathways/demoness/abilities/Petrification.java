@@ -172,6 +172,6 @@ public class Petrification extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.ENDER_EYE, "Petrification", "1500", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DemonessItems.createItem(Material.ENDER_EYE, "Petrification", "1500", identifier);
     }
 }

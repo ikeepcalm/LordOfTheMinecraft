@@ -140,6 +140,6 @@ public class FlaringSun extends MobAbility {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SUNFLOWER, "Flaring Sun", "800", identifier, 4, Objects.requireNonNull(Bukkit.getPlayer(pathway.getUuid())).getName());
+        return SunItems.createItem(Material.SUNFLOWER, "Flaring Sun", "800", identifier);
     }
 }

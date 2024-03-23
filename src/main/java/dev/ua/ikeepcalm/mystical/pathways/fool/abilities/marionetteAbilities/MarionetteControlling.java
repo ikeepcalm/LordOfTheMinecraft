@@ -258,6 +258,6 @@ public class MarionetteControlling extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.STRING, "Контроль Разуму", "не використ.", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.STRING, "Контроль Разуму", "не використ.", identifier);
     }
 }

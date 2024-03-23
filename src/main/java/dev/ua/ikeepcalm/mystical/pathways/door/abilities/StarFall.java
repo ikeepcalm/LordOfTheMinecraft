@@ -86,6 +86,6 @@ public class StarFall extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.DIAMOND_SWORD, "Starfall", "25000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.DIAMOND_SWORD, "Starfall", "25000", identifier);
     }
 }

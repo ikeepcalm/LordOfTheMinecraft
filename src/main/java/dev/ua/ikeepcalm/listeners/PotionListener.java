@@ -57,24 +57,24 @@ public class PotionListener implements Listener {
             }
 
             e.getPlayer().sendMessage(pathway.getItems().getAbilityInfo().get(sequence));
-            setItemsShortcut(pathway, e.getPlayer());
+            setAbilitiesShortcut(pathway, e.getPlayer());
         }
         //Is a beyonder
         else {
             Beyonder beyonder = LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId());
             beyonder.consumePotion(sequence, potion);
-            setItemsShortcut(beyonder.getPathway(), e.getPlayer());
+            setAbilitiesShortcut(beyonder.getPathway(), e.getPlayer());
         }
     }
 
-    private void setItemsShortcut(Pathway pathway, Player player) {
-        ItemStack item = new ItemStack(Material.CLOCK);
+    private void setAbilitiesShortcut(Pathway pathway, Player player) {
+        ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getName()));
+        meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getStringColor()) + "Знання");
         meta.setCustomModelData(pathway.getPathwayInt());
         item.setItemMeta(meta);
         NBT.modify(item, (nbt) -> {
-            nbt.setBoolean("openItems", true);
+            nbt.setBoolean("openAbilities", true);
         });
         player.getInventory().setItem(9, item);
     }

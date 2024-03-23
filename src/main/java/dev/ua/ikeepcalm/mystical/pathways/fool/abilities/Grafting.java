@@ -366,6 +366,6 @@ public class Grafting extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.ECHO_SHARD, "Містична Алхімія", "5000", identifier, sequence, pathway.getBeyonder().getPlayer().getName());
+        return FoolItems.createItem(Material.ECHO_SHARD, "Містична Алхімія", "5000", identifier);
     }
 }
