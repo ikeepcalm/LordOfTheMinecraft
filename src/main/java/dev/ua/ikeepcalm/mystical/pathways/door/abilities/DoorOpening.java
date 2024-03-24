@@ -46,6 +46,6 @@ public class DoorOpening extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.OAK_DOOR, "Door Opening", "15", identifier);
+        return DoorItems.createItem(Material.OAK_DOOR, "Відкриття Воріт", "15", identifier);
     }
 }

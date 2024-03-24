@@ -124,7 +124,7 @@ public class SirenSong extends NpcAbility {
     @Override
     public ItemStack getItem() {
         p = pathway.getBeyonder().getPlayer();
-        return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Спів Сирени", "400", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Спів Сирени", "400", identifier);
     }
 
     @Override

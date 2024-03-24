@@ -76,6 +76,6 @@ public class Conceptualization extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.NETHER_STAR, "Conceptualization", "420/s", identifier);
+        return DoorItems.createItem(Material.NETHER_STAR, "Астральні Руни", "420/сек", identifier);
     }
 }

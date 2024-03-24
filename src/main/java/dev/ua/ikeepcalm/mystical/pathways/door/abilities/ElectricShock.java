@@ -62,6 +62,6 @@ public class ElectricShock extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.IRON_NUGGET, "Electric Shock", "40", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.IRON_NUGGET, "Статичний Розряд", "40", identifier);
     }
 }

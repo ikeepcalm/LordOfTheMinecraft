@@ -171,7 +171,7 @@ public class Exile extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.CRIMSON_DOOR, "Exile", "450", identifier, 4, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.CRIMSON_DOOR, "Вигнання", "450", identifier);
     }
 
     final int o = 0;

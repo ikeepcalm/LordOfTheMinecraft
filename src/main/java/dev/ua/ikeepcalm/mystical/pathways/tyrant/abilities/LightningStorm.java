@@ -66,7 +66,7 @@ public class LightningStorm extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Грозова Симфонія", "750", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Грозова Симфонія", "750", identifier);
     }
 
     @Override

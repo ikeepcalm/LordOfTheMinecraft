@@ -43,6 +43,6 @@ public class Blink extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDER_PEARL, "Blink", "20", identifier, 5, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.ENDER_PEARL, "Теле-стрибок", "20", identifier);
     }
 }

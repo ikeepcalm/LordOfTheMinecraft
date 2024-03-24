@@ -62,6 +62,7 @@ public class BlackHole extends NpcAbility {
             ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
 
             int counter = 0;
+            final int spiritCounter = 20;
 
             @Override
             public void run() {
@@ -193,6 +194,6 @@ public class BlackHole extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Black Hole", "10000", identifier);
+        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Чорна Діра", "10000", identifier);
     }
 }

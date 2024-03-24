@@ -50,7 +50,7 @@ public class Conceptualize extends NpcAbility {
 
         if (target == null) {
             if (!npc)
-                p.sendMessage("§cCouldn't find the target!");
+                p.sendMessage("§cСутність не знайдено!");
             return;
         }
 
@@ -144,6 +144,6 @@ public class Conceptualize extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.FIREWORK_STAR, "Conceptualize", "increasing", identifier);
+        return DoorItems.createItem(Material.FIREWORK_STAR, "Астральне Руннування", "збільшується з часом", identifier);
     }
 }

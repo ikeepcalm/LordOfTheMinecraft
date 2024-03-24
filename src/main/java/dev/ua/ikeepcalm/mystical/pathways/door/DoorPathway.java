@@ -1,6 +1,8 @@
 package dev.ua.ikeepcalm.mystical.pathways.door;
 
+import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.utils.LocalizationUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -14,9 +16,9 @@ public class DoorPathway extends Pathway {
     @Override
     public void init() {
         sequence = new DoorSequence(this, optionalSequence);
-        name = "§bDoor";
+        name = ColorAPI.colorize(LocalizationUtil.getLocalizedString("door", "color") + LocalizationUtil.getLocalizedString("door", "name"));
+        stringColor = ColorAPI.colorize(LocalizationUtil.getLocalizedString("door", "color"));
         nameNormalized = "door";
-        stringColor = "§b";
     }
 
     @Override
@@ -27,15 +29,15 @@ public class DoorPathway extends Pathway {
     public static HashMap<Integer, String> getNames() {
         HashMap<Integer, String> names;
         names = new HashMap<>();
-        names.put(9, "Apprentice");
-        names.put(8, "Trickmaster");
-        names.put(7, "Astrologer");
-        names.put(6, "Scribe");
-        names.put(5, "Traveler");
-        names.put(4, "Secrets Sorcerer");
-        names.put(3, "Wanderer");
-        names.put(2, "Planeswalker");
-        names.put(1, "Key of Stars");
+        names.put(9, LocalizationUtil.getLocalizedString("door", "sequences","9"));
+        names.put(8, LocalizationUtil.getLocalizedString("door", "sequences","8"));
+        names.put(7, LocalizationUtil.getLocalizedString("door", "sequences","7"));
+        names.put(6, LocalizationUtil.getLocalizedString("door", "sequences","6"));
+        names.put(5, LocalizationUtil.getLocalizedString("door", "sequences","5"));
+        names.put(4, LocalizationUtil.getLocalizedString("door", "sequences","4"));
+        names.put(3, LocalizationUtil.getLocalizedString("door", "sequences","3"));
+        names.put(2, LocalizationUtil.getLocalizedString("door", "sequences","2"));
+        names.put(1, LocalizationUtil.getLocalizedString("door", "sequences","1"));
         return names;
     }
 

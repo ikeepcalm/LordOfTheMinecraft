@@ -46,9 +46,9 @@ public class Wandering extends Ability implements Listener {
     }
 
     private enum Dimension {
-        REAL("Real World", "world"),
-        SPIRIT("Spirit World", "world_nether"),
-        ASTRAL("Astral World", "world_the_end");
+        REAL("Реальний світ", "world"),
+        SPIRIT("Вимір духів", "world_nether"),
+        ASTRAL("Астральний вимір", "world_the_end");
 
         private final String name;
         private final String id;
@@ -76,13 +76,13 @@ public class Wandering extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDER_EYE, "Wandering", "2500", identifier, 3, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.ENDER_EYE, "Блукання Скрізь Світи", "2500", identifier);
     }
 
     @Override
     public void onHold() {
         p = pathway.getBeyonder().getPlayer();
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Dimension: " + dimension.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний вимір: " + dimension.name));
     }
 }

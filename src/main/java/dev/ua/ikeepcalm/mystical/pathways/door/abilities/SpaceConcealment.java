@@ -217,7 +217,7 @@ public class SpaceConcealment extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.IRON_DOOR, "Space Concealment", "950", identifier, 4, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.IRON_DOOR, "Просторове Сховище", "950", identifier);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class SpaceConcealment extends NpcAbility implements Listener {
         if (radiusAdjust > 15)
             radiusAdjust = 4;
 
-        p.sendMessage("§5Set the radius to " + radiusAdjust);
+        p.sendMessage("§5Радіус встановлено на " + radiusAdjust);
     }
 
     final int o = 0;

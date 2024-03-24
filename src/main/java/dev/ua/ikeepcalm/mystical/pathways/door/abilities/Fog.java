@@ -50,6 +50,6 @@ public class Fog extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.LIGHT_GRAY_DYE, "Fog", "20", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.LIGHT_GRAY_DYE, "Туман", "20", identifier);
     }
 }

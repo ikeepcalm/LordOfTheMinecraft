@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.Record;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.*;
+import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -32,63 +33,63 @@ public class DoorItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                "§bUse: §7/items §bto get the mob for your Sequence",
-                "§bDoor Opening: §7Lets you pass through solid blocks"
+                LocalizationUtil.getLocalizedString("door", "abilities", "door-opening")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                "§bFog: §7Create fog to hide yourself",
-                "§bWind: §7Create Wind to push away entities",
-                "§bFlash: §7Create light",
-                "§bFreeze: §7Freeze the target for a few seconds",
-                "§bElectric Shock: §7Attack your target with a small electric shock"
+                LocalizationUtil.getLocalizedString("door", "abilities", "fog"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "wind"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "flash"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "freeze"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "electric-shock")
+
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                "§bDivination: §7Divine the location of entities, biomes or structures"
+                LocalizationUtil.getLocalizedString("door", "abilities", "divination")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                "§bRecord: §7Not implemented yet"
+                LocalizationUtil.getLocalizedString("door", "abilities", "record")
         );
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                "§bBlink: §7Short distance teleportation",
-                "§bTravelers Door: §7Teleport yourself and parents entities",
-                "§7Sneak §bwhile using to input coordinates"
+                LocalizationUtil.getLocalizedString("door", "abilities", "blink"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "travelers-door"),
+                LocalizationUtil.getLocalizedString("door", "miscellaneous", "td-hint")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                "§bExile: §7Create multiple overlapping doors to temporarily exile entities within range",
-                "§bSpace Concealment: §7Conceal a space. To enter/exit you have to find the corresponding door.",
-                "§bYou can see the door and the concealed space while holding the item",
-                "§bChange the radius with §7Left-click§b!",
-                "§bDimensional Pocket: §7Open a dimensional pocket to store items"
+                LocalizationUtil.getLocalizedString("door", "abilities", "exile"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "space-concealment"),
+                LocalizationUtil.getLocalizedString("door", "miscellaneous", "sc-hint1"),
+                LocalizationUtil.getLocalizedString("door", "miscellaneous", "sc-hint2"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "dimensional-pocket")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                "§bWandering: §7Wander through the different dimensions",
-                "§bConceptualization: §7Turn into symbols to travel the different dimensions",
-                "§bConceptualize: §7Attack the enemy using symbols"
+                LocalizationUtil.getLocalizedString("door", "abilities", "wandering"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "conceptualization"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "conceptualize")
         );
         abilityInfo.put(3, s3);
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
-                "§bBlack Hole: Create a miniature black hole to suck in blocks and entities",
-                "§bSpace Swapping: §7Swap places/Copy a place somewhere else/Move a place somewhere else",
-                "§bUse §7Left-click §bto change the selected use case and §7Shift §bto change the radius"
+                LocalizationUtil.getLocalizedString("door", "abilities", "black-hole"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "space-swapping"),
+                LocalizationUtil.getLocalizedString("door", "miscellaneous", "ss-hint")
         );
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                "§bStarfall: §7Summon multiple star fragments to hit the earth",
-                "§bFind Player: §7Teleport to a player"
+                LocalizationUtil.getLocalizedString("door", "abilities", "starfall"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "find-player")
         );
         abilityInfo.put(1, s1);
     }
@@ -131,24 +132,5 @@ public class DoorItems extends Items {
     public void addAbility(Ability ability) {
         pathway.getSequence().getAbilities().add(ability);
         items.add(ability.getItem());
-    }
-
-    public static ItemStack createItem(Material item, String name, String spirituality, int id, int sequence, String player) {
-        ItemStack currentItem = new ItemStack(item);
-        ItemMeta itemMeta = currentItem.getItemMeta();
-        assert itemMeta != null;
-        itemMeta.setDisplayName("§b" + name);
-        itemMeta.addEnchant(Enchantment.CHANNELING, id, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemMeta.addItemFlags(ItemFlag.values());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§5Click to use");
-        lore.add("§5Spirituality: §7" + spirituality);
-        lore.add("§8§l-----------------");
-        lore.add("§bDoor - Pathway (" + sequence + ")");
-        lore.add("§8" + player);
-        itemMeta.setLore(lore);
-        currentItem.setItemMeta(itemMeta);
-        return currentItem;
     }
 }

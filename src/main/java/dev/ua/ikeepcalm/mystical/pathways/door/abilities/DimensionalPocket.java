@@ -36,15 +36,15 @@ public class DimensionalPocket extends Ability {
         ItemStack currentItem = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta itemMeta = (SkullMeta) currentItem.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§bDimensional Pocket");
+        itemMeta.setDisplayName("§bКишеня Енду");
         itemMeta.addEnchant(Enchantment.CHANNELING, identifier, true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("§5Click to use");
-        lore.add("§5Spirituality: §7150");
+        lore.add("§5Натисніть щоб використати");
+        lore.add("§5Духовність: §7150");
         lore.add("§8§l-----------------");
-        lore.add("§bDoor - Pathway (" + sequence + ")");
+        lore.add("§bВрата - Послідовність (" + sequence + ")");
         lore.add("§8" + p);
         itemMeta.setLore(lore);
 

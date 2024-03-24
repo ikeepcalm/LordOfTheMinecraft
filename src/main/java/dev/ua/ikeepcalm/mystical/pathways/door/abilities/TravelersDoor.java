@@ -121,7 +121,7 @@ public class TravelersDoor extends Ability implements Listener {
                             public void run() {
                                 if (!isTeleporting)
                                     cancel();
-                                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bLeft Click to travel here"));
+                                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bНатисніть ЛКМ, щоб телепортуватися сюди"));
 
                                 for (Player teleportedPlayer : teleportedPlayers.keySet()) {
                                     teleportedPlayer.teleport(p.getLocation());
@@ -142,7 +142,7 @@ public class TravelersDoor extends Ability implements Listener {
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
         } else {
-            p.sendMessage("§bType in the coordinates you want to travel to");
+            p.sendMessage("§bВведіть координати, до яких хочете відкрити портал");
             isTeleportingToCoordinates = true;
         }
     }
@@ -179,7 +179,7 @@ public class TravelersDoor extends Ability implements Listener {
         String[] args = e.getMessage().split(" ");
         if (args.length < 3) {
             pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            p.sendMessage("§cCoordinates are not valid");
+            p.sendMessage("§cНеправильні координати");
             return;
         }
 
@@ -192,7 +192,7 @@ public class TravelersDoor extends Ability implements Listener {
 
         if (!areValid[0]) {
             pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            p.sendMessage("§cCoordinates are not valid");
+            p.sendMessage("§cНеправильні координати");
             return;
         }
 
@@ -231,7 +231,7 @@ public class TravelersDoor extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.WARPED_DOOR, "Travelers Door", "75", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.WARPED_DOOR, "Врата Мандрівника", "75", identifier);
     }
 
     final int o = 0;

@@ -32,12 +32,12 @@ public class FindPlayer extends Ability implements Listener {
 
         if (finding) {
             finding = false;
-            p.sendMessage("§cCancelling");
+            p.sendMessage("§cСкасовано");
             return;
         }
 
-        p.sendMessage("§bType in the player you want to teleport to.");
-        p.sendMessage("§bClick again to cancel");
+        p.sendMessage("§bВведіть ім'я гравця, до якого хочете телепортуватися");
+        p.sendMessage("§bНатисніть ПКМ знов, щоб скасувати");
 
         finding = true;
     }
@@ -67,8 +67,8 @@ public class FindPlayer extends Ability implements Listener {
 
 
                 if (tp == null) {
-                    p.sendMessage("§cCouldn't find the player " + e.getMessage());
-                    p.sendMessage("§cCancelling");
+                    p.sendMessage("§cГравця " + e.getMessage() + " не знайдено!");
+                    p.sendMessage("§cСкасовано");
                     return;
                 }
 
@@ -79,6 +79,6 @@ public class FindPlayer extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.RECOVERY_COMPASS, "Find Player", "15000", identifier);
+        return DoorItems.createItem(Material.RECOVERY_COMPASS, "Астральний Візит", "15000", identifier);
     }
 }

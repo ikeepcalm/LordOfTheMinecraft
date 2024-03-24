@@ -63,7 +63,7 @@ public class Divination implements Listener {
     }
 
     private Inventory createRawInv(Beyonder beyonder) {
-        Inventory inv = Bukkit.createInventory(beyonder.getPlayer(), 27, "§5Divination");
+        Inventory inv = Bukkit.createInventory(beyonder.getPlayer(), 27, "§Третє Око");
         inv = createRawInv(inv);
         return inv;
     }
@@ -130,7 +130,7 @@ public class Divination implements Listener {
 
         if (dream.isSimilar(e.getCurrentItem())) {
             Player p = beyonder.getPlayer();
-            p.sendMessage("§5Which Player do you want to divine?");
+            p.sendMessage("§5Введіть ім'я гравця, через чиє Третє Око бажаєте подивитися");
             p.closeInventory();
             openInv.remove(beyonder);
             remove(beyonder);
@@ -141,7 +141,7 @@ public class Divination implements Listener {
             openInv.remove(beyonder);
             Player p = (Player) e.getWhoClicked();
             p.closeInventory();
-            p.sendMessage("§5Write the entity you want to locate");
+            p.sendMessage("§5Введіть назву сутності, яку хочете знайти");
             remove(beyonder);
             animalDowsing.put(beyonder, p.getNearbyEntities(1500, 500, 1500));
         }
@@ -183,14 +183,14 @@ public class Divination implements Listener {
         }
 
         if (beyonder == null) {
-            p.sendMessage("§cSomething went wrong");
+            p.sendMessage("§cЩось пішло не так");
             return;
         }
 
         remove(beyonder);
 
-        if (chatMsg.equalsIgnoreCase("cancel")) {
-            p.sendMessage("§cStopping Dowsing Rod Divination");
+        if (chatMsg.equalsIgnoreCase("стоп")) {
+            p.sendMessage("§cТретє Око тепер заплющене");
             return;
         }
 
@@ -205,7 +205,7 @@ public class Divination implements Listener {
         }
 
         if (target == null) {
-            p.sendMessage("§cCouldn't find the player " + chatMsg);
+            p.sendMessage("§cГравця " + chatMsg + " не знайдено!");
             return;
         }
 
@@ -244,8 +244,8 @@ public class Divination implements Listener {
         String chatMsg = e.getMessage();
         EntityType entityType = null;
 
-        if (chatMsg.equalsIgnoreCase("cancel")) {
-            p.sendMessage("§cStopping Dowsing Rod Divination");
+        if (chatMsg.equalsIgnoreCase("стоп")) {
+            p.sendMessage("§cТретє Око тепер заплющене");
             animalDowsing.remove(LordOfTheMinecraft.beyonders.get(p.getUniqueId()));
             return;
         }
@@ -258,7 +258,7 @@ public class Divination implements Listener {
         }
 
         if (entityType == null) {
-            p.sendMessage("§c" + GeneralPurposeUtil.capitalize(chatMsg) + " is not a valid entity! If you want to cancel the divination, type \"cancel\"");
+            p.sendMessage("§c" + GeneralPurposeUtil.capitalize(chatMsg) + " не є сутністю! Якщо бажаєте заплющити Третє Око, введіть \"стоп\"");
             return;
         }
 
@@ -274,7 +274,7 @@ public class Divination implements Listener {
         }
 
         if (entity == null) {
-            p.sendMessage("§cThere is no " + GeneralPurposeUtil.capitalize(entityType.name()) + " nearby!");
+            p.sendMessage("§cПоблизу не знайдено " + GeneralPurposeUtil.capitalize(entityType.name()) + "!");
             animalDowsing.remove(LordOfTheMinecraft.beyonders.get(p.getUniqueId()));
             return;
         }

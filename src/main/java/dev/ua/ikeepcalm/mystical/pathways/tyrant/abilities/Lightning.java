@@ -58,7 +58,7 @@ public class Lightning extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Гуркіт Грому", "200", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Гуркіт Грому", "200", identifier);
     }
 
     @Override

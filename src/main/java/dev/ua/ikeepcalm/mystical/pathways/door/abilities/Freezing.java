@@ -54,7 +54,7 @@ public class Freezing extends NpcAbility {
 
         if (target == null) {
             if (!npc)
-                p.sendMessage("§cCouldn't find the target!");
+                p.sendMessage("§cСутність не знайдено!");
             return;
         }
 
@@ -86,6 +86,6 @@ public class Freezing extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.SNOWBALL, "Freezing", "40", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.SNOWBALL, "Льодяний Затиск", "40", identifier);
     }
 }

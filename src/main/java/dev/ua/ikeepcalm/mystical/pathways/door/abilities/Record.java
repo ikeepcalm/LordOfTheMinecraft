@@ -103,6 +103,6 @@ public class Record extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.BOOK, "Record (temporarily removed)", "15/s", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.BOOK, "Запис (у розробці)", "15/сек", identifier);
     }
 }

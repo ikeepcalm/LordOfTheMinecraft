@@ -49,9 +49,9 @@ public class SpaceSwapping extends Ability implements Listener {
     }
 
     enum usages {
-        SWAP("Swap two locations"),
-        MOVE("Move space to a new location"),
-        COPY("Copy Space two a new location");
+        SWAP("Поміняти місцями ділянки"),
+        MOVE("Перемістити ділянку у нове місцезнаходження"),
+        COPY("Скопіювати ділянку у нове місцезнаходження");
 
         public final String name;
 
@@ -94,7 +94,7 @@ public class SpaceSwapping extends Ability implements Listener {
             isSwapping = false;
             swappedBlocks = null;
 
-            p.sendMessage("§cThe two places have to be in the same Dimension");
+            p.sendMessage("§cДві ділянки повинні знаходитись в одному вимірі!");
             return;
         }
 
@@ -132,7 +132,7 @@ public class SpaceSwapping extends Ability implements Listener {
     @Override
     public void leftClick() {
         if (isSwapping) {
-            p.sendMessage("§cYou are currently swapping spaces!", "§cCancelling swapping!");
+            p.sendMessage("§cЗараз ви міняєте місцями ділянки!", "§cЗміну місцями скасовано!");
             isSwapping = false;
             swappedBlocks = null;
             return;
@@ -158,18 +158,18 @@ public class SpaceSwapping extends Ability implements Listener {
         if (radius >= 43)
             radius = 5;
 
-        p.sendMessage("§bSet the radius to " + radius);
+        p.sendMessage("§bРадіус встановлено на " + radius);
     }
 
     @Override
     public void onHold() {
         p = pathway.getBeyonder().getPlayer();
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bSelected use-case: §7" + useCase.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bОбраний тип контролю: §7" + useCase.name));
     }
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.SCULK_SENSOR, "Space Swapping", "6250", identifier);
+        return DoorItems.createItem(Material.SCULK_SENSOR, "Контроль Простору", "6250", identifier);
     }
 }

@@ -22,6 +22,6 @@ public class Divine extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.DIAMOND, "Divination", "15", identifier);
+        return DoorItems.createItem(Material.DIAMOND, "Третє Око", "15", identifier);
     }
 }

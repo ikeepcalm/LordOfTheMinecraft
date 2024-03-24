@@ -429,7 +429,7 @@ public class WaterSpells extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.PRISMARINE_SHARD, "Заклинання Води", "40", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.PRISMARINE_SHARD, "Заклинання Води", "40", identifier);
     }
 
     @Override

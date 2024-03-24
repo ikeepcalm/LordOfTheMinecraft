@@ -119,23 +119,4 @@ public class TyrantItems extends Items {
         pathway.getSequence().getAbilities().add(ability);
         items.add(ability.getItem());
     }
-
-    public static ItemStack createItem(Material item, String name, String spirituality, int id, int sequence, String player) {
-        ItemStack currentItem = new ItemStack(item);
-        ItemMeta itemMeta = currentItem.getItemMeta();
-        assert itemMeta != null;
-        itemMeta.setDisplayName("§9" + name);
-        itemMeta.addEnchant(Enchantment.CHANNELING, id, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemMeta.addItemFlags(ItemFlag.values());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§5Натисніть щоб використати");
-        lore.add("§5Духовність: §7" + spirituality);
-        lore.add("§8§l-----------------");
-        lore.add("§9Тиран - Послідовность (" + sequence + ")");
-        lore.add("§8" + player);
-        itemMeta.setLore(lore);
-        currentItem.setItemMeta(itemMeta);
-        return currentItem;
-    }
 }

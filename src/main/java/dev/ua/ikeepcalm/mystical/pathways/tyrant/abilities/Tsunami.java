@@ -68,7 +68,7 @@ public class Tsunami extends NpcAbility implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.WATER_BUCKET, "Поклик Цунамі", "750", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.WATER_BUCKET, "Поклик Цунамі", "750", identifier);
     }
 
     @Override

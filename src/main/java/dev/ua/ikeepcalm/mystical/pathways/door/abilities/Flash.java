@@ -67,6 +67,6 @@ public class Flash extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.TORCH, "Flash", "25", identifier, 8, pathway.getBeyonder().getPlayer().getName());
+        return DoorItems.createItem(Material.TORCH, "Флешка", "25", identifier);
     }
 }

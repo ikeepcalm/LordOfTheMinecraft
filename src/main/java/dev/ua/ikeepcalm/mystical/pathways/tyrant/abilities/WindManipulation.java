@@ -314,7 +314,7 @@ public class WindManipulation extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.FEATHER, "Володарювання Вітром", "різниться", identifier, sequence, p.getName());
+        return TyrantItems.createItem(Material.FEATHER, "Володарювання Вітром", "різниться", identifier);
     }
 
     @Override
