@@ -42,7 +42,6 @@ public class FoolItems extends Items {
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "air-pipe"),
                 LocalizationUtil.getLocalizedString("fool", "abilities", "flaming-jump")
         );
         abilityInfo.put(7, s7);
@@ -58,11 +57,10 @@ public class FoolItems extends Items {
         );
         abilityInfo.put(5, s5);
 
-//        String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-//                LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mob-enhancement"),
-//                LocalizationUtil.getLocalizedString("fool", "miscellaneous", "mc-upgrade")
-//        );
-//        abilityInfo.put(4, s4);
+        String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
+                LocalizationUtil.getLocalizedString("fool", "abilities", "air-pipe")
+        );
+        abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
                 LocalizationUtil.getLocalizedString("fool", "abilities", "fog-of-history"),
@@ -102,13 +100,14 @@ public class FoolItems extends Items {
         addAbility(new FlameControlling(2, pathway, 8, this, false));
         addAbility(new AirBullet(3, pathway, 8, this, false));
 
-        addAbility(new AirPipe(4, pathway, 7, this));
         addAbility(new FlameJump(5, pathway, 7, this));
 
         addAbility(new PaperSubstitute(6, pathway, 6, this));
 
         addAbility(spiritBodyThreads);
         addAbility(new MarionetteControlling(8, pathway, 5, this, spiritBodyThreads));
+
+        addAbility(new AirPipe(4, pathway, 4, this));
 
         addAbility(new FogOfHistory(9, pathway, 3, this));
         addAbility(new Hiding(10, pathway, 3, this));

@@ -1,16 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.door;
 
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.Record;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +18,6 @@ public class DoorItems extends Items {
     public DoorItems(Pathway pathway) {
         super(pathway);
         items = new ArrayList<>();
-
         abilityInfo = new HashMap<>();
         sequenceItems = new HashMap<>();
         initializeAbilityInfos();
@@ -59,16 +54,13 @@ public class DoorItems extends Items {
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
                 LocalizationUtil.getLocalizedString("door", "abilities", "blink"),
-                LocalizationUtil.getLocalizedString("door", "abilities", "travelers-door"),
-                LocalizationUtil.getLocalizedString("door", "miscellaneous", "td-hint")
+                LocalizationUtil.getLocalizedString("door", "abilities", "travelers-door")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
                 LocalizationUtil.getLocalizedString("door", "abilities", "exile"),
                 LocalizationUtil.getLocalizedString("door", "abilities", "space-concealment"),
-                LocalizationUtil.getLocalizedString("door", "miscellaneous", "sc-hint1"),
-                LocalizationUtil.getLocalizedString("door", "miscellaneous", "sc-hint2"),
                 LocalizationUtil.getLocalizedString("door", "abilities", "dimensional-pocket")
         );
         abilityInfo.put(4, s4);

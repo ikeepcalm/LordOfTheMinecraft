@@ -82,30 +82,25 @@ public class InteractListener implements Listener {
                     HashMap<Integer, String[]> abilityInfo = beyonder.getPathway().getItems().getAbilityInfo();
                     List<ItemStack> tempItems = beyonder.getPathway().getItems().returnItemsFromSequence(sequence);
                     int i = 9;
-                    boolean isFirst = true;
+                    int j = 2;
                     for (ItemStack tempItem : tempItems) {
                         ItemStack originalItem = tempItem;
                         tempItem = new ItemStack(originalItem.getType());
                         ItemMeta meta = tempItem.getItemMeta();
                         meta.setDisplayName(ColorAPI.colorize(beyonder.getPathway().getStringColor() + originalItem.getItemMeta().getDisplayName()));
 
-                        if (abilityInfo.get(i).length == 4){
-                            List<String> lore = new ArrayList<>(formatLine(abilityInfo.get(i)[2], beyonder.getPathway().getStringColor()));
-                            lore.add(abilityInfo.get(i)[3]);
-                            meta.setLore(lore);
-                            --i;
-                        } else {
-                            if (isFirst) {
-                                meta.setLore(formatLore(i, abilityInfo, isFirst, beyonder.getPathway().getStringColor()));
-                                isFirst = false;
-                            } else {
-                                meta.setLore(formatLore(i, abilityInfo, isFirst, beyonder.getPathway().getStringColor()));
-                                --i;
-                                isFirst = true;
-                            }
-                        }
+                        String[] abilityStrings = abilityInfo.get(i);
+                        List<String> lore = new ArrayList<>();
+                        lore.add(abilityStrings[0]);
+                        lore.add(abilityStrings[1]);
 
+                        lore.addAll(formatLine(abilityStrings[j], beyonder.getPathway().getStringColor()));
+
+                        lore.add(abilityStrings[abilityStrings.length - 1]);
+
+                        meta.setLore(lore);
                         tempItem.setItemMeta(meta);
+
                         Item simpleItem = new SimpleItem(tempItem, e -> {
                             if (e.getPlayer().getInventory().contains(originalItem))
                                 return;
@@ -113,7 +108,15 @@ public class InteractListener implements Listener {
                         });
 
                         gui.addItems(simpleItem);
+
+                        if (j == abilityStrings.length - 2) {
+                            --i;
+                            j = 2;
+                        } else {
+                            ++j;
+                        }
                     }
+
 
                     Window window = Window.single()
                             .setViewer(p)
@@ -127,19 +130,6 @@ public class InteractListener implements Listener {
                 event.setCancelled(true);
             }
         }
-    }
-
-
-    private List<String> formatLore(int index, HashMap<Integer, String[]> abilityInfo, boolean isFirst, String pathwayColor) {
-        List<String> lore = new ArrayList<>();
-        lore.add(abilityInfo.get(index)[0]);
-        lore.add(abilityInfo.get(index)[1]);
-        if (isFirst) {
-            lore.addAll(formatLine(abilityInfo.get(index)[2], pathwayColor));
-        } else {
-            lore.addAll(formatLine(abilityInfo.get(index)[3], pathwayColor));
-        } lore.add(abilityInfo.get(index)[4]);
-        return lore;
     }
 
     private List<String> formatLine(String s, String pathwayColor) {
