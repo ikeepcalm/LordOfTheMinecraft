@@ -190,7 +190,7 @@ public class Divination implements Listener {
         remove(beyonder);
 
         if (chatMsg.equalsIgnoreCase("стоп")) {
-            p.sendMessage("§cТретє Око тепер заплющене");
+            p.sendMessage("§cТретє Око заплющилося...");
             return;
         }
 
@@ -245,7 +245,7 @@ public class Divination implements Listener {
         EntityType entityType = null;
 
         if (chatMsg.equalsIgnoreCase("стоп")) {
-            p.sendMessage("§cТретє Око тепер заплющене");
+            p.sendMessage("§cТретє Око заплющилося...");
             animalDowsing.remove(LordOfTheMinecraft.beyonders.get(p.getUniqueId()));
             return;
         }

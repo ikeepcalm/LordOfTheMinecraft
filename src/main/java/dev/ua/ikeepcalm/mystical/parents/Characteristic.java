@@ -51,10 +51,10 @@ public class Characteristic {
         final ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta playerMeta = (SkullMeta) playerHead.getItemMeta();
         assert playerMeta != null;
-        playerMeta.setDisplayName(pathwayColor + GeneralPurposeUtil.capitalize(pathway) + " Beyonder Characteristic");
+        playerMeta.setDisplayName(pathwayColor + GeneralPurposeUtil.capitalize(pathway) + " Позамежна характеристика");
         String[] playerLore = {
-                pathwayColor + "A Characteristic corresponding to Sequence " + sequence,
-                pathwayColor + "of the " + GeneralPurposeUtil.capitalize(pathway) + " Pathway!"
+                pathwayColor + "Характеристика шляху " + GeneralPurposeUtil.capitalize(pathway) + sequence,
+                pathwayColor + "Послідовності  " + sequence
         };
         playerMeta.setLore(Arrays.asList(playerLore));
         if (blocksForPathway.get(pathway) != null) {

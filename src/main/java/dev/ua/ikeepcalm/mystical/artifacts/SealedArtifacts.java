@@ -25,21 +25,21 @@ public class SealedArtifacts implements CommandExecutor {
         Objects.requireNonNull(LordOfTheMinecraft.instance.getCommand("artifact")).setExecutor(this);
 
         String[][] materials = {
-                {"STICK", "Staff"},
-                {"CHEST", "Box"},
-                {"DIAMOND_SWORD", "Blade"},
-                {"STONE_SWORD", "Rusty Blade"},
-                {"ENDER_EYE", "Eye"},
-                {"SNOWBALL", "Orb"},
-                {"BOOK", "Tome"},
-                {"BAMBOO", "Cane"},
-                {"SPECTRAL_ARROW", "Spear"},
-                {"AMETHYST_SHARD", "Crystal"},
-                {"GLOWSTONE_DUST", "Dust"},
-                {"ECHO_SHARD", "Shard"},
-                {"NETHER_STAR", "Star"},
-                {"EXPERIENCE_BOTTLE", "Potion"},
-                {"BONE", "Remains"}
+                {"STICK", "Посох"},
+                {"CHEST", "Лук"},
+                {"DIAMOND_SWORD", "Лезо"},
+                {"STONE_SWORD", "Іржаве лезо"},
+                {"ENDER_EYE", "Око"},
+                {"SNOWBALL", "Сфера"},
+                {"BOOK", "Том"},
+                {"BAMBOO", "Тростина"},
+                {"SPECTRAL_ARROW", "Спис"},
+                {"AMETHYST_SHARD", "Кристал"},
+                {"GLOWSTONE_DUST", "Пил"},
+                {"ECHO_SHARD", "Осколок"},
+                {"NETHER_STAR", "Зірка"},
+                {"EXPERIENCE_BOTTLE", "Зілля"},
+                {"BONE", "Залишки"}
         };
         for (String[] mapping : materials) {
             artifactMaterials.put(Material.getMaterial(mapping[0]), mapping[1]);
@@ -47,66 +47,66 @@ public class SealedArtifacts implements CommandExecutor {
 
         addToPathwayNames(0,
                 "",
-                "Gold",
-                "Light",
-                "Justice",
-                "Holiness",
-                "Purification",
-                "Notarization",
-                "Light",
-                "Bronze"
+                "Золота",
+                "Світла",
+                "Справедливості",
+                "Святості",
+                "Очищення",
+                "Засвідчення",
+                "Променів",
+                "Бронзи"
         );
 
         addToPathwayNames(1,
                 "",
-                "Mystery",
-                "Miracles",
-                "History",
-                "Weirdness",
-                "the Nimblewright",
-                "the Shapeshifter",
-                "Magic",
-                "the Clown",
-                "Foresight"
+                "Таємниці",
+                "Чудеса",
+                "Історії",
+                "Дивності",
+                "Німблрайту",
+                "Безликого",
+                "Магії",
+                "Клоуна",
+                "Передбачення"
         );
 
         addToPathwayNames(2,
                 "",
-                "Stars",
-                "Stars",
-                "Wandering",
-                "Secret",
-                "Traveling",
-                "Recording",
-                "Astrology",
-                "Tricks",
-                "the Free"
+                "Зірок",
+                "Зірки",
+                "Блукання",
+                "Секретів",
+                "Подорожей",
+                "Записів",
+                "Астрології",
+                "Фокусів",
+                "Свободи"
         );
 
         addToPathwayNames(3,
                 "",
-                "Apocalypse",
-                "Catastrophe",
-                "Stone",
-                "Illness",
-                "Illness",
-                "Beauty",
-                "the Sorceress",
-                "Instigation",
-                "the Knife"
+                "Апокаліпсу",
+                "Катастрофи",
+                "Каменю",
+                "Хвороби",
+                "Хвороби",
+                "Краси",
+                "Чаклунства",
+                "Підбурювання",
+                "Ножа"
         );
 
         addToPathwayNames(4,
                 "",
-                "the Thunder God",
-                "Calamity",
-                "the Sea",
-                "Storm",
-                "Thunder",
-                "Wind",
-                "Water",
-                "Rage",
-                "the Pirate"
+                "Грому",
+                "Лиха",
+                "Моря",
+                "Шторму",
+                "Грому",
+                "Вітру",
+                "Води",
+                "Ярості",
+                "Корсара"
         );
 
         negativeEffects = new NegativeEffects();
@@ -149,7 +149,7 @@ public class SealedArtifacts implements CommandExecutor {
         NpcAbility ability = abilities.get(random.nextInt(abilities.size()));
 
         Material material = getRandomMaterial();
-        String name = artifactMaterials.get(material) + " of " + pathwayNames.get(pathway)[sequence];
+        String name = artifactMaterials.get(material) + pathwayNames.get(pathway)[sequence];
 
         return new SealedArtifact(material, name, pathway, ability, negativeEffects, true).getItem();
     }

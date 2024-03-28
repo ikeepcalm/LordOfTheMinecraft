@@ -53,7 +53,7 @@ public class SealedArtifact implements Listener {
         itemMeta.setLore(
                 List.of(
                         "",
-                        "§7Ability: " + colorPrefix + ability.getClass().getSimpleName().replaceAll("(.)([A-Z])", "$1 $2"),
+                        "§7Знання: " + colorPrefix + ability.getClass().getSimpleName().replaceAll("(.)([A-Z])", "$1 $2"),
                         "§7---------------------------------------",
                         colorPrefix + pathwayName + " (" + ability.getSequence() + ")"
                 )

@@ -51,9 +51,11 @@ public class Beyonder implements Listener {
     @Getter
     protected final UUID uuid;
     @Setter
+
     @Getter
     private double spirituality;
     private double maxSpirituality;
+    private double lastSpirituality;
 
     private double actingProgress;
     private double actingNeeded;
@@ -138,6 +140,7 @@ public class Beyonder implements Listener {
         if (!beyonder)
             return;
         online = false;
+        lastSpirituality = spirituality;
     }
 
     @EventHandler
@@ -235,7 +238,10 @@ public class Beyonder implements Listener {
             actingProgress = 0;
         }
 
-        updateSpirituality();
+        if (lastSpirituality != 0)
+            spirituality = lastSpirituality;
+        else
+            updateSpirituality();
 
         online = true;
         initializedOnce = true;
@@ -303,10 +309,10 @@ public class Beyonder implements Listener {
                 if (spirituality < maxSpirituality) {
                     if (!bossBar) {
                         bossBar = true;
-                        bossBarUtil.addPlayer(getPlayer(), "§6Духовність: " + spirituality + "§6/§e" + maxSpirituality , BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
+                        bossBarUtil.addPlayer(getPlayer(), "§6Духовність: " + (int) spirituality + "§6/§e" + (int) maxSpirituality , BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
                     } else {
                         bossBarUtil.setProgress(getPlayer(), (float) (spirituality / maxSpirituality));
-                        bossBarUtil.setTitle(getPlayer(), "§6Духовність: " + spirituality + "§6/§e" + maxSpirituality);
+                        bossBarUtil.setTitle(getPlayer(), "§6Духовність: " + (int) spirituality + "§6/§e" + (int) maxSpirituality);
                     }
                 } else {
                     bossBarUtil.removePlayer(getPlayer());
@@ -372,7 +378,7 @@ public class Beyonder implements Listener {
         actingNeeded = Math.pow((100f / pathway.getSequence().getCurrentSequence()), 2);
         if (actingProgress >= actingNeeded && !digested) {
             digested = true;
-            getPlayer().sendMessage("§6You have digested the potion!");
+            getPlayer().sendMessage("§6Ви засвоїли магічне зілля! Повністю...");
             getPlayer().spawnParticle(Particle.END_ROD, pathway.getBeyonder().getPlayer().getLocation(), 50, 1, 1, 1, 0);
         }
     }
@@ -466,7 +472,7 @@ public class Beyonder implements Listener {
             return;
         }
         if (pathway == null) {
-            getPlayer().sendMessage("§cYour advancement has failed! You can call yourself lucky to still be alive...");
+            getPlayer().sendMessage("§cНевдача! Можете вважати, що вам пощастило, що ви залишилися живі...");
             return;
         }
 

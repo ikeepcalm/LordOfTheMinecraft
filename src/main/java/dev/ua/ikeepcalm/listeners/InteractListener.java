@@ -63,9 +63,10 @@ public class InteractListener implements Listener {
                 if (NBT.get(item, (nbt) -> {
                     return nbt.getBoolean("openAbilities");
                 })) {
-                    event.setCancelled(true);
-                    event.getWhoClicked().setItemOnCursor(null);
-                    event.getWhoClicked().closeInventory();
+
+                    if (p.getItemOnCursor().getType() != Material.AIR){
+                        p.getWorld().dropItem(p.getLocation(), p.getItemOnCursor());
+                    } p.setItemOnCursor(null);
 
                     Gui gui = Gui.normal()
                             .setStructure(

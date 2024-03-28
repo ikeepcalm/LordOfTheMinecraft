@@ -16,7 +16,7 @@ public class Recipe {
         ItemStack book = new ItemStack(Material.WRITABLE_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
-        bookMeta.setDisplayName(potion.getStringColor() + GeneralPurposeUtil.capitalize(potion.getName()) + "-Послідовність Шляху " + sequence);
+        bookMeta.setDisplayName(potion.getStringColor() + GeneralPurposeUtil.capitalize("Знання: " + potion.getName()) + " " + sequence);
 
         StringBuilder mainIngredients = new StringBuilder();
         for (ItemStack item : potion.getMainIngredients(sequence)) {
@@ -35,10 +35,11 @@ public class Recipe {
 
         ArrayList<String> content = new ArrayList<>();
 
-        String page =
-                potion.getStringColor() + "Головні інгрідієнти: \n" +
+        String page = "Од.. р.з по..вши, шляху н.... ...ає, пос..йн.. бо...с.. із за...зами і бо...ллям"
+                + "\n" +
+                potion.getStringColor() + "Го...вні ...єнти: \n" +
                         mainIngredients + "\n \n" +
-                        potion.getStringColor() + "Допоміжні інгрідієнти:§r \n" +
+                        potion.getStringColor() + "Дод... інг...ти:§r \n" +
                         supplIngredients + "\n";
 
         content.add(page);
