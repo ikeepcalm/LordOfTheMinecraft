@@ -49,34 +49,34 @@ public class Instigate extends Ability {
         }
 
         if (target == null) {
-            p.sendMessage("§cCouldn't find the target!");
+            p.sendMessage("§cЦіль не знайдено!");
             return;
         }
 
         if (!isInstigating) {
             if (!(target instanceof Mob mob)) {
-                p.sendMessage("§cThat entity can't be instigated!");
+                p.sendMessage("§cЦя сутність не може бути підбурена");
                 return;
             }
             isInstigating = true;
-            p.sendMessage("§aInstigating " + mob.getName() + "!");
-            p.sendMessage("§aChoose target");
+            p.sendMessage("§aПідбурюю " + mob.getName() + "!");
+            p.sendMessage("§aОберіть ціль");
             attacker = mob;
             return;
         }
 
         isInstigating = false;
         if (attacker == null) {
-            p.sendMessage("§cSomething went wrong!");
+            p.sendMessage("§cЩось пішло не так!");
             return;
         }
 
         attacker.setTarget(target);
-        p.sendMessage("§a" + target.getName() + " is being targeted by " + attacker.getName() + "!");
+        p.sendMessage("§a" + target.getName() + " тепер є ціллю для " + attacker.getName() + "!");
     }
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.STONE_SWORD, "Instigate", "65", identifier);
+        return DemonessItems.createItem(Material.STONE_SWORD, "Підбурювання", "65", identifier);
     }
 }

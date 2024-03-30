@@ -97,7 +97,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
 
         if (!valid) {
-            p.sendMessage("§cYou have to be near glass blocks");
+            p.sendMessage("§cВи повинні бути поруч зі скляними блоками");
             return;
         }
 
@@ -137,7 +137,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
             return;
 
         if (!valid) {
-            p.sendMessage("§cYou have to be near glass blocks");
+            p.sendMessage("§cВи повинні бути поруч зі скляними блоками");
             return;
         }
 
@@ -149,6 +149,6 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.DIAMOND, "Mirror World Traversal", "500", identifier);
+        return DemonessItems.createItem(Material.DIAMOND, "Мандрівка Через Задзеркалля", "500", identifier);
     }
 }

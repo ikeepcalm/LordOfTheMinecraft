@@ -1,6 +1,8 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness;
 
+import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.utils.LocalizationUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -14,9 +16,9 @@ public class DemonessPathway extends Pathway {
     @Override
     public void init() {
         sequence = new DemonessSequence(this, optionalSequence);
-        name = "§dDemoness";
+        name = ColorAPI.colorize(LocalizationUtil.getLocalizedString("demoness", "color") + LocalizationUtil.getLocalizedString("demoness", "name"));
+        stringColor = ColorAPI.colorize(LocalizationUtil.getLocalizedString("demoness", "color"));
         nameNormalized = "demoness";
-        stringColor = "§d";
     }
 
     @Override
@@ -27,15 +29,15 @@ public class DemonessPathway extends Pathway {
     public static HashMap<Integer, String> getNames() {
         HashMap<Integer, String> names;
         names = new HashMap<>();
-        names.put(9, "Assassin");
-        names.put(8, "Instigator");
-        names.put(7, "Witch");
-        names.put(6, "Demoness of Pleasure");
-        names.put(5, "Demoness of Affliction");
-        names.put(4, "Demoness of Despair");
-        names.put(3, "Demoness of Unaging");
-        names.put(2, "Demoness of Catastrophe");
-        names.put(1, "Demoness of Apocalypse");
+        names.put(9, LocalizationUtil.getLocalizedString("demoness", "sequences","9"));
+        names.put(8, LocalizationUtil.getLocalizedString("demoness", "sequences","8"));
+        names.put(7, LocalizationUtil.getLocalizedString("demoness", "sequences","7"));
+        names.put(6, LocalizationUtil.getLocalizedString("demoness", "sequences","6"));
+        names.put(5, LocalizationUtil.getLocalizedString("demoness", "sequences","5"));
+        names.put(4, LocalizationUtil.getLocalizedString("demoness", "sequences","4"));
+        names.put(3, LocalizationUtil.getLocalizedString("demoness", "sequences","3"));
+        names.put(2, LocalizationUtil.getLocalizedString("demoness", "sequences","2"));
+        names.put(1, LocalizationUtil.getLocalizedString("demoness", "sequences","1"));
         return names;
     }
 
