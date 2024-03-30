@@ -76,7 +76,7 @@ public class Petrification extends NpcAbility {
 
         if (!npc) {
             if (cooldownEntities.contains(finalTarget)) {
-                caster.sendMessage("§cYou can't petrify that entity again yet!");
+                caster.sendMessage("§cВи ще не можете повторно скам'яніти цю сутність!");
                 return;
             }
             cooldownEntities.add(finalTarget);
@@ -172,6 +172,6 @@ public class Petrification extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.ENDER_EYE, "Petrification", "1500", identifier);
+        return DemonessItems.createItem(Material.ENDER_EYE, "Скам'яніння", "1500", identifier);
     }
 }

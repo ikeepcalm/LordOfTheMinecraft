@@ -66,6 +66,6 @@ public class IceAge extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.BLUE_ICE, "Ice Age", "300000", identifier);
+        return DemonessItems.createItem(Material.BLUE_ICE, "Льодовиковий Період", "300000", identifier);
     }
 }

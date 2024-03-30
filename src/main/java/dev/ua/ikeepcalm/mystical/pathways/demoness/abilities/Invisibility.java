@@ -63,6 +63,6 @@ public class Invisibility extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.GHAST_TEAR, "Invisibility", "8/s", identifier);
+        return DemonessItems.createItem(Material.GHAST_TEAR, "Невидимість", "8/сек", identifier);
     }
 }

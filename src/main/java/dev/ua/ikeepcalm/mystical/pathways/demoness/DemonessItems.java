@@ -4,6 +4,7 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.abilities.*;
+import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -31,57 +32,52 @@ public class DemonessItems extends Items {
     public void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
-                "§dPhysical Enhancements: §7Enhanced agility and speed",
-                "§dNight vision",
-                "§dYou will no longer take fall damage"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "instigate")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                "§cNo new Abilities yet!"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "invisibility"),
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "black-flames")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                "§dUse: §7/items §dto get the mob for your Sequence",
-                "§dInvisibility: §7Hide yourself from entities and players",
-                "§dBlack Flames: §7Create black flames",
-                "§dFrost Magic: §7Freeze entities or blocks",
-                "§dCold Wind: §7Create a cold wind"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "frost-magic"),
+                LocalizationUtil.getLocalizedString("demoness", "abilities", " cold-wind")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                "§dThread Manipulation: §7Create Threads and cobwebs to trap your opponents",
-                "§dFrost Spear: §7Throw a spear made of ice to attack your enemies"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "frost-spear"),
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "thread-manipulation")
         );
         abilityInfo.put(6, s6);
 
         String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
-                "§dEpidemic: §7Spread a disease to kill all entities in your vicinity",
-                "§Mirror World Traversal: §7You can travel through the mirror world"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "epidemic"),
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "mirror-world-traversal")
         );
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                "§dPestilence: §7Spread the Epidemic over a far greater area and make it more deadly"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "pestilence")
         );
         abilityInfo.put(4, s4);
 
         String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
-                "§dPetrification: §7Petrify entities or blocks"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "petrification")
         );
         abilityInfo.put(3, s3);
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
-                "§dCalamity Manipulation: §7Create several disasters like blizzards or tornados",
-                "§dSwitch through the calamities using §7Left Click"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "calamity-manipulation")
         );
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                "§dMeteor Shower: §7Summon a meteor shower",
-                "§dIce Age: §7Freeze a large area"
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "meteor-shower"),
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "ice-age")
         );
         abilityInfo.put(1, s1);
     }
@@ -118,24 +114,5 @@ public class DemonessItems extends Items {
     public void addAbility(Ability ability) {
         pathway.getSequence().getAbilities().add(ability);
         items.add(ability.getItem());
-    }
-
-    public static ItemStack createItem(Material item, String name, String spirituality, int id, int sequence, String player) {
-        ItemStack currentItem = new ItemStack(item);
-        ItemMeta itemMeta = currentItem.getItemMeta();
-        assert itemMeta != null;
-        itemMeta.setDisplayName("§d" + name);
-        itemMeta.addEnchant(Enchantment.CHANNELING, id, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemMeta.addItemFlags(ItemFlag.values());
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add("§5Click to use");
-        lore.add("§5Spirituality: §7" + spirituality);
-        lore.add("§8§l-----------------");
-        lore.add("§dDemoness - Pathway (" + sequence + ")");
-        lore.add("§8" + player);
-        itemMeta.setLore(lore);
-        currentItem.setItemMeta(itemMeta);
-        return currentItem;
     }
 }

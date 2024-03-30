@@ -88,6 +88,6 @@ public class ThreadManipulation extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.COBWEB, "Thread Manipulation", "40", identifier);
+        return DemonessItems.createItem(Material.COBWEB, "Маніпуляція Павутинням", "40", identifier);
     }
 }

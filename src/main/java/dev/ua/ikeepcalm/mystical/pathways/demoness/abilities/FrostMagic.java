@@ -61,8 +61,8 @@ public class FrostMagic extends NpcAbility {
     }
 
     enum Category {
-        Attack("Attack targets"),
-        Freeze("Freeze an area");
+        Attack("Атака цілей"),
+        Freeze("Заморозка ділянки");
 
         private final String name;
 
@@ -165,11 +165,11 @@ public class FrostMagic extends NpcAbility {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Use-case: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний варіант використання: §f" + selectedCategory.name));
     }
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.ICE, "Frost Magic", "35", identifier);
+        return DemonessItems.createItem(Material.ICE, "Магія Мерзлоти", "35", identifier);
     }
 }

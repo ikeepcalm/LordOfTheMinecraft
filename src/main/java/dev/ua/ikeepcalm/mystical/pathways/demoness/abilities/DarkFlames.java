@@ -89,6 +89,6 @@ public class DarkFlames extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.CHORUS_FRUIT, "Black Flames", "35", identifier);
+        return DemonessItems.createItem(Material.CHORUS_FRUIT, "Темний Вогонь", "35", identifier);
     }
 }

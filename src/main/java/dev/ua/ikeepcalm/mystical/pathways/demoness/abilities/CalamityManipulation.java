@@ -43,10 +43,10 @@ public class CalamityManipulation extends NpcAbility {
     }
 
     enum Category {
-        TORNADO("§fTornado"),
-        BLIZZARD("§bBlizzard"),
-        TSUNAMI("§9Tsunami"),
-        EARTHQUAKE("§2Earthquake");
+        TORNADO("§fСмерч"),
+        BLIZZARD("§bЗавірюха"),
+        TSUNAMI("§9Цунамі"),
+        EARTHQUAKE("§2Землетрус");
 
         private final String name;
 
@@ -92,11 +92,11 @@ public class CalamityManipulation extends NpcAbility {
     public void onHold() {
         if (p == null)
             p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Selected Calamity: §f" + selectedCategory.name));
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний катаклізм: §f" + selectedCategory.name));
     }
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.WITHER_SKELETON_SKULL, "Calamity Manipulation", "4000", identifier);
+        return DemonessItems.createItem(Material.WITHER_SKELETON_SKULL, "Маніпуляція Катаклізмом", "4000", identifier);
     }
 }
