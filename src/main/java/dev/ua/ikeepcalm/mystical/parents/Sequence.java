@@ -27,6 +27,7 @@ public abstract class Sequence {
     protected Pathway pathway;
 
     protected boolean[] usesAbilities;
+
     @Setter
     protected ArrayList<Ability> abilities;
 
@@ -89,8 +90,9 @@ public abstract class Sequence {
             return;
 
         if (usesAbilities[ability - 1]) {
-            if (getIds().contains(ability))
+            if (getIds().contains(ability)) {
                 usesAbilities[ability - 1] = false;
+            }
             return;
         }
 

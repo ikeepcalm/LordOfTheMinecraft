@@ -1,15 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness;
 
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +40,7 @@ public class DemonessItems extends Items {
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
                 LocalizationUtil.getLocalizedString("demoness", "abilities", "frost-magic"),
-                LocalizationUtil.getLocalizedString("demoness", "abilities", " cold-wind")
+                LocalizationUtil.getLocalizedString("demoness", "abilities", "cold-wind")
         );
         abilityInfo.put(7, s7);
 

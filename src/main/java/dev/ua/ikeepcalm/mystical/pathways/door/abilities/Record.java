@@ -103,6 +103,6 @@ public class Record extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.BOOK, "Запис (у розробці)", "15/сек", identifier);
+        return DoorItems.createItem(Material.BOOK, "Запис (у розробці)", "15", identifier);
     }
 }

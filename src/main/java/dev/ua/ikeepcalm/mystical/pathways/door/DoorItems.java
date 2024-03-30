@@ -74,8 +74,7 @@ public class DoorItems extends Items {
 
         String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
                 LocalizationUtil.getLocalizedString("door", "abilities", "black-hole"),
-                LocalizationUtil.getLocalizedString("door", "abilities", "space-swapping"),
-                LocalizationUtil.getLocalizedString("door", "miscellaneous", "ss-hint")
+                LocalizationUtil.getLocalizedString("door", "abilities", "space-swapping")
         );
         abilityInfo.put(2, s2);
 

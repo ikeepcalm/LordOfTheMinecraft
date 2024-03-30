@@ -82,6 +82,6 @@ public class Wind extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.FEATHER, "Порив Вітру", "8/сек", identifier);
+        return DoorItems.createItem(Material.FEATHER, "Порив Вітру", "8", identifier);
     }
 }

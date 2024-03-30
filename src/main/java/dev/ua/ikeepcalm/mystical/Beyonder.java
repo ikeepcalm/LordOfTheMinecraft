@@ -449,9 +449,11 @@ public class Beyonder implements Listener {
                         rampager.setGlowing(true);
                         rampager.setCustomNameVisible(true);
                         rampager.setCustomName(pathway.getStringColor() + getPlayer().getName());
+                        Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
                         getPlayer().setHealth(0);
                         loosingControl = false;
                         removeBeyonder();
+                        bossBarUtil.removePlayer(getPlayer());
                         cancel();
                         return;
                     }
@@ -478,6 +480,7 @@ public class Beyonder implements Listener {
 
         if (!digested) {
             looseControl(5, 12);
+
         } else {
             switch (getPathway().getSequence().getCurrentSequence() - 1 - sequence) {
                 case 0 -> looseControl(93, 20);

@@ -97,6 +97,6 @@ public class CalamityManipulation extends NpcAbility {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.WITHER_SKELETON_SKULL, "Маніпуляція Катаклізмом", "4000", identifier);
+        return DemonessItems.createItem(Material.WITHER_SKELETON_SKULL, "Маніпуляція Катаклізмом", "10000", identifier);
     }
 }
