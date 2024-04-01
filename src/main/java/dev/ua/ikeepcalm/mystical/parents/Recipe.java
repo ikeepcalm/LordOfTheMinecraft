@@ -35,11 +35,11 @@ public class Recipe {
 
         ArrayList<String> content = new ArrayList<>();
 
-        String page = "Од.. р.з по..вши, шляху н.... ...ає, пос..йн.. бо...с.. із за...зами і бо...ллям"
+        String page = "Містичне зілля. Шляху назад немає!"
                 + "\n" +
-                potion.getStringColor() + "Го...вні ...єнти: \n" +
+                potion.getStringColor() + "Головні інгрідієнти: \n" +
                         mainIngredients + "\n \n" +
-                        potion.getStringColor() + "Дод... інг...ти:§r \n" +
+                        potion.getStringColor() + "Додаткові інгрідієнти:§r \n" +
                         supplIngredients + "\n";
 
         content.add(page);

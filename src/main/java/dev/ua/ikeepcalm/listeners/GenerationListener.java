@@ -31,10 +31,11 @@ public class GenerationListener implements Listener {
 
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);
         Potion potion = LordOfTheMinecraft.instance.getPotions().get(random.nextInt(LordOfTheMinecraft.instance.getPotions().size()));
-        switch (random.nextInt(3)) {
+        switch (random.nextInt(5)) {
             case 1 -> item = LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(potion, sequence);
-            case 2 ->
-                    item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
+            case 2 -> item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
+            case 3 -> item = GeneralItemsUtil.getGuideBook();
+            case 4 -> item = new ItemStack(Material.SOUL_SAND);
             default -> item = potion.returnPotionForSequence(sequence);
         }
 

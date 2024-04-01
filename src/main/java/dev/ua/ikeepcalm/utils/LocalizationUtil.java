@@ -3,6 +3,8 @@ package dev.ua.ikeepcalm.utils;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.List;
+
 public class LocalizationUtil {
 
     public static String findLocalizedString(String key) {
@@ -61,6 +63,15 @@ public class LocalizationUtil {
         if (s == null) {
             LordOfTheMinecraft.instance.log("Missing key: " + node + "." + subNode+ "."  + key);
             return "Not set! Check console for errors!";
+        }
+
+        return s;
+    }
+
+    public static List<String> getLocalizedArray(String key) {
+        List<String> s = LordOfTheMinecraft.instance.getLangConfig().getStringList(key);
+        if (s == null) {
+            LordOfTheMinecraft.instance.log("Missing key: " + key);
         }
 
         return s;

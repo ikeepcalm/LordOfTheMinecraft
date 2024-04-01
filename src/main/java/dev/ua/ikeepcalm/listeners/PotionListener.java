@@ -56,7 +56,9 @@ public class PotionListener implements Listener {
                 default -> pathway.getBeyonder().looseControl(0, 10);
             }
 
-            e.getPlayer().sendMessage(pathway.getItems().getAbilityInfo().get(sequence));
+            if (sequence == 9)
+                e.getPlayer().sendMessage(pathway.getStringColor() + "Вітаємо у світі потойбічних, " + e.getPlayer().getName() + "!");
+
             setAbilitiesShortcut(pathway, e.getPlayer());
         }
         //Is a beyonder

@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.listeners;
 
+import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
@@ -185,7 +186,7 @@ public class PotionHandler implements Listener {
         itemMap.put(3, GeneralItemsUtil.getWhitePane());
         itemMap.put(4, GeneralItemsUtil.getConfirmPotion());
 
-        Inventory inv = Bukkit.createInventory(p, 54, LocalizationUtil.getLocalizedString("general", "brew-potion"));
+        Inventory inv = Bukkit.createInventory(p, 54, ColorAPI.colorize(LocalizationUtil.getLocalizedString("general", "brew-potion")));
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, itemMap.get(invConfig[i]));
         }

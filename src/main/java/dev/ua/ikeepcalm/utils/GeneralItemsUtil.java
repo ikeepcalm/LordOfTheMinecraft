@@ -1,11 +1,13 @@
 package dev.ua.ikeepcalm.utils;
 
+import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -46,7 +48,7 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.CAULDRON);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Brewing Cauldron");
+        itemMeta.setDisplayName("§5Казан");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         item.setItemMeta(itemMeta);
@@ -386,5 +388,20 @@ public class GeneralItemsUtil {
         potionMeta.setBasePotionData(new PotionData(PotionType.REGEN));
         potion.setItemMeta(potionMeta);
         return potion;
+    }
+
+    public static ItemStack getGuideBook() {
+        ItemStack book = new ItemStack(Material.WRITABLE_BOOK);
+        BookMeta bookMeta = (BookMeta) book.getItemMeta();
+        assert bookMeta != null;
+        bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoire-name")));
+
+       List<String> content = LocalizationUtil.getLocalizedArray("grimoire-lore");
+
+        bookMeta.setPages(content);
+        bookMeta.addEnchant(Enchantment.CHANNELING, 1, true);
+        bookMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        book.setItemMeta(bookMeta);
+        return book;
     }
 }
