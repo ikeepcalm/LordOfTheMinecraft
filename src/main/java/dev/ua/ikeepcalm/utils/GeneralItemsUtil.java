@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class GeneralItemsUtil {
 
@@ -390,13 +391,19 @@ public class GeneralItemsUtil {
         return potion;
     }
 
-    public static ItemStack getGuideBook() {
+    public static ItemStack getRandomGrimoire() {
         ItemStack book = new ItemStack(Material.WRITABLE_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
-        bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoire-name")));
 
-       List<String> content = LocalizationUtil.getLocalizedArray("grimoire-lore");
+        String[] s = {"tome-one", "tome-two", "tome-three", "tome-four"};
+
+        Random ran = new Random();
+        String tome = s[ran.nextInt(s.length)];
+
+        bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoires", tome,"grimoire-name")));
+
+       List<String> content = LocalizationUtil.getLocalizedArray("grimoires", tome,"grimoire-lore");
 
         bookMeta.setPages(content);
         bookMeta.addEnchant(Enchantment.CHANNELING, 1, true);

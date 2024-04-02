@@ -26,7 +26,7 @@ public class GenerationListener implements Listener {
         ItemStack item;
         Random random = new Random();
 
-        if (random.nextInt(100) > 10)
+        if (random.nextInt(100) > 15)
             return;
 
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);
@@ -34,7 +34,7 @@ public class GenerationListener implements Listener {
         switch (random.nextInt(5)) {
             case 1 -> item = LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(potion, sequence);
             case 2 -> item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
-            case 3 -> item = GeneralItemsUtil.getGuideBook();
+            case 3 -> item = GeneralItemsUtil.getRandomGrimoire();
             case 4 -> item = new ItemStack(Material.SOUL_SAND);
             default -> item = potion.returnPotionForSequence(sequence);
         }
@@ -54,7 +54,7 @@ public class GenerationListener implements Listener {
             if (merchant.getRecipeCount() == 0) {
                 for (int i = 0; i < merchant.getRecipeCount(); i++) {
                     Random random = new Random();
-                    if (random.nextInt(100) < 5){
+                    if (random.nextInt(100) < 30){
                         ItemStack[] trade = getRandomTrade();
                         if (random.nextBoolean()){
                             merchant.setRecipe(merchant.getRecipeCount(), new MerchantRecipe(trade[0], 1));
