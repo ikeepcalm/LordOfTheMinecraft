@@ -4,7 +4,7 @@ main: dev.ua.ikeepcalm.LordOfTheMinecraft
 api-version: '1.20'
 authors: [ FireCreeper82, ikeepcalm ]
 description: A Fan made Lord of the Mysteries plugin
-depend: [ Citizens, ProtocolLib, NBTAPI ]
+depend: [ Citizens, ProtocolLib, NBTAPI, CoreProtect ]
 commands:
   beyonder:
     description: Make yourself a Beyonder
@@ -27,12 +27,12 @@ commands:
   spawn:
     description: Spawn a custom entity
     usage: /<cmd>
-  ability-info:
-    description: Get the infos about your mob
-    usage: /<cmd>
   spirit:
     description: Spawn a spirit
-    usage: /<cm>
+    usage: /<cmd>
+  mi9:
+    description: Only for the MI9 members!
+    usage: /<cmd>
   artifact:
     description: Get a random Sealed Artifact (Testing only)
     usage: /<cmd>

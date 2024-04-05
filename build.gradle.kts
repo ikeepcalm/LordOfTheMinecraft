@@ -19,6 +19,7 @@ repositories {
     maven("https://repo.alessiodp.com/releases")
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://maven.playpro.com")
 }
 
 dependencies {
@@ -30,6 +31,7 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
     compileOnly("de.tr7zw:item-nbt-api-plugin:2.12.2")
+    compileOnly("net.coreprotect:coreprotect:22.2")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 

@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.cmds.BeyonderCmd;
+import dev.ua.ikeepcalm.cmds.MI9ItemsCmd;
 import dev.ua.ikeepcalm.cmds.SpawnCmd;
 import dev.ua.ikeepcalm.cmds.TestCmd;
 import dev.ua.ikeepcalm.handlers.ArtifactHandler;
@@ -21,6 +22,8 @@ import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
 import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -31,6 +34,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +47,7 @@ import java.util.*;
 public final class LordOfTheMinecraft extends JavaPlugin {
 
     public static LordOfTheMinecraft instance;
+    public static CoreProtectAPI coreProtect;
     public static String prefix;
     @Getter
     private Characteristic characteristic;
@@ -89,6 +94,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        loadCoreProtect();
         enablePlugin();
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled Plugin");
@@ -121,7 +127,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 divination,
                 new BlockHandler(),
                 new GenerationListener(),
-                new ArtifactHandler()
+                new ArtifactHandler(),
+                new MI9ItemsListener()
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
@@ -131,7 +138,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("beyonder")).setExecutor(new BeyonderCmd());
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCmd());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCmd());
-
+        Objects.requireNonNull(this.getCommand("mi9")).setExecutor(new MI9ItemsCmd());
 
         potions.add(new SunPotions());
         potions.add(new FoolPotions());
@@ -326,6 +333,25 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage("§c" + exceptionAsString);
             }
         }
+    }
+
+    private void loadCoreProtect() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("CoreProtect");
+
+        if (!(plugin instanceof CoreProtect)) {
+            log("CoreProtect not found!");
+        }
+
+        CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
+        if (!CoreProtect.isEnabled()) {
+            log("CoreProtect not enabled!");
+        }
+
+        if (CoreProtect.APIVersion() < 9) {
+            log("CoreProtect version outdated!");
+        }
+
+        this.coreProtect = CoreProtect;
     }
 
     public void log(String message) {
