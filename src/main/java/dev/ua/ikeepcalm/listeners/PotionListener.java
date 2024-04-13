@@ -43,7 +43,7 @@ public class PotionListener implements Listener {
             //initializing new Pathway
             Pathway pathway = Pathway.initializeNew(potion.getName(), e.getPlayer().getUniqueId(), sequence);
             if (pathway == null) {
-                e.getPlayer().sendMessage("§cYour advancement has failed! You can call yourself lucky to still be alive...");
+                e.getPlayer().sendMessage("§cНевдача! Можете вважати, що вам пощастило, що ви залишилися живі...");
                 return;
             }
             //makes new Beyonder loose control accordingly
@@ -57,7 +57,7 @@ public class PotionListener implements Listener {
             }
 
             if (sequence == 9)
-                e.getPlayer().sendMessage(pathway.getStringColor() + "Вітаємо у світі потойбічних, " + e.getPlayer().getName() + "!");
+                e.getPlayer().sendMessage(pathway.getStringColor() + "Вітаємо у світі Потойбічних, " + e.getPlayer().getName() + "!");
 
             setAbilitiesShortcut(pathway, e.getPlayer());
         }

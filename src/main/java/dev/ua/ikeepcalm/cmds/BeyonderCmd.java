@@ -35,7 +35,7 @@ public class BeyonderCmd implements CommandExecutor {
         }
 
         if (sequence > 9 || sequence < 1) {
-            s.sendMessage("§cВи можете обрати послідовність тільки від 9 до 1!");
+            s.sendMessage("§cВи можете обрати Послідовність тільки від 9 до 1!");
             return true;
         }
 

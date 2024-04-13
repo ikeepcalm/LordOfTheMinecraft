@@ -33,20 +33,20 @@ public abstract class Potion {
         ItemStack potion = new ItemStack(Material.POTION);
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
         assert potionMeta != null;
-        potionMeta.setDisplayName(stringColor + "Sequence " + sequence + ": " + name);
+        potionMeta.setDisplayName(stringColor + "Послідовність " + sequence + ": " + name);
         potionMeta.setColor(color);
         potionMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         String[] lore;
         if (ritual.isEmpty()) {
             lore = new String[]{
-                    "§5Drink this Potion to gain the powers",
-                    "§5of a Sequence " + sequence + ": " + name
+                    "§5Випийте це Зілля, щоб отримати силу",
+                    "§5Послідовності " + sequence + ": " + name
             };
         } else {
             lore = new String[]{
-                    "§5Drink this Potion to gain the powers",
-                    "§5of a Sequence " + sequence + ": " + name,
-                    "§5Ritual: " + ritual
+                    "§5Випийте це Зілля, щоб отримати силу",
+                    "§5Послідовності " + sequence + ": " + name,
+                    "§5Ритуал: " + ritual
             };
         }
         potionMeta.setLore(Arrays.asList(lore));

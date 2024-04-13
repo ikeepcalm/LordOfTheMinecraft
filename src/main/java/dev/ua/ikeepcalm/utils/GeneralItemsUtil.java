@@ -105,7 +105,7 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
         ItemMeta itemStack = item.getItemMeta();
         assert itemStack != null;
-        itemStack.setDisplayName("§5Danger Premonition");
+        itemStack.setDisplayName("§5Передчуття Небезпеки");
         itemStack.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.addEnchant(Enchantment.CHANNELING, 1, true);
         item.setItemMeta(itemStack);
@@ -119,7 +119,7 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.RED_BED);
         ItemMeta itemStack = item.getItemMeta();
         assert itemStack != null;
-        itemStack.setDisplayName("§5Dream Divination");
+        itemStack.setDisplayName("§5Ворожіння Снів");
         itemStack.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.addEnchant(Enchantment.CHANNELING, 1, true);
         item.setItemMeta(itemStack);
@@ -133,8 +133,8 @@ public class GeneralItemsUtil {
         final ItemStack cowHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta cowMeta = (SkullMeta) cowHead.getItemMeta();
         assert cowMeta != null;
-        cowMeta.setDisplayName("§6Entities");
-        String[] cowLore = {"§5Divine the location of entities"};
+        cowMeta.setDisplayName("§6Сутності");
+        String[] cowLore = {"§5Визначте місцезнаходження будь-якої сутності"};
         cowMeta.setLore(Arrays.asList(cowLore));
         PlayerProfile cowProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
         PlayerTextures cowTextures = cowProfile.getTextures();
@@ -154,8 +154,8 @@ public class GeneralItemsUtil {
         final ItemStack grassHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta grassMeta = (SkullMeta) grassHead.getItemMeta();
         assert grassMeta != null;
-        grassMeta.setDisplayName("§6Biomes");
-        String[] grassLore = {"§5Divine the location of biomes"};
+        grassMeta.setDisplayName("§6Біоми");
+        String[] grassLore = {"§5Визначте місцезнаходження будь-якого біома"};
         grassMeta.setLore(Arrays.asList(grassLore));
         PlayerProfile grassProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
         PlayerTextures grassTextures = grassProfile.getTextures();
@@ -175,8 +175,8 @@ public class GeneralItemsUtil {
         final ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta playerMeta = (SkullMeta) playerHead.getItemMeta();
         assert playerMeta != null;
-        playerMeta.setDisplayName("§6Biomes");
-        String[] playerLore = {"§5Divine the location of players"};
+        playerMeta.setDisplayName("§6Гравці");
+        String[] playerLore = {"§5Визначте місцезнаходження будь-якого гравця"};
         playerMeta.setLore(Arrays.asList(playerLore));
         PlayerProfile playerProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
         PlayerTextures playerTextures = playerProfile.getTextures();
@@ -196,7 +196,7 @@ public class GeneralItemsUtil {
         final ItemStack meteor = new ItemStack(Material.FIRE_CHARGE);
         ItemMeta meteorMeta = meteor.getItemMeta();
         assert meteorMeta != null;
-        meteorMeta.setDisplayName("§4Summon Meteor");
+        meteorMeta.setDisplayName("§4Викликати Метеорит");
         meteorMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meteorMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         meteor.setItemMeta(meteorMeta);
@@ -210,7 +210,7 @@ public class GeneralItemsUtil {
         final ItemStack tornado = new ItemStack(Material.FEATHER);
         ItemMeta tornadoMeta = tornado.getItemMeta();
         assert tornadoMeta != null;
-        tornadoMeta.setDisplayName("§fSummon Tornado");
+        tornadoMeta.setDisplayName("§fВикликати Торнадо");
         tornadoMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         tornadoMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         tornado.setItemMeta(tornadoMeta);
@@ -224,7 +224,7 @@ public class GeneralItemsUtil {
         final ItemStack lightning = new ItemStack(Material.LIGHTNING_ROD);
         ItemMeta lightningMeta = lightning.getItemMeta();
         assert lightningMeta != null;
-        lightningMeta.setDisplayName("§bSummon Lightning");
+        lightningMeta.setDisplayName("§bВикликати Блискавку");
         lightningMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lightningMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         lightning.setItemMeta(lightningMeta);
@@ -238,7 +238,7 @@ public class GeneralItemsUtil {
         final ItemStack sun = new ItemStack(Material.SUNFLOWER);
         ItemMeta sunMeta = sun.getItemMeta();
         assert sunMeta != null;
-        sunMeta.setDisplayName("§6Clear Weather");
+        sunMeta.setDisplayName("§6Ясна Погода");
         sunMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         sunMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         sun.setItemMeta(sunMeta);
@@ -252,7 +252,7 @@ public class GeneralItemsUtil {
         final ItemStack rain = new ItemStack(Material.WATER_BUCKET);
         ItemMeta rainMeta = rain.getItemMeta();
         assert rainMeta != null;
-        rainMeta.setDisplayName("§3Rainy Weather");
+        rainMeta.setDisplayName("§3Дощова Погода");
         rainMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         rainMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         rain.setItemMeta(rainMeta);
@@ -266,7 +266,7 @@ public class GeneralItemsUtil {
         final ItemStack storm = new ItemStack(Material.BLAZE_ROD);
         ItemMeta stormMeta = storm.getItemMeta();
         assert stormMeta != null;
-        stormMeta.setDisplayName("§9Stormy Weather");
+        stormMeta.setDisplayName("§9Штормова Погода");
         stormMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         stormMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         storm.setItemMeta(stormMeta);
@@ -280,7 +280,7 @@ public class GeneralItemsUtil {
         final ItemStack lengthString = new ItemStack(Material.STRING);
         ItemMeta stringMeta = lengthString.getItemMeta();
         assert stringMeta != null;
-        stringMeta.setDisplayName("§6Change Thread Length");
+        stringMeta.setDisplayName("§6Змінити Довжину Ниток");
         stringMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         stringMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         lengthString.setItemMeta(stringMeta);
@@ -294,11 +294,11 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.BARRIER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§cExclude Entities");
+        itemMeta.setDisplayName("§cВиключити Сутності");
         String[] lore = {
-                "§cType in an Entity of which you want to", " §4exclude §cthe §4Spirit Body Threads",
-                "§cToggle §4exclude §centities on", " §cand include entities off",
-                "§cType cancel to §4cancel §cand reset to §4reset"
+                "§cВведіть назву Сутності, яку ви бажаєте", " §6виключити §cз §4Маріонеткового Ткача",
+                "§cУвімкнути §4виключення §cсутностей", " §cта вимкнути включення сутностей",
+                "§aВведіть §2cancel§a, щоб скасувати, і §2reset§a, щоб скинути"
 
         };
         itemMeta.setLore(Arrays.asList(lore));
@@ -315,11 +315,11 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.GREEN_CONCRETE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§aInclude Entities");
+        itemMeta.setDisplayName("§aВключити Сутності");
         String[] lore = {
-                "§aType in an Entity of which you want to", " §2include §athe §2Spirit Body Threads",
-                "§aToggle §2include §aentities on", " §aand exclude entities off",
-                "§aType cancel to §2cancel §aand reset to §2reset"
+                "§aВведіть назву Сутності, яку ви бажаєте", " §2включити §aв §2Маріонетковий Ткач",
+                "§aУвімкнути §2включення §aсутностей", " §aта вимкнути виключення сутностей",
+                "§aВведіть §2cancel§a, щоб скасувати, і §2reset§a, щоб скинути"
 
         };
         itemMeta.setLore(Arrays.asList(lore));
@@ -336,9 +336,9 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Attack");
+        itemMeta.setDisplayName("§5Атакувати");
         String[] lore = {
-                "§aRight click to attack!"
+                "§aНатисніть ПКМ, щоб атакувати!"
         };
         itemMeta.setLore(Arrays.asList(lore));
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -354,7 +354,7 @@ public class GeneralItemsUtil {
         final ItemStack item = new ItemStack(Material.LIME_CONCRETE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§aBrew Potion");
+        itemMeta.setDisplayName("§aЗварити зілля");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         item.setItemMeta(itemMeta);

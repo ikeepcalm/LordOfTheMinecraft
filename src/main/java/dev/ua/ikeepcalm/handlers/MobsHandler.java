@@ -38,24 +38,21 @@ public class MobsHandler implements Listener {
         customEntities = new ArrayList<>();
         BeyonderMobUtil beyonderMobUtil = new BeyonderMobUtil();
 
-        spawnEntity("§9Lavos Squid", "squid", 50, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
-        spawnEntity("§7Hornacis Gray Mountain Goat", "goat", 18, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
-        spawnEntity("§0Black Patterned Panther", "panther", 28, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
-        spawnEntity("§5Thousand-Faced Hunter", "thousand-faced", 55, BeyonderItemsUtil.getPituitaryGland(), EntityType.PILLAGER, 70, beyonderMobUtil, EntityType.ILLUSIONER, "none", true);
-        spawnEntity("§0Human-Skinned Shadow", "shadow", 35, BeyonderItemsUtil.getShadowCharacteristic(), EntityType.ENDERMAN, 70, beyonderMobUtil, null, "none", true);
-        spawnEntity("§7Ancient Wraith", "wraith", 120, BeyonderItemsUtil.getWraithDust(), EntityType.SKELETON, 145, beyonderMobUtil, EntityType.VEX, "wraith", true);
-        spawnEntity("§5Six Winged Gargoyle", "gargoyle", 180, BeyonderItemsUtil.getGargoyleCrystal(), EntityType.ZOMBIE, 250, beyonderMobUtil, EntityType.IRON_GOLEM, "gargoyle", true);
-        spawnEntity("§5Bizarro Bane", "bane", 40, BeyonderItemsUtil.getBizarroEye(), EntityType.WITCH, 200, beyonderMobUtil, EntityType.ALLAY, "bane", true, new BaneAbility(20));
-        spawnEntity("§5Spirit World Plunderer", "plunderer", 300, BeyonderItemsUtil.getPlundererBody(), EntityType.ZOMBIFIED_PIGLIN, 250, beyonderMobUtil, EntityType.VEX, "plunderer", false, new SpawnVex(70), new PlundererAbility(35));
-        spawnEntity("§5Hound of Fulgrim", "wolf", 85, BeyonderItemsUtil.getWolfEye(), EntityType.WOLF, 750, beyonderMobUtil, null, "wolf", true);
-        spawnEntity("§5Demonic Wolf of Fog", "fog-wolf", 75, BeyonderItemsUtil.getWolfHeart(), EntityType.FOX, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
-
-        spawnEntity("§4Magma Titan", "magma-titan", 25, BeyonderItemsUtil.getMagmaHeart(), EntityType.MAGMA_CUBE, 32, null, null, "none", true);
-        spawnEntity("§6Dawn Rooster", "rooster", 85, BeyonderItemsUtil.getRedRoosterComb(), EntityType.CHICKEN, 60, beyonderMobUtil, null, "rooster", true, new RoosterAbility(60));
-        spawnEntity("§6Divine Bird", "divine-bird", 185, BeyonderItemsUtil.getTailFeather(), EntityType.COW, 85, beyonderMobUtil, EntityType.PARROT, "divine-bird", true, new HolyLightSummoning(90), new FlaringSun(350));
-
-        spawnEntity("§bSpirit Eater", "eater", 120, BeyonderItemsUtil.getSpiritPouch(), EntityType.ZOMBIFIED_PIGLIN, 30, beyonderMobUtil, EntityType.ALLAY, "eater", true);
-
+        spawnEntity("§9Лавовий Кальмар", "squid", 50, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
+        spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 18, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
+        spawnEntity("§0Чорнапляма Пантера", "panther", 28, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
+        spawnEntity("§5Тисячоликий Мисливець", "thousand-faced", 55, BeyonderItemsUtil.getPituitaryGland(), EntityType.PILLAGER, 70, beyonderMobUtil, EntityType.ILLUSIONER, "none", true);
+        spawnEntity("§0Людиноподібна Тінь", "shadow", 35, BeyonderItemsUtil.getShadowCharacteristic(), EntityType.ENDERMAN, 70, beyonderMobUtil, null, "none", true);
+        spawnEntity("§7Древній Рейф", "wraith", 120, BeyonderItemsUtil.getWraithDust(), EntityType.SKELETON, 145, beyonderMobUtil, EntityType.VEX, "wraith", true);
+        spawnEntity("§5Шестикрила Горгулья", "gargoyle", 180, BeyonderItemsUtil.getGargoyleCrystal(), EntityType.ZOMBIE, 250, beyonderMobUtil, EntityType.IRON_GOLEM, "gargoyle", true);
+        spawnEntity("§5Перевертень", "bane", 40, BeyonderItemsUtil.getBizarroEye(), EntityType.WITCH, 200, beyonderMobUtil, EntityType.ALLAY, "bane", true, new BaneAbility(20));
+        spawnEntity("§5Розкрадач Духовного Світу", "plunderer", 300, BeyonderItemsUtil.getPlundererBody(), EntityType.ZOMBIFIED_PIGLIN, 250, beyonderMobUtil, EntityType.VEX, "plunderer", false, new SpawnVex(70), new PlundererAbility(35));
+        spawnEntity("§5Пес Фулгріма", "wolf", 85, BeyonderItemsUtil.getWolfEye(), EntityType.WOLF, 750, beyonderMobUtil, null, "wolf", true);
+        spawnEntity("§5Демонічний Вовк Завіси", "fog-wolf", 75, BeyonderItemsUtil.getWolfHeart(), EntityType.FOX, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
+        spawnEntity("§4Магмовий Титан", "magma-titan", 25, BeyonderItemsUtil.getMagmaHeart(), EntityType.MAGMA_CUBE, 32, null, null, "none", true);
+        spawnEntity("§6Світанковий Півень", "rooster", 85, BeyonderItemsUtil.getRedRoosterComb(), EntityType.CHICKEN, 60, beyonderMobUtil, null, "rooster", true, new RoosterAbility(60));
+        spawnEntity("§6Божественний Птах", "divine-bird", 185, BeyonderItemsUtil.getTailFeather(), EntityType.COW, 85, beyonderMobUtil, EntityType.PARROT, "divine-bird", true, new HolyLightSummoning(90), new FlaringSun(350));
+        spawnEntity("§bПожирач Духів", "eater", 120, BeyonderItemsUtil.getSpiritPouch(), EntityType.ZOMBIFIED_PIGLIN, 30, beyonderMobUtil, EntityType.ALLAY, "eater", true);
     }
 
     private void spawnEntity(String name, String id, int rarity, ItemStack drop, EntityType entityType, Integer health, BeyonderMobUtil beyonderMobUtil, EntityType spawnType, String particle, boolean repeatingParticles, MobAbility... abilities) {
