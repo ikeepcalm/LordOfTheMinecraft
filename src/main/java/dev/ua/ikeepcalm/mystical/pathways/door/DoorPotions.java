@@ -34,11 +34,11 @@ public class DoorPotions extends Potion {
         putSupplIntoHashMap(8, GeneralItemsUtil.getMundanePotion(), new ItemStack(Material.ROSE_BUSH));
         putSupplIntoHashMap(7, new ItemStack(Material.BEEF), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
         putSupplIntoHashMap(6, new ItemStack(Material.BOOK), new ItemStack(Material.FEATHER));
-        putSupplIntoHashMap(5);
-        putSupplIntoHashMap(4);
-        putSupplIntoHashMap(3);
-        putSupplIntoHashMap(2);
-        putSupplIntoHashMap(1);
+        putSupplIntoHashMap(5, new ItemStack(Material.CHERRY_DOOR), new ItemStack(Material.OAK_DOOR));
+        putSupplIntoHashMap(4, new ItemStack(Material.BEEF), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
+        putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
+        putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
+        putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));
     }
 
     @Override

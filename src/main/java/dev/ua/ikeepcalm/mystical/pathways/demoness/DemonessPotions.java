@@ -3,7 +3,9 @@ package dev.ua.ikeepcalm.mystical.pathways.demoness;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
+import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -17,25 +19,25 @@ public class DemonessPotions extends Potion {
         mainIngredients = new HashMap<>();
         supplementaryIngredients = new HashMap<>();
 
-        putMainIntoHashMap(9, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(9, "demoness", stringColor));
-        putMainIntoHashMap(8, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(8, "demoness", stringColor));
-        putMainIntoHashMap(7, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(7, "demoness", stringColor));
-        putMainIntoHashMap(6, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(6, "demoness", stringColor));
+        putMainIntoHashMap(9, BeyonderItemsUtil.getRose());
+        putMainIntoHashMap(8, BeyonderItemsUtil.getTailFeather());
+        putMainIntoHashMap(7, BeyonderItemsUtil.getMeteoriteCrystal());
+        putMainIntoHashMap(6, BeyonderItemsUtil.getGoatHorn());
         putMainIntoHashMap(5, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(5, "demoness", stringColor));
         putMainIntoHashMap(4, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(4, "demoness", stringColor));
         putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "demoness", stringColor));
         putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "demoness", stringColor));
         putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "demoness", stringColor));
 
-        putSupplIntoHashMap(9);
-        putSupplIntoHashMap(8);
-        putSupplIntoHashMap(7);
-        putSupplIntoHashMap(6);
-        putSupplIntoHashMap(5);
-        putSupplIntoHashMap(4);
-        putSupplIntoHashMap(3);
-        putSupplIntoHashMap(2);
-        putSupplIntoHashMap(1);
+        putSupplIntoHashMap(9, new ItemStack(Material.DIAMOND_SWORD));
+        putSupplIntoHashMap(8, new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.MUTTON));
+        putSupplIntoHashMap(7, new ItemStack(Material.FLOWER_POT));
+        putSupplIntoHashMap(6, new ItemStack(Material.SKELETON_SKULL), new ItemStack(Material.SOUL_SAND), new ItemStack(Material.GOLDEN_CARROT));
+        putSupplIntoHashMap(5, new ItemStack(Material.FROSTED_ICE), new ItemStack(Material.ICE));
+        putSupplIntoHashMap(4, new ItemStack(Material.BEEF), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
+        putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
+        putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
+        putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));
     }
 
     @Override

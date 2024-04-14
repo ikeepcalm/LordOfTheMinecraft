@@ -38,7 +38,7 @@ public class FoolPotions extends Potion {
         putSupplIntoHashMap(4, new ItemStack(Material.ENDER_EYE), new ItemStack(Material.BIRCH_LOG), new ItemStack(Material.TURTLE_HELMET));
         putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
         putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
-        putSupplIntoHashMap(1);
+        putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));
     }
 
     @Override

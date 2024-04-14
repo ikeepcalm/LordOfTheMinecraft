@@ -97,7 +97,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         loadCoreProtect();
         enablePlugin();
 
-        Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled Plugin");
+        Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled. The world full of mysteries awaits you!");
 
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
@@ -351,7 +351,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
             log("CoreProtect version outdated!");
         }
 
-        this.coreProtect = CoreProtect;
+        coreProtect = CoreProtect;
     }
 
     public void log(String message) {

@@ -35,9 +35,9 @@ public class SunPotions extends Potion {
         putSupplIntoHashMap(6, BeyonderItemsUtil.getSunflower(), new ItemStack(Material.FERN), new ItemStack(Material.GLOW_BERRIES));
         putSupplIntoHashMap(5, new ItemStack(Material.MAGMA_CREAM), new ItemStack(Material.SUNFLOWER));
         putSupplIntoHashMap(4, BeyonderItemsUtil.getRedRoosterComb(), BeyonderItemsUtil.getWhiteBrillianceRock());
-        putSupplIntoHashMap(3);
-        putSupplIntoHashMap(2);
-        putSupplIntoHashMap(1);
+        putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
+        putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
+        putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));
     }
 
     @Override
