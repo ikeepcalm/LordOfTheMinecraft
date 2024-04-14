@@ -30,7 +30,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.REDSTONE);
         ItemMeta magentaPaneMeta = item.getItemMeta();
         assert magentaPaneMeta != null;
-        magentaPaneMeta.setDisplayName("§4Lavos Squid Blood");
+        magentaPaneMeta.setDisplayName("§4Кров Лавового Кальмара");
         item.setItemMeta(magentaPaneMeta);
 
         list.add(item);
@@ -42,7 +42,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.REDSTONE);
         ItemMeta magentaPaneMeta = item.getItemMeta();
         assert magentaPaneMeta != null;
-        magentaPaneMeta.setDisplayName("§4Deep Sea Marlin Blood");
+        magentaPaneMeta.setDisplayName("§4Кров Глибоководного Марліна");
         item.setItemMeta(magentaPaneMeta);
 
         list.add(item);
@@ -54,7 +54,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Spirit Remains");
+        itemMeta.setDisplayName("§5Залишки Духу");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -66,7 +66,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.IRON_DOOR);
         ItemMeta magentaPaneMeta = item.getItemMeta();
         assert magentaPaneMeta != null;
-        magentaPaneMeta.setDisplayName("§bMutated Door");
+        magentaPaneMeta.setDisplayName("§bМутовані Врата");
         item.setItemMeta(magentaPaneMeta);
 
         list.add(item);
@@ -78,7 +78,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.GHAST_TEAR);
         ItemMeta magentaPaneMeta = item.getItemMeta();
         assert magentaPaneMeta != null;
-        magentaPaneMeta.setDisplayName("§bStomach Pouch of Spirit Eater");
+        magentaPaneMeta.setDisplayName("§bШлунок Пожирача Духів");
         item.setItemMeta(magentaPaneMeta);
 
         list.add(item);
@@ -90,7 +90,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.PRISMARINE_CRYSTALS);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§bStellar Aqua Crystal");
+        itemMeta.setDisplayName("§Зоряний Аквамарин");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -102,7 +102,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§4Meteorite Crystal");
+        itemMeta.setDisplayName("§4Метеоритний Кристал");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -114,7 +114,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.GOAT_HORN);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§7Hornacis Gray Mountain Goat Horn");
+        itemMeta.setDisplayName("§7Рог Сірої Гірської Кози Горнакіс");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -126,7 +126,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.ROSE_BUSH);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§4Human Faced Rose");
+        itemMeta.setDisplayName("§4Троянда з людським обличчям");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -138,7 +138,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.SUNFLOWER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Crystal Sunflower");
+        itemMeta.setDisplayName("§6Кришталевий Соняшник");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -150,7 +150,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.PRISMARINE_SHARD);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§9Piece of Siren Rock");
+        itemMeta.setDisplayName("§9Шматок Каменю Сирени");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -162,7 +162,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.MAGMA_CREAM);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§4Heart of a Magma Titan");
+        itemMeta.setDisplayName("§4Серце Магмового Титану");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -174,7 +174,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Comb of a Dawn Rooster");
+        itemMeta.setDisplayName("§6Гребінь Світанкового Півня");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -186,7 +186,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.GLOW_BERRIES);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Fruit of a Radiance Spirit Pact Tree");
+        itemMeta.setDisplayName("§6Плід Дерева Договору Духа Сяйва");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -198,7 +198,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Feather of Spirit Pact Bird");
+        itemMeta.setDisplayName("§6Птах Договору Духовного Пера");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -210,7 +210,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.HANGING_ROOTS);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Crystallized Root of Tree of Elders");
+        itemMeta.setDisplayName("§6Кристалізований Корінь Дерева Старійшин");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -222,7 +222,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6White Brilliance Rock");
+        itemMeta.setDisplayName("§6Білий Блискучий Камінь");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -234,7 +234,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.QUARTZ);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Holy Brilliance Rock");
+        itemMeta.setDisplayName("§6Священний Блискучий Камінь");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -246,7 +246,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Divine Birds Tail Feather");
+        itemMeta.setDisplayName("§6Перо з Хвоста Божественного Птаха");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -259,7 +259,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.RED_DYE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Red Comb of a Dawn Rooster");
+        itemMeta.setDisplayName("§6Червоний Гребінь Світанкового Півня");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -271,7 +271,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.HANGING_ROOTS);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Root of a Mist Treant");
+        itemMeta.setDisplayName("§6Корінь Туманного Дерева");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -283,7 +283,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.BLACK_DYE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§8Spinal Fluid of a Black Patterned Panther");
+        itemMeta.setDisplayName("§8Спинномозкова Рідина Чорнаплямої Пантери");
         item.setItemMeta(itemMeta);
 
         list.add(item);
@@ -295,7 +295,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.NETHER_STAR);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Mutated Pituitary Gland of a Thousand-Faced Hunter");
+        itemMeta.setDisplayName("§5Мутований гіпофіз Тисячоликого Мисливця");
 
         item.setItemMeta(itemMeta);
 
@@ -308,7 +308,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta itemMeta = (SkullMeta) item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§8Characteristic of a Human-Skinned Shadow");
+        itemMeta.setDisplayName("§8Характеристика Людиноподібної Тіні");
 
         PlayerProfile profile = Bukkit.createPlayerProfile(characteristicUUID);
         PlayerTextures textures = profile.getTextures();
@@ -331,7 +331,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.GUNPOWDER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§7Dust of Ancient Wraiths");
+        itemMeta.setDisplayName("§7Пил Древніх Рейфів");
 
         item.setItemMeta(itemMeta);
 
@@ -344,7 +344,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.CONDUIT);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Core Crystal of Six Winged Gargoyle");
+        itemMeta.setDisplayName("§5Серцевинний Кристал Шестикрилої Горгульї");
 
         item.setItemMeta(itemMeta);
 
@@ -357,7 +357,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Eye of a Bizarro Bane");
+        itemMeta.setDisplayName("§5Око Перевертеня");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 
@@ -372,7 +372,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.DIAMOND_CHESTPLATE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Soul Body of a Spirit World Plunderer");
+        itemMeta.setDisplayName("§5Духовне Тіло Розкрадача Духовного Світу");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 
@@ -387,7 +387,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.SPIDER_EYE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Eye of a Hound of Fulgrim");
+        itemMeta.setDisplayName("§5Око Пса Фулгріма");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 
@@ -402,7 +402,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.COAL);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Transfromed Heart of a Demonic Wolf of Fog");
+        itemMeta.setDisplayName("§Трансформоване Серце Демонічного Вовка Завіси");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 

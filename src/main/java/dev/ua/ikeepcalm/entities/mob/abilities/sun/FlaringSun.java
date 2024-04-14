@@ -140,6 +140,6 @@ public class FlaringSun extends MobAbility {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SUNFLOWER, "Flaring Sun", "800", identifier);
+        return SunItems.createItem(Material.SUNFLOWER, "Спалахуюче Сонце", "800", identifier);
     }
 }

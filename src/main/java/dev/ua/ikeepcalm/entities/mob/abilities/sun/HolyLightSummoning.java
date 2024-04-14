@@ -180,6 +180,6 @@ public class HolyLightSummoning extends MobAbility {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.BLAZE_ROD, "Holy Light Summoning", "75", identifier);
+        return SunItems.createItem(Material.BLAZE_ROD, "Проміння", "75", identifier);
     }
 }
