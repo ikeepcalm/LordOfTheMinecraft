@@ -20,11 +20,13 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://maven.playpro.com")
+    maven("https://repository.minecodes.pl/releases")
 }
 
 dependencies {
     implementation("com.github.ForestTechMC:ForestColorAPI:1.4")
     implementation("xyz.xenondevs.invui:invui:1.26")
+    implementation("dev.rollczi:liteskullapi:1.2.0")
     compileOnly("org.spigotmc:spigot:1.20.4-R0.1-SNAPSHOT:remapped-mojang")
     compileOnly("net.citizensnpcs:citizens-main:2.0.33-SNAPSHOT")
     compileOnly("net.byteflux:libby-bukkit:1.1.5")

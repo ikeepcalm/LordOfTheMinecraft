@@ -70,12 +70,7 @@ public class LocalizationUtil {
     }
 
     public static List<String> getLocalizedArray(String key) {
-        List<String> s = LordOfTheMinecraft.instance.getLangConfig().getStringList(key);
-        if (s == null) {
-            LordOfTheMinecraft.instance.log("Missing key: " + key);
-        }
-
-        return s;
+        return LordOfTheMinecraft.instance.getLangConfig().getStringList(key);
     }
 
     public static List<String> getLocalizedArray(String node, String subNode, String key) {
@@ -91,13 +86,7 @@ public class LocalizationUtil {
             return Collections.singletonList("Not set! Check console for errors!");
         }
 
-        List<String> s = subSection.getStringList(key);
-        if (s == null) {
-            LordOfTheMinecraft.instance.log("Missing key: " + node + "." + subNode+ "."  + key);
-            return Collections.singletonList("Not set! Check console for errors!");
-        }
-
-        return s;
+        return subSection.getStringList(key);
     }
 
 }

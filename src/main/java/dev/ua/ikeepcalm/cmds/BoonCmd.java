@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 
-public class BeyonderCmd implements CommandExecutor {
+public class BoonCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
