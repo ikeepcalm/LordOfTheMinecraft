@@ -49,7 +49,6 @@ public class Invisibility extends Ability {
                 }
 
                 if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                    System.out.println("Invisibility cancelled");
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.showPlayer(LordOfTheMinecraft.instance, p);
                     }

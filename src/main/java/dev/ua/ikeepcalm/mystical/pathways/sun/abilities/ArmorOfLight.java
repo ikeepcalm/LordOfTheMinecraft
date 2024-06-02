@@ -1,15 +1,20 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
+import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -140,6 +145,9 @@ public class ArmorOfLight extends Ability implements Listener {
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("sun", true);
+        });
         return item;
     }
 
@@ -157,6 +165,9 @@ public class ArmorOfLight extends Ability implements Listener {
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("sun", true);
+        });
         return item;
     }
 
@@ -174,6 +185,9 @@ public class ArmorOfLight extends Ability implements Listener {
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("sun", true);
+        });
         return item;
     }
 
@@ -191,6 +205,9 @@ public class ArmorOfLight extends Ability implements Listener {
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("sun", true);
+        });
         return item;
     }
 
@@ -208,12 +225,32 @@ public class ArmorOfLight extends Ability implements Listener {
         lore.add("§8" + playerName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        NBT.modify(item, (nbt) -> {
+            nbt.setBoolean("sun", true);
+        });
         return item;
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
-        if (Objects.requireNonNull(e.getItemDrop().getItemStack().getItemMeta()).getDisplayName().equals(Objects.requireNonNull(helmet.getItemMeta()).getDisplayName()) || e.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(Objects.requireNonNull(helmet.getItemMeta()).getDisplayName()) || e.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(Objects.requireNonNull(helmet.getItemMeta()).getDisplayName()) || e.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(Objects.requireNonNull(helmet.getItemMeta()).getDisplayName()) || e.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(Objects.requireNonNull(helmet.getItemMeta()).getDisplayName()))
+        if (NBT.get(e.getItemDrop().getItemStack(), (nbt) -> {
+            return nbt.getBoolean("sun");
+        }))
+            e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getCurrentItem() == null)
+            return;
+
+        if (e.getCurrentItem().getType().isAir()){
+            return;
+        }
+
+        if (NBT.get(e.getCurrentItem(), (nbt) -> {
+            return nbt.getBoolean("sun");
+        }))
             e.setCancelled(true);
     }
 

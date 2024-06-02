@@ -58,8 +58,8 @@ public class SunItems extends Items {
         abilityInfo.put(5, s5);
 
         String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "armor-of-light"),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "unshadowed-domain")
+                LocalizationUtil.getLocalizedString("sun", "abilities", "unshadowed-domain"),
+                LocalizationUtil.getLocalizedString("sun", "abilities", "armor-of-light")
         );
         abilityInfo.put(4, s4);
 

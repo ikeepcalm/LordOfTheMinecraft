@@ -73,7 +73,7 @@ public class PotionListener implements Listener {
         ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorAPI.colorize(LordOfTheMinecraft.beyonders.get(player.getUniqueId()).getPathway().getStringColor()) + "Знання");
-        meta.setCustomModelData(pathway.getPathwayInt());
+        meta.setCustomModelData(pathway.getPathwayInt() + 1);
         item.setItemMeta(meta);
         NBT.modify(item, (nbt) -> {
             nbt.setBoolean("openAbilities", true);

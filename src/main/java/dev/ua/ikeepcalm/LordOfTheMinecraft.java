@@ -139,6 +139,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 new PotionHandler(),
                 new PotionListener(),
                 new DeathListener(),
+                new WantedListener(),
                 divination,
                 new BlockHandler(),
                 new GenerationListener(),
@@ -265,10 +266,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
             saveResource("exc.yml", true);
         }
 
-        langConfig = new YamlConfiguration();
+        excConfig = new YamlConfiguration();
 
         try {
-            langConfig.load(langConfigFile);
+            excConfig.load(langConfigFile);
         } catch (InvalidConfigurationException | IOException exc) {
             Bukkit.getConsoleSender().sendMessage(exc.getLocalizedMessage());
         }

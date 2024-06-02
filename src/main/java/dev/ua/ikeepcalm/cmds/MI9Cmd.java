@@ -90,6 +90,7 @@ public class MI9Cmd implements CommandExecutor {
             List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
             List<Item> items = new ArrayList<>();
             for (Beyonder b : beyonder.values()) {
+                System.out.println(b.getPlayer().getName());
                 LordOfTheMinecraft.skullAPI.acceptSyncSkull(b.getPlayer().getName(), itemStack -> {
                     ItemMeta meta = itemStack.getItemMeta();
                     if (excList.contains(b.getPlayer().getName())) {
