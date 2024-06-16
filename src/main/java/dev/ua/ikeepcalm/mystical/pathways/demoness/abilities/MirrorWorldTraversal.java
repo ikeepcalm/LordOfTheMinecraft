@@ -97,7 +97,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
 
         if (!valid) {
-            p.sendMessage("§cВи повинні бути поруч зі скляними блоками");
+            p.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
             return;
         }
 
@@ -137,7 +137,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
             return;
 
         if (!valid) {
-            p.sendMessage("§cВи повинні бути поруч зі скляними блоками");
+            p.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
             return;
         }
 

@@ -36,7 +36,7 @@ public class AirPipe extends Ability {
                 Location particleLoc = p.getEyeLocation().clone().add(p.getLocation().getDirection().normalize().multiply(0.25));
                 while (particleLoc.getBlock().getType() == Material.WATER) {
                     if (particleLoc.getWorld() != null) {
-                        particleLoc.getWorld().spawnParticle(Particle.SPELL, particleLoc, 1, 0, 0, 0, 0);
+                        particleLoc.getWorld().spawnParticle(Particle.BUBBLE, particleLoc, 1, 0, 0, 0, 0);
                     }
                     particleLoc.add(0, .5, 0);
                 }

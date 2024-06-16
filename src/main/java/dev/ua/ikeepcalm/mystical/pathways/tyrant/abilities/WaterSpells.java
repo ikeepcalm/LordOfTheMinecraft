@@ -1,11 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import jline.internal.Nullable;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,25 +22,24 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
-public class WaterSpells extends NpcAbility {
+public class WaterSpells extends Ability {
 
+    private static final Logger log = LoggerFactory.getLogger(WaterSpells.class);
     private Category selectedCategory = Category.LIGHT;
     private final Category[] categories = Category.values();
     private int selected = 0;
 
-    private final boolean npc;
-
-    public WaterSpells(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public WaterSpells(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        this.npc = npc;
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
+        items.addToSequenceItems(identifier - 1, sequence);
+        p = pathway.getBeyonder().getPlayer();
     }
 
     enum Category {
@@ -100,11 +100,11 @@ public class WaterSpells extends NpcAbility {
                     if (loc.getWorld() == null)
                         return;
 
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
                     y = Math.cos(counter);
-                    GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.WATER_BUBBLE);
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.BUBBLE_POP);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
                 }
 
                 if (loc.getBlock().getType().isSolid())
@@ -128,7 +128,7 @@ public class WaterSpells extends NpcAbility {
     }
 
     private void beam(Entity caster, double multiplier) {
-        if (!npc && caster.getLocation().getBlock().getType() != Material.WATER) {
+        if (caster.getLocation().getBlock().getType() != Material.WATER) {
             caster.sendMessage("§cЗайдіть у воду, щоб використовувати це заклинання!");
             return;
         }
@@ -150,7 +150,7 @@ public class WaterSpells extends NpcAbility {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
                         continue;
-                    p.spawnParticle(Particle.WATER_BUBBLE, loc, 15, .05, .05, .05, 0);
+                    p.spawnParticle(Particle.DRIPPING_WATER, loc, 15, .05, .05, .05, 0);
                 }
 
                 if (loc.getBlock().getType().isSolid())
@@ -173,7 +173,7 @@ public class WaterSpells extends NpcAbility {
     }
 
     private void vortex(Entity caster, double multiplier) {
-        if (!npc && caster.getLocation().getBlock().getType() != Material.WATER) {
+        if (caster.getLocation().getBlock().getType() != Material.WATER) {
             caster.sendMessage("§cЗайдіть у воду, щоб використовувати це заклинання!");
             return;
         }
@@ -234,8 +234,8 @@ public class WaterSpells extends NpcAbility {
                         }
                     }
 
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.WATER_WAKE, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.WATER_BUBBLE, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DRIPPING_WATER, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.BUBBLE_POP, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, i * 25, 2);
         }
@@ -266,6 +266,7 @@ public class WaterSpells extends NpcAbility {
 
         new BukkitRunnable() {
             int counter = 0;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -285,12 +286,19 @@ public class WaterSpells extends NpcAbility {
                 if (random.nextBoolean())
                     loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX(), loc.getY() + y, loc.getZ() + z, 1, 0, 0, 0, 0);
 
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc, 10, 0.25, 0.25, 0.25, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc, 10, 0.25, 0.25, 0.25, dust);
 
-                if (counter >= 15 * 20 && !npc) {
+                if (counter >= 15 * 20) {
+                    logBlockBreak(uuid, new CustomLocation(loc));
                     loc.getBlock().setType(Material.AIR);
                     cancel();
                 }
+            }
+
+            @Override
+            public synchronized void cancel() throws IllegalStateException {
+                super.cancel();
+                rollbackChanges(uuid);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
@@ -330,8 +338,8 @@ public class WaterSpells extends NpcAbility {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.WATER_DROP, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.SLIME, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
+                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DRIPPING_WATER, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
+                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ITEM_SLIME, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
                 GeneralPurposeUtil.drawDustsForNearbyPlayers(finalLoc, 30, 12, 12, 12, dust);
                 GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.POISON, 20 * 5, 4, false, false));
                 GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.WITHER, 20 * 2, 1, false, false));
@@ -362,6 +370,7 @@ public class WaterSpells extends NpcAbility {
 
         new BukkitRunnable() {
             int counter = 20 * 45;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -376,11 +385,11 @@ public class WaterSpells extends NpcAbility {
                     if (loc.getWorld() == null)
                         return;
 
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
                     y = Math.cos(counter);
-                    GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.WATER_BUBBLE);
-                    loc.getWorld().spawnParticle(Particle.WATER_WAKE, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.BUBBLE_POP);
+                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
                 }
 
                 if (loc.getBlock().getType().isSolid()) {
@@ -388,8 +397,10 @@ public class WaterSpells extends NpcAbility {
 
                     loc.getWorld().createExplosion(loc, 4);
                     for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(loc, 3, false, false, true)) {
-                        if (!block.getType().isSolid())
+                        if (!block.getType().isSolid()) {
+                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                             block.setType(Material.WATER);
+                        }
                     }
                 }
 
@@ -407,11 +418,16 @@ public class WaterSpells extends NpcAbility {
                     cancel();
                 }
             }
+
+            @Override
+            public synchronized void cancel() throws IllegalStateException {
+                super.cancel();
+                rollbackChanges(uuid);
+            }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if (multiplier < 1.5) {
             switch ((new Random()).nextInt(2)) {
                 case 0 -> beam(caster, multiplier);

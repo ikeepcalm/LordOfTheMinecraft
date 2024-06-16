@@ -7,13 +7,11 @@ import dev.ua.ikeepcalm.cmds.BoonCmd;
 import dev.ua.ikeepcalm.cmds.MI9Cmd;
 import dev.ua.ikeepcalm.cmds.SpawnCmd;
 import dev.ua.ikeepcalm.cmds.TestCmd;
-import dev.ua.ikeepcalm.handlers.ArtifactHandler;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
 import dev.ua.ikeepcalm.listeners.*;
 import dev.ua.ikeepcalm.mystical.Beyonder;
-import dev.ua.ikeepcalm.mystical.artifacts.SealedArtifacts;
 import dev.ua.ikeepcalm.mystical.parents.*;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPotions;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPotions;
@@ -21,12 +19,10 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPotions;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
-import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -34,6 +30,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -60,10 +57,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     private MobsHandler mobsHandler;
     @Getter
     private SpiritHandler spiritHandler;
-    @Getter
-    private SealedArtifacts sealedArtifacts;
     public static HashMap<UUID, Beyonder> beyonders;
-    public static HashMap<UUID, ServerPlayer> fakePlayers = new HashMap<>();
+    public static HashMap<UUID, Player> fakePlayers = new HashMap<>();
     public static final HashMap<UUID, FogOfHistory> fogOfHistories = new HashMap<>();
     public static BossBarUtil bossBarUtil;
     @Getter
@@ -122,8 +117,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     private void enablePlugin() {
         characteristic = new Characteristic();
         spiritHandler = new SpiritHandler();
-        sealedArtifacts = new SealedArtifacts();
-        new AbilityInitHandUtil();
         try {
             createBeyondersConfig();
             createFoHConfig();
@@ -143,7 +136,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 divination,
                 new BlockHandler(),
                 new GenerationListener(),
-                new ArtifactHandler(),
                 new MI9ItemsListener()
         );
 

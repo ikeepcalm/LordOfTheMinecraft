@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting.*;
 import net.md_5.bungee.api.ChatMessageType;
@@ -24,7 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class Grafting extends NpcAbility implements Listener {
+public class Grafting extends Ability implements Listener {
 
     private final HashMap<Location[], Integer> graftedLocations;
     private final ArrayList<HealthSynchronization> healthSynchros;
@@ -36,10 +36,9 @@ public class Grafting extends NpcAbility implements Listener {
 
     private final Material[] npcGraftMaterial;
 
-    public Grafting(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Grafting(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
 
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
 
@@ -74,9 +73,7 @@ public class Grafting extends NpcAbility implements Listener {
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
-
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         World world = loc.getWorld();
         if (world == null)
             return;
@@ -186,7 +183,7 @@ public class Grafting extends NpcAbility implements Listener {
                     graftedLocations.put(new Location[]{loc1, loc2}, radius);
                 }
 
-                p.spawnParticle(Particle.SPELL_WITCH, playerLook, 400, radius / 2f, .1525, radius / 2f, 0);
+                p.spawnParticle(Particle.WITCH, playerLook, 400, radius / 2f, .1525, radius / 2f, 0);
 
                 grafting = !grafting;
             }
@@ -197,12 +194,12 @@ public class Grafting extends NpcAbility implements Listener {
                         return;
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     graftMaterial = playerLook.getBlock().getType();
                     playerLook.add(0, .5, 0);
-                    p.spawnParticle(Particle.SPELL_WITCH, playerLook, 80, .25, .25, .25, 0);
+                    p.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
 
                     new BlockToEntity(tempEnt, graftMaterial);
                     reset();
@@ -225,14 +222,14 @@ public class Grafting extends NpcAbility implements Listener {
                         }
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     if (entity == null) {
                         entity = p;
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     entityToEntities.add(new EntityToEntity(tempEnt, entity));
                     reset();
                 }
@@ -255,10 +252,10 @@ public class Grafting extends NpcAbility implements Listener {
                         }
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
-                    p.spawnParticle(Particle.SPELL_WITCH, playerLook, 80, .25, .25, .25, 0);
+                    p.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
                     stuckEntities.add(new EntityToLocation(tempEnt, playerLook.clone()));
                     reset();
                 }
@@ -281,7 +278,7 @@ public class Grafting extends NpcAbility implements Listener {
                 } catch (ConcurrentModificationException ignored) {
                 }
 
-                p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
 
                 if (!grafting)
                     tempEnt = entity;
@@ -297,7 +294,7 @@ public class Grafting extends NpcAbility implements Listener {
                         entity = p;
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     if (entity == null) {
@@ -305,7 +302,7 @@ public class Grafting extends NpcAbility implements Listener {
                         return;
                     }
 
-                    p.spawnParticle(Particle.SPELL_WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     if (tempEnt == entity) {
                         reset();
                         return;
@@ -337,8 +334,8 @@ public class Grafting extends NpcAbility implements Listener {
             if (entry.getKey()[0].getWorld() == null || entry.getKey()[1].getWorld() == null)
                 return;
 
-            p.spawnParticle(Particle.SPELL_WITCH, entry.getKey()[0], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
-            p.spawnParticle(Particle.SPELL_WITCH, entry.getKey()[1], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
+            p.spawnParticle(Particle.WITCH, entry.getKey()[0], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
+            p.spawnParticle(Particle.WITCH, entry.getKey()[1], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
         }
     }
 

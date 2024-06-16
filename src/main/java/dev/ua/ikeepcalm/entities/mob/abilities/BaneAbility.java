@@ -36,7 +36,7 @@ public class BaneAbility extends MobAbility {
 
             @Override
             public void run() {
-                user.getWorld().spawnParticle(Particle.REDSTONE, loc, 45, .5, .5, .5, dust);
+                user.getWorld().spawnParticle(Particle.DUST, loc, 45, .5, .5, .5, dust);
                 loc.add(vector);
 
                 for (Entity e : user.getWorld().getNearbyEntities(loc, 1, 1, 1)) {

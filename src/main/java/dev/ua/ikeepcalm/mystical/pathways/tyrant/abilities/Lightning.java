@@ -1,8 +1,8 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
 import org.bukkit.Location;
@@ -12,21 +12,15 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class Lightning extends NpcAbility {
+public class Lightning extends Ability {
 
     boolean destruction;
     String Destruction;
-    private final boolean npc;
 
-    public Lightning(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Lightning(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
-        this.npc = npc;
+        p = pathway.getBeyonder().getPlayer();
+        items.addToSequenceItems(identifier - 1, sequence);
         destruction = true;
     }
 
@@ -53,7 +47,7 @@ public class Lightning extends NpcAbility {
             }
         }
 
-        useNPCAbility(loc, p, getMultiplier());
+        executeAbility(loc, p, getMultiplier());
     }
 
     @Override
@@ -61,13 +55,12 @@ public class Lightning extends NpcAbility {
         return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Гуркіт Грому", "200", identifier);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if (loc.getWorld() == null)
             return;
 
-        Integer sequence = npc ? null : pathway.getSequence().getCurrentSequence();
-        TyrantSequence.spawnLighting(loc, caster, multiplier, npc, destruction, sequence);
+        Integer sequence = pathway.getSequence().getCurrentSequence();
+        TyrantSequence.spawnLighting(loc, caster, multiplier, destruction, sequence);
     }
 
     @Override

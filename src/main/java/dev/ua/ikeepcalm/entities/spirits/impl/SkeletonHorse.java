@@ -32,7 +32,7 @@ public class SkeletonHorse extends Spirit {
             if (!(nearby instanceof Player p))
                 continue;
 
-            p.spawnParticle(Particle.REDSTONE, entity.getLocation(), 5, particleOffset, particleOffset, particleOffset, dust);
+            p.spawnParticle(Particle.DUST, entity.getLocation(), 5, particleOffset, particleOffset, particleOffset, dust);
         }
     }
 }

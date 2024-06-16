@@ -1,15 +1,15 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,27 +18,25 @@ import org.bukkit.util.BlockIterator;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
-public class LightOfHoliness extends NpcAbility {
+public class LightOfHoliness extends Ability {
 
-    private final boolean npc;
 
-    public LightOfHoliness(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public LightOfHoliness(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
-        this.npc = npc;
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         loc.add(0, 19, 0);
 
         //Runnable
         final Material[] lastMaterial = {loc.getBlock().getType()};
         new BukkitRunnable() {
             int counter = 0;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -46,14 +44,14 @@ public class LightOfHoliness extends NpcAbility {
 
                 //Particles
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc.getX() + 3.8, loc.getY(), loc.getZ(), 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() - 3.8, loc.getY(), loc.getZ(), 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX(), loc.getY(), loc.getZ() + 3.8, 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX(), loc.getY(), loc.getZ() - 3.8, 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() + 3, loc.getY(), loc.getZ() + 3, 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() - 3, loc.getY(), loc.getZ() - 3, 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() - 3, loc.getY(), loc.getZ() + 3, 15, 0.15, 0, 0.15, 0, dust);
-                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() + 3, loc.getY(), loc.getZ() - 3, 15, 0.15, 0, 0.15, 0, dust);
+                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + 3.8, loc.getY(), loc.getZ(), 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() - 3.8, loc.getY(), loc.getZ(), 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX(), loc.getY(), loc.getZ() + 3.8, 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX(), loc.getY(), loc.getZ() - 3.8, 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() + 3, loc.getY(), loc.getZ() + 3, 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() - 3, loc.getY(), loc.getZ() - 3, 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() - 3, loc.getY(), loc.getZ() + 3, 15, 0.15, 0, 0.15, 0, dust);
+                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() + 3, loc.getY(), loc.getZ() - 3, 15, 0.15, 0, 0.15, 0, dust);
 
 
                 for (double i = 0; i < 3.8; i += 0.4) {
@@ -117,20 +115,29 @@ public class LightOfHoliness extends NpcAbility {
                             for (int z = -burnRadius; z <= burnRadius; z++) {
                                 if ((x * x) + (z * z) <= Math.pow(burnRadius, 2)) {
                                     Block block = caster.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
-                                    if (block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH || block.getType() == Material.COARSE_DIRT || block.getType() == Material.ROOTED_DIRT || block.getType() == Material.GRASS_BLOCK)
+                                    if (block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH || block.getType() == Material.COARSE_DIRT || block.getType() == Material.ROOTED_DIRT || block.getType() == Material.GRASS_BLOCK) {
+                                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                                         block.setType(Material.NETHERRACK);
-                                    if (block.getType() == Material.STONE || block.getType() == Material.COBBLESTONE || block.getType() == Material.DIORITE || block.getType() == Material.ANDESITE || block.getType() == Material.GRANITE || block.getType() == Material.DEEPSLATE || block.getType() == Material.TUFF || block.getType() == Material.CALCITE || block.getType() == Material.GRAVEL)
+                                    }
+                                    if (block.getType() == Material.STONE || block.getType() == Material.COBBLESTONE || block.getType() == Material.DIORITE || block.getType() == Material.ANDESITE || block.getType() == Material.GRANITE || block.getType() == Material.DEEPSLATE || block.getType() == Material.TUFF || block.getType() == Material.CALCITE || block.getType() == Material.GRAVEL) {
+                                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                                         block.setType(Material.BASALT);
-                                    if (block.getType() == Material.WATER)
+                                    }
+                                    if (block.getType() == Material.WATER) {
+                                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                                         block.setType(Material.AIR);
+                                    }
                                     if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
                                         Random rand = new Random();
                                         if (rand.nextInt(4) == 0) {
+                                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                                             block.setType(Material.FIRE);
                                         }
                                     }
-                                    if (block.getType() == Material.SAND || block.getType() == Material.RED_SAND)
+                                    if (block.getType() == Material.SAND || block.getType() == Material.RED_SAND) {
+                                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                                         block.setType(Material.GLASS);
+                                    }
                                 }
                             }
                         }
@@ -141,7 +148,7 @@ public class LightOfHoliness extends NpcAbility {
                     ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 15, 15, 15);
                     for (Entity entity : nearbyEntities) {
                         if (entity instanceof LivingEntity livingEntity) {
-                            if (livingEntity.getCategory() == EntityCategory.UNDEAD) {
+                             if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                 ((Damageable) entity).damage(32 * multiplier, caster);
                                 entity.setFireTicks(100);
                             } else {
@@ -185,19 +192,25 @@ public class LightOfHoliness extends NpcAbility {
                                 double x = radius * Math.cos(i);
                                 double z = radius * Math.sin(i);
                                 loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
-                                loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, 0.1, 0, 0.1, 0.15);
-                                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() + x + 0.2, loc.getY(), loc.getZ() + z + 0.2, 3, dustRipple);
+                                loc.getWorld().spawnParticle(Particle.FIREWORK, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, 0.1, 0, 0.1, 0.15);
+                                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() + x + 0.2, loc.getY(), loc.getZ() + z + 0.2, 3, dustRipple);
                             }
 
                             if (radius >= 14) {
                                 cancel();
-                                if (!npc)
-                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                             }
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 4, 1);
                 }
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
@@ -221,7 +234,7 @@ public class LightOfHoliness extends NpcAbility {
         }
         Location loc = lastBlock.getLocation();
 
-        useNPCAbility(loc, p, multiplier);
+        executeAbility(loc, p, multiplier);
     }
 
     @Override

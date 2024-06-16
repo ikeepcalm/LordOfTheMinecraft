@@ -52,23 +52,23 @@ public class SunSequence extends Sequence {
         sequenceResistances.put(7, resistances);
 
         PotionEffect[] effects7 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 0, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 0, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 0, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
         };
         sequenceEffects.put(7, effects7);
 
         PotionEffect[] effects6 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 1, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
                 new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1, false, false, true)
         };
         sequenceEffects.put(6, effects6);
 
         PotionEffect[] effects2 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 2, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 2, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 2, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 2, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 2, false, false, true),
                 new PotionEffect(PotionEffectType.SATURATION, 60, 10, false, false, true),
                 new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1, false, false, true)

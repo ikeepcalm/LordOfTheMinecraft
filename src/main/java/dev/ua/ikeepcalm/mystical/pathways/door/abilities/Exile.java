@@ -1,13 +1,16 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
-import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.MathVectorUtils;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
-import org.bukkit.*;
+import dev.ua.ikeepcalm.utils.MathVectorUtils;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -17,19 +20,14 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class Exile extends NpcAbility {
+public class Exile extends Ability {
 
-    private final boolean npc;
-
-    public Exile(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Exile(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        this.npc = npc;
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
+    public void executeAbility(Location target, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
 
@@ -66,9 +64,6 @@ public class Exile extends NpcAbility {
                 }
 
                 npcCounter--;
-                if (npc && npcCounter <= 0) {
-                    cancel();
-                }
 
                 for (Location location : locations) {
                     drawDoor(location);
@@ -81,7 +76,7 @@ public class Exile extends NpcAbility {
                     if (!(entity instanceof Mob) && !(entity instanceof Player))
                         continue;
 
-                    if (entity instanceof Player player && LordOfTheMinecraft.beyonders.containsKey(player.getUniqueId()) && !npc) {
+                    if (entity instanceof Player player && LordOfTheMinecraft.beyonders.containsKey(player.getUniqueId())) {
                         Beyonder beyonder = LordOfTheMinecraft.beyonders.get(player.getUniqueId());
                         if (random.nextInt(Math.round(160f / beyonder.getPathway().getSequence().getCurrentSequence())) == 0) {
                             Location startLoc = player.getLocation();
@@ -107,54 +102,28 @@ public class Exile extends NpcAbility {
                     }
 
                     if (random.nextInt(15) == 0) {
-                        if (!npc) {
-                            Location startLoc = entity.getLocation();
-                            Location teleportLoc = new Location(startLoc.getWorld(), random.nextInt(1000, 2000), 10000, random.nextInt(1000, 2000));
-                            entity.teleport(teleportLoc);
-                            new BukkitRunnable() {
-                                int c = 0;
+                        Location startLoc = entity.getLocation();
+                        Location teleportLoc = new Location(startLoc.getWorld(), random.nextInt(1000, 2000), 10000, random.nextInt(1000, 2000));
+                        entity.teleport(teleportLoc);
+                        new BukkitRunnable() {
+                            int c = 0;
 
-                                @Override
-                                public void run() {
-                                    if (c >= 20 * 30) {
-                                        entity.teleport(startLoc);
-                                        cancel();
-                                        return;
-                                    }
-                                    c++;
-                                    entity.teleport(teleportLoc);
+                            @Override
+                            public void run() {
+                                if (c >= 20 * 30) {
+                                    entity.teleport(startLoc);
+                                    cancel();
+                                    return;
                                 }
-                            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                        } else {
-                            Location startLoc = entity.getLocation();
-                            Location teleportLoc = new Location(Bukkit.getWorld("world_the_end"), random.nextInt(1000, 2000), 10000, random.nextInt(1000, 2000));
-                            entity.teleport(teleportLoc);
-                            new BukkitRunnable() {
-                                int c = 0;
+                                c++;
+                                entity.teleport(teleportLoc);
+                            }
+                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 
-                                @Override
-                                public void run() {
-                                    if (c >= 20 * 30) {
-                                        entity.teleport(startLoc);
-                                        cancel();
-                                        return;
-                                    }
-                                    c++;
-                                    if (entity instanceof Player pTarget) {
-                                        Particle.DustOptions dust1 = new Particle.DustOptions(Color.fromBGR(150, 12, 171), .6f);
-                                        Particle.DustOptions dust2 = new Particle.DustOptions(Color.fromBGR(255, 251, 0), .5f);
-                                        pTarget.spawnParticle(Particle.REDSTONE, pTarget.getLocation(), 25, 2, 2, 2, dust1);
-                                        pTarget.spawnParticle(Particle.REDSTONE, pTarget.getLocation(), 25, 2, 2, 2, dust2);
-                                    }
-
-                                    entity.setFallDistance(0);
-                                }
-                            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                        }
                     }
                 }
 
-                if (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                     cancel();
                 }
             }
@@ -166,7 +135,7 @@ public class Exile extends NpcAbility {
         p = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
-        useNPCAbility(p.getLocation(), p, 1);
+        executeAbility(p.getLocation(), p, 1);
     }
 
     @Override
@@ -230,7 +199,7 @@ public class Exile extends NpcAbility {
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), .5f);
                     if (j == 1)
                         dust = new Particle.DustOptions(Color.fromBGR(150, 12, 171), .6f);
-                    loc.getWorld().spawnParticle(Particle.REDSTONE, loc, 1, .05, .05, .05, dust);
+                    loc.getWorld().spawnParticle(Particle.DUST, loc, 1, .05, .05, .05, dust);
 
                     loc.subtract(v2);
                     loc.subtract(v);

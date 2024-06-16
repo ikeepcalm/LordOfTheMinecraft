@@ -80,7 +80,7 @@ public class Earthquake extends Disaster implements Listener {
                 }
 
                 if (counter % 20 == 0)
-                    world.spawnParticle(Particle.REDSTONE, startLoc, 200, 35, 0, 35, dust);
+                    world.spawnParticle(Particle.DUST, startLoc, 200, 35, 0, 35, dust);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }

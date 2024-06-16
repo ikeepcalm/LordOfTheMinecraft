@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,21 +18,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Freezing extends NpcAbility {
+public class Freezing extends Ability {
 
-    private final boolean npc;
-
-    public Freezing(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Freezing(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location targetLoc, Entity caster, double multiplier) {
+    public void executeAbility(Location targetLoc, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().add(0, 1.5, 0).getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
         if (loc.getWorld() == null)
@@ -53,8 +46,7 @@ public class Freezing extends NpcAbility {
         }
 
         if (target == null) {
-            if (!npc)
-                p.sendMessage("§cСутність не знайдено!");
+            p.sendMessage("§cСутність не знайдено!");
             return;
         }
 
@@ -65,9 +57,9 @@ public class Freezing extends NpcAbility {
 
             @Override
             public void run() {
-                finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 5, false, false, false));
+                finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5, 5, false, false, false));
 
-                loc.getWorld().spawnParticle(Particle.SNOWBALL, finalTarget.getLocation().add(0, 1, 0), 10, .25, .25, .25, 0);
+                loc.getWorld().spawnParticle(Particle.SNOWFLAKE, finalTarget.getLocation().add(0, 1, 0), 10, .25, .25, .25, 0);
 
                 counter++;
                 if (counter >= 20 * 5) {
@@ -81,7 +73,7 @@ public class Freezing extends NpcAbility {
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
 
-        useNPCAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(p.getLocation(), p, getMultiplier());
     }
 
     @Override

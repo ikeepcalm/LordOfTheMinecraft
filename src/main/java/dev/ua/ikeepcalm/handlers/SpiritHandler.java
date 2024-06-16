@@ -147,10 +147,9 @@ public class SpiritHandler implements Listener, CommandExecutor {
                 }
             }
         } else {
-            spawnSpirit = spirits.get(random.nextInt(spirits.size()));
-            while ((spawnSpirit instanceof FriendlySpirit && !allowPeaceful) || (excludeGhast && spawnSpirit instanceof MediumSpirit)) {
+            do {
                 spawnSpirit = spirits.get(random.nextInt(spirits.size()));
-            }
+            } while ((spawnSpirit instanceof FriendlySpirit && !allowPeaceful) || (excludeGhast && spawnSpirit instanceof MediumSpirit));
         }
 
         for (int i = 0; i < spawnSpirit.getSpawnCount(); i++) {
@@ -190,7 +189,7 @@ public class SpiritHandler implements Listener, CommandExecutor {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (!p.getWorld().getName().equalsIgnoreCase("world_nether"))
                         continue;
-                    p.spawnParticle(Particle.REDSTONE, p.getEyeLocation(), 50, 20, 20, 20, new Particle.DustOptions(Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)), random.nextFloat(.8f, 2.5f)));
+                    p.spawnParticle(Particle.DUST, p.getEyeLocation(), 50, 20, 20, 20, new Particle.DustOptions(Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)), random.nextFloat(.8f, 2.5f)));
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);

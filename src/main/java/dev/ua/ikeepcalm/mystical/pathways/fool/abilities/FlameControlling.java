@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,27 +15,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class FlameControlling extends NpcAbility {
+public class FlameControlling extends Ability {
 
-    private final boolean npc;
-
-    public FlameControlling(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public FlameControlling(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
-        if (!npc && pathway.getSequence().getCurrentSequence() == 7) {
+    public void executeAbility(Location target, Entity caster, double multiplier) {
+        if (pathway.getSequence().getCurrentSequence() == 7) {
             if (!p.getInventory().contains(Material.COAL) && !p.getInventory().contains(Material.CHARCOAL)) {
                 Location noFuelLoc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize());
                 if (noFuelLoc.getWorld() == null)
                     return;
-                noFuelLoc.getWorld().spawnParticle(Particle.SMOKE_NORMAL, noFuelLoc, 25, 0.05, 0.05, 0.05, 0.15);
+                noFuelLoc.getWorld().spawnParticle(Particle.SMOKE, noFuelLoc, 25, 0.05, 0.05, 0.05, 0.15);
                 return;
             }
 
@@ -69,7 +62,7 @@ public class FlameControlling extends NpcAbility {
                     return;
                 }
                 loc.getWorld().spawnParticle(Particle.FLAME, loc, 15, 0.12, 0.12, 0.12, 0.025);
-                loc.getWorld().spawnParticle(Particle.SMOKE_NORMAL, loc.clone().add(0, 0.12, 0), 6, 0.01, 0.01, 0.01, 0);
+                loc.getWorld().spawnParticle(Particle.SMOKE, loc.clone().add(0, 0.12, 0), 6, 0.01, 0.01, 0.01, 0);
 
                 if (!loc.getWorld().getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
                     for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
@@ -105,8 +98,7 @@ public class FlameControlling extends NpcAbility {
     public void useAbility() {
         double multiplier = getMultiplier();
         p = pathway.getBeyonder().getPlayer();
-
-        useNPCAbility(p.getEyeLocation(), p, multiplier);
+        executeAbility(p.getEyeLocation(), p, multiplier);
     }
 
     @Override

@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,19 +16,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Conceptualize extends NpcAbility {
+public class Conceptualize extends Ability {
 
-    private final boolean npc;
 
-    public Conceptualize(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Conceptualize(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        this.npc = npc;
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location targetLoc, Entity caster, double multiplier) {
+    public void executeAbility(Location targetLoc, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
         if (loc.getWorld() == null)
@@ -49,8 +45,7 @@ public class Conceptualize extends NpcAbility {
         }
 
         if (target == null) {
-            if (!npc)
-                p.sendMessage("§cСутність не знайдено!");
+            p.sendMessage("§cСутність не знайдено!");
             return;
         }
 
@@ -63,25 +58,19 @@ public class Conceptualize extends NpcAbility {
 
             @Override
             public void run() {
-                if (!finalTarget.isValid() || (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1])) {
-                    if (!npc)
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                if (!finalTarget.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     cancel();
                     return;
                 }
 
-                if (!npc)
-                    counter++;
+                counter++;
 
                 npcTimer--;
 
-                if (npc && npcTimer <= 0) {
-                    cancel();
-                }
-
                 finalTarget.damage(8, caster);
 
-                if (!npc && counter >= 20) {
+                if (counter >= 20) {
                     counter = 0;
                     if (pathway.getBeyonder().getSpirituality() <= Math.pow(110, timer)) {
                         cancel();
@@ -103,14 +92,8 @@ public class Conceptualize extends NpcAbility {
 
                         @Override
                         public void run() {
-                            if (!finalTarget.isValid() || (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1])) {
-                                if (!npc)
-                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                                cancel();
-                                return;
-                            }
-
-                            if (npc && npcTimer <= 0) {
+                            if (!finalTarget.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                                 cancel();
                                 return;
                             }
@@ -125,7 +108,7 @@ public class Conceptualize extends NpcAbility {
                             if (height >= 2.5)
                                 height = 0;
                             if (entityLoc.getWorld() != null)
-                                entityLoc.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 1, 0, 0, 0, 0);
+                                entityLoc.getWorld().spawnParticle(Particle.ENCHANT, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 1, 0, 0, 0, 0);
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 0);
                 }
@@ -139,7 +122,7 @@ public class Conceptualize extends NpcAbility {
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        useNPCAbility(p.getEyeLocation(), p, getMultiplier());
+        executeAbility(p.getEyeLocation(), p, getMultiplier());
     }
 
     @Override

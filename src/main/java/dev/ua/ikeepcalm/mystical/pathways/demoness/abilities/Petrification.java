@@ -1,11 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,25 +25,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Petrification extends NpcAbility {
+public class Petrification extends Ability {
 
     private final ArrayList<Entity> cooldownEntities;
 
-    private final boolean npc;
-
-    public Petrification(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Petrification(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
+        items.addToSequenceItems(identifier - 1, sequence);
         cooldownEntities = new ArrayList<>();
     }
 
-    @Override
-    public void useNPCAbility(Location targetLoc, Entity caster, double multiplier) {
+    public void executeAbility(Location targetLoc, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
         if (loc.getWorld() == null)
@@ -74,13 +66,12 @@ public class Petrification extends NpcAbility {
 
         LivingEntity finalTarget = target;
 
-        if (!npc) {
-            if (cooldownEntities.contains(finalTarget)) {
-                caster.sendMessage("§cВи ще не можете повторно скам'яніти цю сутність!");
-                return;
-            }
-            cooldownEntities.add(finalTarget);
+        if (cooldownEntities.contains(finalTarget)) {
+            caster.sendMessage("§cВи ще не можете повторно скам'яніти цю сутність!");
+            return;
         }
+        cooldownEntities.add(finalTarget);
+
 
         HashMap<Block, Material> blocks = new HashMap<>();
         final Location eLoc = finalTarget.getLocation();
@@ -98,8 +89,7 @@ public class Petrification extends NpcAbility {
                 }
 
                 if (!finalTarget.isValid()) {
-                    if (!npc)
-                        cooldownEntities.remove(finalTarget);
+                    cooldownEntities.remove(finalTarget);
                     cancelled = true;
                 }
 
@@ -111,8 +101,7 @@ public class Petrification extends NpcAbility {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (!npc)
-                                cooldownEntities.remove(finalTarget);
+                            cooldownEntities.remove(finalTarget);
                         }
                     }.runTaskLater(LordOfTheMinecraft.instance, 20 * 20);
                     cancel();
@@ -129,14 +118,14 @@ public class Petrification extends NpcAbility {
 
                 if (counter % 10 == 0) {
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(100, 100, 100), 2f);
-                    finalTarget.getWorld().spawnParticle(Particle.REDSTONE, finalTarget.getEyeLocation().clone().subtract(0, .5, 0), 50, .5, 1, .5, dust);
+                    finalTarget.getWorld().spawnParticle(Particle.DUST, finalTarget.getEyeLocation().clone().subtract(0, .5, 0), 50, .5, 1, .5, dust);
                 }
 
                 if (counter % 20 == 0) {
                     finalTarget.damage(25, p);
                 }
 
-                finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 120));
+                finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 120, 120));
 
                 for (double x = -finalTarget.getWidth() + .5; x < finalTarget.getWidth() + .5; x++) {
                     for (double z = -finalTarget.getWidth() + .5; z < finalTarget.getWidth() + .5; z++) {
@@ -157,7 +146,7 @@ public class Petrification extends NpcAbility {
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
 
-        useNPCAbility(p.getEyeLocation(), p, getMultiplier());
+        executeAbility(p.getEyeLocation(), p, getMultiplier());
     }
 
     private void petrifyLoc(Location loc) {

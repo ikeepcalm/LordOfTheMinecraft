@@ -64,7 +64,7 @@ public class MeteorShower extends Ability {
                         if (!(entity instanceof Player player))
                             continue;
                         player.spawnParticle(Particle.LAVA, startLoc, 2, 0, 0, 0, 0);
-                        player.spawnParticle(Particle.SMOKE_NORMAL, startLoc, 2, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.SMOKE, startLoc, 2, 0, 0, 0, 0);
                     }
 
                     startLoc.add(fallDir);

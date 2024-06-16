@@ -2,14 +2,13 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,20 +17,14 @@ import org.bukkit.util.BlockIterator;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HolyLightSummoning extends NpcAbility {
+public class HolyLightSummoning extends Ability {
 
-    private final boolean npc;
-
-    public HolyLightSummoning(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public HolyLightSummoning(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
-        this.npc = npc;
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         loc.add(0, 14, 0);
 
         //Runnable
@@ -68,9 +61,9 @@ public class HolyLightSummoning extends NpcAbility {
                     for (int j = 0; j < 100; j++) {
                         double x = i * Math.cos(j);
                         double z = i * Math.sin(j);
-                        loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, dust);
+                        loc.getWorld().spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, dust);
                         if (j % 2 == 0)
-                            loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc.getX() + x, loc.getY() + 1, loc.getZ() + z, 1, 0, 0, 0, 0);
+                            loc.getWorld().spawnParticle(Particle.FIREWORK, loc.getX() + x, loc.getY() + 1, loc.getZ() + z, 1, 0, 0, 0, 0);
                     }
                 }
 
@@ -122,7 +115,7 @@ public class HolyLightSummoning extends NpcAbility {
                     ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 15, 15, 15);
                     for (Entity entity : nearbyEntities) {
                         if (entity instanceof LivingEntity livingEntity) {
-                            if (livingEntity.getCategory() == EntityCategory.UNDEAD) {
+                             if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                 ((Damageable) entity).damage(22 * multiplier, caster);
                             } else {
                                 if (entity != caster)
@@ -146,15 +139,14 @@ public class HolyLightSummoning extends NpcAbility {
                                 double x = radius * Math.cos(factor);
                                 double z = radius * Math.sin(factor);
                                 loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
-                                loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, 0.1, 0, 0.1, 0.15);
-                                loc.getWorld().spawnParticle(Particle.REDSTONE, loc.getX() + x + 0.2, loc.getY(), loc.getZ() + z + 0.2, 3, dustRipple);
+                                loc.getWorld().spawnParticle(Particle.FIREWORK, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, 0.1, 0, 0.1, 0.15);
+                                loc.getWorld().spawnParticle(Particle.DUST, loc.getX() + x + 0.2, loc.getY(), loc.getZ() + z + 0.2, 3, dustRipple);
                             }
 
                             if (radius >= 9) {
                                 cancel();
 
-                                if (!npc)
-                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                             }
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
@@ -183,7 +175,7 @@ public class HolyLightSummoning extends NpcAbility {
         }
         Location loc = lastBlock.getLocation();
 
-        useNPCAbility(loc, p, multiplier);
+        executeAbility(loc, p, multiplier);
     }
 
     @Override

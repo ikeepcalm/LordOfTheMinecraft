@@ -88,26 +88,26 @@ public class TyrantItems extends Items {
 
     @Override
     public void createItems() {
-        addAbility(new RagingBlows(1, pathway, 9, this, false));
+        addAbility(new RagingBlows(1, pathway, 9, this));
 
-        addAbility(new WaterSpells(2, pathway, 8, this, false));
+        addAbility(new WaterSpells(2, pathway, 8, this));
 
-        addAbility(new WindManipulation(3, pathway, 7, this, false));
+        addAbility(new WindManipulation(3, pathway, 7, this));
 
-        addAbility(new Lightning(4, pathway, 6, this, false));
+        addAbility(new Lightning(4, pathway, 6, this));
 
-        addAbility(new SirenSong(5, pathway, 5, this, false));
+        addAbility(new SirenSong(5, pathway, 5, this));
 
-        addAbility(new Roar(6, pathway, 4, this, false));
-        addAbility(new Tornado(7, pathway, 4, this, false));
+        addAbility(new Roar(6, pathway, 4, this));
+        addAbility(new Tornado(7, pathway, 4, this));
 
-        addAbility(new Tsunami(8, pathway, 3, this, false));
-        addAbility(new LightningStorm(9, pathway, 3, this, false));
+        addAbility(new Tsunami(8, pathway, 3, this));
+        addAbility(new LightningStorm(9, pathway, 3, this));
 
-        addAbility(new ExtremeColdness(10, pathway, 2, this, false));
+        addAbility(new ExtremeColdness(10, pathway, 2, this));
 
-        addAbility(new LightningTornado(11, pathway, 1, this, false));
-        addAbility(new LightningBall(12, pathway, 1, this, false));
+        addAbility(new LightningTornado(11, pathway, 1, this));
+        addAbility(new LightningBall(12, pathway, 1, this));
     }
 
     public void addAbility(Ability ability) {

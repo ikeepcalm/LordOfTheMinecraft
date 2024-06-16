@@ -35,7 +35,7 @@ public abstract class Potion {
         assert potionMeta != null;
         potionMeta.setDisplayName(stringColor + "Послідовність " + sequence + ": " + name);
         potionMeta.setColor(color);
-        potionMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        potionMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         String[] lore;
         if (ritual.isEmpty()) {
             lore = new String[]{

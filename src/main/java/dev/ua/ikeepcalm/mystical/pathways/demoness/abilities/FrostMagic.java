@@ -1,10 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
@@ -18,23 +19,26 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.UUID;
 
-public class FrostMagic extends NpcAbility {
+public class FrostMagic extends Ability {
 
+    private static final Logger log = LoggerFactory.getLogger(FrostMagic.class);
     private Category selectedCategory = Category.Attack;
     private final Category[] categories = Category.values();
     private int selected = 0;
 
     private final Material[] convertMaterials;
 
-    public FrostMagic(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public FrostMagic(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
 
         convertMaterials = new Material[]{
                 Material.GRASS_BLOCK,
@@ -52,8 +56,7 @@ public class FrostMagic extends NpcAbility {
         };
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if ((new Random()).nextBoolean())
             attack(true, loc, caster, multiplier);
         else
@@ -92,6 +95,8 @@ public class FrostMagic extends NpcAbility {
             return;
         World world = loc.getWorld();
 
+        UUID uuid = UUID.randomUUID();
+
         for (int i = 0; i < 30; i++) {
             loc.add(vector);
             world.spawnParticle(Particle.SNOWFLAKE, loc, 40, .25, .25, .25, 0);
@@ -100,6 +105,7 @@ public class FrostMagic extends NpcAbility {
                 continue;
 
             if (loc.getBlock().getType().isSolid()) {
+                logBlockBreak(uuid, new CustomLocation(loc.clone().subtract(vector)));
                 loc.clone().subtract(vector).getBlock().setType(Material.SOUL_FIRE);
                 break;
             }
@@ -116,6 +122,7 @@ public class FrostMagic extends NpcAbility {
             if (cancelled)
                 break;
         }
+        rollbackChanges(uuid);
     }
 
     private void freeze(boolean npc, Entity e, double multiplier) {
@@ -126,9 +133,13 @@ public class FrostMagic extends NpcAbility {
 
         Random random = new Random();
 
+        UUID uuid = UUID.randomUUID();
+
         for (Block block : blocks) {
-            if (block.getType() == Material.WATER)
+            if (block.getType() == Material.WATER) {
+                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                 block.setType(Material.PACKED_ICE);
+            }
 
             if (!Arrays.asList(convertMaterials).contains(block.getType()))
                 continue;
@@ -137,6 +148,7 @@ public class FrostMagic extends NpcAbility {
                 continue;
 
             block.setType(Material.PACKED_ICE);
+            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
         }
 
         caster.getWorld().spawnParticle(Particle.SNOWFLAKE, caster.getLocation().add(0, 1.5, 0), 70, 5, 5, 5, 0);
@@ -148,6 +160,8 @@ public class FrostMagic extends NpcAbility {
             livingEntity.damage(4 * multiplier, caster);
             livingEntity.setFreezeTicks(20 * 6);
         }
+
+        rollbackChanges(uuid);
     }
 
 

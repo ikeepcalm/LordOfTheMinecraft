@@ -1,11 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,29 +17,26 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.UUID;
 
-public class ExtremeColdness extends NpcAbility {
+public class ExtremeColdness extends Ability {
 
     private final HashMap<Entity, Boolean> inUse;
 
-    public ExtremeColdness(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public ExtremeColdness(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
-
+        items.addToSequenceItems(identifier - 1, sequence);
+        p = pathway.getBeyonder().getPlayer();
         inUse = new HashMap<>();
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-        useNPCAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(p.getLocation(), p, getMultiplier());
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if (inUse.get(caster) != null && inUse.get(caster)) {
             inUse.replace(caster, false);
             return;
@@ -51,15 +49,21 @@ public class ExtremeColdness extends NpcAbility {
         }
 
         new BukkitRunnable() {
+
+            UUID uuid = UUID.randomUUID();
+
             @Override
             public void run() {
                 GeneralPurposeUtil.getNearbyBlocksInSphere(caster.getLocation(), 20, false, true, false).forEach(block -> {
                     if (block.getType() == Material.ICE || block.getType() == Material.PACKED_ICE)
                         return;
-                    if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER)
+                    if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER) {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                         block.setType(Material.ICE);
-                    else
+                    } else {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                         block.setType(Material.PACKED_ICE);
+                    }
                     GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
                 });
 
@@ -78,6 +82,7 @@ public class ExtremeColdness extends NpcAbility {
                 });
 
                 if (!caster.isValid() || inUse.get(caster) == null || !inUse.get(caster)) {
+                    rollbackChanges(uuid);
                     cancel();
                 }
             }

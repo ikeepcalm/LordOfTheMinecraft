@@ -1,13 +1,13 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
-import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
-import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import dev.ua.ikeepcalm.entities.disasters.Blizzard;
 import dev.ua.ikeepcalm.entities.disasters.Earthquake;
 import dev.ua.ikeepcalm.entities.disasters.Tornado;
 import dev.ua.ikeepcalm.entities.disasters.Tsunami;
+import dev.ua.ikeepcalm.mystical.parents.Items;
+import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
@@ -19,20 +19,18 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class CalamityManipulation extends NpcAbility {
+public class CalamityManipulation extends Ability {
 
     private Category selectedCategory = Category.BLIZZARD;
     private final Category[] categories = Category.values();
     private int selected = 0;
 
-    public CalamityManipulation(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public CalamityManipulation(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if (!(caster instanceof LivingEntity livingEntity))
             return;
         switch ((new Random().nextInt(3))) {

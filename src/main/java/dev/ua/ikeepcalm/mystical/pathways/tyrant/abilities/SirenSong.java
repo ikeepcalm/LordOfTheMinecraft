@@ -1,14 +1,13 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -18,17 +17,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SirenSong extends NpcAbility {
+public class SirenSong extends Ability {
 
     private Category selectedCategory = Category.CHAOTIC;
     private final Category[] categories = Category.values();
     private int selected = 0;
 
-    public SirenSong(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public SirenSong(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
         p = pathway.getBeyonder().getPlayer();
     }
 
@@ -79,7 +76,7 @@ public class SirenSong extends NpcAbility {
 
                 GeneralPurposeUtil.damageNearbyEntities(caster, caster.getLocation(), 10, 10, 10, 1.5 * multiplier);
                 if (counter % 2 == 0) {
-                    GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 1));
+                    GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.OOZING, 20 * 10, 1));
                     GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 1));
                 }
             }
@@ -113,8 +110,8 @@ public class SirenSong extends NpcAbility {
                     cancel();
 
                 if (caster instanceof LivingEntity livingEntity) {
-                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 8, 2, false, false));
-                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 8, 2, false, false));
+                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20 * 8, 2, false, false));
+                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 20 * 8, 2, false, false));
                     livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 8, 2, false, false));
                 }
             }
@@ -125,11 +122,6 @@ public class SirenSong extends NpcAbility {
     public ItemStack getItem() {
         p = pathway.getBeyonder().getPlayer();
         return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Спів Сирени", "400", identifier);
-    }
-
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
-
     }
 
     @Override

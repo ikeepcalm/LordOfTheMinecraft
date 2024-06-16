@@ -35,10 +35,10 @@ public class Blink extends Ability {
         if (loc.getWorld() == null)
             return;
 
-        loc.getWorld().spawnParticle(Particle.SPELL_WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
+        loc.getWorld().spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
         p.teleport(loc);
         p.setFallDistance(0);
-        loc.getWorld().spawnParticle(Particle.SPELL_WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
+        loc.getWorld().spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
     }
 
     @Override

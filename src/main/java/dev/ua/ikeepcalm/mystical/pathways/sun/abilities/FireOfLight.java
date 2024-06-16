@@ -1,18 +1,18 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,34 +20,41 @@ import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
-public class FireOfLight extends NpcAbility {
+public class FireOfLight extends Ability {
 
-    private final boolean npc;
 
-    public FireOfLight(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public FireOfLight(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        this.npc = npc;
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
-        if (!target.getBlock().getType().isSolid())
+    public void executeAbility(Location target, Entity caster, double multiplier) {
+        if (!target.getBlock().getType().isSolid()) {
             target.getBlock().setType(Material.FIRE);
+        }
+
         target.add(1, 0, 0);
-        if (!target.getBlock().getType().isSolid())
+
+        if (!target.getBlock().getType().isSolid()) {
             target.getBlock().setType(Material.FIRE);
+        }
+
         target.add(-2, 0, 0);
-        if (!target.getBlock().getType().isSolid())
+
+        if (!target.getBlock().getType().isSolid()) {
             target.getBlock().setType(Material.FIRE);
+        }
         target.add(1, 0, -1);
-        if (!target.getBlock().getType().isSolid())
+        if (!target.getBlock().getType().isSolid()) {
             target.getBlock().setType(Material.FIRE);
+        }
         target.add(0, 0, 2);
-        if (!target.getBlock().getType().isSolid())
+        if (!target.getBlock().getType().isSolid()) {
             target.getBlock().setType(Material.FIRE);
+
+        }
         target.subtract(0, 0, 1);
 
         target.add(0.5, 0.5, 0.5);
@@ -57,6 +64,7 @@ public class FireOfLight extends NpcAbility {
 
         new BukkitRunnable() {
             int counter = 0;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -69,7 +77,7 @@ public class FireOfLight extends NpcAbility {
                 ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) target.getWorld().getNearbyEntities(target, 2, 2, 2);
                 for (Entity entity : nearbyEntities) {
                     if (entity instanceof LivingEntity livingEntity) {
-                        if (livingEntity.getCategory() == EntityCategory.UNDEAD) {
+                         if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                             ((Damageable) entity).damage(10 * multiplier, caster);
                             livingEntity.setFireTicks(10 * 20);
                         }
@@ -80,12 +88,18 @@ public class FireOfLight extends NpcAbility {
                 }
 
                 if (counter >= 5 * 20) {
+                    logBlockBreak(uuid, new CustomLocation(target));
                     target.getBlock().setType(Material.AIR);
                     cancel();
-                    if (!npc)
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     target.getBlock().setType(lightBlock[0]);
                 }
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
@@ -111,7 +125,7 @@ public class FireOfLight extends NpcAbility {
         //setting the fire
         Location loc = lastBlock.getLocation().add(0, 1, 0);
 
-        useNPCAbility(loc, p, multiplier);
+        executeAbility(loc, p, multiplier);
     }
 
     @Override

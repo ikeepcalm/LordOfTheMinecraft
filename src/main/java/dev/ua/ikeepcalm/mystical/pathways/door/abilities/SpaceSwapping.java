@@ -85,7 +85,7 @@ public class SpaceSwapping extends Ability implements Listener {
 
             for (Block block : swappedBlocks) {
                 if (!block.getLocation().add(0, 1, 0).getBlock().getType().isSolid() && block.getType().isSolid())
-                    p.getWorld().spawnParticle(Particle.SPELL_WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
+                    p.getWorld().spawnParticle(Particle.WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
             }
             return;
         }

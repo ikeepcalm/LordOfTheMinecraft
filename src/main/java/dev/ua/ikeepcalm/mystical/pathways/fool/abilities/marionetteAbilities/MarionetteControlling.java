@@ -1,9 +1,9 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -111,13 +111,13 @@ public class MarionetteControlling extends Ability implements Listener {
         if (!controlling)
             return;
 
-        if(selectedMarionette == null)
+        if (selectedMarionette == null)
             return;
 
         if (e.getPlayer() != p)
             return;
 
-        if(p.getNearbyEntities(5, 5, 5).stream().anyMatch(entity -> entity instanceof LivingEntity && entity != selectedMarionette.getEntity()))
+        if (p.getNearbyEntities(5, 5, 5).stream().anyMatch(entity -> entity instanceof LivingEntity && entity != selectedMarionette.getEntity()))
             return;
 
         Vector dir = p.getEyeLocation().getDirection().normalize();
@@ -142,7 +142,7 @@ public class MarionetteControlling extends Ability implements Listener {
             startLoc.add(dir);
         }
 
-        selectedMarionette.attackWithBeyonderPower(startLoc);
+        selectedMarionette.attackMob(startLoc, 4);
     }
 
     public void stopControlling() {
@@ -227,7 +227,7 @@ public class MarionetteControlling extends Ability implements Listener {
 
         for (int i = 0; i < target.distance(startLoc); i++) {
             p.spawnParticle(
-                    Particle.REDSTONE,
+                    Particle.DUST,
                     loc,
                     1,
                     0,
@@ -241,15 +241,15 @@ public class MarionetteControlling extends Ability implements Listener {
 
     @EventHandler
     public void onEntityDamageByPlayerWhileControlling(EntityDamageByEntityEvent e) {
-        if(!controlling)
+        if (!controlling)
             return;
 
         p = pathway.getBeyonder().getPlayer();
 
-        if(e.getDamager() != p)
+        if (e.getDamager() != p)
             return;
 
-        if(selectedMarionette.getEntity() != e.getEntity())
+        if (selectedMarionette.getEntity() != e.getEntity())
             selectedMarionette.attackMob(e.getEntity(), 4);
 
         e.setCancelled(true);

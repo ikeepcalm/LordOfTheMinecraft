@@ -101,7 +101,7 @@ public class MI9ItemsListener implements Listener {
                     if (NBT.get(item, (nbt) -> {
                         return nbt.getBoolean("mi9Stick");
                     })) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
                     }
                 }

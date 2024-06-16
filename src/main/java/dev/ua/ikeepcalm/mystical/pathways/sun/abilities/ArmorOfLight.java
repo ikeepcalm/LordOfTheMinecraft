@@ -83,7 +83,7 @@ public class ArmorOfLight extends Ability implements Listener {
             public void run() {
                 Location loc = p.getLocation().add(0, 0.5, 0);
                 Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 2f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc, 2, 0.3, 0.7, 0.3, 0, dust);
+                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0, dust);
                 loc.getWorld().spawnParticle(Particle.END_ROD, loc, 1, 0.3, 0.7, 0.3, 0);
 
                 if (counter >= 20) {
@@ -133,7 +133,7 @@ public class ArmorOfLight extends Ability implements Listener {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Світловий меч");
-        itemMeta.addEnchant(Enchantment.DAMAGE_ALL, 20, true);
+        itemMeta.addEnchant(Enchantment.SHARPNESS, 2, true);
         itemMeta.addEnchant(Enchantment.FIRE_ASPECT, 5, true);
         itemMeta.addEnchant(Enchantment.SWEEPING_EDGE, 5, true);
         itemMeta.setUnbreakable(true);
@@ -156,7 +156,7 @@ public class ArmorOfLight extends Ability implements Listener {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Світловий шолом");
-        itemMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 15, true);
+        itemMeta.addEnchant(Enchantment.PROTECTION, 15, true);
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
@@ -176,7 +176,7 @@ public class ArmorOfLight extends Ability implements Listener {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Світловий нагрудник");
-        itemMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 15, true);
+        itemMeta.addEnchant(Enchantment.PROTECTION, 15, true);
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
@@ -196,7 +196,7 @@ public class ArmorOfLight extends Ability implements Listener {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Світлові штани");
-        itemMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 15, true);
+        itemMeta.addEnchant(Enchantment.PROTECTION, 15, true);
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
@@ -216,7 +216,7 @@ public class ArmorOfLight extends Ability implements Listener {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Світлові чоботи");
-        itemMeta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 15, true);
+        itemMeta.addEnchant(Enchantment.PROTECTION, 15, true);
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());

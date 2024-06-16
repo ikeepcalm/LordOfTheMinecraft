@@ -1,11 +1,8 @@
 package dev.ua.ikeepcalm.listeners;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -20,8 +17,6 @@ public class DeathListener implements Listener {
             Location loc = e.getEntity().getLocation();
             if (loc.getWorld() != null)
                 loc.getWorld().spawnParticle(Particle.CLOUD, loc.clone().subtract(0, 0.25, 0), 100, 0.35, 1, 0.35, 0);
-            ServerLevel nmsWorld = ((CraftWorld) e.getEntity().getWorld()).getHandle();
-            nmsWorld.removePlayerImmediately(LordOfTheMinecraft.fakePlayers.get(e.getEntity().getUniqueId()), Entity.RemovalReason.DISCARDED);
         }
     }
 }

@@ -40,7 +40,7 @@ public class Conceptualization extends Ability {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANTMENT_TABLE, p.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
+                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANT, p.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.hidePlayer(LordOfTheMinecraft.instance, p);

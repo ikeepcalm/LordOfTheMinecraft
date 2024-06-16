@@ -1,12 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,21 +18,18 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class LightningBall extends NpcAbility {
+public class LightningBall extends Ability {
 
-    public LightningBall(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public LightningBall(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
-
+        items.addToSequenceItems(identifier - 1, sequence);
+        p = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-        useNPCAbility(GeneralPurposeUtil.getTargetLoc(200, p), p, getMultiplier());
+        executeAbility(GeneralPurposeUtil.getTargetLoc(200, p), p, getMultiplier());
     }
 
     @Override
@@ -40,8 +37,7 @@ public class LightningBall extends NpcAbility {
         return TyrantItems.createItem(Material.PURPLE_DYE, "Громова Куля", "5000", identifier);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         Location startLoc = caster.getLocation().add(0, .75, 0);
         Vector dir = loc.toVector().subtract(caster.getLocation().add(0, .75, 0).toVector()).normalize().multiply(2);
 
@@ -58,8 +54,8 @@ public class LightningBall extends NpcAbility {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustBlue, null, .05, Particle.REDSTONE);
-                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustPurple, null, .05, Particle.REDSTONE);
+                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustBlue, null, .05, Particle.DUST);
+                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustPurple, null, .05, Particle.DUST);
 
                 if (startLoc.getBlock().getType().isSolid() || (!startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).isEmpty() && !startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).contains(caster))) {
                     new BukkitRunnable() {
@@ -67,7 +63,7 @@ public class LightningBall extends NpcAbility {
 
                         @Override
                         public void run() {
-                            TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, false, 1);
+                            TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
 
                             counter--;
                             if (counter <= 0)

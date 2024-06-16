@@ -62,8 +62,8 @@ public class StarFall extends Ability {
                 @Override
                 public void run() {
 
-                    startLoc.getWorld().spawnParticle(Particle.REDSTONE, startLoc, 8, 0.15, 0.15, 0.15, dust);
-                    p.spawnParticle(Particle.REDSTONE, startLoc, 2, 0, 0, 0, dust);
+                    startLoc.getWorld().spawnParticle(Particle.DUST, startLoc, 8, 0.15, 0.15, 0.15, dust);
+                    p.spawnParticle(Particle.DUST, startLoc, 2, 0, 0, 0, dust);
 
                     startLoc.add(fallDir);
 

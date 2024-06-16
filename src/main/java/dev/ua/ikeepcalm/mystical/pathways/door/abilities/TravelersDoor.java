@@ -265,7 +265,7 @@ public class TravelersDoor extends Ability implements Listener {
         p = pathway.getBeyonder().getPlayer();
         isTeleporting = false;
 
-        p.spawnParticle(Particle.SPELL_WITCH, p.getEyeLocation().subtract(0, .5, 0), 75, .75, .75, .75, 0);
+        p.spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 75, .75, .75, .75, 0);
 
         for (Map.Entry<Player, GameMode> entry : teleportedPlayers.entrySet()) {
             entry.getKey().setGameMode(entry.getValue());
@@ -308,7 +308,7 @@ public class TravelersDoor extends Ability implements Listener {
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), .4f);
                     if (j == 1)
                         dust = new Particle.DustOptions(Color.fromBGR(150, 12, 171), .55f);
-                    loc.getWorld().spawnParticle(Particle.REDSTONE, loc, 3, .05, .05, .05, dust);
+                    loc.getWorld().spawnParticle(Particle.DUST, loc, 3, .05, .05, .05, dust);
 
                     loc.subtract(v2);
                     loc.subtract(v);

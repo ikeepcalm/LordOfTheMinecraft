@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
 import org.bukkit.Location;
@@ -16,21 +16,17 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class LightningStorm extends NpcAbility {
+public class LightningStorm extends Ability {
 
     boolean destruction;
     String Destruction;
-    private final boolean npc;
 
-    public LightningStorm(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public LightningStorm(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
+        p = pathway.getBeyonder().getPlayer();
 
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
 
-        this.npc = npc;
         destruction = false;
     }
 
@@ -61,7 +57,7 @@ public class LightningStorm extends NpcAbility {
         loc.getWorld().setStorm(true);
         loc.getWorld().setThunderDuration(120 * 60 * 20);
 
-        useNPCAbility(loc, p, getMultiplier());
+        executeAbility(loc, p, getMultiplier());
     }
 
     @Override
@@ -69,8 +65,7 @@ public class LightningStorm extends NpcAbility {
         return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Грозова Симфонія", "750", identifier);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         if (loc.getWorld() == null)
             return;
 
@@ -92,8 +87,8 @@ public class LightningStorm extends NpcAbility {
     }
 
     private void spawnLighting(Location loc, Entity caster, double multiplier) {
-        Integer sequence = npc ? null : pathway.getSequence().getCurrentSequence();
-        TyrantSequence.spawnLighting(loc, caster, multiplier, npc, destruction, sequence);
+        Integer sequence = pathway.getSequence().getCurrentSequence();
+        TyrantSequence.spawnLighting(loc, caster, multiplier, destruction, sequence);
     }
 
     @Override

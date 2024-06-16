@@ -5,7 +5,6 @@ import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -13,8 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Objects;
 
 
 public class HolySong extends Ability {
@@ -37,9 +34,9 @@ public class HolySong extends Ability {
             public void run() {
                 p.getWorld().spawnParticle(Particle.NOTE, p.getLocation(), 50, 5, 5, 5);
                 counter++;
-                p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 40, 0, false, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 0, false, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 40, 0, false, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 0, false, false, false));
                 if (counter >= 95) {
                     counter = 0;
                     cancel();

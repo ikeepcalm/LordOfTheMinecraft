@@ -1,11 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,24 +16,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
-public class RagingBlows extends NpcAbility {
+public class RagingBlows extends Ability {
 
-    public RagingBlows(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public RagingBlows(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
+        items.addToSequenceItems(identifier - 1, sequence);
+        p = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-        useNPCAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(p.getLocation(), p, getMultiplier());
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         World world = caster.getWorld();
 
         new BukkitRunnable() {
@@ -47,7 +44,7 @@ public class RagingBlows extends NpcAbility {
                     if (!(entity instanceof Player))
                         continue;
 
-                    p.spawnParticle(Particle.EXPLOSION_NORMAL, startLoc, 10, 0, 0, 0, .25);
+                    p.spawnParticle(Particle.EXPLOSION, startLoc, 10, 0, 0, 0, .25);
                     p.spawnParticle(Particle.CRIT, startLoc, 10, 0, 0, 0, .25);
                     p.playSound(startLoc, Sound.ENTITY_GENERIC_EXPLODE, .25f, 1f);
 

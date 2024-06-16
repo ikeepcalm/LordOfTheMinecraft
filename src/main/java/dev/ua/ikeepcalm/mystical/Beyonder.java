@@ -422,9 +422,9 @@ public class Beyonder implements Listener {
         boolean survives = ((random.nextInt(100) + 1) <= lostControl);
 
         loosingControl = true;
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * timeOfLoosingControl, 3, false, false));
+        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * timeOfLoosingControl, 3, false, false));
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * timeOfLoosingControl, 3, false, false));
+        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 20 * timeOfLoosingControl, 3, false, false));
 
         //Damaging player
         new BukkitRunnable() {

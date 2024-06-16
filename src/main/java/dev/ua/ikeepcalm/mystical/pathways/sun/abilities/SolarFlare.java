@@ -1,18 +1,20 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.*;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
-
-import java.util.Objects;
 
 public class SolarFlare extends Ability {
 
@@ -27,10 +29,10 @@ public class SolarFlare extends Ability {
                 30000,
                 45000,
                 60000,
-                85000,
-                100000,
-                180000,
-                350000,
+                59000,
+                60000,
+                65000,
+                70000,
         };
     }
 
@@ -81,12 +83,20 @@ public class SolarFlare extends Ability {
                     }
                 }
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(new CustomLocation(loc), power);
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
+
     }
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SOUL_TORCH, "Спалах", "15000-350000", identifier);
+        return SunItems.createItem(Material.SOUL_TORCH, "Спалах", "15000-70000", identifier);
     }
 
     @Override

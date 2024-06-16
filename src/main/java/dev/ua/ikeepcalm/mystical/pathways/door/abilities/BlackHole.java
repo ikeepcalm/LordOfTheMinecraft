@@ -1,11 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,24 +22,16 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
-public class BlackHole extends NpcAbility {
+public class BlackHole extends Ability {
 
-    private final boolean npc;
-
-    public BlackHole(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public BlackHole(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
-
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
+    public void executeAbility(Location target, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
 
@@ -63,21 +56,14 @@ public class BlackHole extends NpcAbility {
 
             int counter = 0;
             final int spiritCounter = 20;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
 
-                if (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                     cancel();
                     return;
-                }
-
-                if (npc) {
-                    npcCounter[0]--;
-                    if (npcCounter[0] <= 0) {
-                        cancel();
-                        return;
-                    }
                 }
 
                 GeneralPurposeUtil.drawSphere(loc, 1, 20, dust, null, 0);
@@ -95,6 +81,7 @@ public class BlackHole extends NpcAbility {
                     Block b = blocks.get(random.nextInt(blocks.size()));
 
                     Material blockMaterial = b.getType();
+                    logBlockBreak(uuid, new CustomLocation(b.getLocation()));
                     b.setType(Material.AIR);
 
                     if (blockMaterial == Material.WATER || blockMaterial == Material.LAVA)
@@ -133,29 +120,28 @@ public class BlackHole extends NpcAbility {
                             Vector direction = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
                             fallingBlock.setVelocity(direction);
 
-                            if (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                            if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                                 fallingBlock.remove();
                             }
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
                 }
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!npc && !pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                     cancel();
                     return;
-                }
-
-                if (npc) {
-                    npcCounter[0]--;
-                    if (npcCounter[0] <= 0) {
-                        cancel();
-                        return;
-                    }
                 }
 
                 if (loc.getWorld() == null)
@@ -189,7 +175,7 @@ public class BlackHole extends NpcAbility {
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        useNPCAbility(p.getEyeLocation(), p, getMultiplier());
+        executeAbility(p.getEyeLocation(), p, getMultiplier());
     }
 
     @Override

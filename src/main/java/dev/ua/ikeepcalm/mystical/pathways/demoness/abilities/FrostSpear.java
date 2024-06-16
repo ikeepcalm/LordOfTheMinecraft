@@ -1,12 +1,13 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
+import dev.ua.ikeepcalm.mystical.parents.Items;
+import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
-import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,26 +20,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
-public class FrostSpear extends NpcAbility {
+public class FrostSpear extends Ability {
 
+    private static final Logger log = LoggerFactory.getLogger(FrostSpear.class);
     private final Material[] convertMaterials;
     private final Particle.DustOptions dust;
 
-    private final boolean npc;
-
-    public FrostSpear(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public FrostSpear(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
 
         dust = new Particle.DustOptions(Color.fromRGB(165, 231, 250), .5f);
         convertMaterials = new Material[]{
@@ -57,8 +52,7 @@ public class FrostSpear extends NpcAbility {
         };
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Entity caster, double multiplier) {
         if (!(caster instanceof LivingEntity))
             return;
 
@@ -75,7 +69,7 @@ public class FrostSpear extends NpcAbility {
 
         double distance = lastBlock.getLocation().distance(caster.getLocation().add(0, 1.5, 0));
 
-        loc = caster.getLocation().add(0, 1.5, 0).add(caster.getLocation().getDirection().normalize().multiply(distance)).clone();
+        Location loc = caster.getLocation().add(0, 1.5, 0).add(caster.getLocation().getDirection().normalize().multiply(distance)).clone();
 
         float angle = caster.getLocation().getYaw() / 60;
 
@@ -87,6 +81,8 @@ public class FrostSpear extends NpcAbility {
 
         new BukkitRunnable() {
             int counter = 0;
+
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -116,8 +112,7 @@ public class FrostSpear extends NpcAbility {
                                 ((Damageable) entity).damage(28 * multiplier, caster);
                                 entity.setFreezeTicks(20 * 10);
 
-                                if (!npc)
-                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                                 cancel();
                                 return;
                             }
@@ -130,8 +125,7 @@ public class FrostSpear extends NpcAbility {
                     Location freezeLoc = spearLocation.clone();
                     ArrayList<Block> blocks = GeneralPurposeUtil.getBlocksInCircleRadius(freezeLoc.getBlock(), 13, true);
 
-                    if (!npc)
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
 
                     Random random = new Random();
 
@@ -142,6 +136,7 @@ public class FrostSpear extends NpcAbility {
                         if (random.nextInt(4) == 0)
                             continue;
 
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                         block.setType(Material.PACKED_ICE);
                     }
 
@@ -158,6 +153,7 @@ public class FrostSpear extends NpcAbility {
                 }
                 if (counter >= 100) {
                     cancel();
+                    rollbackChanges(uuid);
                     return;
                 }
                 counter++;
@@ -166,8 +162,7 @@ public class FrostSpear extends NpcAbility {
 
         new BukkitRunnable() {
             public void run() {
-                if (!npc)
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 20 * 3);
     }
@@ -204,6 +199,7 @@ public class FrostSpear extends NpcAbility {
 
         new BukkitRunnable() {
             int counter = 0;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -258,6 +254,7 @@ public class FrostSpear extends NpcAbility {
                         if (random.nextInt(4) == 0)
                             continue;
 
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                         block.setType(Material.PACKED_ICE);
                     }
 
@@ -275,6 +272,7 @@ public class FrostSpear extends NpcAbility {
                 if (counter >= 160) {
                     pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     cancel();
+                    rollbackChanges(uuid);
                     return;
                 }
                 counter++;
@@ -311,7 +309,7 @@ public class FrostSpear extends NpcAbility {
                 MathVectorUtils.rotateAroundAxisX(vec, pitch);
                 MathVectorUtils.rotateAroundAxisY(vec, yaw);
                 playerLoc.subtract(vec);
-                Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.REDSTONE, playerLoc.clone(), 1, 0, 0, 0, dust);
+                Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone(), 1, 0, 0, 0, dust);
                 playerLoc.add(vec);
             }
             playerLoc.subtract(dir);
@@ -319,7 +317,7 @@ public class FrostSpear extends NpcAbility {
 
         direc.multiply(0.125);
         for (int i = 0; i < 96; i++) {
-            Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc.clone(), 10, .03, .03, .03, dust);
+            Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.clone(), 10, .03, .03, .03, dust);
             loc.add(direc);
         }
 
@@ -340,7 +338,7 @@ public class FrostSpear extends NpcAbility {
                 MathVectorUtils.rotateAroundAxisX(vec, pitch);
                 MathVectorUtils.rotateAroundAxisY(vec, yaw);
                 playerLoc.add(vec);
-                Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.REDSTONE, playerLoc.clone(), 1, 0, 0, 0, dust);
+                Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone(), 1, 0, 0, 0, dust);
                 playerLoc.subtract(vec);
             }
             playerLoc.add(dir);

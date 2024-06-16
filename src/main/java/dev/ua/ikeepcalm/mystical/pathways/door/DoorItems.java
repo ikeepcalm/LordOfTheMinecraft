@@ -3,7 +3,6 @@ package dev.ua.ikeepcalm.mystical.pathways.door;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
-import dev.ua.ikeepcalm.mystical.pathways.door.abilities.Record;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.inventory.ItemStack;
@@ -35,20 +34,19 @@ public class DoorItems extends Items {
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
                 LocalizationUtil.getLocalizedString("door", "abilities", "fog"),
                 LocalizationUtil.getLocalizedString("door", "abilities", "wind"),
-                LocalizationUtil.getLocalizedString("door", "abilities", "flash"),
-                LocalizationUtil.getLocalizedString("door", "abilities", "freeze"),
-                LocalizationUtil.getLocalizedString("door", "abilities", "electric-shock")
-
+                LocalizationUtil.getLocalizedString("door", "abilities", "flash")
         );
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("door", "abilities", "divination")
+                LocalizationUtil.getLocalizedString("door", "abilities", "freeze"),
+                LocalizationUtil.getLocalizedString("door", "abilities", "electric-shock")
+
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                LocalizationUtil.getLocalizedString("door", "abilities", "record")
+                LocalizationUtil.getLocalizedString("door", "abilities", "divination")
         );
         abilityInfo.put(6, s6);
 
@@ -100,24 +98,23 @@ public class DoorItems extends Items {
     public void createItems() {
         addAbility(new DoorOpening(1, pathway, 9, this));
         addAbility(new Fog(2, pathway, 8, this));
-        addAbility(new Wind(3, pathway, 8, this, false));
+        addAbility(new Wind(3, pathway, 8, this));
         addAbility(new Flash(4, pathway, 8, this));
-        addAbility(new Freezing(5, pathway, 8, this, false));
-        addAbility(new ElectricShock(6, pathway, 8, this, false));
-        addAbility(new Divine(7, pathway, 7, this));
-        addAbility(new Record(8, pathway, 6, this, false));
-        addAbility(new Blink(9, pathway, 5, this));
-        addAbility(new TravelersDoor(10, pathway, 5, this));
-        addAbility(new Exile(11, pathway, 4, this, false));
-        addAbility(new SpaceConcealment(12, pathway, 4, this, false));
-        addAbility(new DimensionalPocket(13, pathway, 4, this));
-        addAbility(new Wandering(14, pathway, 3, this));
-        addAbility(new Conceptualization(15, pathway, 3, this));
-        addAbility(new Conceptualize(16, pathway, 3, this, false));
-        addAbility(new BlackHole(17, pathway, 2, this, false));
-        addAbility(new SpaceSwapping(18, pathway, 2, this));
-        addAbility(new StarFall(19, pathway, 1, this));
-        addAbility(new FindPlayer(20, pathway, 1, this));
+        addAbility(new Freezing(5, pathway, 7, this));
+        addAbility(new ElectricShock(6, pathway, 7, this));
+        addAbility(new Divine(7, pathway, 6, this));
+        addAbility(new Blink(8, pathway, 5, this));
+        addAbility(new TravelersDoor(9, pathway, 5, this));
+        addAbility(new Exile(10, pathway, 4, this));
+        addAbility(new SpaceConcealment(11, pathway, 4, this));
+        addAbility(new DimensionalPocket(12, pathway, 4, this));
+        addAbility(new Wandering(13, pathway, 3, this));
+        addAbility(new Conceptualization(14, pathway, 3, this));
+        addAbility(new Conceptualize(15, pathway, 3, this));
+        addAbility(new BlackHole(16, pathway, 2, this));
+        addAbility(new SpaceSwapping(17, pathway, 2, this));
+        addAbility(new StarFall(18, pathway, 1, this));
+        addAbility(new FindPlayer(19, pathway, 1, this));
     }
 
     public void addAbility(Ability ability) {

@@ -72,7 +72,7 @@ public class FogOfHistory extends Ability implements Listener {
         ItemMeta tempMeta = barrier.getItemMeta();
         assert tempMeta != null;
         tempMeta.setDisplayName("§aПопередня сторінка");
-        tempMeta.addEnchant(Enchantment.LUCK, 1, true);
+        tempMeta.addEnchant(Enchantment.FORTUNE, 1, true);
         tempMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         barrier.setItemMeta(tempMeta);
 

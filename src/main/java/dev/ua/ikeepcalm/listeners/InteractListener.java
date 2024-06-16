@@ -60,13 +60,15 @@ public class InteractListener implements Listener {
             if (event.isLeftClick()) {
                 ItemStack item = p.getInventory().getItem(9);
                 assert item != null;
+                if (item.getType().isAir()) return;
                 if (NBT.get(item, (nbt) -> {
                     return nbt.getBoolean("openAbilities");
                 })) {
 
-                    if (p.getItemOnCursor().getType() != Material.AIR){
+                    if (p.getItemOnCursor().getType() != Material.AIR) {
                         p.getWorld().dropItem(p.getLocation(), p.getItemOnCursor());
-                    } p.setItemOnCursor(null);
+                    }
+                    p.setItemOnCursor(null);
 
                     Gui gui = Gui.normal()
                             .setStructure(

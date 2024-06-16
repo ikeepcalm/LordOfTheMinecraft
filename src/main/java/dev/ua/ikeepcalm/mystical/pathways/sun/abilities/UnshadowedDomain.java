@@ -55,7 +55,7 @@ public class UnshadowedDomain extends Ability {
                 counter++;
 
                 Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc, 65, 40, 40, 40, 0, dustSphere);
+                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc, 65, 40, 40, 40, 0, dustSphere);
                 loc.getWorld().spawnParticle(Particle.END_ROD, loc, 65, 40, 40, 40, 0);
 
                 for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {

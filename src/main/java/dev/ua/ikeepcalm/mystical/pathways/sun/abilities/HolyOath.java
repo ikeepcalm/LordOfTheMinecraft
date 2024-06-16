@@ -36,7 +36,7 @@ public class HolyOath extends Ability {
             double x2 = radius * Math.sin(y * 20);
             double z2 = radius * Math.cos(y * 20);
             Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1.25f);
-            Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc.getX() + x, loc.getY() + y, loc.getZ() + z, 10, dust);
+            Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY() + y, loc.getZ() + z, 10, dust);
             loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x2, loc.getY() + y, loc.getZ() + z2, 2, 0, 0, 0, 0);
         }
 
@@ -49,9 +49,9 @@ public class HolyOath extends Ability {
         new BukkitRunnable() {
             @Override
             public void run() {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 40, 2, false, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 2, false, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 2, false, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 40, 2, false, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 2, false, false, false));
 
                 if (pathway.getBeyonder().getSpirituality() <= 45 || !pathway.getBeyonder().online) {
                     pathway.getSequence().getUsesAbilities()[identifier - 1] = false;

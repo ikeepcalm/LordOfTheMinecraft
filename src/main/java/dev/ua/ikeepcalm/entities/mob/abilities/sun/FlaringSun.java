@@ -7,7 +7,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -80,7 +79,7 @@ public class FlaringSun extends MobAbility {
                         double z = Math.sin(a) * radius;
                         sphereLoc.add(x, y, z);
                         Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                        Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.REDSTONE, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
+                        Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
                         sphereLoc.getWorld().spawnParticle(Particle.FLAME, sphereLoc, 1, 0.25, 0.25, 0.25, 0);
                         if (counter == 1 && !sphereLoc.getBlock().getType().isSolid()) {
                             airBlocks.add(sphereLoc.getBlock());
@@ -94,7 +93,7 @@ public class FlaringSun extends MobAbility {
                 ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 10, 10, 10);
                 for (Entity entity : nearbyEntities) {
                     if (entity instanceof LivingEntity livingEntity) {
-                        if (livingEntity.getCategory() == EntityCategory.UNDEAD) {
+                         if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                             ((Damageable) entity).damage(7 * multiplier, user);
                             livingEntity.setFireTicks(20 * 20);
                         } else if (entity != user) {

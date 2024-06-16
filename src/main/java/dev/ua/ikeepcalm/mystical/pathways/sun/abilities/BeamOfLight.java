@@ -1,173 +1,31 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.MathVectorUtils;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
-public class BeamOfLight extends NpcAbility {
-    public BeamOfLight(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+public class BeamOfLight extends Ability {
+
+    private static final Logger log = LoggerFactory.getLogger(BeamOfLight.class);
+
+    public BeamOfLight(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-    }
-
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
-        Location loc = caster.getLocation().add(0, 1, 0);
-        Vector direction = loc.getDirection().normalize().multiply(.5);
-        World world = caster.getWorld();
-
-        Random random = new Random();
-
-        new BukkitRunnable() {
-            int counter = 0;
-
-            @Override
-            public void run() {
-                counter++;
-
-                Location tempLoc = loc.clone();
-
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-
-                for (int i = 0; i < 48; i++) {
-                    tempLoc.add(direction);
-                    world.spawnParticle(Particle.REDSTONE, tempLoc, 2, 0, 0, 0, dust);
-                }
-
-                if (counter > 25)
-                    cancel();
-            }
-
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-
-        new BukkitRunnable() {
-
-            final int circlePoints = 25;
-            double radius = .15;
-
-            final Location loc = caster.getLocation().add(0, 1, 0);
-            final World world = caster.getWorld();
-
-            final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
-            final double yaw = -loc.getYaw() * 0.017453292F;
-
-            final double increment = (2 * Math.PI) / circlePoints;
-
-
-            @Override
-            public void run() {
-                Location tempLoc = loc.clone();
-
-                for (int i = 0; i < 48; i++) {
-                    tempLoc.add(direction);
-
-                    //Particle effects
-                    //Calls rotateAroundAxis() functions from VectorUtils class
-                    for (int j = 0; j < circlePoints; j++) {
-                        //use i instead of j for cool looking effect, maybe later
-                        double angle = j * increment;
-                        double x = radius * Math.cos(angle);
-                        double z = radius * Math.sin(angle);
-
-                        Vector vec = new Vector(x, 0, z);
-                        MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                        MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                        tempLoc.add(vec);
-
-                        world.spawnParticle(Particle.END_ROD, tempLoc, 1, .05, .05, .05, 0);
-                        if (tempLoc.getBlock().getType().getHardness() >= 0) {
-                            if (random.nextInt(3) == 0)
-                                tempLoc.getBlock().setType(Material.FIRE);
-                            else
-                                tempLoc.getBlock().setType(Material.AIR);
-                        }
-
-                        tempLoc.subtract(vec);
-                    }
-
-                    if (world.getNearbyEntities(tempLoc, 4, 4, 4).isEmpty())
-                        continue;
-
-                    for (Entity e : world.getNearbyEntities(tempLoc, 4, 4, 4)) {
-                        if (!(e instanceof LivingEntity livingEntity) || e == caster)
-                            continue;
-                        if (livingEntity.getCategory() == EntityCategory.UNDEAD)
-                            livingEntity.damage(18 * multiplier, caster);
-                        livingEntity.damage(10 * multiplier, caster);
-                    }
-
-                }
-
-                radius += .25;
-
-                if (radius > 1.75) {
-                    cancel();
-                }
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 25, 0);
-
-        new BukkitRunnable() {
-
-            final int circlePoints = 20;
-            double radius = .15;
-
-            final Location loc = caster.getLocation().add(0, 1, 0);
-            final World world = caster.getWorld();
-
-            final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
-            final double yaw = -loc.getYaw() * 0.017453292F;
-
-            final double increment = (2 * Math.PI) / circlePoints;
-
-
-            @Override
-            public void run() {
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-
-                Location tempLoc = loc.clone();
-
-                for (int i = 0; i < 48; i++) {
-                    tempLoc.add(direction);
-
-                    //Particle effects
-                    //Calls rotateAroundAxis() functions from VectorUtils class
-                    for (int j = 0; j < circlePoints; j++) {
-                        //use i instead of j for cool looking effect, maybe later
-                        double angle = j * increment;
-                        double x = radius * Math.cos(angle);
-                        double z = radius * Math.sin(angle);
-
-                        Vector vec = new Vector(x, 0, z);
-                        MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                        MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                        tempLoc.add(vec);
-
-                        world.spawnParticle(Particle.REDSTONE, tempLoc, 5, .15, .15, .15, dust);
-
-                        tempLoc.subtract(vec);
-                    }
-                }
-
-                radius += .6;
-
-                if (radius > 2.5)
-                    cancel();
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 24, 0);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
     @Override
@@ -196,19 +54,18 @@ public class BeamOfLight extends NpcAbility {
 
                 for (int i = 0; i < 48; i++) {
                     tempLoc.add(direction);
-                    world.spawnParticle(Particle.REDSTONE, tempLoc, 2, 0, 0, 0, dust);
+                    world.spawnParticle(Particle.DUST, tempLoc, 2, 0, 0, 0, dust);
                 }
 
-                if (counter > 25)
-                    cancel();
+                if (counter > 25) cancel();
             }
 
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 
         new BukkitRunnable() {
 
-            final int circlePoints = 25;
-            double radius = .15;
+            final int circlePoints = 8;
+            double radius = .10;
 
             final Location loc = p.getEyeLocation();
             final World world = p.getWorld();
@@ -218,6 +75,7 @@ public class BeamOfLight extends NpcAbility {
 
             final double increment = (2 * Math.PI) / circlePoints;
 
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -240,24 +98,24 @@ public class BeamOfLight extends NpcAbility {
                         tempLoc.add(vec);
 
                         world.spawnParticle(Particle.END_ROD, tempLoc, 1, .05, .05, .05, 0);
-                        if (tempLoc.getBlock().getType().getHardness() >= 0) {
-                            if (random.nextInt(3) == 0)
+                        if (tempLoc.getBlock().getType().getHardness() > 0) {
+                            if (random.nextInt(3) == 0) {
+                                logBlockBreak(uuid, new CustomLocation(tempLoc));
                                 tempLoc.getBlock().setType(Material.FIRE);
-                            else
+                            } else {
+                                logBlockBreak(uuid, new CustomLocation(tempLoc));
                                 tempLoc.getBlock().setType(Material.AIR);
+                            }
                         }
 
                         tempLoc.subtract(vec);
                     }
 
-                    if (world.getNearbyEntities(tempLoc, 4, 4, 4).isEmpty())
-                        continue;
+                    if (world.getNearbyEntities(tempLoc, 4, 4, 4).isEmpty()) continue;
 
                     for (Entity e : world.getNearbyEntities(tempLoc, 4, 4, 4)) {
-                        if (!(e instanceof LivingEntity livingEntity) || e == p)
-                            continue;
-                        if (livingEntity.getCategory() == EntityCategory.UNDEAD)
-                            livingEntity.damage(18 * multiplier);
+                        if (!(e instanceof LivingEntity livingEntity) || e == p) continue;
+                         if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(e.getType())) livingEntity.damage(18 * multiplier);
                         livingEntity.damage(10 * multiplier);
                     }
 
@@ -266,11 +124,14 @@ public class BeamOfLight extends NpcAbility {
                 radius += .25;
 
                 if (radius > 1.75) {
+                    rollbackChanges(uuid);
                     cancel();
                     pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                 }
+
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 25, 0);
+
 
         new BukkitRunnable() {
 
@@ -308,7 +169,7 @@ public class BeamOfLight extends NpcAbility {
                         MathVectorUtils.rotateAroundAxisY(vec, yaw);
                         tempLoc.add(vec);
 
-                        world.spawnParticle(Particle.REDSTONE, tempLoc, 5, .15, .15, .15, dust);
+                        world.spawnParticle(Particle.DUST, tempLoc, 5, .15, .15, .15, dust);
 
                         tempLoc.subtract(vec);
                     }
@@ -316,8 +177,7 @@ public class BeamOfLight extends NpcAbility {
 
                 radius += .6;
 
-                if (radius > 2.5)
-                    cancel();
+                if (radius > 2.5) cancel();
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 24, 0);
     }

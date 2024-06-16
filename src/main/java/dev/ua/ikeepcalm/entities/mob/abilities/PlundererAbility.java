@@ -40,14 +40,14 @@ public class PlundererAbility extends MobAbility {
 
             @Override
             public void run() {
-                user.getWorld().spawnParticle(Particle.REDSTONE, startLoc, 4, .05, .05, .05, dust);
+                user.getWorld().spawnParticle(Particle.DUST, startLoc, 4, .05, .05, .05, dust);
                 startLoc.add(vector);
 
                 for (Entity e : user.getWorld().getNearbyEntities(startLoc, 1, 1, 1)) {
                     if (e != playerTarget)
                         continue;
                     playerTarget.damage(4, user);
-                    playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 2));
+                    playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
                     playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
                     cancel();
                 }

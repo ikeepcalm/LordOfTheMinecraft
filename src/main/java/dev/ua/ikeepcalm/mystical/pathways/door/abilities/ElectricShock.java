@@ -1,8 +1,8 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,21 +16,14 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class ElectricShock extends NpcAbility {
+public class ElectricShock extends Ability {
 
-    private final boolean npc;
-
-    public ElectricShock(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public ElectricShock(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location target, Entity caster, double multiplier) {
+    public void executeAbility(Location target, Entity caster, double multiplier) {
         Location loc = caster.getLocation().add(0, 1.5, 0);
 
         Random random = new Random();
@@ -38,7 +31,7 @@ public class ElectricShock extends NpcAbility {
         if (loc.getWorld() == null)
             return;
 
-        Vector v = npc ? target.toVector().subtract(loc.toVector()).normalize().multiply(.5) : loc.getDirection().normalize().multiply(.5);
+        Vector v = loc.getDirection().normalize().multiply(.5);
         outerloop:
         for (int i = 0; i < 30; i++) {
             for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
@@ -57,7 +50,7 @@ public class ElectricShock extends NpcAbility {
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
 
-        useNPCAbility(p.getEyeLocation(), p, 1);
+        executeAbility(p.getEyeLocation(), p, 1);
     }
 
     @Override

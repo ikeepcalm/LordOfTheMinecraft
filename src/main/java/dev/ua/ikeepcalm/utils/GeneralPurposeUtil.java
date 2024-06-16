@@ -88,7 +88,7 @@ public class GeneralPurposeUtil {
                     if (player.getWorld() != loc.getWorld() || player.getLocation().distance(loc) > 80)
                         continue;
                     if (dust != null)
-                        player.spawnParticle(Particle.REDSTONE, loc, 1, offset, offset, offset, 0, dust);
+                        player.spawnParticle(Particle.DUST, loc, 1, offset, offset, offset, 0, dust);
                     else
                         player.spawnParticle(particle, loc, 1, offset, offset, offset, 0);
                 }
@@ -213,7 +213,7 @@ public class GeneralPurposeUtil {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
                 continue;
-            p.spawnParticle(Particle.REDSTONE, loc, count, offsetX, offsetY, offsetZ, dust);
+            p.spawnParticle(Particle.DUST, loc, count, offsetX, offsetY, offsetZ, dust);
         }
     }
 

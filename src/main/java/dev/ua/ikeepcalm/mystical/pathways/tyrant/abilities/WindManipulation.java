@@ -1,9 +1,10 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -19,24 +20,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.UUID;
 
-public class WindManipulation extends NpcAbility {
+public class WindManipulation extends Ability {
 
     private Category selectedCategory = Category.BLADE;
     private final Category[] categories = Category.values();
     private int selected = 0;
-
-    private final boolean npc;
-
     private boolean flying;
 
-    public WindManipulation(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public WindManipulation(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        this.npc = npc;
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-        if (!npc)
-            p = pathway.getBeyonder().getPlayer();
+        items.addToSequenceItems(identifier - 1, sequence);
+        p = pathway.getBeyonder().getPlayer();
         flying = false;
     }
 
@@ -96,15 +92,13 @@ public class WindManipulation extends NpcAbility {
 
         Entity finalTarget = target;
 
-        if (!npc) {
-            if (pathway.getBeyonder().getSpirituality() <= 25)
-                return;
+        if (pathway.getBeyonder().getSpirituality() <= 25)
+            return;
 
-            pathway.getSequence().removeSpirituality(25);
-        }
+        pathway.getSequence().removeSpirituality(25);
 
         if (finalTarget instanceof LivingEntity livingEntity) {
-            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 25, 8, false, false));
+            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 25, 8, false, false));
         }
 
         for (int i = 0; i < 10; i++) {
@@ -143,7 +137,7 @@ public class WindManipulation extends NpcAbility {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
                             continue;
-                        player.spawnParticle(Particle.SPELL, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
                     }
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, i * 15, 2);
@@ -225,7 +219,7 @@ public class WindManipulation extends NpcAbility {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
                             continue;
-                        player.spawnParticle(Particle.SPELL, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
                     }
 
                     caster.setAllowFlight(true);
@@ -251,16 +245,16 @@ public class WindManipulation extends NpcAbility {
 
         loc.add(direction.clone().multiply(2));
 
-        if (!npc) {
-            if (pathway.getBeyonder().getSpirituality() <= 45)
-                return;
-            pathway.getSequence().removeSpirituality(45);
-        }
+        if (pathway.getBeyonder().getSpirituality() <= 45)
+            return;
+        pathway.getSequence().removeSpirituality(45);
+
 
         world.playSound(loc, Sound.ENTITY_ARROW_SHOOT, 1, 1);
 
         new BukkitRunnable() {
             int counter = 20;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -273,8 +267,10 @@ public class WindManipulation extends NpcAbility {
                 if (loc.getBlock().getType().isSolid()) {
                     if (loc.getBlock().getType().getHardness() < 0 || loc.getBlock().getType().getHardness() > .7)
                         counter = 0;
-                    else
+                    else {
+                        logBlockBreak(uuid, new CustomLocation(loc));
                         loc.getBlock().setType(Material.AIR);
+                    }
                 }
 
                 for (Entity entity : world.getNearbyEntities(loc, 1, 3, 1)) {
@@ -287,8 +283,10 @@ public class WindManipulation extends NpcAbility {
                 loc.add(direction);
 
                 counter--;
-                if (counter <= 0)
+                if (counter <= 0) {
+                    rollbackChanges(uuid);
                     cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
@@ -301,12 +299,12 @@ public class WindManipulation extends NpcAbility {
         Random random = new Random();
 
         for (double d = 0; d < 1.75; d += .15) {
-            drawPlayer.spawnParticle(Particle.SPELL, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.25, d))), 1, 0, 0, 0, 0);
+            drawPlayer.spawnParticle(Particle.ASH, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.25, d))), 1, 0, 0, 0, 0);
             if (random.nextInt(4) == 0)
                 drawPlayer.spawnParticle(Particle.CLOUD, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.5, d))), 1, 0, 0, 0, 0);
         }
         for (double d = 0; d > -1.75; d -= .15) {
-            drawPlayer.spawnParticle(Particle.SPELL, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.25, d * -1))), 1, 0, 0, 0, 0);
+            drawPlayer.spawnParticle(Particle.ASH, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.25, d * -1))), 1, 0, 0, 0, 0);
             if (random.nextInt(4) == 0)
                 drawPlayer.spawnParticle(Particle.CLOUD, loc.clone().add(0, d, 0).add(dir.clone().multiply(Math.pow(2.5, d))), 1, 0, 0, 0, 0);
         }
@@ -317,8 +315,7 @@ public class WindManipulation extends NpcAbility {
         return TyrantItems.createItem(Material.FEATHER, "Володарювання Вітром", "різниться", identifier);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         switch ((new Random()).nextInt(2)) {
             case 0 -> bind(caster);
             case 1 -> blade(caster, multiplier);

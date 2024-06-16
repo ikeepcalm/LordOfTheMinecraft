@@ -62,7 +62,7 @@ public class Hiding extends Ability implements Listener {
             @Override
             public void run() {
 
-                p.spawnParticle(Particle.REDSTONE, p.getLocation(), 500, 6, 6, 6, dust);
+                p.spawnParticle(Particle.DUST, p.getLocation(), 500, 6, 6, 6, dust);
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.hidePlayer(LordOfTheMinecraft.instance, p);
                 }

@@ -18,11 +18,8 @@ import java.util.Random;
 
 public class LightningTornado extends Disaster {
 
-    private final boolean npc;
-
-    public LightningTornado(LivingEntity p, boolean npc) {
+    public LightningTornado(LivingEntity p) {
         super(p);
-        this.npc = npc;
     }
 
     @Override
@@ -94,7 +91,7 @@ public class LightningTornado extends Disaster {
                 }
 
                 if (random.nextInt(35) == 0)
-                    TyrantSequence.spawnLighting(location.clone(), p, 7, npc, false, 1);
+                    TyrantSequence.spawnLighting(location.clone(), p, 7, false, 1);
 
                 if (whileCounter <= 1)
                     return;

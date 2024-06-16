@@ -46,7 +46,7 @@ public class Meteor extends Disaster {
                 startLoc.add(vector);
                 world.spawnParticle(Particle.FLAME, startLoc, 15, 2, 2, 2, 0);
                 world.spawnParticle(Particle.LAVA, startLoc, 35, 1, 1, 1, 0);
-                world.spawnParticle(Particle.SMOKE_LARGE, startLoc, 35, 2, 2, 2, 0);
+                world.spawnParticle(Particle.SMOKE, startLoc, 35, 2, 2, 2, 0);
 
                 if (startLoc.getBlock().getType().isSolid()) {
                     for (FallingBlock block : currentBlock) {

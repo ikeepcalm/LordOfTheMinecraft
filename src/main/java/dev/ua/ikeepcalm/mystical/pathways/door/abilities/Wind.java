@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,21 +15,14 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class Wind extends NpcAbility {
+public class Wind extends Ability {
 
-    private final boolean npc;
-
-    public Wind(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public Wind(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        this.npc = npc;
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         Vector dir = caster.getLocation().getDirection().normalize().multiply(.5);
 
         Random random = new Random();
@@ -37,7 +30,7 @@ public class Wind extends NpcAbility {
         new BukkitRunnable() {
             int counter = 0;
 
-            int npcCounter = 20 * 5;
+            final int npcCounter = 20 * 5;
 
             @Override
             public void run() {
@@ -50,20 +43,14 @@ public class Wind extends NpcAbility {
                     caster.getWorld().spawnParticle(Particle.CLOUD, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
                 }
 
-                if (!npc && (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8)) {
+                if ((!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8)) {
                     cancel();
                     return;
                 }
 
                 counter++;
 
-                if (npc) {
-                    npcCounter--;
-                    if (npcCounter <= 0)
-                        cancel();
-                }
-
-                if (!npc && counter >= 20) {
+                if (counter >= 20) {
                     counter = 0;
                     pathway.getSequence().removeSpirituality(8);
                 }
@@ -77,7 +64,7 @@ public class Wind extends NpcAbility {
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        useNPCAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(p.getLocation(), p, getMultiplier());
     }
 
     @Override

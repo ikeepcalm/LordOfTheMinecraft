@@ -39,7 +39,7 @@ public class MediumSpirit extends Spirit implements Listener {
             if (!(nearby instanceof Player p))
                 continue;
 
-            p.spawnParticle(Particle.REDSTONE, entity.getLocation(), 60, particleOffset, particleOffset, particleOffset, dust);
+            p.spawnParticle(Particle.DUST, entity.getLocation(), 60, particleOffset, particleOffset, particleOffset, dust);
         }
     }
 
@@ -57,7 +57,7 @@ public class MediumSpirit extends Spirit implements Listener {
                 if (!fireball.isValid())
                     cancel();
 
-                fireball.getWorld().spawnParticle(Particle.REDSTONE, fireball.getLocation(), 10, .2, .2, .2, dust);
+                fireball.getWorld().spawnParticle(Particle.DUST, fireball.getLocation(), 10, .2, .2, .2, dust);
                 fireball.setVisualFire(false);
                 fireball.setFireTicks(0);
             }

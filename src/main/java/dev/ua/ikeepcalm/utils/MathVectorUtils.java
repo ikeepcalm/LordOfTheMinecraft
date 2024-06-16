@@ -53,7 +53,7 @@ public class MathVectorUtils {
             Vector rightDirection;
             if (direction != null && isSignificant(Math.abs(direction.getY()) - 1)) {
                 rightDirection = direction.clone();
-                double factor = Math.sqrt(1 - Math.pow(rightDirection.getY(), 2)); // a shortcut that lets us not normalize which is slow
+                double factor = Math.sqrt(1 - Math.pow(rightDirection.getY(), 2)); // a shortcut that lets us not normalize which is SLOWNESS
                 double nx = -rightDirection.getZ() / factor;
                 double nz = rightDirection.getX() / factor;
                 rightDirection.setX(nx);

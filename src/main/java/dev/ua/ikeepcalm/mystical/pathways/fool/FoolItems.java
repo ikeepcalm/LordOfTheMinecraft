@@ -93,12 +93,12 @@ public class FoolItems extends Items {
 
     @Override
     public void createItems() {
-        SpiritBodyThreads spiritBodyThreads = new SpiritBodyThreads(7, pathway, 5, this, false);
+        SpiritBodyThreads spiritBodyThreads = new SpiritBodyThreads(7, pathway, 5, this);
 
         addAbility(new Divine(1, pathway, 9, this));
 
-        addAbility(new FlameControlling(2, pathway, 8, this, false));
-        addAbility(new AirBullet(3, pathway, 8, this, false));
+        addAbility(new FlameControlling(2, pathway, 8, this));
+        addAbility(new AirBullet(3, pathway, 8, this));
 
         addAbility(new FlameJump(5, pathway, 7, this));
 
@@ -114,7 +114,7 @@ public class FoolItems extends Items {
 
         addAbility(new Miracles(11, pathway, 2, this));
 
-        addAbility(new Grafting(12, pathway, 1, this, false));
+        addAbility(new Grafting(12, pathway, 1, this));
         addAbility(new RealmOfMysteries(13, pathway, 1, this));
     }
 

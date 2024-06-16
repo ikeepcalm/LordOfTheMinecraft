@@ -37,7 +37,7 @@ public class FriendlySpirit extends Spirit {
             if (!(nearby instanceof Player p))
                 continue;
 
-            p.spawnParticle(Particle.REDSTONE, entity.getLocation(), 20, particleOffset, particleOffset, particleOffset, dust);
+            p.spawnParticle(Particle.DUST, entity.getLocation(), 20, particleOffset, particleOffset, particleOffset, dust);
         }
     }
 }

@@ -1,12 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.mystical.parents.Items;
+import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
-import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -21,33 +21,25 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SpaceConcealment extends NpcAbility implements Listener {
+public class SpaceConcealment extends Ability implements Listener {
 
     ArrayList<Entity> concealedEntities;
     private int radiusAdjust;
 
     private boolean stopped;
-    private final boolean npc;
 
-    public SpaceConcealment(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public SpaceConcealment(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
+        items.addToSequenceItems(identifier - 1, sequence);
 
         radiusAdjust = 10;
         stopped = false;
-
-        this.npc = npc;
 
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
     }
 
     @EventHandler
     public void onShift(PlayerToggleSneakEvent e) {
-        if (npc)
-            return;
-
         p = pathway.getBeyonder().getPlayer();
 
         if (e.getPlayer() != p)
@@ -59,8 +51,7 @@ public class SpaceConcealment extends NpcAbility implements Listener {
         stopped = true;
     }
 
-    @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
+    public void executeAbility(Location loc, Entity caster, double multiplier) {
         Location target = (new Random()).nextBoolean() ? loc : caster.getLocation();
         int radius = (new Random()).nextInt(4, 12);
         World world = loc.getWorld();
@@ -289,7 +280,7 @@ public class SpaceConcealment extends NpcAbility implements Listener {
                     if (j == 1)
                         dust = new Particle.DustOptions(Color.fromBGR(150, 12, 171), .55f);
                     if (p.getInventory().getItemInMainHand().isSimilar(getItem()))
-                        player.spawnParticle(Particle.REDSTONE, loc, 3, .05, .05, .05, dust);
+                        player.spawnParticle(Particle.DUST, loc, 3, .05, .05, .05, dust);
 
                     loc.subtract(v2);
                     loc.subtract(v);
@@ -311,9 +302,9 @@ public class SpaceConcealment extends NpcAbility implements Listener {
                         if (!block.getType().isSolid() || block.getType() == Material.BARRIER) {
                             block.setType(material);
                             if (!npc && p.getInventory().getItemInMainHand().isSimilar(getItem()))
-                                p.spawnParticle(Particle.SPELL_WITCH, block.getLocation(), 2, 0, 0, 0, 0);
+                                p.spawnParticle(Particle.WITCH, block.getLocation(), 2, 0, 0, 0, 0);
                             else if ((new Random().nextInt(4) == 0) && npc)
-                                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.SPELL_WITCH, block.getLocation(), 1, 0, 0, 0, 0);
+                                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.WITCH, block.getLocation(), 1, 0, 0, 0, 0);
                         }
                     }
                 }

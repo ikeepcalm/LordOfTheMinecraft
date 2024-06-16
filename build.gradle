@@ -1,0 +1,57 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id("io.github.goooler.shadow") version "8.1.7"
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'https://repo.xenondevs.xyz/releases' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url 'https://maven.citizensnpcs.co/repo' }
+    maven { url 'https://repo.maven.apache.org/maven2/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.alessiodp.com/releases' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url 'https://maven.playpro.com' }
+    maven { url 'https://repository.minecodes.pl/releases' }
+}
+
+dependencies {
+    implementation 'com.github.ForestTechMC:ForestColorAPI:1.4'
+    implementation 'xyz.xenondevs.invui:invui:1.32'
+    implementation 'dev.rollczi:liteskullapi:1.2.0'
+    compileOnly 'org.spigotmc:spigot:1.21-R0.1-SNAPSHOT'
+    compileOnly 'net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT'
+    compileOnly 'net.byteflux:libby-bukkit:1.1.5'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.13.0'
+    compileOnly 'net.coreprotect:coreprotect:22.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+java {
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
+}
+
+group = 'dev.ua.ikeepcalm'
+version = '1.0-SNAPSHOT'
+description = 'LordOfTheMinecraft'
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(ShadowJar).configureEach {
+    archiveFileName.set('LordOfTheMinecraft-SNAPSHOT.jar')
+    relocate('net.byteflux.libby', 'dev.ua.ikeepcalm.libby')
+    relocate('cz.foresttech.api', 'dev.ua.ikeepcalm.colorapi')
+}
+

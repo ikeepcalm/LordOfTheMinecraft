@@ -33,27 +33,27 @@ public class MobEffectsUtil {
 
     private static void eater(Entity entity) {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(220, 20, 255), 2f);
-        entity.getWorld().spawnParticle(Particle.REDSTONE, entity.getLocation(), 30, 1, 1, 1, dust);
+        entity.getWorld().spawnParticle(Particle.DUST, entity.getLocation(), 30, 1, 1, 1, dust);
     }
 
     private static void rooster(Entity entity) {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-        entity.getWorld().spawnParticle(Particle.REDSTONE, entity.getLocation(), 5, 1, 2, 1, dust);
+        entity.getWorld().spawnParticle(Particle.DUST, entity.getLocation(), 5, 1, 2, 1, dust);
     }
 
     private static void bird(Entity entity) {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-        entity.getWorld().spawnParticle(Particle.REDSTONE, entity.getLocation(), 5, 1, 2, 1, dust);
+        entity.getWorld().spawnParticle(Particle.DUST, entity.getLocation(), 5, 1, 2, 1, dust);
     }
 
     private static void wraith(Location location) {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256)), .6f);
-        Objects.requireNonNull(location.getWorld()).spawnParticle(Particle.REDSTONE, location, 50, .5, .5, .5, dust);
+        Objects.requireNonNull(location.getWorld()).spawnParticle(Particle.DUST, location, 50, .5, .5, .5, dust);
     }
 
     private static void bane(Location location) {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(200, 60, 0), 2f);
-        Objects.requireNonNull(location.getWorld()).spawnParticle(Particle.REDSTONE, location, 60, 1, 2, 1, dust);
+        Objects.requireNonNull(location.getWorld()).spawnParticle(Particle.DUST, location, 60, 1, 2, 1, dust);
     }
 
     private static void plunderer(Entity entity) {
@@ -74,7 +74,7 @@ public class MobEffectsUtil {
         Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getBaseValue() * 10);
         Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).getBaseValue() * 6);
 
-        wolf.getWorld().spawnParticle(Particle.REDSTONE, wolf.getLocation(), 10, 1, 1, 1, dust);
+        wolf.getWorld().spawnParticle(Particle.DUST, wolf.getLocation(), 10, 1, 1, 1, dust);
 
     }
 
@@ -140,7 +140,7 @@ public class MobEffectsUtil {
                     loc.add(v2);
 
                     for (int k = 0; k < 3; k++)
-                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc, 3, 0.02, 0.02, 0.02, dust);
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc, 3, 0.02, 0.02, 0.02, dust);
                     loc.subtract(v2);
                     loc.subtract(v);
                 }
@@ -177,7 +177,7 @@ public class MobEffectsUtil {
                 if (height >= 2.5)
                     height = 0;
                 if (entityLoc.getWorld() != null)
-                    entityLoc.getWorld().spawnParticle(Particle.REDSTONE, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, dust);
+                    entityLoc.getWorld().spawnParticle(Particle.DUST, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, dust);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, delay, 0);
     }

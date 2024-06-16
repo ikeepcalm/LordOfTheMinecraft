@@ -176,7 +176,7 @@ public class Miracles extends Ability implements Listener {
                     if (world == null)
                         return;
                     Entity entity = world.spawnEntity(loc, type);
-                    world.spawnParticle(Particle.SPELL_WITCH, loc, 2000, 1, 2, 1, 2);
+                    world.spawnParticle(Particle.WITCH, loc, 2000, 1, 2, 1, 2);
 
                     Team team = pathway.getBeyonder().getTeam();
                     team.addEntry(entity.getUniqueId().toString());
@@ -279,7 +279,7 @@ public class Miracles extends Ability implements Listener {
                                         tempLoc.subtract(0, 1, 0);
                                         if (tempLoc.getBlock().getType().isSolid()) {
                                             tempLoc.add(0, 1, 0);
-                                            world.spawnParticle(Particle.SPELL_WITCH, tempLoc, 5, .075, .075, .075, 2);
+                                            world.spawnParticle(Particle.WITCH, tempLoc, 5, .075, .075, .075, 2);
                                         }
                                     }
                                 }

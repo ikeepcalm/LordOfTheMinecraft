@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
@@ -26,11 +26,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SpiritBodyThreads extends NpcAbility implements Listener {
-
+public class SpiritBodyThreads extends Ability implements Listener {
 
     private boolean controlling;
     private Entity currentEntity;
@@ -46,13 +48,11 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     private final Particle.DustOptions dustGray, dustWhite, dustPurple, dustBlue;
 
-    public SpiritBodyThreads(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public SpiritBodyThreads(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
 
-        if (!npc) {
-            p = pathway.getBeyonder().getPlayer();
-            items.addToSequenceItems(identifier - 1, sequence);
-        }
+        p = pathway.getBeyonder().getPlayer();
+        items.addToSequenceItems(identifier - 1, sequence);
 
         controlling = false;
         currentEntity = null;
@@ -67,7 +67,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
         dustPurple = new Particle.DustOptions(Color.fromRGB(221, 0, 255), .75f);
         dustBlue = new Particle.DustOptions(Color.fromRGB(0, 128, 255), .75f);
 
-        convertTimePerLevel = new int[] {
+        convertTimePerLevel = new int[]{
                 0,
                 2,
                 4,
@@ -76,7 +76,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
                 12
         };
 
-        maxDistance = new int[] {
+        maxDistance = new int[]{
                 100000000,
                 200,
                 150,
@@ -89,18 +89,13 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     }
 
     @Override
-    public void useNPCAbility(Location loc, Entity caster, double multiplier) {
-
-    }
-
-    @Override
     public void useAbility() {
         if (controlling) {
             controlling = false;
             return;
         }
 
-        if(marionettes.stream().anyMatch(marionette -> marionette.getEntity() == currentEntity))
+        if (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == currentEntity))
             return;
 
         ((LivingEntity) currentEntity).damage(0, p);
@@ -109,8 +104,8 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
         controlling = true;
         int convertTimeSeconds = convertTimePerLevel[pathway.getSequence().getCurrentSequence()];
 
-        if(targetIsBeyonder()) {
-            switch(getTargetSequence() - pathway.getSequence().getCurrentSequence()) {
+        if (targetIsBeyonder()) {
+            switch (getTargetSequence() - pathway.getSequence().getCurrentSequence()) {
                 case -4 -> {
                     p.damage(100, currentEntity);
                     p.getWorld().createExplosion(p.getLocation(), 6);
@@ -144,7 +139,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     }
 
     private int getTargetSequence() {
-        if(LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
+        if (LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
             return LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getSequence().getCurrentSequence();
         } else return -1;
     }
@@ -152,11 +147,12 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     private void startControlling(int convertTimeSeconds) {
         new BukkitRunnable() {
             int counter = convertTimeSeconds * 20;
+
             @Override
             public void run() {
-                if(currentEntity == null || !currentEntity.isValid() || !controlling || p == null || !p.isValid()) {
+                if (currentEntity == null || !currentEntity.isValid() || !controlling || p == null || !p.isValid()) {
                     controlling = false;
-                    if(currentEntity != null && currentEntity.isValid())
+                    if (currentEntity != null && currentEntity.isValid())
                         currentEntity.removeMetadata("isBeingControlled", LordOfTheMinecraft.instance);
                     cancel();
                     return;
@@ -167,7 +163,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
                 counter--;
 
-                if(counter <= 0) {
+                if (counter <= 0) {
                     controlling = false;
                     turnIntoMarionette();
                     cancel();
@@ -178,7 +174,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     }
 
     private void turnIntoMarionette() {
-        if(currentEntity == null || !currentEntity.isValid())
+        if (currentEntity == null || !currentEntity.isValid())
             return;
 
         boolean isBeyonder = targetIsBeyonder();
@@ -187,8 +183,8 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
         int sequence = -1;
         String name = currentEntity.getName();
 
-        if(isBeyonder) {
-            if(LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
+        if (isBeyonder) {
+            if (LordOfTheMinecraft.beyonders.containsKey(currentEntity.getUniqueId())) {
                 pathway = LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getPathwayInt();
                 sequence = LordOfTheMinecraft.beyonders.get(currentEntity.getUniqueId()).getPathway().getSequence().getCurrentSequence();
             }
@@ -208,9 +204,9 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
         marionettes.add(marionette);
 
-        if(CitizensAPI.getNPCRegistry().isNPC(currentEntity))
+        if (CitizensAPI.getNPCRegistry().isNPC(currentEntity))
             CitizensAPI.getNPCRegistry().getNPC(currentEntity).destroy();
-        else if(!(currentEntity instanceof Player playerTarget))
+        else if (!(currentEntity instanceof Player playerTarget))
             currentEntity.remove();
         else
             playerTarget.setHealth(0);
@@ -238,7 +234,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
                 if (height >= 2.5)
                     height = 0;
                 if (entityLoc.getWorld() != null)
-                    entityLoc.getWorld().spawnParticle(Particle.REDSTONE, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, dustPurple);
+                    entityLoc.getWorld().spawnParticle(Particle.DUST, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, dustPurple);
 
                 counter--;
                 spiralRadius -= (1.5 / (10L * convertTimeSeconds));
@@ -254,7 +250,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     private void giveEffectsToTarget(int progress) {
         int multiplier = (int) (Math.round(8d / progress) * 1.5);
-        ((LivingEntity) currentEntity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10, multiplier));
+        ((LivingEntity) currentEntity).addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10, multiplier));
     }
 
     @Override
@@ -266,7 +262,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
         Location startLoc = p.getEyeLocation();
 
-        if(!currentEntity.isValid()) {
+        if (!currentEntity.isValid()) {
             index = 0;
             getNearbyEntities();
         }
@@ -290,7 +286,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
             if (entity == p)
                 continue;
 
-            if(marionettes.stream().anyMatch(marionette -> marionette.getEntity() == entity))
+            if (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == entity))
                 drawLineToEntity(startLoc, entity.getLocation().add(0, .5, 0), dustBlue);
             else if (entity == currentEntity)
                 drawLineToEntity(startLoc, entity.getLocation().add(0, .5, 0), dustWhite);
@@ -305,27 +301,20 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     @Override
     public void leftClick() {
-        if(p.isSneaking()) {
+        if (p.isSneaking()) {
             onlyShowPlayers = !onlyShowPlayers;
             getNearbyEntities();
             index = 0;
             return;
         }
 
-        index++;
-
-        if (index >= nearbyEntities.size()) {
-            index = 0;
-            getNearbyEntities();
-        }
-
-        while (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == nearbyEntities.get(index))) {
+        do {
             index++;
             if (index >= nearbyEntities.size()) {
                 index = 0;
                 getNearbyEntities();
             }
-        }
+        } while (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == nearbyEntities.get(index)));
 
         currentEntity = nearbyEntities.get(index);
         controlling = false;
@@ -341,7 +330,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
         for (int i = 0; i < target.distance(startLoc); i++) {
             p.spawnParticle(
-                    Particle.REDSTONE,
+                    Particle.DUST,
                     loc,
                     1,
                     0,
@@ -372,7 +361,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        if(!controlling || e.getEntity() != currentEntity)
+        if (!controlling || e.getEntity() != currentEntity)
             return;
         controlling = false;
     }
@@ -380,7 +369,7 @@ public class SpiritBodyThreads extends NpcAbility implements Listener {
     private void getNearbyEntities() {
         int currentSequence = pathway.getSequence().getCurrentSequence();
         int distance = maxDistance[currentSequence];
-        if(!onlyShowPlayers && distance > 75)
+        if (!onlyShowPlayers && distance > 75)
             distance = 75;
 
         nearbyEntities = p.getNearbyEntities(distance, distance, distance)

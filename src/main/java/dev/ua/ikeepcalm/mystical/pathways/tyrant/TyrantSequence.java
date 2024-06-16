@@ -68,24 +68,24 @@ public class TyrantSequence extends Sequence implements Listener {
     //Passive effects
     public void initEffects() {
         PotionEffect[] effects9 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 0, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 0, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 0, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 500, 5, false, false, true),
                 new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 1, false, false, true),
         };
         sequenceEffects.put(9, effects9);
 
         PotionEffect[] effects8 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 1, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 500, 5, false, false, true),
                 new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 4, false, false, true),
                 new PotionEffect(PotionEffectType.SPEED, 60, 0, false, false, true),
         };
         sequenceEffects.put(8, effects8);
         PotionEffect[] effects2 = {
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60, 1, false, false, false),
-                new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 500, 5, false, false, true),
                 new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 4, false, false, true),
                 new PotionEffect(PotionEffectType.SPEED, 60, 3, false, false, true),
@@ -132,12 +132,12 @@ public class TyrantSequence extends Sequence implements Listener {
         }
     }
 
-    public static void spawnLighting(Location loc, Entity caster, double multiplier, boolean npc, boolean destruction, Integer sequence) {
+    public static void spawnLighting(Location loc, Entity caster, double multiplier, boolean destruction, Integer sequence) {
         Location particleLoc = loc.clone().add(0, 50, 0);
 
         Random random = new Random();
 
-        final Particle.DustOptions dust = (!npc) ? (lightningColor.get(sequence)) : new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
+        final Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
 
         ArrayList<Double> randoms1 = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
@@ -150,7 +150,7 @@ public class TyrantSequence extends Sequence implements Listener {
         }
 
         for (int j = 0; j < 12; j++) {
-            final Particle.DustOptions dust1 = (!npc) ? (lightningColor.get(sequence)) : new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
+            final Particle.DustOptions dust1 =  new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
 
             int height = random.nextInt(8, 28);
 
@@ -216,8 +216,8 @@ public class TyrantSequence extends Sequence implements Listener {
         loc.getWorld().playSound(particleLoc, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 2, 1);
 
         if (destruction) {
-            int radius = !npc ? sequence > 4 ? 6 : 12 : 10;
-            int power = !npc ? (sequence > 4 ? 5 : sequence > 2 ? 11 : sequence > 1 ? 15 : 30) : 8;
+            int radius = sequence > 4 ? 6 : 10;
+            int power = sequence > 4 ? 5 : sequence > 2 ? 11 : sequence > 1 ? 15 : 30;
 
             loc.getWorld().createExplosion(particleLoc, power, true);
 

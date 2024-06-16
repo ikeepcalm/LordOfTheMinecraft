@@ -42,7 +42,7 @@ public class FlameJump extends Ability {
 
         p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1, false, false));
         Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc.clone().add(0, -0.25, 0), 120, 0.3, 1, 0.3, 0.01);
-        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.SMOKE_LARGE, loc.clone().add(0, -0.25, 0), 85, 0.3, 1, 0.3, 0.015);
+        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.SMOKE, loc.clone().add(0, -0.25, 0), 85, 0.3, 1, 0.3, 0.015);
         p.teleport(loc);
 
         justTeleported = true;

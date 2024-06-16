@@ -59,7 +59,7 @@ public class OceanOfLight extends Ability {
                 counter++;
 
                 Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 3.5f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc, 250, 50, 50, 50, 0, dustSphere);
+                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc, 250, 50, 50, 50, 0, dustSphere);
                 loc.getWorld().spawnParticle(Particle.END_ROD, loc, 120, 50, 50, 50, 0.01);
 
                 for (Entity entity : loc.getWorld().getNearbyEntities(loc, 55, 55, 55)) {

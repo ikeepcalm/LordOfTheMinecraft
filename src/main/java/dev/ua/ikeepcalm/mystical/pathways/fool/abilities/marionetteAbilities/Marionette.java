@@ -1,8 +1,6 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 
-import dev.ua.ikeepcalm.utils.AbilityInitHandUtil;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import lombok.Getter;
 import lombok.Setter;
 import net.citizensnpcs.api.CitizensAPI;
@@ -24,7 +22,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Marionette implements Listener {
 
@@ -85,7 +86,7 @@ public class Marionette implements Listener {
 
             @Override
             public void run() {
-                if(!alive) {
+                if (!alive) {
                     cancel();
                     return;
                 }
@@ -96,13 +97,13 @@ public class Marionette implements Listener {
                     return;
                 }
 
-                if (getEntity()== null || !getEntity().isValid()) {
+                if (getEntity() == null || !getEntity().isValid()) {
                     destroyMarionette();
                     cancel();
                     return;
                 }
 
-                if(isBeingControlled) {
+                if (isBeingControlled) {
                     playerControlled();
                     return;
                 }
@@ -111,7 +112,7 @@ public class Marionette implements Listener {
                     followPlayer();
 
                 if (isAngry) {
-                    if(currentTarget.hasMetadata("isBeingControlled"))
+                    if (currentTarget.hasMetadata("isBeingControlled"))
                         currentTarget = null;
                     if (currentTarget == null || !currentTarget.isValid()) {
                         isAngry = false;
@@ -134,7 +135,7 @@ public class Marionette implements Listener {
     }
 
     private void attackCurrentTarget() {
-        if(getEntity().getLocation().getWorld() != currentTarget.getLocation().getWorld())
+        if (getEntity().getLocation().getWorld() != currentTarget.getLocation().getWorld())
             return;
         if (getEntity().getLocation().distance(currentTarget.getLocation()) > 150) {
             isAngry = false;
@@ -142,49 +143,33 @@ public class Marionette implements Listener {
         }
 
         npc.getNavigator().setTarget(currentTarget, true);
-
-        attackWithBeyonderPower(currentTarget.getLocation());
+        attackMob(currentTarget, 1.0);
     }
 
     public void attackMob(Entity entity, double damage) {
-        if(getEntity() instanceof LivingEntity livingEntity && livingEntity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE) != null)
+        if (getEntity() instanceof LivingEntity livingEntity && livingEntity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE) != null)
             livingEntity.attack(entity);
         else if (entity instanceof LivingEntity livingEntity)
             livingEntity.damage(damage, getEntity());
     }
 
-    public void attackWithBeyonderPower(Location location) {
-        if ((pathway == -1 || sequence == -1 ) && isBeyonder )
+    public void attackMob(Location loc, double damage) {
+        if (loc.getWorld() != getEntity().getWorld())
             return;
 
-        if(!isBeyonder && isBeingControlled)
+        if (loc.distance(getEntity().getLocation()) > 150)
             return;
 
-        if (new Random().nextInt(cooldown) != 0 && !isBeingControlled)
-            return;
-
-        if(!isBeyonder && ability.getPathway().getSequence().getCurrentSequence() >= 5)
-            return;
-
-        List<NpcAbility> abilities;
-        if ((!isBeyonder || new Random().nextBoolean()) && !isBeingControlled) {
-            abilities = AbilityInitHandUtil.getAllAbilitiesUpToSequence(1, ability.getPathway().getSequence().getCurrentSequence());
-        } else {
-            abilities = AbilityInitHandUtil.getAllAbilitiesUpToSequence(pathway, sequence);
-        }
-
-        if(abilities.isEmpty())
-            return;
-        NpcAbility usedAbility = abilities.get(new Random().nextInt(abilities.size()));
-        usedAbility.useNPCAbility(location, getEntity(), 3);
-        cooldown = Math.round(60f / usedAbility.getSequence() * 5f);
+        npc.getNavigator().setTarget(loc);
+        Optional<Entity> entity = loc.getWorld().getNearbyEntities(loc, 1, 1, 1).stream().findAny();
+        entity.ifPresent(value -> attackMob(value, damage));
     }
 
     private void followPlayer() {
-        if(getEntity().getWorld() != getPlayer().getWorld())
+        if (getEntity().getWorld() != getPlayer().getWorld())
             return;
 
-        if(!shouldFollow) {
+        if (!shouldFollow) {
             npc.getNavigator().cancelNavigation();
             return;
         }
@@ -203,7 +188,7 @@ public class Marionette implements Listener {
 
         getEntity().teleport(getPlayer());
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.hidePlayer(LordOfTheMinecraft.instance, getPlayer());
         }
     }
@@ -226,7 +211,7 @@ public class Marionette implements Listener {
 
         alive = true;
 
-        if(!isBeyonder)
+        if (!isBeyonder)
             npc.getEntity().setCustomNameVisible(false);
     }
 
@@ -241,7 +226,7 @@ public class Marionette implements Listener {
 
     @EventHandler
     public void OnDeath(EntityDeathEvent e) {
-        if(!alive)
+        if (!alive)
             return;
         if (e.getEntity() != entity)
             return;
@@ -250,7 +235,7 @@ public class Marionette implements Listener {
     }
 
     public void destroyMarionette() {
-        if(isBeingControlled)
+        if (isBeingControlled)
             marionetteControllingAbility.stopControlling();
 
         alive = false;
@@ -265,7 +250,7 @@ public class Marionette implements Listener {
 
     @EventHandler
     public void onDamageToPlayer(EntityDamageByEntityEvent e) {
-        if(!alive)
+        if (!alive)
             return;
         if (!(e.getEntity() instanceof LivingEntity attacked) || !(e.getDamager() instanceof LivingEntity attacker))
             return;
@@ -276,10 +261,10 @@ public class Marionette implements Listener {
         if (e.getDamager() == e.getEntity())
             return;
 
-        if(ability.getMarionettes().stream().anyMatch(marionette -> marionette.getEntity() == e.getEntity()))
+        if (ability.getMarionettes().stream().anyMatch(marionette -> marionette.getEntity() == e.getEntity()))
             return;
 
-        if(isBeingControlled && e.getDamager() == getPlayer() && e.getEntity() == getEntity()) {
+        if (isBeingControlled && e.getDamager() == getPlayer() && e.getEntity() == getEntity()) {
             e.setCancelled(true);
             return;
         }
@@ -301,13 +286,13 @@ public class Marionette implements Listener {
 
     @EventHandler
     public void onMarionetteDamage(EntityDamageEvent e) {
-        if(!alive)
+        if (!alive)
             return;
 
-        if(!e.getEntity().isValid())
+        if (!e.getEntity().isValid())
             return;
 
-        if(e.getEntity() != getEntity())
+        if (e.getEntity() != getEntity())
             return;
 
         EntityDamageEvent.DamageCause[] causes = {
@@ -318,7 +303,7 @@ public class Marionette implements Listener {
                 EntityDamageEvent.DamageCause.ENTITY_EXPLOSION
         };
 
-        if(!Arrays.asList(causes).contains(e.getCause()))
+        if (!Arrays.asList(causes).contains(e.getCause()))
             return;
 
         e.setCancelled(true);

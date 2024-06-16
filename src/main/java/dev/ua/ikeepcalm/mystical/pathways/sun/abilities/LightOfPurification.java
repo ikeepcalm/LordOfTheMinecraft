@@ -2,10 +2,13 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.NpcAbility;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityCategory;
@@ -16,20 +19,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Objects;
 import java.util.Random;
 
-public class LightOfPurification extends NpcAbility {
+public class LightOfPurification extends Ability {
 
-    private final boolean npc;
 
-    public LightOfPurification(int identifier, Pathway pathway, int sequence, Items items, boolean npc) {
+    public LightOfPurification(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        if (!npc)
-            items.addToSequenceItems(identifier - 1, sequence);
-
-        this.npc = npc;
+        items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    @Override
-    public void useNPCAbility(Location ignored, Entity caster, double multiplier) {
+
+    public void executeAbility(Location ignored, Entity caster, double multiplier) {
         Location loc = caster.getLocation();
 
         //Spawning Particles
@@ -44,7 +43,7 @@ public class LightOfPurification extends NpcAbility {
                 for (int j = 0; j < 30 * radius; j++) {
                     double x = radius * Math.cos(j);
                     double z = radius * Math.sin(j);
-                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.REDSTONE, loc.getX() + x, loc.getY(), loc.getZ() + z, 5, 0.2, 1, 0.2, 0, dustRipple);
+                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 5, 0.2, 1, 0.2, 0, dustRipple);
                     Random rand = new Random();
                     if (j % (rand.nextInt(8) + 1) == 0)
                         loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0.2, 1, 0.2, 0);
@@ -60,8 +59,7 @@ public class LightOfPurification extends NpcAbility {
 
                 if (radius >= 20) {
                     cancel();
-                    if (!npc)
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
@@ -75,7 +73,7 @@ public class LightOfPurification extends NpcAbility {
 
         double multiplier = getMultiplier();
 
-        useNPCAbility(p.getLocation(), p, multiplier);
+        executeAbility(p.getLocation(), p, multiplier);
     }
 
     @Override
