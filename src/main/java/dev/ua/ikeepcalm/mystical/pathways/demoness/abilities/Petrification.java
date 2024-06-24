@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
@@ -24,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Petrification extends Ability {
 
@@ -79,6 +81,7 @@ public class Petrification extends Ability {
         new BukkitRunnable() {
             int counter = 120 * 20;
             boolean cancelled = false;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -136,9 +139,17 @@ public class Petrification extends Ability {
                 }
 
                 for (Block block : blocks.keySet()) {
+                    logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                     block.setType(Material.STONE);
                 }
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 

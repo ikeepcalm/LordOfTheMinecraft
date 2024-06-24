@@ -30,8 +30,6 @@ import java.util.UUID;
 public class Marionette implements Listener {
 
     private final boolean isBeyonder;
-    private final int sequence;
-    private final int pathway;
     private final EntityType entityType;
     private final UUID ownerId;
     private final String name;
@@ -45,7 +43,6 @@ public class Marionette implements Listener {
     @Getter
     private boolean alive;
     private LivingEntity currentTarget;
-    private int cooldown = 10;
 
     @Setter
     private boolean shouldFollow;
@@ -54,8 +51,6 @@ public class Marionette implements Listener {
 
     public Marionette(boolean isBeyonder, int sequence, int pathway, EntityType entityType, UUID ownerId, Location location, String name, SpiritBodyThreads ability, double health) {
         this.isBeyonder = isBeyonder;
-        this.sequence = sequence;
-        this.pathway = pathway;
         this.entityType = entityType;
         this.ownerId = ownerId;
         this.name = name == null ? "" : name;

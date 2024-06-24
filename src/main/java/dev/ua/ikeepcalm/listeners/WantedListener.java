@@ -13,30 +13,33 @@ import java.util.List;
 public class WantedListener implements Listener {
 
     @EventHandler
-    public void onPlayerDeath(PlayerJoinEvent e) {
+    public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         String name = p.getName();
         List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
         if (excList.contains(name)) {
-            p.sendMessage("§cВи знаходитесь у розшуку!");
+            Bukkit.broadcastMessage("========================================");
             Bukkit.broadcastMessage("§c" + name + " знаходиться у розшуку!");
-            Bukkit.broadcastMessage("Його останні координати: " + p.getLocation().getBlockX() + " " + p.getLocation().getBlockY() + " " + p.getLocation().getBlockZ());
+            Bukkit.broadcastMessage("§cЙого останні координати: " + p.getLocation().getBlockX() + " " + p.getLocation().getBlockY() + " " + p.getLocation().getBlockZ());
             Bukkit.broadcastMessage("§cЖивим або мертвим!");
+            Bukkit.broadcastMessage("========================================");
         }
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerQuitEvent e) {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         String name = p.getName();
         List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
         if (excList.contains(name)) {
+            Bukkit.broadcastMessage("========================================");
             Bukkit.broadcastMessage("§c" + name + " знаходиться у розшуку!");
             int x = p.getLocation().getBlockX() + (int) (Math.random() * 100);
             int y = p.getLocation().getBlockY() + (int) (Math.random() * 100);
             int z = p.getLocation().getBlockZ() + (int) (Math.random() * 100);
             Bukkit.broadcastMessage("Приблизні координати його зникнення: " + p.getLocation().getBlockX()  + " " + p.getLocation().getBlockY() + " " + p.getLocation().getBlockZ());
             Bukkit.broadcastMessage("§cЖивим або мертвим!");
+            Bukkit.broadcastMessage("========================================");
         }
     }
 

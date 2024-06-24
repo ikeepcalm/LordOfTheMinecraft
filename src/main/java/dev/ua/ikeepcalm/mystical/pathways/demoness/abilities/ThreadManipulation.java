@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
@@ -14,12 +15,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 public class ThreadManipulation extends Ability {
+
+    private static final Logger log = LoggerFactory.getLogger(ThreadManipulation.class);
 
     public ThreadManipulation(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
@@ -38,6 +44,7 @@ public class ThreadManipulation extends Ability {
 
     private void placeThreads(boolean npc, Entity e, Location target) {
         Entity caster = npc ? e : p;
+        UUID uuid = UUID.randomUUID();
 
         Location loc = npc ? target : p.getEyeLocation();
 
@@ -73,13 +80,22 @@ public class ThreadManipulation extends Ability {
                 continue;
 
             materials.put(block, block.getType());
+            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
             block.setType(Material.COBWEB);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    logBlockBreak(uuid, new CustomLocation(block.getLocation()));
                     block.setType(materials.get(block));
                 }
+
+                @Override
+                public void cancel() {
+                    super.cancel();
+                    rollbackChanges(uuid);
+                }
+
             }.runTaskLater(LordOfTheMinecraft.instance, 20 * 20);
         }
     }

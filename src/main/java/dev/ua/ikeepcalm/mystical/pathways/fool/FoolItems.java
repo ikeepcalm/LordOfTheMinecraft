@@ -42,12 +42,13 @@ public class FoolItems extends Items {
         abilityInfo.put(8, s8);
 
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "flaming-jump")
+                LocalizationUtil.getLocalizedString("fool", "abilities", "flaming-jump"),
+                LocalizationUtil.getLocalizedString("fool", "abilities", "paper-figurine-substitute")
         );
         abilityInfo.put(7, s7);
 
         String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
-                LocalizationUtil.getLocalizedString("fool", "abilities", "paper-figurine-substitute")
+                LocalizationUtil.getLocalizedString("fool", "abilities", "faceless")
         );
         abilityInfo.put(6, s6);
 
@@ -93,29 +94,29 @@ public class FoolItems extends Items {
 
     @Override
     public void createItems() {
-        SpiritBodyThreads spiritBodyThreads = new SpiritBodyThreads(7, pathway, 5, this);
-
         addAbility(new Divine(1, pathway, 9, this));
 
         addAbility(new FlameControlling(2, pathway, 8, this));
         addAbility(new AirBullet(3, pathway, 8, this));
 
-        addAbility(new FlameJump(5, pathway, 7, this));
+        addAbility(new FlameJump(4, pathway, 7, this));
+        addAbility(new PaperSubstitute(5, pathway, 7, this));
 
-        addAbility(new PaperSubstitute(6, pathway, 6, this));
+        addAbility(new Faceless(6, pathway, 6, this));
 
+        SpiritBodyThreads spiritBodyThreads = new SpiritBodyThreads(7, pathway, 5, this);
         addAbility(spiritBodyThreads);
         addAbility(new MarionetteControlling(8, pathway, 5, this, spiritBodyThreads));
 
-        addAbility(new AirPipe(4, pathway, 4, this));
+        addAbility(new AirPipe(9, pathway, 4, this));
 
-        addAbility(new FogOfHistory(9, pathway, 3, this));
-        addAbility(new Hiding(10, pathway, 3, this));
+        addAbility(new FogOfHistory(10, pathway, 3, this));
+        addAbility(new Hiding(11, pathway, 3, this));
 
-        addAbility(new Miracles(11, pathway, 2, this));
+        addAbility(new Miracles(12, pathway, 2, this));
 
-        addAbility(new Grafting(12, pathway, 1, this));
-        addAbility(new RealmOfMysteries(13, pathway, 1, this));
+        addAbility(new Grafting(13, pathway, 1, this));
+        addAbility(new RealmOfMysteries(14, pathway, 1, this));
     }
 
     public void addAbility(Ability ability) {

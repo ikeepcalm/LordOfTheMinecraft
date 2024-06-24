@@ -77,6 +77,6 @@ public class DarkFlames extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.CHORUS_FRUIT, "Темний Вогонь", "35", identifier);
+        return DemonessItems.createItem(Material.SOUL_CAMPFIRE, "Темний Вогонь", "35", identifier);
     }
 }

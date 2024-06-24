@@ -11,7 +11,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -94,10 +93,11 @@ public class UnshadowedSpear extends Ability {
                                 spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5);
 
                                 entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                if (((LivingEntity) entity).getCategory() == EntityCategory.UNDEAD)
+                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                     ((Damageable) entity).damage(25 * multiplier, p);
-                                else
+                                } else {
                                     ((Damageable) entity).damage(14 * multiplier, p);
+                                }
 
                                 Location sphereLoc = ((LivingEntity) entity).getEyeLocation().clone();
 

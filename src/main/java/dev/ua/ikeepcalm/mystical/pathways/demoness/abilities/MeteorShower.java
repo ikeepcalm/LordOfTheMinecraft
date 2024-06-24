@@ -1,9 +1,10 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -79,6 +80,7 @@ public class MeteorShower extends Ability {
                         }
 
                         startLoc.getWorld().createExplosion(startLoc, 25, true);
+                        rollbackChanges(new CustomLocation(startLoc), 25);
                         cancel();
                     }
                 }

@@ -26,13 +26,13 @@ repositories {
 dependencies {
     implementation 'com.github.ForestTechMC:ForestColorAPI:1.4'
     implementation 'xyz.xenondevs.invui:invui:1.32'
-    implementation 'dev.rollczi:liteskullapi:1.2.0'
     compileOnly 'org.spigotmc:spigot:1.21-R0.1-SNAPSHOT'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT'
     compileOnly 'net.byteflux:libby-bukkit:1.1.5'
     compileOnly 'org.projectlombok:lombok:1.18.32'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.13.0'
     compileOnly 'net.coreprotect:coreprotect:22.2'
+    compileOnlyApi 'LibsDisguises:LibsDisguises:10.0.44'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 

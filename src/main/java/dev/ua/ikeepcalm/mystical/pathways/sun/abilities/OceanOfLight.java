@@ -1,15 +1,14 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -65,7 +64,7 @@ public class OceanOfLight extends Ability {
                 for (Entity entity : loc.getWorld().getNearbyEntities(loc, 55, 55, 55)) {
                     if (entity instanceof LivingEntity) {
                         ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
-                        if (((LivingEntity) entity).getCategory() == EntityCategory.UNDEAD) {
+                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                             ((Damageable) entity).damage(30 * multiplier, p);
                         }
                     }

@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -15,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 public class Earthquake extends Disaster implements Listener {
     private final ArrayList<FallingBlock> fallingBlocks;
@@ -39,6 +41,7 @@ public class Earthquake extends Disaster implements Listener {
 
         new BukkitRunnable() {
             int counter = 20 * 60;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -68,6 +71,7 @@ public class Earthquake extends Disaster implements Listener {
                         if (m == Material.AIR)
                             continue;
 
+                        logBlockBreak(uuid, new CustomLocation(b.getLocation()));
                         b.setType(Material.AIR);
 
                         FallingBlock fallingBlock = world.spawnFallingBlock(b.getLocation().clone().add(0, .5, 0), m.createBlockData());
@@ -82,6 +86,16 @@ public class Earthquake extends Disaster implements Listener {
                 if (counter % 20 == 0)
                     world.spawnParticle(Particle.DUST, startLoc, 200, 35, 0, 35, dust);
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
+                for (FallingBlock fallingBlock : fallingBlocks) {
+                    fallingBlock.remove();
+                }
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 

@@ -9,10 +9,10 @@ import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -93,10 +93,12 @@ public class SpearOfLight extends Ability {
                                 spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5);
 
                                 entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                if (((LivingEntity) entity).getCategory() == EntityCategory.UNDEAD)
+                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                     ((Damageable) entity).damage(85 * multiplier, caster);
-                                else
+                                } else {
                                     ((Damageable) entity).damage(45 * multiplier, caster);
+                                }
+
                                 ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 15));
 
                                 Location sphereLoc = ((LivingEntity) entity).getEyeLocation().clone();
@@ -134,10 +136,11 @@ public class SpearOfLight extends Ability {
 
                                                             //entity hit
                                                             if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-                                                                if (((LivingEntity) entity).getCategory() == EntityCategory.UNDEAD)
+                                                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                                                     ((Damageable) entity).damage(65 * multiplier, caster);
-                                                                else
+                                                                } else {
                                                                     ((Damageable) entity).damage(30 * multiplier, caster);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -196,10 +199,11 @@ public class SpearOfLight extends Ability {
 
                                                 //entity hit
                                                 if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-                                                    if (((LivingEntity) entity).getCategory() == EntityCategory.UNDEAD)
+                                                    if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                                                         ((Damageable) entity).damage(65 * multiplier, caster);
-                                                    else
+                                                    } else {
                                                         ((Damageable) entity).damage(30 * multiplier, caster);
+                                                    }
                                                 }
                                             }
                                         }
@@ -224,13 +228,19 @@ public class SpearOfLight extends Ability {
                 }
                 counter++;
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 5, 0);
+        }.
 
-        new BukkitRunnable() {
-            public void run() {
-                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            }
-        }.runTaskLater(LordOfTheMinecraft.instance, 20 * 3);
+                runTaskTimer(LordOfTheMinecraft.instance, 5, 0);
+
+        new
+
+                BukkitRunnable() {
+                    public void run() {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    }
+                }.
+
+                runTaskLater(LordOfTheMinecraft.instance, 20 * 3);
     }
 
     @Override

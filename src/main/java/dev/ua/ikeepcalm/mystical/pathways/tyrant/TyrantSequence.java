@@ -1,13 +1,15 @@
 package dev.ua.ikeepcalm.mystical.pathways.tyrant;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Sequence;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityAirChangeEvent;
@@ -118,7 +120,7 @@ public class TyrantSequence extends Sequence implements Listener {
             if (!(entity instanceof Mob mob))
                 continue;
 
-            if (mob.getCategory() != EntityCategory.WATER && mob.getType() != EntityType.DROWNED)
+            if (Tag.ENTITY_TYPES_AQUATIC.isTagged(mob.getType()))
                 continue;
 
             mob.setTarget((LivingEntity) target);
@@ -150,7 +152,7 @@ public class TyrantSequence extends Sequence implements Listener {
         }
 
         for (int j = 0; j < 12; j++) {
-            final Particle.DustOptions dust1 =  new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
+            final Particle.DustOptions dust1 = new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.9f);
 
             int height = random.nextInt(8, 28);
 

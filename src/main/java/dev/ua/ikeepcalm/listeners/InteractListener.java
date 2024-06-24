@@ -156,7 +156,7 @@ public class InteractListener implements Listener {
             }
         }
 
-        if (currentLine.length() > 0) {
+        if (!currentLine.isEmpty()) {
             formattedLines.add(ColorAPI.colorize(pathwayColor + currentLine.toString().trim()));
         }
 

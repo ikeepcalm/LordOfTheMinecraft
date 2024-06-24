@@ -11,8 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.permissions.Permission;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -91,26 +93,29 @@ public class MI9Cmd implements CommandExecutor {
             List<Item> items = new ArrayList<>();
             for (Beyonder b : beyonder.values()) {
                 System.out.println(b.getPlayer().getName());
-                LordOfTheMinecraft.skullAPI.acceptSyncSkull(b.getPlayer().getName(), itemStack -> {
-                    ItemMeta meta = itemStack.getItemMeta();
-                    if (excList.contains(b.getPlayer().getName())) {
-                        meta.setDisplayName("§c" + b.getPlayer().getName());
-                        meta.setLore(List.of("§cВ розшуку!"));
-                    } else {
-                        meta.setDisplayName("§a" + b.getPlayer().getName());
-                        meta.setLore(List.of("§aНе в розшуку!"));
-                    }
-                    itemStack.setItemMeta(meta);
-                    NBT.modify(itemStack, (nbt) -> {
-                        nbt.setString("nickname", b.getPlayer().getName());
-                    });
+
+                ItemStack itemStack = createHeadForPlayer(b.getPlayer());
+
+                ItemMeta meta = itemStack.getItemMeta();
+                if (excList.contains(b.getPlayer().getName())) {
+                    meta.setDisplayName("§c" + b.getPlayer().getName());
+                    meta.setLore(List.of("§cВ розшуку!"));
+                } else {
+                    meta.setDisplayName("§a" + b.getPlayer().getName());
+                    meta.setLore(List.of("§aНе в розшуку!"));
+                }
+                itemStack.setItemMeta(meta);
+                NBT.modify(itemStack, (nbt) -> {
+                    nbt.setString("nickname", b.getPlayer().getName());
                     items.add(new SimpleItem(itemStack, e -> {
                         if (excList.contains(b.getPlayer().getName())) {
                             excList.remove(b.getPlayer().getName());
                             p.sendMessage("§a" + b.getPlayer().getName() + " був видалений з розшуку!");
+                            e.getEvent().getView().close();
                         } else {
                             excList.add(b.getPlayer().getName());
                             p.sendMessage("§c" + b.getPlayer().getName() + " був доданий до розшуку!");
+                            e.getEvent().getView().close();
                         }
                         LordOfTheMinecraft.instance.getExcConfig().set("exc", excList);
                         LordOfTheMinecraft.instance.saveExcConfig();
@@ -123,12 +128,14 @@ public class MI9Cmd implements CommandExecutor {
                             "# x x x x x x x #",
                             "# x x x x x x x #",
                             "# # # < # > # # #")
-                    .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL) // where paged items should be put
+                    .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                     .addIngredient('#', GeneralItemsUtil.getMagentaPane())
                     .addIngredient('<', new BackItem())
                     .addIngredient('>', new ForwardItem())
                     .setContent(items)
                     .build();
+
+
             Window window = Window.single()
                     .setViewer(p)
                     .setTitle("§6Список розшукуваних")
@@ -140,6 +147,16 @@ public class MI9Cmd implements CommandExecutor {
         }
 
         return true;
+    }
+
+    public static @NotNull ItemStack createHeadForPlayer(Player player) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta != null) {
+            meta.setOwningPlayer(player);
+        }
+        item.setItemMeta(meta);
+        return item;
     }
 
     private static class BackItem extends PageItem {

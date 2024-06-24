@@ -1,8 +1,9 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -14,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 public class Blizzard extends Disaster {
     public Blizzard(LivingEntity e) {
@@ -34,6 +36,7 @@ public class Blizzard extends Disaster {
         new BukkitRunnable() {
 
             int counter = 20 * 60 * 2;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -70,8 +73,15 @@ public class Blizzard extends Disaster {
                     int temp = random.nextInt(blocks.size());
                     if (blocks.get(temp).getLocation().clone().add(0, 1, 0).getBlock().getType().isSolid())
                         continue;
+                    logBlockBreak(uuid, new CustomLocation(blocks.get(temp).getLocation().clone().add(0, 1, 0)));
                     blocks.get(temp).getLocation().clone().add(0, 1, 0).getBlock().setType(Material.SNOW);
                 }
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
     }

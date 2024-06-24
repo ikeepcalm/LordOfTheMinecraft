@@ -90,7 +90,7 @@ public class GeneralItemsUtil {
         final ItemStack dowsingStick = new ItemStack(Material.STICK);
         ItemMeta stickMeta = dowsingStick.getItemMeta();
         assert stickMeta != null;
-        stickMeta.setDisplayName("§5Dowsing Rod Seeking");
+        stickMeta.setDisplayName("§5Лозо-шукання");
         stickMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         stickMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         dowsingStick.setItemMeta(stickMeta);

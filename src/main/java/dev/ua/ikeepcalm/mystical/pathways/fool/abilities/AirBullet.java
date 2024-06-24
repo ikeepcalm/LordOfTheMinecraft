@@ -109,7 +109,7 @@ public class AirBullet extends Ability {
                     loc.add(vec);
 
 
-                    world.spawnParticle(Particle.DUST, loc, 0);
+                    world.spawnParticle(Particle.DUST, loc, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 255, 255), 1));
                     loc.subtract(vec);
                 }
                 circlePointOffset += increment / 3;

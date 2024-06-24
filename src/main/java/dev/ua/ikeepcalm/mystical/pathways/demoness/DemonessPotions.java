@@ -33,7 +33,7 @@ public class DemonessPotions extends Potion {
         putSupplIntoHashMap(8, new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.MUTTON));
         putSupplIntoHashMap(7, new ItemStack(Material.FLOWER_POT));
         putSupplIntoHashMap(6, new ItemStack(Material.SKELETON_SKULL), new ItemStack(Material.SOUL_SAND), new ItemStack(Material.GOLDEN_CARROT));
-        putSupplIntoHashMap(5, new ItemStack(Material.FROSTED_ICE), new ItemStack(Material.ICE));
+        putSupplIntoHashMap(5, new ItemStack(Material.BLUE_ICE), new ItemStack(Material.ICE));
         putSupplIntoHashMap(4, new ItemStack(Material.BEEF), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
         putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
         putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));

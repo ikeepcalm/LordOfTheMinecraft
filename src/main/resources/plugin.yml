@@ -4,7 +4,7 @@ main: dev.ua.ikeepcalm.LordOfTheMinecraft
 api-version: '1.21'
 authors: [ FireCreeper82, ikeepcalm ]
 description: A Fan made Lord of the Mysteries plugin
-depend: [ CoreProtect ]
+depend: [ CoreProtect, Citizens, NBTAPI ]
 commands:
   boon:
     description: Make yourself a Beyonder
@@ -32,7 +32,4 @@ commands:
     usage: /<cmd>
   mi9:
     description: Only for the MI9 members!
-    usage: /<cmd>
-  artifact:
-    description: Get a random Sealed Artifact (Testing only)
     usage: /<cmd>

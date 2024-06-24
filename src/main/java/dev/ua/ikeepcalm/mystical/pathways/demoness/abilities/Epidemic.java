@@ -30,7 +30,6 @@ public class Epidemic extends Ability {
     public void executeAbility(Location loc, Entity caster, double multiplier) {
         new BukkitRunnable() {
             int drainer = 0;
-            final int npcCounter = 20 * 20;
 
             @Override
             public void run() {

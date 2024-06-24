@@ -1,10 +1,7 @@
 package dev.ua.ikeepcalm.utils;
 
 import jline.internal.Nullable;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
@@ -205,7 +202,7 @@ public class GeneralPurposeUtil {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
                 continue;
-            p.spawnParticle(particle, loc, count, offsetX, offsetY, offsetZ, speed);
+            p.spawnParticle(particle, loc, count, offsetX, offsetY, offsetZ, speed, new Particle.DustOptions(Color.WHITE, 1));
         }
     }
 

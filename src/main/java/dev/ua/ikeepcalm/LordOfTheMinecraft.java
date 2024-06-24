@@ -1,8 +1,6 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.rollczi.liteskull.LiteSkullFactory;
-import dev.rollczi.liteskull.api.SkullAPI;
 import dev.ua.ikeepcalm.cmds.BoonCmd;
 import dev.ua.ikeepcalm.cmds.MI9Cmd;
 import dev.ua.ikeepcalm.cmds.SpawnCmd;
@@ -41,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.time.Duration;
 import java.util.*;
 
 public final class LordOfTheMinecraft extends JavaPlugin {
@@ -49,7 +46,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     public static LordOfTheMinecraft instance;
     public static CoreProtectAPI coreProtect;
     public static String prefix;
-    public static SkullAPI skullAPI;
     @Getter
     private Characteristic characteristic;
     @Getter
@@ -97,7 +93,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Override
     public void onEnable() {
         loadCoreProtect();
-        loadSkullApi();
         enablePlugin();
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled. The world full of mysteries awaits you!");
@@ -105,13 +100,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         }
-    }
-
-    private void loadSkullApi() {
-        skullAPI = LiteSkullFactory.builder()
-                .cacheExpireAfterWrite(Duration.ofMinutes(45L))
-                .bukkitScheduler(this)
-                .build();
     }
 
     private void enablePlugin() {

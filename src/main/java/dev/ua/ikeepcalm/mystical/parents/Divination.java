@@ -63,7 +63,7 @@ public class Divination implements Listener {
     }
 
     private Inventory createRawInv(Beyonder beyonder) {
-        Inventory inv = Bukkit.createInventory(beyonder.getPlayer(), 27, "§Третє Око");
+        Inventory inv = Bukkit.createInventory(beyonder.getPlayer(), 27, "§5Третє Око");
         inv = createRawInv(inv);
         return inv;
     }

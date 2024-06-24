@@ -1,8 +1,9 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -17,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class Tornado extends Disaster {
 
@@ -45,6 +47,8 @@ public class Tornado extends Disaster {
             double spiralVel = 0;
             double spiralXVel;
             double spiralZVel;
+
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -124,6 +128,7 @@ public class Tornado extends Disaster {
                 FallingBlock fallingBlock = world.spawnFallingBlock(blockLoc, block.getBlockData());
                 fallingBlock.setVelocity(new Vector(0, .1, 0));
                 fallingBlock.setDropItem(false);
+                logBlockBreak(uuid, new CustomLocation(blockLoc));
                 block.setType(Material.AIR);
 
                 counter++;
@@ -131,6 +136,12 @@ public class Tornado extends Disaster {
                     cancel();
                 }
 
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 

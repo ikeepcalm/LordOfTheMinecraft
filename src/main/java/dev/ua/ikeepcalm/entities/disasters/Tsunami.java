@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Tsunami extends Disaster {
     private final HashMap<Integer, Integer> blockedSides;
@@ -46,6 +48,7 @@ public class Tsunami extends Disaster {
 
         new BukkitRunnable() {
             int counter = 0;
+            UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -67,9 +70,10 @@ public class Tsunami extends Disaster {
                         Location tempLoc = startLoc.clone();
                         tempLoc.add(0, i, 0);
                         tempLoc.add(dirRight.clone().multiply(j));
-                        if (!tempLoc.getBlock().getType().isSolid() || counter < 65)
+                        if (!tempLoc.getBlock().getType().isSolid() || counter < 65) {
+                            logBlockBreak(uuid, new CustomLocation(tempLoc.getBlock().getLocation()));
                             tempLoc.getBlock().setType(Material.WATER);
-                        else {
+                        } else {
                             if (i == Math.min(Math.sqrt(counter), 20) - 1)
                                 skipped.add(j);
                             else
@@ -86,6 +90,13 @@ public class Tsunami extends Disaster {
                     livingEntity.damage(7, p);
                 }
             }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                rollbackChanges(uuid);
+            }
+
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
     }
 
