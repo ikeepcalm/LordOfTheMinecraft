@@ -6,7 +6,6 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -82,8 +81,7 @@ public class ArmorOfLight extends Ability implements Listener {
             @Override
             public void run() {
                 Location loc = p.getLocation().add(0, 0.5, 0);
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 2f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0, dust);
+                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0);
                 loc.getWorld().spawnParticle(Particle.END_ROD, loc, 1, 0.3, 0.7, 0.3, 0);
 
                 if (counter >= 20) {
@@ -151,6 +149,7 @@ public class ArmorOfLight extends Ability implements Listener {
         return item;
     }
 
+
     public ItemStack createHelmet() {
         ItemStack item = new ItemStack(Material.GOLDEN_HELMET);
         ItemMeta itemMeta = item.getItemMeta();
@@ -191,6 +190,7 @@ public class ArmorOfLight extends Ability implements Listener {
         return item;
     }
 
+
     public ItemStack createLeggings() {
         ItemStack item = new ItemStack(Material.GOLDEN_LEGGINGS);
         ItemMeta itemMeta = item.getItemMeta();
@@ -210,6 +210,7 @@ public class ArmorOfLight extends Ability implements Listener {
         });
         return item;
     }
+
 
     public ItemStack createBoots() {
         ItemStack item = new ItemStack(Material.GOLDEN_BOOTS);
@@ -231,6 +232,7 @@ public class ArmorOfLight extends Ability implements Listener {
         return item;
     }
 
+
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         if (NBT.get(e.getItemDrop().getItemStack(), (nbt) -> {
@@ -244,7 +246,7 @@ public class ArmorOfLight extends Ability implements Listener {
         if (e.getCurrentItem() == null)
             return;
 
-        if (e.getCurrentItem().getType().isAir()){
+        if (e.getCurrentItem().getType().isAir()) {
             return;
         }
 

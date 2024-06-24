@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -74,7 +75,6 @@ public class WingsOfLight extends Ability {
                     drawParticles(loc);
                     p.setGravity(false);
 
-
                     if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
                         p.setGravity(true);
                         pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
@@ -138,37 +138,41 @@ public class WingsOfLight extends Ability {
     }
 
     private void drawParticles(Location loc) {
-        double space = 0.24;
-        double defX = loc.getX() - (space * shape[0].length / 2) + space;
-        double x = defX;
-        double y = loc.clone().getY() + 2.8;
-        double fire = -((loc.getYaw() + 180) / 60);
-        fire += (loc.getYaw() < -180 ? 3.25 : 2.985);
+        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            double space = 0.24;
+            double defX = loc.getX() - (space * shape[0].length / 2) + space;
+            double x = defX;
+            double y = loc.clone().getY() + 2.8;
+            double fire = -((loc.getYaw() + 180) / 60);
+            fire += (loc.getYaw() < -180 ? 3.25 : 2.985);
 
-        for (boolean[] booleans : shape) {
-            for (boolean aBoolean : booleans) {
-                if (aBoolean) {
+            for (boolean[] booleans : shape) {
+                for (boolean aBoolean : booleans) {
+                    if (aBoolean) {
 
-                    Location target = loc.clone();
-                    target.setX(x);
-                    target.setY(y);
+                        Location target = loc.clone();
+                        target.setX(x);
+                        target.setY(y);
 
-                    Vector v = target.toVector().subtract(loc.toVector());
-                    Vector v2 = MathVectorUtils.getBackVector(loc);
-                    v = MathVectorUtils.rotateAroundAxisY(v, fire);
-                    v2.setY(0).multiply(-0.5);
+                        Vector v = target.toVector().subtract(loc.toVector());
+                        Vector v2 = MathVectorUtils.getBackVector(loc);
+                        v = MathVectorUtils.rotateAroundAxisY(v, fire);
+                        v2.setY(0).multiply(-0.5);
 
-                    loc.add(v);
-                    loc.add(v2);
-                    for (int k = 0; k < 3; k++)
-                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ELECTRIC_SPARK, loc, 1, 0.02, 0.02, 0.02, 0);
-                    loc.subtract(v2);
-                    loc.subtract(v);
+                        loc.add(v);
+                        loc.add(v2);
+                        Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                            for (int k = 0; k < 3; k++)
+                                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ELECTRIC_SPARK, loc, 1, 0.02, 0.02, 0.02, 0);
+                        });
+                        loc.subtract(v2);
+                        loc.subtract(v);
+                    }
+                    x += space;
                 }
-                x += space;
+                y -= space;
+                x = defX;
             }
-            y -= space;
-            x = defX;
-        }
+        });
     }
 }

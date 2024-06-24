@@ -7,13 +7,11 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockIterator;
 
 public class SolarFlare extends Ability {
@@ -47,7 +45,7 @@ public class SolarFlare extends Ability {
 
         pathway.getSequence().removeSpirituality(spirituality[power - 1]);
 
-        //get block player is looking at
+        // Get block player is looking at
         BlockIterator iter = new BlockIterator(p, 300);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
@@ -62,36 +60,40 @@ public class SolarFlare extends Ability {
         if (loc.getWorld() == null)
             return;
 
+        BukkitScheduler scheduler = Bukkit.getScheduler();
         new BukkitRunnable() {
             int i = 0;
             final int tempPower = Math.min(power, 3);
 
             @Override
             public void run() {
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), 50f);
-                GeneralPurposeUtil.drawSphere(loc, (int) Math.round((i * power * 1.25)), 60, dust, null, .2);
+                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), 50f);
+                    GeneralPurposeUtil.drawSphere(loc, (int) Math.round((i * power * 1.25)), 60, dust, null, .2);
+                });
 
                 i += (int) (tempPower * 1.25);
                 if (i >= (tempPower * 1.25 * 10)) {
                     cancel();
-                    loc.getWorld().createExplosion(loc, power * 10, true, true, p);
-                    for (double i = 0; i < (power * 1.25 * 10); i += (power * 1.25)) {
-                        loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true, true, p);
-                        loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true, true, p);
-                        loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
-                        loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
-                    }
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        loc.getWorld().createExplosion(loc, power * 10, true, true, p);
+                        for (double i = 0; i < (power * 1.25 * 10); i += (power * 1.25)) {
+                            loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true, true, p);
+                            loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true, true, p);
+                            loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
+                            loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
+                        }
+                    });
                 }
             }
 
             @Override
             public void cancel() {
                 super.cancel();
-                rollbackChanges(new CustomLocation(loc), power);
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> rollbackChanges(new CustomLocation(loc), power));
             }
 
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
-
     }
 
     @Override

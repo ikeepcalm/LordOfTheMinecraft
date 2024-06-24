@@ -13,18 +13,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.BlockIterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class FlaringSun extends Ability {
-
-    private static final Logger log = LoggerFactory.getLogger(FlaringSun.class);
 
     public FlaringSun(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
@@ -37,38 +31,64 @@ public class FlaringSun extends Ability {
         airBlocks = new ArrayList<>();
         UUID uuid = UUID.randomUUID();
         int burnRadius = 10;
-        for (int i = 3; i > -8; i--) {
-            for (int x = -burnRadius; x <= burnRadius; x++) {
-                for (int z = -burnRadius; z <= burnRadius; z++) {
-                    if ((x * x) + (z * z) <= Math.pow(burnRadius, 2)) {
-                        Block block = caster.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
-                        if (block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH || block.getType() == Material.COARSE_DIRT || block.getType() == Material.ROOTED_DIRT || block.getType() == Material.GRASS_BLOCK) {
-                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                            block.setType(Material.NETHERRACK);
-                        }
-                        if (block.getType() == Material.STONE || block.getType() == Material.COBBLESTONE || block.getType() == Material.DIORITE || block.getType() == Material.ANDESITE || block.getType() == Material.GRANITE || block.getType() == Material.DEEPSLATE || block.getType() == Material.TUFF || block.getType() == Material.CALCITE || block.getType() == Material.GRAVEL) {
-                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                            block.setType(Material.BASALT);
-                        }
-                        if (block.getType() == Material.WATER) {
-                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                            block.setType(Material.AIR);
-                        }
-                        if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
-                            Random rand = new Random();
-                            if (rand.nextInt(4) == 0) {
-                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                                block.setType(Material.FIRE);
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            List<Block> blocksToChange = new ArrayList<>();
+
+            for (int i = 3; i > -8; i--) {
+                for (int x = -burnRadius; x <= burnRadius; x++) {
+                    for (int z = -burnRadius; z <= burnRadius; z++) {
+                        if ((x * x) + (z * z) <= Math.pow(burnRadius, 2)) {
+                            Block block = caster.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
+                            if (block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH || block.getType() == Material.COARSE_DIRT || block.getType() == Material.ROOTED_DIRT || block.getType() == Material.GRASS_BLOCK) {
+                                blocksToChange.add(block);
+                            } else if (block.getType() == Material.STONE || block.getType() == Material.COBBLESTONE || block.getType() == Material.DIORITE || block.getType() == Material.ANDESITE || block.getType() == Material.GRANITE || block.getType() == Material.DEEPSLATE || block.getType() == Material.TUFF || block.getType() == Material.CALCITE || block.getType() == Material.GRAVEL) {
+                                blocksToChange.add(block);
+                            } else if (block.getType() == Material.WATER) {
+                                blocksToChange.add(block);
+                            } else if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
+                                Random rand = new Random();
+                                if (rand.nextInt(4) == 0) {
+                                    blocksToChange.add(block);
+                                }
+                            } else if (block.getType() == Material.SAND || block.getType() == Material.RED_SAND) {
+                                blocksToChange.add(block);
                             }
-                        }
-                        if (block.getType() == Material.SAND || block.getType() == Material.RED_SAND) {
-                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                            block.setType(Material.GLASS);
                         }
                     }
                 }
             }
-        } rollbackChanges(uuid);
+
+            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                for (Block block : blocksToChange) {
+                    if (block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH || block.getType() == Material.COARSE_DIRT || block.getType() == Material.ROOTED_DIRT || block.getType() == Material.GRASS_BLOCK) {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                        block.setType(Material.NETHERRACK);
+                    }
+                    if (block.getType() == Material.STONE || block.getType() == Material.COBBLESTONE || block.getType() == Material.DIORITE || block.getType() == Material.ANDESITE || block.getType() == Material.GRANITE || block.getType() == Material.DEEPSLATE || block.getType() == Material.TUFF || block.getType() == Material.CALCITE || block.getType() == Material.GRAVEL) {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                        block.setType(Material.BASALT);
+                    }
+                    if (block.getType() == Material.WATER) {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                        block.setType(Material.AIR);
+                    }
+                    if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
+                        Random rand = new Random();
+                        if (rand.nextInt(4) == 0) {
+                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                            block.setType(Material.FIRE);
+                        }
+                    }
+                    if (block.getType() == Material.SAND || block.getType() == Material.RED_SAND) {
+                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                        block.setType(Material.GLASS);
+                    }
+                }
+                rollbackChanges(uuid);
+            });
+        });
 
         Location sphereLoc = loc.clone();
         new BukkitRunnable() {
@@ -79,7 +99,7 @@ public class FlaringSun extends Ability {
             public void run() {
                 counter++;
 
-                //Spawn particles
+                // Spawn particles
                 Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc, 50, 2, 2, 2, 0);
                 loc.getWorld().spawnParticle(Particle.END_ROD, loc, 70, 2, 2, 2, 0);
                 for (double i = 0; i <= Math.PI; i += Math.PI / 15) {
@@ -100,11 +120,11 @@ public class FlaringSun extends Ability {
                     }
                 }
 
-                //damage nearby entities
+                // Damage nearby entities
                 ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 10, 10, 10);
                 for (Entity entity : nearbyEntities) {
                     if (entity instanceof LivingEntity livingEntity) {
-                         if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
                             ((Damageable) entity).damage(7 * multiplier, caster);
                             livingEntity.setFireTicks(50 * 20);
                         } else if (entity != caster) {
@@ -133,7 +153,7 @@ public class FlaringSun extends Ability {
 
         double multiplier = getMultiplier();
 
-        //get block player is looking at
+        // Get block player is looking at
         BlockIterator iter = new BlockIterator(p, 15);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
