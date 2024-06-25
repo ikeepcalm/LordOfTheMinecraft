@@ -14,6 +14,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
@@ -49,6 +50,8 @@ public class LightningBall extends Ability {
         if (startLoc.getWorld() == null)
             return;
 
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
+
         new BukkitRunnable() {
             int counter = 200;
 
@@ -57,21 +60,23 @@ public class LightningBall extends Ability {
                 GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustBlue, null, .05, Particle.DUST);
                 GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustPurple, null, .05, Particle.DUST);
 
-                if (startLoc.getBlock().getType().isSolid() || (!startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).isEmpty() && !startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).contains(caster))) {
-                    new BukkitRunnable() {
-                        int counter = 16;
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    if (startLoc.getBlock().getType().isSolid() || (!startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).isEmpty() && !startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).contains(caster))) {
+                        new BukkitRunnable() {
+                            int counter = 16;
 
-                        @Override
-                        public void run() {
-                            TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
+                            @Override
+                            public void run() {
+                                TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
 
-                            counter--;
-                            if (counter <= 0)
-                                cancel();
-                        }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 4);
-                    counter = 0;
-                }
+                                counter--;
+                                if (counter <= 0)
+                                    cancel();
+                            }
+                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 4);
+                        this.counter = 0;
+                    }
+                });
 
                 startLoc.add(dir);
 

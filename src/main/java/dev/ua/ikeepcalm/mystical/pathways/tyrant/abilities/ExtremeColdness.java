@@ -7,17 +7,17 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ExtremeColdness extends Ability {
 
@@ -48,43 +48,53 @@ public class ExtremeColdness extends Ability {
             inUse.replace(caster, true);
         }
 
+        UUID uuid = UUID.randomUUID();
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+
         new BukkitRunnable() {
-
-            UUID uuid = UUID.randomUUID();
-
             @Override
             public void run() {
-                GeneralPurposeUtil.getNearbyBlocksInSphere(caster.getLocation(), 20, false, true, false).forEach(block -> {
-                    if (block.getType() == Material.ICE || block.getType() == Material.PACKED_ICE)
-                        return;
-                    if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER) {
-                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                        block.setType(Material.ICE);
-                    } else {
-                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                        block.setType(Material.PACKED_ICE);
+                CompletableFuture.runAsync(() -> {
+                    for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(caster.getLocation(), 20, false, true, false)) {
+                        if (block.getType() == Material.ICE || block.getType() == Material.PACKED_ICE) continue;
+
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER) {
+                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                                block.setType(Material.ICE);
+                            } else {
+                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                                block.setType(Material.PACKED_ICE);
+                            }
+                            GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
+                        });
                     }
-                    GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
                 });
 
-                caster.getWorld().getNearbyEntities(caster.getLocation(), 60, 60, 60).forEach(entity -> {
-                    if (entity instanceof LivingEntity livingEntity && entity != caster) {
-                        livingEntity.damage(8 * multiplier);
-                        for (double x = -livingEntity.getWidth() + .5; x < livingEntity.getWidth() + .5; x++) {
-                            for (double z = -livingEntity.getWidth() + .5; z < livingEntity.getWidth() + .5; z++) {
-                                for (int i = 0; i < livingEntity.getHeight(); i++) {
-                                    livingEntity.getLocation().add(x, i, z).getBlock().setType(Material.PACKED_ICE);
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Entity entity : caster.getWorld().getNearbyEntities(caster.getLocation(), 60, 60, 60)) {
+                        if (entity instanceof LivingEntity livingEntity && entity != caster) {
+                            livingEntity.damage(8 * multiplier);
+                            for (double x = -livingEntity.getWidth() + .5; x < livingEntity.getWidth() + .5; x++) {
+                                for (double z = -livingEntity.getWidth() + .5; z < livingEntity.getWidth() + .5; z++) {
+                                    for (int i = 0; i < livingEntity.getHeight(); i++) {
+                                        livingEntity.getLocation().add(x, i, z).getBlock().setType(Material.PACKED_ICE);
+                                    }
                                 }
                             }
                         }
                     }
 
+                    if (!caster.isValid() || inUse.get(caster) == null || !inUse.get(caster)) {
+                        rollbackChanges(uuid);
+                        cancel();
+                    }
                 });
+            }
 
-                if (!caster.isValid() || inUse.get(caster) == null || !inUse.get(caster)) {
-                    rollbackChanges(uuid);
-                    cancel();
-                }
+            @Override
+            public void cancel() {
+                scheduler.cancelTasks(LordOfTheMinecraft.instance);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 8);
     }

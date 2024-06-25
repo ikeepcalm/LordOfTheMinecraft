@@ -49,7 +49,6 @@ public class WindManipulation extends Ability {
         }
     }
 
-
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
@@ -234,7 +233,6 @@ public class WindManipulation extends Ability {
         }
     }
 
-
     private void blade(Entity caster, double multiplier) {
         Vector direction = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0);
@@ -249,7 +247,6 @@ public class WindManipulation extends Ability {
             return;
         pathway.getSequence().removeSpirituality(45);
 
-
         world.playSound(loc, Sound.ENTITY_ARROW_SHOOT, 1, 1);
 
         new BukkitRunnable() {
@@ -258,11 +255,13 @@ public class WindManipulation extends Ability {
 
             @Override
             public void run() {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                        continue;
-                    drawBlade(loc, p, direction);
-                }
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                            continue;
+                        drawBlade(loc, p, direction);
+                    }
+                });
 
                 if (loc.getBlock().getType().isSolid()) {
                     if (loc.getBlock().getType().getHardness() < 0 || loc.getBlock().getType().getHardness() > .7)

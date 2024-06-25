@@ -50,7 +50,6 @@ public class WaterSpells extends Ability {
         WHIRL("§9Водяний Вихор", 5),
         SPHERE("§9Водяна Сфера", 5);
 
-
         private final String name;
         private final int sequence;
 
@@ -89,23 +88,24 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-
                 double x = Math.cos(counter);
                 double z = Math.sin(counter);
-                double y = Math.sin(counter);
+                final double[] y = {Math.sin(counter)};
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                        continue;
-                    if (loc.getWorld() == null)
-                        return;
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                            continue;
+                        if (loc.getWorld() == null)
+                            return;
 
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
-                    y = Math.cos(counter);
-                    GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.BUBBLE_POP);
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                }
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                        y[0] = Math.cos(counter);
+                        GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.BUBBLE_POP);
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    }
+                });
 
                 if (loc.getBlock().getType().isSolid())
                     counter = 0;
@@ -147,11 +147,13 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                        continue;
-                    p.spawnParticle(Particle.DRIPPING_WATER, loc, 15, .05, .05, .05, 0);
-                }
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                            continue;
+                        p.spawnParticle(Particle.DRIPPING_WATER, loc, 15, .05, .05, .05, 0);
+                    }
+                });
 
                 if (loc.getBlock().getType().isSolid())
                     counter = 0;
@@ -190,17 +192,14 @@ public class WaterSpells extends Ability {
             int j = i;
             new BukkitRunnable() {
                 double spiralRadius = .65;
-
                 double spiral = 0;
                 double height = 0;
                 double spiralX;
                 double spiralZ;
-
                 int counter = 20 * 45 - (j * 25);
 
                 @Override
                 public void run() {
-
                     spiralX = spiralRadius * Math.cos(spiral);
                     spiralZ = spiralRadius * Math.sin(spiral);
                     spiral += 0.75;
@@ -213,7 +212,6 @@ public class WaterSpells extends Ability {
 
                     if (loc.getWorld() == null)
                         return;
-
 
                     counter--;
                     if (counter <= 0) {
@@ -234,15 +232,14 @@ public class WaterSpells extends Ability {
                         }
                     }
 
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DRIPPING_WATER, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.BUBBLE_POP, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, i * 25, 2);
         }
     }
 
     private void light(LivingEntity caster) {
-        //get block player is looking at
         BlockIterator iter = new BlockIterator(caster, 9);
         Block lastBlock = iter.next();
         Block previousBlock;
@@ -253,7 +250,6 @@ public class WaterSpells extends Ability {
                 lastBlock = previousBlock;
                 break;
             }
-
         }
         Location loc = lastBlock.getLocation();
 
@@ -270,7 +266,6 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-
                 if (loc.getWorld() == null)
                     return;
 
@@ -338,12 +333,13 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DRIPPING_WATER, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ITEM_SLIME, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
-                GeneralPurposeUtil.drawDustsForNearbyPlayers(finalLoc, 30, 12, 12, 12, dust);
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
+                    GeneralPurposeUtil.drawDustsForNearbyPlayers(finalLoc, 30, 12, 12, 12, dust);
+                });
                 GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.POISON, 20 * 5, 4, false, false));
                 GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.WITHER, 20 * 2, 1, false, false));
-
 
                 if (!blocks.isEmpty()) {
                     Block block = blocks.get(random.nextInt(blocks.size()));
@@ -355,7 +351,7 @@ public class WaterSpells extends Ability {
                 if (counter <= 0)
                     cancel();
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
     private void sphere(Entity caster, double multiplier) {
@@ -374,23 +370,24 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-
                 double x = 2 * Math.cos(counter);
                 double z = 2 * Math.sin(counter);
-                double y = 2 * Math.sin(counter);
+                final double[] y = {2 * Math.sin(counter)};
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                        continue;
-                    if (loc.getWorld() == null)
-                        return;
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                            continue;
+                        if (loc.getWorld() == null)
+                            return;
 
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y, loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
-                    y = Math.cos(counter);
-                    GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.BUBBLE_POP);
-                    loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y, loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                }
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                        y[0] = Math.cos(counter);
+                        GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.BUBBLE_POP);
+                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                    }
+                });
 
                 if (loc.getBlock().getType().isSolid()) {
                     counter = 0;

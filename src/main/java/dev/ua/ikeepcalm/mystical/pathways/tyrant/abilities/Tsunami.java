@@ -16,9 +16,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tsunami extends Ability implements Listener {
 
@@ -40,22 +42,29 @@ public class Tsunami extends Ability implements Listener {
         if (loc.getWorld() == null)
             return;
 
-        outerloop:
-        for (int i = 0; i < 60; i++) {
-            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
-                    continue;
-                break outerloop;
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
+
+        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            for (final int[] i = {0}; i[0] < 60; i[0]++) {
+                final Location currentLoc = loc.clone();
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
+                        if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
+                            continue;
+                        i[0] = 60;
+                        break;
+                    }
+                });
+
+                if (i[0] >= 60 || loc.getBlock().getType().isSolid()) {
+                    break;
+                }
+
+                loc.add(dir);
             }
 
-            loc.add(dir);
-
-            if (loc.getBlock().getType().isSolid()) {
-                break;
-            }
-        }
-
-        executeAbility(loc, p, getMultiplier());
+            executeAbility(loc, p, getMultiplier());
+        });
     }
 
     @Override
@@ -67,7 +76,6 @@ public class Tsunami extends Ability implements Listener {
         if (loc.getWorld() == null)
             return;
 
-
         Vector dir = caster.getLocation().getDirection().clone().normalize().setY(0).normalize();
         Location sideLoc = caster.getLocation();
         sideLoc.setPitch(0);
@@ -76,8 +84,7 @@ public class Tsunami extends Ability implements Listener {
 
         Location startLoc = loc.clone().subtract(dir.clone().multiply(32.5)).subtract(side.clone().multiply(30)).subtract(0, 10, 0);
 
-
-        final List<Block> waterBlocksBefore = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45);
+        List<Block> waterBlocksBefore = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45);
 
         new BukkitRunnable() {
             int counter = 0;
@@ -113,7 +120,9 @@ public class Tsunami extends Ability implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            final List<Block> waterBlocksAfter = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45).stream().filter(block -> !waterBlocksBefore.contains(block)).toList();
+                            List<Block> waterBlocksAfter = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45).stream()
+                                    .filter(block -> !waterBlocksBefore.contains(block))
+                                    .collect(Collectors.toList());
                             for (Block b : waterBlocksAfter) {
                                 b.setType(Material.AIR);
                             }
