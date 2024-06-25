@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class AirPipe extends Ability {
 
@@ -25,35 +26,45 @@ public class AirPipe extends Ability {
         p = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
+
         new BukkitRunnable() {
             int counter = 0;
 
             @Override
             public void run() {
 
-                p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false));
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false));
+                });
 
-                Location particleLoc = p.getEyeLocation().clone().add(p.getLocation().getDirection().normalize().multiply(0.25));
-                while (particleLoc.getBlock().getType() == Material.WATER) {
-                    if (particleLoc.getWorld() != null) {
-                        particleLoc.getWorld().spawnParticle(Particle.BUBBLE, particleLoc, 1, 0, 0, 0, 0);
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    Location particleLoc = p.getEyeLocation().clone().add(p.getLocation().getDirection().normalize().multiply(0.25));
+                    while (particleLoc.getBlock().getType() == Material.WATER) {
+                        if (particleLoc.getWorld() != null) {
+                            particleLoc.getWorld().spawnParticle(Particle.BUBBLE, particleLoc, 1, 0, 0, 0, 0);
+                        }
+                        particleLoc.add(0, .5, 0);
                     }
-                    particleLoc.add(0, .5, 0);
-                }
+                });
 
                 if (counter >= 20) {
                     counter = 0;
-                    pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 5);
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 5);
+                    });
                 }
 
                 counter++;
 
-                if (pathway.getBeyonder().getSpirituality() <= 2 || !pathway.getSequence().getUsesAbilities()[identifier - 1] || !pathway.getBeyonder().online) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    cancel();
-                }
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    if (pathway.getBeyonder().getSpirituality() <= 2 || !pathway.getSequence().getUsesAbilities()[identifier - 1] || !pathway.getBeyonder().online) {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        cancel();
+                    }
+                });
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+        }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override

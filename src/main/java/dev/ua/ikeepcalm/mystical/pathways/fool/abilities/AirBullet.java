@@ -16,7 +16,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -43,7 +43,6 @@ public class AirBullet extends Ability {
         wasAdjustedOnce = false;
 
         items.addToSequenceItems(identifier - 1, sequence);
-
     }
 
     public void executeAbility(Location loc, Entity caster) {
@@ -54,7 +53,6 @@ public class AirBullet extends Ability {
             wasAdjustedOnce = true;
         }
         double multiplier = (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3);
-
 
         double finalMultiplier = multiplier;
 
@@ -67,8 +65,9 @@ public class AirBullet extends Ability {
         npcMultiplier.put(3.0, new double[]{1.25, 100, 12, 6});
         npcMultiplier.put(3.5, new double[]{1.25, 100, 13, 6});
 
-        new BukkitRunnable() {
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
+        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
             final double circlePoints = valuesForSequence.get(pathway.getSequence().getCurrentSequence()) != null
                     ? valuesForSequence.get(sequencePower)[1]
                     : 20;
@@ -77,8 +76,7 @@ public class AirBullet extends Ability {
                     ? valuesForSequence.get(sequencePower)[0]
                     : 0.25;
 
-
-            final Location loc = caster.getLocation().add(0, 1.5, 0);
+            final Location locCopy = loc.clone();
             final World world = loc.getWorld();
             final Vector dir = caster.getLocation().getDirection().normalize();
 
@@ -90,68 +88,83 @@ public class AirBullet extends Ability {
 
             int counter = 0;
 
-            @Override
-            public void run() {
-
+            while (counter < 50) {
                 if (world == null)
                     return;
 
-                //Particle effects
-                //Calls rotateAroundAxis() functions from VectorUtils class
-                for (int i = 0; i < circlePoints; i++) {
-                    double angle = i * increment + circlePointOffset;
-                    double x = radius * Math.cos(angle);
-                    double z = radius * Math.sin(angle);
+                // Particle effects
+                double finalRadius = radius;
+                double finalCirclePointOffset = circlePointOffset;
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    for (int i = 0; i < circlePoints; i++) {
+                        double angle = i * increment + finalCirclePointOffset;
+                        double x = finalRadius * Math.cos(angle);
+                        double z = finalRadius * Math.sin(angle);
 
-                    Vector vec = new Vector(x, 0, z);
-                    MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                    MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                    loc.add(vec);
+                        Vector vec = new Vector(x, 0, z);
+                        MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                        MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                        locCopy.add(vec);
 
+                        world.spawnParticle(Particle.DUST, locCopy, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 255, 255), 1));
+                        locCopy.subtract(vec);
+                    }
+                });
 
-                    world.spawnParticle(Particle.DUST, loc, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 255, 255), 1));
-                    loc.subtract(vec);
-                }
                 circlePointOffset += increment / 3;
                 if (circlePointOffset >= increment) {
                     circlePointOffset = 0;
                 }
-                loc.add(dir);
+                locCopy.add(dir);
                 radius -= (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[0] : 0.25) / 70;
 
-                //Check if hit Entity
-                if (!world.getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
-                    for (Entity entity : world.getNearbyEntities(loc, 5, 5, 5)) {
-                        Vector v1 = new Vector(
-                                loc.getX() + radius / 2,
-                                loc.getY() + radius / 2,
-                                loc.getZ() + radius / 2
-                        );
-                        Vector v2 = new Vector(
-                                loc.getX() - radius / 2,
-                                loc.getY() - radius / 2,
-                                loc.getZ() - radius / 2
-                        );
-                        if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                            if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
-                                world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
-                            ((Damageable) entity).damage(7 * finalMultiplier, caster);
-                            cancel();
-                            return;
+                // Check if hit Entity
+                double finalRadius1 = radius;
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    if (!world.getNearbyEntities(locCopy, 5, 5, 5).isEmpty()) {
+                        for (Entity entity : world.getNearbyEntities(locCopy, 5, 5, 5)) {
+                            Vector v1 = new Vector(
+                                    locCopy.getX() + finalRadius1 / 2,
+                                    locCopy.getY() + finalRadius1 / 2,
+                                    locCopy.getZ() + finalRadius1 / 2
+                            );
+                            Vector v2 = new Vector(
+                                    locCopy.getX() - finalRadius1 / 2,
+                                    locCopy.getY() - finalRadius1 / 2,
+                                    locCopy.getZ() - finalRadius1 / 2
+                            );
+                            if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                                if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
+                                    world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
+                                ((Damageable) entity).damage(7 * finalMultiplier, caster);
+                                return;
+                            }
                         }
                     }
+                });
+
+                if (locCopy.getBlock().getType().isSolid()) {
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
+                            world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
+                    });
+                    return;
+                }
+
+                try {
+                    Thread.sleep(50); // Sleep for 1 tick (50ms)
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
 
                 counter++;
-
-                if (loc.getBlock().getType().isSolid() || counter >= 50) {
-                    if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
-                        world.createExplosion(loc, (int) (valuesForSequence.get(sequencePower)[2]));
-                    cancel();
-                }
             }
 
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
+                    world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
+            });
+        });
     }
 
     @Override
@@ -160,7 +173,6 @@ public class AirBullet extends Ability {
     }
 
     @Override
-    //If sequence is higher than 3, display actionbar with selected sequence power
     public void onHold() {
         p = pathway.getBeyonder().getPlayer();
 
@@ -171,7 +183,6 @@ public class AirBullet extends Ability {
     }
 
     @Override
-    //Adjust sequence power on left click
     public void leftClick() {
         if (pathway.getSequence().getCurrentSequence() > 3)
             return;
