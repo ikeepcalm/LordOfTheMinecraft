@@ -7,10 +7,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -49,124 +46,126 @@ public class BlackHole extends Ability {
         Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 0, 0), 2f);
         Random random = new Random();
 
-        int[] npcCounter = {20 * 25};
-
-        new BukkitRunnable() {
-            ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
-
-            int counter = 0;
-            final int spiritCounter = 20;
+        // Asynchronous task for long-running operations
+        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            final ArrayList<Block>[] blocks = new ArrayList[]{GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true)};
             UUID uuid = UUID.randomUUID();
 
-            @Override
-            public void run() {
+            // Synchronous task to interact with Spigot API
+            new BukkitRunnable() {
+                int counter = 0;
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                    cancel();
-                    return;
-                }
-
-                GeneralPurposeUtil.drawSphere(loc, 1, 20, dust, null, 0);
-
-                counter++;
-
-                if (counter >= 3 * 20) {
-                    counter = 0;
-                    blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
-                }
-
-                for (int i = 0; i < 5; i++) {
-                    if (blocks.isEmpty())
-                        continue;
-                    Block b = blocks.get(random.nextInt(blocks.size()));
-
-                    Material blockMaterial = b.getType();
-                    logBlockBreak(uuid, new CustomLocation(b.getLocation()));
-                    b.setType(Material.AIR);
-
-                    if (blockMaterial == Material.WATER || blockMaterial == Material.LAVA)
-                        continue;
-
-                    FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(b.getLocation().clone().add(0, 1, 0), blockMaterial.createBlockData());
-                    fallingBlock.setGravity(false);
-                    fallingBlock.setDropItem(false);
-
-                    if (fallingBlock.getBlockData().getMaterial() == Material.WATER) {
-                        fallingBlock.remove();
-                        continue;
+                @Override
+                public void run() {
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                        cancel();
+                        return;
                     }
 
-                    Vector dir = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
-                    fallingBlock.setVelocity(dir);
+                    GeneralPurposeUtil.drawSphere(loc, 1, 20, dust, null, 0);
 
-                    new BukkitRunnable() {
-                        int life = 20 * 6;
+                    counter++;
 
-                        @Override
-                        public void run() {
-                            if (!fallingBlock.isValid()) {
-                                cancel();
-                                return;
-                            }
+                    if (counter >= 3 * 20) {
+                        counter = 0;
+                        blocks[0] = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
+                    }
 
-                            life--;
+                    for (int i = 0; i < 5; i++) {
+                        if (blocks[0].isEmpty())
+                            continue;
+                        Block b = blocks[0].get(random.nextInt(blocks[0].size()));
 
-                            if (life <= 0 || fallingBlock.getBlockData().getMaterial() == Material.WATER) {
-                                fallingBlock.remove();
-                                cancel();
-                                return;
-                            }
+                        Material blockMaterial = b.getType();
+                        logBlockBreak(uuid, new CustomLocation(b.getLocation()));
+                        b.setType(Material.AIR);
 
-                            Vector direction = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
-                            fallingBlock.setVelocity(direction);
+                        if (blockMaterial == Material.WATER || blockMaterial == Material.LAVA)
+                            continue;
 
-                            if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                                fallingBlock.remove();
-                            }
+                        FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(b.getLocation().clone().add(0, 1, 0), blockMaterial.createBlockData());
+                        fallingBlock.setGravity(false);
+                        fallingBlock.setDropItem(false);
+
+                        if (fallingBlock.getBlockData().getMaterial() == Material.WATER) {
+                            fallingBlock.remove();
+                            continue;
                         }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+
+                        Vector dir = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
+                        fallingBlock.setVelocity(dir);
+
+                        new BukkitRunnable() {
+                            int life = 20 * 6;
+
+                            @Override
+                            public void run() {
+                                if (!fallingBlock.isValid()) {
+                                    cancel();
+                                    return;
+                                }
+
+                                life--;
+
+                                if (life <= 0 || fallingBlock.getBlockData().getMaterial() == Material.WATER) {
+                                    fallingBlock.remove();
+                                    cancel();
+                                    return;
+                                }
+
+                                Vector direction = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
+                                fallingBlock.setVelocity(direction);
+
+                                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                                    fallingBlock.remove();
+                                }
+                            }
+                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother movement
+                    }
                 }
-            }
 
-            @Override
-            public void cancel() {
-                super.cancel();
-                rollbackChanges(uuid);
-            }
-
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                    cancel();
-                    return;
+                @Override
+                public void cancel() {
+                    super.cancel();
+                    rollbackChanges(uuid);
                 }
+            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother movement
 
-                if (loc.getWorld() == null)
-                    return;
-
-                for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
-                    if (entity == caster)
-                        continue;
-
-                    Vector dir = loc.clone().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.5);
-                    entity.setVelocity(dir);
-                }
-
-                for (Entity entity : loc.getWorld().getNearbyEntities(loc, 2, 2, 2)) {
-                    if (!(entity instanceof LivingEntity livingEntity)) {
-                        if (!(entity instanceof Item))
-                            entity.remove();
-                        continue;
+            // Asynchronous task for entity handling
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                        cancel();
+                        return;
                     }
 
+                    if (loc.getWorld() == null)
+                        return;
 
-                    livingEntity.damage(8 * multiplier, caster);
+                    // Run entity interactions on the main thread
+                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
+                            if (entity == caster)
+                                continue;
+
+                            Vector dir = loc.clone().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.5);
+                            entity.setVelocity(dir);
+                        }
+
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 2, 2, 2)) {
+                            if (!(entity instanceof LivingEntity livingEntity)) {
+                                if (!(entity instanceof Item))
+                                    entity.remove();
+                                continue;
+                            }
+
+                            livingEntity.damage(8 * multiplier, caster);
+                        }
+                    });
                 }
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+            }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother handling
+        });
     }
 
     @Override

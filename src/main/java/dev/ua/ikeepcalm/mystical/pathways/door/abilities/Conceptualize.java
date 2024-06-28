@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -18,7 +19,6 @@ import org.bukkit.util.Vector;
 
 public class Conceptualize extends Ability {
 
-
     public Conceptualize(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
@@ -30,19 +30,7 @@ public class Conceptualize extends Ability {
         if (loc.getWorld() == null)
             return;
 
-        LivingEntity target = null;
-
-        outerloop:
-        for (int i = 0; i < 50; i++) {
-            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                if ((!(entity instanceof Mob) && !(entity instanceof Player)) || entity == caster)
-                    continue;
-                target = (LivingEntity) entity;
-                break outerloop;
-            }
-
-            loc.add(dir);
-        }
+        LivingEntity target = findTargetEntity(loc, dir, caster);
 
         if (target == null) {
             p.sendMessage("§cСутність не знайдено!");
@@ -53,7 +41,6 @@ public class Conceptualize extends Ability {
         new BukkitRunnable() {
             int counter = 0;
             double timer = 1.0;
-
             double npcTimer = 20 * 4;
 
             @Override
@@ -65,9 +52,7 @@ public class Conceptualize extends Ability {
                 }
 
                 counter++;
-
                 npcTimer--;
-
                 finalTarget.damage(8, caster);
 
                 if (counter >= 20) {
@@ -76,7 +61,9 @@ public class Conceptualize extends Ability {
                         cancel();
                         return;
                     }
-                    pathway.getSequence().removeSpirituality(Math.pow(110, timer));
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        pathway.getSequence().removeSpirituality(Math.pow(110, timer));
+                    });
                     timer += .08;
                 }
 
@@ -84,7 +71,6 @@ public class Conceptualize extends Ability {
                     int j = i;
                     new BukkitRunnable() {
                         final double spiralRadius = 1;
-
                         double spiral = 0;
                         double height = j * .25;
                         double spiralX;
@@ -110,18 +96,28 @@ public class Conceptualize extends Ability {
                             if (entityLoc.getWorld() != null)
                                 entityLoc.getWorld().spawnParticle(Particle.ENCHANT, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 1, 0, 0, 0, 0);
                         }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 0);
+                    }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 1);
                 }
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+    }
+
+    private LivingEntity findTargetEntity(Location loc, Vector dir, Entity caster) {
+        for (int i = 0; i < 50; i++) {
+            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
+                if ((!(entity instanceof Mob) && !(entity instanceof Player)) || entity == caster)
+                    continue;
+                return (LivingEntity) entity;
+            }
+            loc.add(dir);
+        }
+        return null;
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
-
         executeAbility(p.getEyeLocation(), p, getMultiplier());
     }
 

@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -30,23 +31,24 @@ public class Wind extends Ability {
         new BukkitRunnable() {
             int counter = 0;
 
-            final int npcCounter = 20 * 5;
-
             @Override
             public void run() {
-                for (Entity entity : caster.getNearbyEntities(7, 7, 7)) {
-                    entity.setVelocity(dir);
-                }
-
-                for (int i = 0; i < 8; i++) {
-                    Location tempLoc = caster.getLocation().add(0, 1.5, 0).add(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
-                    caster.getWorld().spawnParticle(Particle.CLOUD, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
-                }
-
-                if ((!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8)) {
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8) {
                     cancel();
                     return;
                 }
+
+                // Schedule velocity and particle effects on the main thread
+                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Entity entity : caster.getNearbyEntities(7, 7, 7)) {
+                        entity.setVelocity(dir);
+                    }
+
+                    for (int i = 0; i < 8; i++) {
+                        Location tempLoc = caster.getLocation().add(0, 1.5, 0).add(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
+                        caster.getWorld().spawnParticle(Particle.CLOUD, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
+                    }
+                });
 
                 counter++;
 
@@ -55,7 +57,7 @@ public class Wind extends Ability {
                     pathway.getSequence().removeSpirituality(8);
                 }
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override

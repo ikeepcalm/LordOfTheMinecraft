@@ -1,9 +1,9 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
@@ -72,20 +72,16 @@ public class SpaceConcealment extends Ability implements Listener {
                 }
                 drawSquare(target, Material.BARRIER, radius, null, true);
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
-
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         stopped = false;
 
         Location loc = p.getLocation().clone();
-
         Random random = new Random();
-
         Location doorLoc = loc.clone();
         doorLoc.setPitch(0);
         doorLoc.setYaw(random.nextInt(4) * 90);
@@ -105,26 +101,9 @@ public class SpaceConcealment extends Ability implements Listener {
             @Override
             public void run() {
                 if (counter >= 8) {
-                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
-                        if (!concealedEntities.contains(entity))
-                            concealedEntities.add(entity);
-                    }
-
-                    if (!concealedEntities.isEmpty()) {
-                        for (Entity entity : concealedEntities) {
-                            if (!loc.getWorld().getNearbyEntities(loc, radius, radius, radius).contains(entity)) {
-                                for (Player player : Bukkit.getOnlinePlayers()) {
-                                    if (entity instanceof Player concealedPlayer)
-                                        player.showPlayer(LordOfTheMinecraft.instance, concealedPlayer);
-                                }
-                            }
-                        }
-                    }
-
-                    concealedEntities.removeIf(entity -> !loc.getWorld().getNearbyEntities(loc, radius, radius, radius).contains(entity));
+                    updateConcealedEntities(loc, radius);
                     counter = 0;
                 }
-
                 counter++;
 
                 for (Entity entity : concealedEntities) {
@@ -138,29 +117,8 @@ public class SpaceConcealment extends Ability implements Listener {
                 drawSquare(loc, Material.BARRIER, radius, p, false);
 
                 if (!doorInit) {
-                    for (int i = 0; i < 200; i++) {
-                        doorLoc.setX(random.nextDouble(loc.getX() - radius + 1, loc.getX() + radius - 1));
-                        doorLoc.setY(loc.getY());
-                        doorLoc.setZ(random.nextDouble(loc.getZ() - radius + 1, loc.getZ() + radius - 1));
-
-                        if (!doorLoc.getBlock().getType().isSolid())
-                            break;
-                    }
-
+                    initializeDoorLocation(random, loc, doorLoc, radius);
                     doorInit = true;
-
-                    for (int i = 0; i < radius * 20; i++) {
-                        if (doorLoc.getBlock().getType() == Material.BARRIER)
-                            break;
-
-                        switch ((int) doorLoc.getYaw()) {
-                            case 0, 360 -> doorLoc.add(0, 0, .25);
-                            case 90 -> doorLoc.add(-.25, 0, 0);
-                            case 180 -> doorLoc.add(0, 0, -.25);
-                            case 270 -> doorLoc.add(.25, 0, 0);
-                        }
-
-                    }
                 }
 
                 drawDoor(doorLoc, p);
@@ -168,42 +126,89 @@ public class SpaceConcealment extends Ability implements Listener {
                 if (doorLoc.getWorld() == null)
                     return;
 
-                for (Entity entity : doorLoc.getWorld().getNearbyEntities(doorLoc, 1, 1, 1)) {
-
-                    int x2 = 0;
-                    int z2 = 0;
-
-                    switch ((int) doorLoc.getYaw()) {
-                        case 0, 360 -> z2 = 1;
-                        case 90 -> x2 = -1;
-                        case 180 -> z2 = -1;
-                        case 270 -> x2 = 1;
-                    }
-
-                    if (!concealedEntities.contains(entity)) {
-                        x2 *= -1;
-                        z2 *= -1;
-                    }
-
-                    for (int i = 4; i < 100; i++) {
-                        Location tempLoc = doorLoc.clone();
-
-                        tempLoc.add(x2 * i, 0, z2 * i);
-
-                        if (tempLoc.getBlock().getType().isSolid())
-                            continue;
-
-                        entity.teleport(tempLoc);
-                        break;
-                    }
-                }
+                teleportEntities(doorLoc);
 
                 if (stopped) {
                     drawSquare(loc, Material.AIR, radius, p, false);
                     cancel();
                 }
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+    }
+
+    private void updateConcealedEntities(Location loc, int radius) {
+        for (Entity entity : loc.getWorld().getNearbyEntities(loc, radius, radius, radius)) {
+            if (!concealedEntities.contains(entity))
+                concealedEntities.add(entity);
+        }
+
+        if (!concealedEntities.isEmpty()) {
+            for (Entity entity : concealedEntities) {
+                if (!loc.getWorld().getNearbyEntities(loc, radius, radius, radius).contains(entity)) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (entity instanceof Player concealedPlayer)
+                            player.showPlayer(LordOfTheMinecraft.instance, concealedPlayer);
+                    }
+                }
+            }
+        }
+
+        concealedEntities.removeIf(entity -> !loc.getWorld().getNearbyEntities(loc, radius, radius, radius).contains(entity));
+    }
+
+    private void initializeDoorLocation(Random random, Location loc, Location doorLoc, int radius) {
+        for (int i = 0; i < 200; i++) {
+            doorLoc.setX(random.nextDouble(loc.getX() - radius + 1, loc.getX() + radius - 1));
+            doorLoc.setY(loc.getY());
+            doorLoc.setZ(random.nextDouble(loc.getZ() - radius + 1, loc.getZ() + radius - 1));
+
+            if (!doorLoc.getBlock().getType().isSolid())
+                break;
+        }
+
+        for (int i = 0; i < radius * 20; i++) {
+            if (doorLoc.getBlock().getType() == Material.BARRIER)
+                break;
+
+            switch ((int) doorLoc.getYaw()) {
+                case 0, 360 -> doorLoc.add(0, 0, .25);
+                case 90 -> doorLoc.add(-.25, 0, 0);
+                case 180 -> doorLoc.add(0, 0, -.25);
+                case 270 -> doorLoc.add(.25, 0, 0);
+            }
+        }
+    }
+
+    private void teleportEntities(Location doorLoc) {
+        for (Entity entity : doorLoc.getWorld().getNearbyEntities(doorLoc, 1, 1, 1)) {
+
+            int x2 = 0;
+            int z2 = 0;
+
+            switch ((int) doorLoc.getYaw()) {
+                case 0, 360 -> z2 = 1;
+                case 90 -> x2 = -1;
+                case 180 -> z2 = -1;
+                case 270 -> x2 = 1;
+            }
+
+            if (!concealedEntities.contains(entity)) {
+                x2 *= -1;
+                z2 *= -1;
+            }
+
+            for (int i = 4; i < 100; i++) {
+                Location tempLoc = doorLoc.clone();
+
+                tempLoc.add(x2 * i, 0, z2 * i);
+
+                if (tempLoc.getBlock().getType().isSolid())
+                    continue;
+
+                entity.teleport(tempLoc);
+                break;
+            }
+        }
     }
 
     @Override
@@ -235,8 +240,6 @@ public class SpaceConcealment extends Ability implements Listener {
             {o, o, o, x, x, x, y, y, y, y, x, x, x, o, o, o},
             {o, o, o, x, x, y, y, y, y, y, y, x, x, o, o, o},
             {o, o, o, x, x, y, y, y, y, y, y, x, x, o, o, o},
-            {o, o, x, x, y, y, y, y, y, y, y, y, x, x, o, o},
-            {o, o, x, x, y, y, y, y, y, y, y, y, x, x, o, o},
             {o, o, x, x, y, y, y, y, y, y, y, y, x, x, o, o},
             {o, o, x, x, y, y, y, y, y, y, y, y, x, x, o, o},
             {o, o, x, x, y, y, y, y, y, y, y, y, x, x, o, o},

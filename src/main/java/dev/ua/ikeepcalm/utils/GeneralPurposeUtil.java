@@ -202,7 +202,12 @@ public class GeneralPurposeUtil {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
                 continue;
-            p.spawnParticle(Particle.DUST, loc, count, offsetX, offsetY, offsetZ, speed, new Particle.DustOptions(Color.BLUE, 1));
+
+            if (!particle.equals(Particle.DUST)) {
+                p.spawnParticle(particle, loc, count, offsetX, offsetY, offsetZ, speed);
+            } else {
+                p.spawnParticle(Particle.DUST, loc, count, offsetX, offsetY, offsetZ, speed, new Particle.DustOptions(Color.BLUE, 1));
+            }
         }
     }
 

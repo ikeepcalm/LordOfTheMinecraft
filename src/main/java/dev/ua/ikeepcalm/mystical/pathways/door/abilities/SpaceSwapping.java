@@ -1,13 +1,14 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -17,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -26,11 +28,9 @@ public class SpaceSwapping extends Ability implements Listener {
 
     private int radius;
     private boolean isSwapping;
-
     private usages useCase;
     private final usages[] useCases;
     private int selected;
-
     private ArrayList<Block> swappedBlocks;
     private Location originLoc;
 
@@ -42,7 +42,6 @@ public class SpaceSwapping extends Ability implements Listener {
 
         radius = 30;
         isSwapping = false;
-
         useCases = usages.values();
         selected = 0;
         useCase = useCases[selected];
@@ -78,55 +77,68 @@ public class SpaceSwapping extends Ability implements Listener {
 
         if (!isSwapping) {
             isSwapping = true;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    swappedBlocks = GeneralPurposeUtil.getBlocksInSquare(loc.getBlock(), radius, false);
+                    originLoc = loc.clone();
 
-            swappedBlocks = GeneralPurposeUtil.getBlocksInSquare(loc.getBlock(), radius, false);
-
-            originLoc = loc.clone();
-
-            for (Block block : swappedBlocks) {
-                if (!block.getLocation().add(0, 1, 0).getBlock().getType().isSolid() && block.getType().isSolid())
-                    p.getWorld().spawnParticle(Particle.WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
-            }
+                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                        for (Block block : swappedBlocks) {
+                            if (!block.getLocation().add(0, 1, 0).getBlock().getType().isSolid() && block.getType().isSolid()) {
+                                p.getWorld().spawnParticle(Particle.WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
+                            }
+                        }
+                    });
+                }
+            }.runTaskAsynchronously(LordOfTheMinecraft.instance);
             return;
         }
 
         if (loc.getWorld() != originLoc.getWorld()) {
             isSwapping = false;
             swappedBlocks = null;
-
             p.sendMessage("§cДві ділянки повинні знаходитись в одному вимірі!");
             return;
         }
 
         isSwapping = false;
-
         Vector subtract = loc.clone().toVector().subtract(originLoc.clone().toVector());
 
-        ArrayList<Block> newBlocks = GeneralPurposeUtil.getBlocksInSquare(loc.getBlock(), radius, false);
-        HashMap<Block, Material> materials = new HashMap<>();
-        HashMap<Block, BlockData> blockDatas = new HashMap<>();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                ArrayList<Block> newBlocks = GeneralPurposeUtil.getBlocksInSquare(loc.getBlock(), radius, false);
+                HashMap<Block, Material> materials = new HashMap<>();
+                HashMap<Block, BlockData> blockDatas = new HashMap<>();
 
-        for (Block block : newBlocks) {
-            materials.put(block, block.getType());
-            blockDatas.put(block, block.getBlockData());
-        }
+                for (Block block : newBlocks) {
+                    materials.put(block, block.getType());
+                    blockDatas.put(block, block.getBlockData());
+                }
 
-        Vector newVector = originLoc.clone().toVector().subtract(loc.clone().toVector());
+                Vector newVector = originLoc.clone().toVector().subtract(loc.clone().toVector());
 
-        for (Block block : swappedBlocks) {
-            block.getWorld().getBlockAt(block.getLocation().clone().add(subtract)).setType(block.getType());
-            block.getWorld().getBlockAt(block.getLocation().clone().add(subtract)).setBlockData(block.getBlockData());
+                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Block block : swappedBlocks) {
+                        Block targetBlock = block.getWorld().getBlockAt(block.getLocation().clone().add(subtract));
+                        targetBlock.setType(block.getType());
+                        targetBlock.setBlockData(block.getBlockData());
+                        if (useCase == usages.MOVE) {
+                            block.setType(Material.AIR);
+                        }
+                    }
 
-            if (useCase == usages.MOVE)
-                block.setType(Material.AIR);
-        }
-
-        if (useCase == usages.SWAP) {
-            for (Block block : newBlocks) {
-                block.getWorld().getBlockAt(block.getLocation().clone().add(newVector)).setType(materials.get(block));
-                block.getWorld().getBlockAt(block.getLocation().clone().add(newVector)).setBlockData(blockDatas.get(block));
+                    if (useCase == usages.SWAP) {
+                        for (Block block : newBlocks) {
+                            Block targetBlock = block.getWorld().getBlockAt(block.getLocation().clone().add(newVector));
+                            targetBlock.setType(materials.get(block));
+                            targetBlock.setBlockData(blockDatas.get(block));
+                        }
+                    }
+                });
             }
-        }
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
     }
 
     @Override
@@ -138,11 +150,9 @@ public class SpaceSwapping extends Ability implements Listener {
             return;
         }
         selected++;
-
         if (selected >= useCases.length) {
             selected = 0;
         }
-
         useCase = useCases[selected];
     }
 
@@ -154,7 +164,6 @@ public class SpaceSwapping extends Ability implements Listener {
             return;
 
         radius++;
-
         if (radius >= 43)
             radius = 5;
 
@@ -164,7 +173,6 @@ public class SpaceSwapping extends Ability implements Listener {
     @Override
     public void onHold() {
         p = pathway.getBeyonder().getPlayer();
-
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bОбраний тип контролю: §7" + useCase.name));
     }
 

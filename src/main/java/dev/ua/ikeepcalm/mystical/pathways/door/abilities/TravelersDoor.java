@@ -1,12 +1,12 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -51,100 +51,105 @@ public class TravelersDoor extends Ability implements Listener {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Location loc = p.getEyeLocation().clone(); // Clone to avoid modifying original location
 
-        for (int i = 0; i < 5; i++) {
-            if (loc.getBlock().getType().isSolid())
-                break;
-            loc.add(dir);
-        }
+        // Asynchronously calculate target location
+        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            for (int i = 0; i < 5; i++) {
+                if (loc.getBlock().getType().isSolid())
+                    break;
+                loc.add(dir);
+            }
 
-        loc.subtract(dir);
-        loc.add(0, .4, 0);
+            loc.subtract(dir);
+            loc.add(0, .4, 0);
 
-        if (loc.getWorld() == null)
-            return;
+            if (loc.getWorld() == null)
+                return;
 
-        boolean teleportToCoordinates = p.isSneaking();
-        if (!teleportToCoordinates) {
+            boolean teleportToCoordinates = p.isSneaking();
+            if (!teleportToCoordinates) {
+                // Synchronously draw the door and handle teleportation
+                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            drawDoor(loc);
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    drawDoor(loc);
-
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        cancel();
-                        return;
-                    }
-
-                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
-                        if (!(entity instanceof Player player))
-                            continue;
-
-                        if (player != p) {
-                            if (teleportedPlayers.containsKey(player))
-                                continue;
-                            GameMode prevGameModeTeleport = player.getGameMode();
-                            teleportedPlayers.put(player, prevGameModeTeleport);
-                            player.setGameMode(GameMode.SPECTATOR);
-
-                            new BukkitRunnable() {
-                                int counter = 0;
-
-                                @Override
-                                public void run() {
-                                    counter++;
-                                    if (counter >= 20 * 30 && !isTeleporting) {
-                                        cancel();
-                                        player.setGameMode(teleportedPlayers.get(player));
-                                        teleportedPlayers.remove(player);
-                                        return;
-                                    }
-
-                                    if (isTeleporting)
-                                        cancel();
-                                }
-                            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                            continue;
-                        }
-
-                        prevGameMode = p.getGameMode();
-                        p.setGameMode(GameMode.SPECTATOR);
-                        isTeleporting = true;
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-
-                        new BukkitRunnable() {
-                            int counter = 0;
-
-                            @Override
-                            public void run() {
-                                if (!isTeleporting)
-                                    cancel();
-                                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bНатисніть ЛКМ, щоб телепортуватися сюди"));
-
-                                for (Player teleportedPlayer : teleportedPlayers.keySet()) {
-                                    teleportedPlayer.teleport(p.getLocation());
-                                }
-
-                                if (counter >= 20 * 60 * 2) {
-                                    stopTeleporting();
-                                    cancel();
-                                    return;
-                                }
-
-                                counter++;
+                            if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                                cancel();
+                                return;
                             }
-                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 
-                        cancel();
-                    }
-                }
-            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-        } else {
-            p.sendMessage("§bВведіть координати, до яких хочете відкрити портал");
-            isTeleportingToCoordinates = true;
-        }
+                            for (Entity entity : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
+                                if (!(entity instanceof Player player))
+                                    continue;
+
+                                if (player != p) {
+                                    if (teleportedPlayers.containsKey(player))
+                                        continue;
+                                    GameMode prevGameModeTeleport = player.getGameMode();
+                                    teleportedPlayers.put(player, prevGameModeTeleport);
+                                    player.setGameMode(GameMode.SPECTATOR);
+
+                                    new BukkitRunnable() {
+                                        int counter = 0;
+
+                                        @Override
+                                        public void run() {
+                                            counter++;
+                                            if (counter >= 20 * 30 && !isTeleporting) {
+                                                cancel();
+                                                player.setGameMode(teleportedPlayers.get(player));
+                                                teleportedPlayers.remove(player);
+                                                return;
+                                            }
+
+                                            if (isTeleporting)
+                                                cancel();
+                                        }
+                                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+                                    continue;
+                                }
+
+                                prevGameMode = p.getGameMode();
+                                p.setGameMode(GameMode.SPECTATOR);
+                                isTeleporting = true;
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+
+                                new BukkitRunnable() {
+                                    int counter = 0;
+
+                                    @Override
+                                    public void run() {
+                                        if (!isTeleporting)
+                                            cancel();
+                                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bНатисніть ЛКМ, щоб телепортуватися сюди"));
+
+                                        for (Player teleportedPlayer : teleportedPlayers.keySet()) {
+                                            teleportedPlayer.teleport(p.getLocation());
+                                        }
+
+                                        if (counter >= 20 * 60 * 2) {
+                                            stopTeleporting();
+                                            cancel();
+                                            return;
+                                        }
+
+                                        counter++;
+                                    }
+                                }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+
+                                cancel();
+                            }
+                        }
+                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+                });
+            } else {
+                p.sendMessage("§bВведіть координати, до яких хочете відкрити портал");
+                isTeleportingToCoordinates = true;
+            }
+        });
     }
 
     @EventHandler
@@ -157,76 +162,81 @@ public class TravelersDoor extends Ability implements Listener {
         if (!isTeleportingToCoordinates)
             return;
 
-
         isTeleportingToCoordinates = false;
         e.setCancelled(true);
 
         Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Location loc = p.getEyeLocation().clone(); // Clone to avoid modifying original location
 
-        for (int i = 0; i < 5; i++) {
-            if (loc.getBlock().getType().isSolid())
-                break;
-            loc.add(dir);
-        }
-
-        loc.subtract(dir);
-        loc.add(0, .4, 0);
-
-        if (loc.getWorld() == null)
-            return;
-
-        String[] args = e.getMessage().split(" ");
-        if (args.length < 3) {
-            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            p.sendMessage("§cНеправильні координати");
-            return;
-        }
-
-        final boolean[] areValid = new boolean[1];
-        areValid[0] = true;
-        Arrays.stream(args).forEach(s -> {
-            if (!GeneralPurposeUtil.isInteger(s))
-                areValid[0] = false;
-        });
-
-        if (!areValid[0]) {
-            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            p.sendMessage("§cНеправильні координати");
-            return;
-        }
-
-        int x = GeneralPurposeUtil.parseInt(args[0]);
-        int y = GeneralPurposeUtil.parseInt(args[1]);
-        int z = GeneralPurposeUtil.parseInt(args[2]);
-        Location teleportLoc = new Location(loc.getWorld(), x, y, z);
-
-        new BukkitRunnable() {
-            int counter = 20 * 60 * 2;
-
-            @Override
-            public void run() {
-                drawDoor(loc);
-
-                counter--;
-
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || counter <= 0) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    isTeleportingToCoordinates = false;
-                    cancel();
-                    return;
-                }
-
-                for (Entity entity : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
-                    entity.teleport(teleportLoc);
-
-                    if (entity == p) {
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                        cancel();
-                    }
-                }
+        // Asynchronously calculate target location
+        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            for (int i = 0; i < 5; i++) {
+                if (loc.getBlock().getType().isSolid())
+                    break;
+                loc.add(dir);
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+
+            loc.subtract(dir);
+            loc.add(0, .4, 0);
+
+            if (loc.getWorld() == null)
+                return;
+
+            String[] args = e.getMessage().split(" ");
+            if (args.length < 3) {
+                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                p.sendMessage("§cНеправильні координати");
+                return;
+            }
+
+            final boolean[] areValid = new boolean[1];
+            areValid[0] = true;
+            Arrays.stream(args).forEach(s -> {
+                if (!GeneralPurposeUtil.isInteger(s))
+                    areValid[0] = false;
+            });
+
+            if (!areValid[0]) {
+                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                p.sendMessage("§cНеправильні координати");
+                return;
+            }
+
+            int x = GeneralPurposeUtil.parseInt(args[0]);
+            int y = GeneralPurposeUtil.parseInt(args[1]);
+            int z = GeneralPurposeUtil.parseInt(args[2]);
+            Location teleportLoc = new Location(loc.getWorld(), x, y, z);
+
+            // Synchronously handle teleportation
+            Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                new BukkitRunnable() {
+                    int counter = 20 * 60 * 2;
+
+                    @Override
+                    public void run() {
+                        drawDoor(loc);
+
+                        counter--;
+
+                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || counter <= 0) {
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                            isTeleportingToCoordinates = false;
+                            cancel();
+                            return;
+                        }
+
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
+                            entity.teleport(teleportLoc);
+
+                            if (entity == p) {
+                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                cancel();
+                            }
+                        }
+                    }
+                }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+            });
+        });
     }
 
     @Override
@@ -269,7 +279,6 @@ public class TravelersDoor extends Ability implements Listener {
 
         for (Map.Entry<Player, GameMode> entry : teleportedPlayers.entrySet()) {
             entry.getKey().setGameMode(entry.getValue());
-            Bukkit.broadcastMessage(entry.getKey() + " -- " + entry.getValue());
         }
 
         teleportedPlayers.clear();
@@ -292,7 +301,6 @@ public class TravelersDoor extends Ability implements Listener {
         for (int[] i : shape) {
             for (int j : i) {
                 if (j != 0) {
-
                     Location target = loc.clone();
                     target.setX(x);
                     target.setY(y);

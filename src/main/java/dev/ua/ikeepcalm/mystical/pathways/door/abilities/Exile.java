@@ -7,10 +7,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -51,6 +48,7 @@ public class Exile extends Ability {
             locations[i].setPitch(random.nextInt(45));
             locations[i].setYaw(random.nextInt(360));
         }
+
         new BukkitRunnable() {
             int counter = 0;
             int npcCounter = 20 * 5;
@@ -69,71 +67,60 @@ public class Exile extends Ability {
                     drawDoor(location);
                 }
 
-                for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
-                    if (entity == caster)
-                        continue;
+                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
+                        if (entity == caster)
+                            continue;
 
-                    if (!(entity instanceof Mob) && !(entity instanceof Player))
-                        continue;
+                        if (!(entity instanceof Mob) && !(entity instanceof Player))
+                            continue;
 
-                    if (entity instanceof Player player && LordOfTheMinecraft.beyonders.containsKey(player.getUniqueId())) {
-                        Beyonder beyonder = LordOfTheMinecraft.beyonders.get(player.getUniqueId());
-                        if (random.nextInt(Math.round(160f / beyonder.getPathway().getSequence().getCurrentSequence())) == 0) {
-                            Location startLoc = player.getLocation();
-                            Location teleportLoc = new Location(startLoc.getWorld(), 1000, 10000, 1000);
-                            player.teleport(teleportLoc);
-
-                            new BukkitRunnable() {
-                                int c = 0;
-
-                                @Override
-                                public void run() {
-                                    if (c >= (20 * 1.5 * Math.pow(beyonder.getPathway().getSequence().getCurrentSequence(), 1.2))) {
-                                        player.teleport(startLoc);
-                                        cancel();
-                                        return;
-                                    }
-                                    c++;
-                                    player.teleport(teleportLoc);
-                                }
-                            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                        }
-                        continue;
+                        handleEntityTeleport(entity, caster, random);
                     }
-
-                    if (random.nextInt(15) == 0) {
-                        Location startLoc = entity.getLocation();
-                        Location teleportLoc = new Location(startLoc.getWorld(), random.nextInt(1000, 2000), 10000, random.nextInt(1000, 2000));
-                        entity.teleport(teleportLoc);
-                        new BukkitRunnable() {
-                            int c = 0;
-
-                            @Override
-                            public void run() {
-                                if (c >= 20 * 30) {
-                                    entity.teleport(startLoc);
-                                    cancel();
-                                    return;
-                                }
-                                c++;
-                                entity.teleport(teleportLoc);
-                            }
-                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-
-                    }
-                }
+                });
 
                 if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                     cancel();
                 }
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+    }
+
+    private void handleEntityTeleport(Entity entity, Entity caster, Random random) {
+        if (entity instanceof Player player && LordOfTheMinecraft.beyonders.containsKey(player.getUniqueId())) {
+            Beyonder beyonder = LordOfTheMinecraft.beyonders.get(player.getUniqueId());
+            if (random.nextInt(Math.round(160f / beyonder.getPathway().getSequence().getCurrentSequence())) == 0) {
+                Location startLoc = player.getLocation();
+                Location teleportLoc = new Location(startLoc.getWorld(), 1000, 10000, 1000);
+                teleportEntity(player, startLoc, teleportLoc, Math.pow(beyonder.getPathway().getSequence().getCurrentSequence(), 1.2) * 20 * 1.5);
+            }
+        } else if (random.nextInt(15) == 0) {
+            Location startLoc = entity.getLocation();
+            Location teleportLoc = new Location(startLoc.getWorld(), random.nextInt(1000, 2000), 10000, random.nextInt(1000, 2000));
+            teleportEntity(entity, startLoc, teleportLoc, 20 * 30);
+        }
+    }
+
+    private void teleportEntity(Entity entity, Location startLoc, Location teleportLoc, double duration) {
+        new BukkitRunnable() {
+            int c = 0;
+
+            @Override
+            public void run() {
+                if (c >= duration) {
+                    entity.teleport(startLoc);
+                    cancel();
+                    return;
+                }
+                c++;
+                entity.teleport(teleportLoc);
+            }
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
         executeAbility(p.getLocation(), p, 1);
     }
@@ -167,7 +154,6 @@ public class Exile extends Ability {
     };
 
     private void drawDoor(Location loc) {
-
         if (loc.getWorld() == null)
             return;
 
@@ -182,7 +168,6 @@ public class Exile extends Ability {
         for (int[] i : shape) {
             for (int j : i) {
                 if (j != 0) {
-
                     Location target = loc.clone();
                     target.setX(x);
                     target.setY(y);
