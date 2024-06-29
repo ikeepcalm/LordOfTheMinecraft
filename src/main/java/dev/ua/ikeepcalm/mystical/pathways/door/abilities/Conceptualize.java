@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +37,6 @@ public class Conceptualize extends Ability {
             return;
         }
 
-        LivingEntity finalTarget = target;
         new BukkitRunnable() {
             int counter = 0;
             double timer = 1.0;
@@ -45,7 +44,7 @@ public class Conceptualize extends Ability {
 
             @Override
             public void run() {
-                if (!finalTarget.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
                     pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     cancel();
                     return;
@@ -53,7 +52,7 @@ public class Conceptualize extends Ability {
 
                 counter++;
                 npcTimer--;
-                finalTarget.damage(8, caster);
+                target.damage(8, caster);
 
                 if (counter >= 20) {
                     counter = 0;
@@ -61,9 +60,7 @@ public class Conceptualize extends Ability {
                         cancel();
                         return;
                     }
-                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                        pathway.getSequence().removeSpirituality(Math.pow(110, timer));
-                    });
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> pathway.getSequence().removeSpirituality(Math.pow(110, timer)));
                     timer += .08;
                 }
 
@@ -78,13 +75,13 @@ public class Conceptualize extends Ability {
 
                         @Override
                         public void run() {
-                            if (!finalTarget.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                            if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
                                 pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                                 cancel();
                                 return;
                             }
 
-                            Location entityLoc = finalTarget.getLocation().clone();
+                            Location entityLoc = target.getLocation().clone();
                             entityLoc.add(0, 0.75, 0);
 
                             spiralX = spiralRadius * Math.cos(spiral);

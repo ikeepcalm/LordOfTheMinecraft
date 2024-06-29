@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.entity.Damageable;
@@ -60,9 +60,7 @@ public class LightOfPurification extends Ability {
 
                     if (radius >= 20) {
                         cancel();
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                        });
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getSequence().getUsesAbilities()[identifier - 1] = false);
                     }
                 });
             }

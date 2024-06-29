@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.mob.abilities.sun;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;
+import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;

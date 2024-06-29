@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Tsunami extends Ability implements Listener {
 
@@ -122,7 +121,7 @@ public class Tsunami extends Ability implements Listener {
                         public void run() {
                             List<Block> waterBlocksAfter = GeneralPurposeUtil.getWaterBlocksInSquare(loc.getBlock(), 45).stream()
                                     .filter(block -> !waterBlocksBefore.contains(block))
-                                    .collect(Collectors.toList());
+                                    .toList();
                             for (Block b : waterBlocksAfter) {
                                 b.setType(Material.AIR);
                             }
@@ -133,8 +132,4 @@ public class Tsunami extends Ability implements Listener {
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 
-    private void removeWater(Block b, int x, int y, int z) {
-        if (b.getLocation().add(x, y, z).getBlock().getType() == Material.WATER)
-            b.getLocation().add(x, y, z).getBlock().setType(Material.AIR);
-    }
 }

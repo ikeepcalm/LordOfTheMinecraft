@@ -21,7 +21,7 @@ public class Tsunami extends Disaster {
     private final ArrayList<Integer> skipped;
 
     public Tsunami(Player p) {
-        super(p);
+        super();
         blockedSides = new HashMap<>();
         skipped = new ArrayList<>();
     }
@@ -48,7 +48,7 @@ public class Tsunami extends Disaster {
 
         new BukkitRunnable() {
             int counter = 0;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
@@ -273,7 +273,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
                 currentEntity = null;
             else {
                 index = 0;
-                currentEntity = nearbyEntities.get(0);
+                currentEntity = nearbyEntities.getFirst();
             }
         }
 
@@ -384,7 +384,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
             return;
 
         index = 0;
-        currentEntity = nearbyEntities.get(0);
+        currentEntity = nearbyEntities.getFirst();
     }
 
     public void removeMarionette(Marionette marionette) {

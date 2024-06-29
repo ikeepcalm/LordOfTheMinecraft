@@ -285,6 +285,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         for (Map.Entry<UUID, Beyonder> entry : beyonders.entrySet()) {
             configSave.set("beyonders." + entry.getKey() + ".pathway", entry.getValue().getPathway().getNameNormalized());
             configSave.set("beyonders." + entry.getKey() + ".sequence", entry.getValue().getPathway().getSequence().getCurrentSequence());
+            configSave.set("beyonders." + entry.getKey() + ".acting", (int) entry.getValue().getActingProgress());
+            configSave.set("beyonders." + entry.getKey() + ".spirituality", (int) entry.getValue().getSpirituality());
         }
         configSave.save(configSaveFile);
     }
@@ -332,20 +334,28 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         if (configSave.getConfigurationSection("beyonders") == null) {
             configSave.set("beyonders.uuid.pathway", "pathway-name");
             configSave.set("beyonders.uuid.sequence", "sequence");
+            configSave.set("beyonders.uuid.acting", "acting-value");
+            configSave.set("beyonders.uuid.spirituality", "spirituality-value");
         }
         for (String s : Objects.requireNonNull(configSave.getConfigurationSection("beyonders")).getKeys(false)) {
             if (s.equals("uuid"))
                 continue;
             try {
-                if (!configSave.contains("beyonders." + s + ".sequence") || !(configSave.get("beyonders." + s + ".sequence") instanceof Integer sequence))
-                    return;
+                String pathway = configSave.getString("beyonders." + s + ".pathway");
+                int sequence = configSave.getInt("beyonders." + s + ".sequence");
+                int acting = configSave.getInt("beyonders." + s + ".acting");
+                int spirituality = configSave.getInt("beyonders." + s + ".spirituality");
 
-                int primitiveSequence = sequence;
-                Pathway.initializeNew((String) Objects.requireNonNull(configSave.get("beyonders." + s + ".pathway")), UUID.fromString(s), primitiveSequence);
+                if (pathway == null || acting == 0 || spirituality == 0) {
+                    Bukkit.getConsoleSender().sendMessage("Failed to initialize " + s + ": missing attributes");
+                    continue;
+                }
+
+                Pathway.initializeNew(pathway, UUID.fromString(s), sequence, acting, spirituality);
             } catch (Exception exception) {
                 Bukkit.getConsoleSender().sendMessage("Failed to initialize " + s);
 
-                //Error message
+                // Error message
                 StringWriter sw = new StringWriter();
                 exception.printStackTrace(new PrintWriter(sw));
                 String exceptionAsString = sw.toString();

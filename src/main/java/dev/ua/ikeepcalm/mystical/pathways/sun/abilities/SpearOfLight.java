@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
@@ -118,35 +118,7 @@ public class SpearOfLight extends Ability {
                                                         Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.END_ROD, sphereLoc, 4, 0.15, 0.15, 0.15, 0);
 
                                                         // Damage entities
-                                                        for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
-                                                            if (entity instanceof LivingEntity) {
-                                                                // Ignore player that initiated the shot
-                                                                if (entity == caster) {
-                                                                    continue;
-                                                                }
-                                                                Vector particleMinVector = new Vector(
-                                                                        sphereLoc.getX() - 0.25,
-                                                                        sphereLoc.getY() - 0.25,
-                                                                        sphereLoc.getZ() - 0.25);
-                                                                Vector particleMaxVector = new Vector(
-                                                                        sphereLoc.getX() + 0.25,
-                                                                        sphereLoc.getY() + 0.25,
-                                                                        sphereLoc.getZ() + 0.25);
-
-                                                                // Entity hit
-                                                                if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-                                                                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                                                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                                                            ((Damageable) entity).damage(65 * multiplier, caster);
-                                                                        } else {
-                                                                            ((Damageable) entity).damage(30 * multiplier, caster);
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }
-                                                        }
-
-                                                        sphereLoc.subtract(x, y, z);
+                                                        damageNearbyEntities(y, x, z, scheduler, sphereLoc, caster, multiplier);
                                                     }
                                                 }
                                                 sphereRadius += 0.2;
@@ -184,34 +156,7 @@ public class SpearOfLight extends Ability {
                                         Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.END_ROD, sphereLoc, 1, 0.1, 0.1, 0.1, 0);
 
                                         // Damage entities
-                                        for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
-                                            if (entity instanceof LivingEntity) {
-                                                // Ignore player that initiated the shot
-                                                if (entity == caster) {
-                                                    continue;
-                                                }
-                                                Vector particleMinVector = new Vector(
-                                                        sphereLoc.getX() - 0.25,
-                                                        sphereLoc.getY() - 0.25,
-                                                        sphereLoc.getZ() - 0.25);
-                                                Vector particleMaxVector = new Vector(
-                                                        sphereLoc.getX() + 0.25,
-                                                        sphereLoc.getY() + 0.25,
-                                                        sphereLoc.getZ() + 0.25);
-
-                                                // Entity hit
-                                                if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-                                                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                                            ((Damageable) entity).damage(65 * multiplier, caster);
-                                                        } else {
-                                                            ((Damageable) entity).damage(30 * multiplier, caster);
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }
-                                        sphereLoc.subtract(x, y, z);
+                                        damageNearbyEntities(y, x, z, scheduler, sphereLoc, caster, multiplier);
                                     }
                                 }
                                 sphereRadius += 0.2;
@@ -222,9 +167,7 @@ public class SpearOfLight extends Ability {
                             });
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        spearLocation.getWorld().spawnParticle(Particle.FLAME, spearLocation, 1000, 0.4, 0.4, 0.4, .15);
-                    });
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.FLAME, spearLocation, 1000, 0.4, 0.4, 0.4, .15));
                     cancel();
                 }
                 if (counter >= 100) {
@@ -241,6 +184,40 @@ public class SpearOfLight extends Ability {
                 pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 20 * 3);
+    }
+
+    private void damageNearbyEntities(double y, double x, double z, BukkitScheduler scheduler, Location sphereLoc, Entity caster, double multiplier) {
+        scheduler.runTask(LordOfTheMinecraft.instance, ()->{
+            for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
+                if (entity instanceof LivingEntity) {
+                    // Ignore player that initiated the shot
+                    if (entity == caster) {
+                        continue;
+                    }
+                    Vector particleMinVector = new Vector(
+                            sphereLoc.getX() - 0.25,
+                            sphereLoc.getY() - 0.25,
+                            sphereLoc.getZ() - 0.25);
+                    Vector particleMaxVector = new Vector(
+                            sphereLoc.getX() + 0.25,
+                            sphereLoc.getY() + 0.25,
+                            sphereLoc.getZ() + 0.25);
+
+                    // Entity hit
+                    if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                ((Damageable) entity).damage(65 * multiplier, caster);
+                            } else {
+                                ((Damageable) entity).damage(30 * multiplier, caster);
+                            }
+                        });
+                    }
+                }
+            }
+
+            sphereLoc.subtract(x, y, z);
+        });
     }
 
     @Override

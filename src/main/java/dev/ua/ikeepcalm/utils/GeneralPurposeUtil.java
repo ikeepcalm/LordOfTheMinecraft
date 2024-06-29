@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.utils;
 
-import jline.internal.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -69,7 +69,7 @@ public class GeneralPurposeUtil {
         }
     }
 
-    public static void drawParticleSphere(Location loc, double sphereRadius, int detail, @Nullable Particle.DustOptions dust, @Nullable Material material, double offset, Particle particle) {
+    public static void drawParticleSphere(Location loc, double sphereRadius, int detail, Particle.@Nullable DustOptions dust, @Nullable Material material, double offset, Particle particle) {
         //Spawn particles
         for (double i = 0; i <= Math.PI; i += Math.PI / detail) {
             double radius = Math.sin(i) * sphereRadius;

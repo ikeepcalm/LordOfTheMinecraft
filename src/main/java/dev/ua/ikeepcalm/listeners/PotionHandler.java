@@ -2,8 +2,8 @@ package dev.ua.ikeepcalm.listeners;
 
 import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
+import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,16 +35,17 @@ public class PotionHandler implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (e.getClickedBlock() == null)
+        if (e.getClickedBlock() == null) {
             return;
-        if (e.getClickedBlock().getType() != Material.CAULDRON)
-            return;
+        }
 
-        if (
-                ((e.getClickedBlock().getMetadata("special").isEmpty()) || e.getClickedBlock().getMetadata("special").get(0).value() == null || !(e.getClickedBlock().getMetadata("special").get(0).value() instanceof Boolean metaDataTag) || !metaDataTag) &&
-                        e.getClickedBlock().getLocation().subtract(0, 1, 0).getBlock().getType() != Material.SOUL_FIRE
-        )
+        if (e.getClickedBlock().getType() != Material.CAULDRON) {
             return;
+        }
+
+        if (e.getClickedBlock().getLocation().subtract(0, 1, 0).getBlock().getType() != Material.SOUL_CAMPFIRE) {
+            return;
+        }
 
         e.setCancelled(true);
 
@@ -128,7 +129,7 @@ public class PotionHandler implements Listener {
                 }
 
                 if (!isCorrect) {
-                    if (!mainIngredients.isEmpty() && mainIngredients.get(0).isSimilar(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()))) {
+                    if (!mainIngredients.isEmpty() && mainIngredients.getFirst().isSimilar(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()))) {
                         isCorrect = true;
                     }
                 }

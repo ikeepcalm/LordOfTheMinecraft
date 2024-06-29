@@ -5,7 +5,7 @@ import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
 import lombok.Getter;
@@ -36,7 +36,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -45,49 +48,52 @@ import static dev.ua.ikeepcalm.LordOfTheMinecraft.bossBarUtil;
 
 public class Beyonder implements Listener {
 
+    private static final Logger log = LoggerFactory.getLogger(Beyonder.class);
+    @Getter
+    protected final UUID uuid;
+    private final int[] healthIndex;
+    public boolean online;
     @Setter
     @Getter
     private Pathway pathway;
-    @Getter
-    protected final UUID uuid;
     @Setter
-
     @Getter
     private double spirituality;
     private double maxSpirituality;
     private double lastSpirituality;
-
+    @Getter
     private double actingProgress;
+    @Getter
+    private double lastActing;
+    @Getter
     private double actingNeeded;
     private boolean digested;
     @Getter
     private boolean beyonder;
     private boolean loosingControl;
-    public boolean online;
     private boolean initializedOnce;
-
     @Getter
     private Team team;
-
     private int resurrections;
 
-    private final int[] healthIndex;
-
-    public Beyonder(UUID uuid, Pathway pathway) {
+    public Beyonder(UUID uuid, Pathway pathway, int acting, int spirituality) {
         this.pathway = pathway;
         this.uuid = uuid;
 
         pathway.setBeyonder(this);
 
-        beyonder = true;
-        online = false;
-        initializedOnce = false;
+        this.beyonder = true;
+        this.online = false;
+        this.initializedOnce = false;
 
-        loosingControl = false;
+        this.loosingControl = false;
 
-        resurrections = 0;
+        this.lastActing = acting;
+        this.lastSpirituality = spirituality;
 
-        healthIndex = new int[]{
+        this.resurrections = 0;
+
+        this.healthIndex = new int[]{
                 0, 180, 120, 80, 70, 55, 40, 30, 25, 20
         };
 
@@ -96,12 +102,11 @@ public class Beyonder implements Listener {
         if (getPlayer() == null || !Bukkit.getOnlinePlayers().contains(getPlayer()))
             return;
 
-        initializedOnce = true;
+        this.initializedOnce = true;
 
         //acting initializing
-        digested = false;
-        actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
-        actingProgress = 0;
+        this.digested = false;
+        this.actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
 
         pathway.initItems();
         start();
@@ -144,7 +149,7 @@ public class Beyonder implements Listener {
     }
 
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent e){
+    public void onRespawn(PlayerRespawnEvent e) {
         if (!e.getPlayer().getUniqueId().equals(uuid))
             return;
         if (!beyonder)
@@ -235,13 +240,19 @@ public class Beyonder implements Listener {
             //acting initializing
             digested = false;
             actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
-            actingProgress = 0;
         }
 
-        if (lastSpirituality != 0)
+        updateSpirituality();
+
+        if (lastSpirituality != 0) {
             spirituality = lastSpirituality;
-        else
-            updateSpirituality();
+            lastSpirituality = 0;
+        }
+
+        if (lastActing != 0) {
+            actingProgress = lastActing;
+            lastActing = 0;
+        }
 
         online = true;
         initializedOnce = true;
@@ -283,7 +294,7 @@ public class Beyonder implements Listener {
                 }
 
                 actingCounter++;
-                if (actingCounter >= 20 * 15) {
+                if (actingCounter >= 50 * 15) {
                     actingCounter = 0;
                     addActing(1);
                 }
@@ -309,7 +320,7 @@ public class Beyonder implements Listener {
                 if (spirituality < maxSpirituality) {
                     if (!bossBar) {
                         bossBar = true;
-                        bossBarUtil.addPlayer(getPlayer(), "§6Духовність: " + (int) spirituality + "§6/§e" + (int) maxSpirituality , BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
+                        bossBarUtil.addPlayer(getPlayer(), "§6Духовність: " + (int) spirituality + "§6/§e" + (int) maxSpirituality, BarColor.BLUE, BarStyle.SOLID, (float) (spirituality / maxSpirituality));
                     } else {
                         bossBarUtil.setProgress(getPlayer(), (float) (spirituality / maxSpirituality));
                         bossBarUtil.setTitle(getPlayer(), "§6Духовність: " + (int) spirituality + "§6/§e" + (int) maxSpirituality);
@@ -396,11 +407,6 @@ public class Beyonder implements Listener {
             actingProgress += actingAdd;
         }
 
-        updateActing();
-    }
-
-    public void setActing(int acting) {
-        actingProgress = acting;
         updateActing();
     }
 
@@ -493,7 +499,6 @@ public class Beyonder implements Listener {
         }
 
         pathway.getSequence().setCurrentSequence(sequence);
-        getPlayer().sendMessage(pathway.getItems().getAbilityInfo().get(sequence));
         digested = false;
         actingProgress = 0;
         updateActing();
@@ -517,6 +522,26 @@ public class Beyonder implements Listener {
         pathway = null;
     }
 
+    @Override
+    public String toString() {
+        return "Beyonder{" +
+               "beyonder=" + beyonder +
+               ", uuid=" + uuid +
+               ", healthIndex=" + Arrays.toString(healthIndex) +
+               ", online=" + online +
+               ", pathway=" + pathway +
+               ", spirituality=" + spirituality +
+               ", maxSpirituality=" + maxSpirituality +
+               ", lastSpirituality=" + lastSpirituality +
+               ", actingProgress=" + actingProgress +
+               ", actingNeeded=" + actingNeeded +
+               ", digested=" + digested +
+               ", loosingControl=" + loosingControl +
+               ", initializedOnce=" + initializedOnce +
+               ", team=" + team +
+               ", resurrections=" + resurrections +
+               '}';
+    }
 }
 
 

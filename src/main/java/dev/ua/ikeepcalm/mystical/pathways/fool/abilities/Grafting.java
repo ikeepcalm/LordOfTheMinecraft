@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting.*;
 import net.md_5.bungee.api.ChatMessageType;
@@ -11,9 +11,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +20,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Grafting extends Ability implements Listener {
 
@@ -34,22 +35,11 @@ public class Grafting extends Ability implements Listener {
 
     private int radius = 1;
 
-    private final Material[] npcGraftMaterial;
-
     public Grafting(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
 
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
-
-        npcGraftMaterial = new Material[]{
-                Material.GRASS_BLOCK,
-                Material.DIRT,
-                Material.STONE,
-                Material.SAND,
-                Material.DEEPSLATE,
-                Material.GRAVEL
-        };
 
         graftedLocations = new HashMap<>();
         healthSynchros = new ArrayList<>();
@@ -71,34 +61,6 @@ public class Grafting extends Ability implements Listener {
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        World world = loc.getWorld();
-        if (world == null)
-            return;
-
-        LivingEntity target = null;
-
-        for (Entity entity : world.getNearbyEntities(loc, 1, 1, 1)) {
-            if (entity == caster || entity.getType() == EntityType.ARMOR_STAND || !(entity instanceof LivingEntity))
-                continue;
-            target = (LivingEntity) entity;
-            break;
-        }
-
-        if (target == null)
-            return;
-
-        Random random = new Random();
-
-        switch (random.nextInt(2)) {
-            case 0 -> new BlockToEntity(target, npcGraftMaterial[(new Random()).nextInt(npcGraftMaterial.length)]);
-            case 1 -> {
-                Location graftLoc = target.getLocation().add(random.nextInt(-8, 8), random.nextInt(-3, 3), random.nextInt(-8, 8));
-                new EntityToLocation(target, graftLoc);
-            }
-        }
     }
 
     enum Category {

@@ -14,12 +14,9 @@ import java.util.UUID;
 
 public abstract class Disaster {
 
-    CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
+    final CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
 
-    protected LivingEntity e;
-
-    public Disaster(LivingEntity e) {
-        this.e = e;
+    public Disaster() {
     }
 
     public abstract void spawnDisaster(LivingEntity e, Location loc);
@@ -46,25 +43,6 @@ public abstract class Disaster {
                         null,
                         0,
                         null);
-            }
-        }.runTaskLaterAsynchronously(LordOfTheMinecraft.instance, 20 * 20L);
-    }
-
-    protected void rollbackChanges(CustomLocation location, int power) {
-        power *= 30;
-        int finalPower = power;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                coreProtectAPI.performRollback(
-                        30,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        finalPower,
-                        location.toLocation());
             }
         }.runTaskLaterAsynchronously(LordOfTheMinecraft.instance, 20 * 20L);
     }

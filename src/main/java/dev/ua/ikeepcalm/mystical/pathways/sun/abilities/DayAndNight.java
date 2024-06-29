@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,30 +23,24 @@ public class DayAndNight extends Ability {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            new BukkitRunnable() {
-                int counter = 0;
+        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> new BukkitRunnable() {
+            int counter = 0;
 
-                @Override
-                public void run() {
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        p.getWorld().setTime(p.getWorld().getTime() + 150);
-                    });
+            @Override
+            public void run() {
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> p.getWorld().setTime(p.getWorld().getTime() + 150));
 
-                    if (counter >= 20) {
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            pathway.getSequence().removeSpirituality(1000);
-                        });
-                        counter = 0;
-                    }
-                    counter++;
-
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        cancel();
-                    }
+                if (counter >= 20) {
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getSequence().removeSpirituality(1000));
+                    counter = 0;
                 }
-            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
-        });
+                counter++;
+
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                    cancel();
+                }
+            }
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1));
     }
 
     @Override

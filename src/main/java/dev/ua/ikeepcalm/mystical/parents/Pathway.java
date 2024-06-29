@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
-import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPathway;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
@@ -71,11 +71,31 @@ public abstract class Pathway {
             }
         }
 
-        Beyonder beyonder = new Beyonder(uuid, pathwayObject);
+        Beyonder beyonder = new Beyonder(uuid, pathwayObject, 0, 0);
         LordOfTheMinecraft.beyonders.put(uuid, beyonder);
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(beyonder, LordOfTheMinecraft.instance);
         return pathwayObject;
 
+    }
+
+    public static void initializeNew(String pathway, UUID uuid, int sequence, int acting, int spirituality) {
+        Pathway pathwayObject;
+        if (LordOfTheMinecraft.beyonders.containsKey(uuid))
+            return;
+        switch (pathway) {
+            case "sun" -> pathwayObject = new SunPathway(uuid, sequence, 0);
+            case "fool" -> pathwayObject = new FoolPathway(uuid, sequence, 1);
+            case "door" -> pathwayObject = new DoorPathway(uuid, sequence, 2);
+            case "demoness" -> pathwayObject = new DemonessPathway(uuid, sequence, 3);
+            case "tyrant" -> pathwayObject = new TyrantPathway(uuid, sequence, 4);
+            default -> {
+                return;
+            }
+        }
+
+        Beyonder beyonder = new Beyonder(uuid, pathwayObject, acting, spirituality);
+        LordOfTheMinecraft.beyonders.put(uuid, beyonder);
+        LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(beyonder, LordOfTheMinecraft.instance);
     }
 
     public abstract void initItems();

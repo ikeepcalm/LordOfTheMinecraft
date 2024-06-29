@@ -6,18 +6,14 @@ import dev.ua.ikeepcalm.entities.disasters.Tornado;
 import dev.ua.ikeepcalm.entities.disasters.Tsunami;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import java.util.Random;
 
 public class CalamityManipulation extends Ability {
 
@@ -28,16 +24,6 @@ public class CalamityManipulation extends Ability {
     public CalamityManipulation(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        if (!(caster instanceof LivingEntity livingEntity))
-            return;
-        switch ((new Random().nextInt(3))) {
-            case 0 -> (new Blizzard(livingEntity)).spawnDisaster(livingEntity, loc);
-            case 1 -> (new Earthquake(livingEntity)).spawnDisaster(livingEntity, caster.getLocation());
-            case 2 -> (new Tornado(livingEntity)).spawnDisaster(livingEntity, loc);
-        }
     }
 
     enum Category {

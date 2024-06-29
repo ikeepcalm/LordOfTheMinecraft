@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;

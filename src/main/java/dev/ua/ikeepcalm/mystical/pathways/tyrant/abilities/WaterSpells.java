@@ -4,10 +4,9 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import jline.internal.Nullable;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -22,8 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,7 +29,6 @@ import java.util.UUID;
 
 public class WaterSpells extends Ability {
 
-    private static final Logger log = LoggerFactory.getLogger(WaterSpells.class);
     private Category selectedCategory = Category.LIGHT;
     private final Category[] categories = Category.values();
     private int selected = 0;
@@ -262,7 +259,7 @@ public class WaterSpells extends Ability {
 
         new BukkitRunnable() {
             int counter = 0;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -366,7 +363,7 @@ public class WaterSpells extends Ability {
 
         new BukkitRunnable() {
             int counter = 20 * 45;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -422,22 +419,6 @@ public class WaterSpells extends Ability {
                 rollbackChanges(uuid);
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        if (multiplier < 1.5) {
-            switch ((new Random()).nextInt(2)) {
-                case 0 -> beam(caster, multiplier);
-                case 1 -> waterBall(caster, multiplier);
-            }
-        } else {
-            switch ((new Random()).nextInt(4)) {
-                case 0 -> beam(caster, multiplier);
-                case 1 -> waterBall(caster, multiplier);
-                case 2 -> rain(caster, loc);
-                case 3 -> sphere(caster, multiplier);
-            }
-        }
     }
 
     @Override

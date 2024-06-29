@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,9 +28,7 @@ public class HolySong extends Ability {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-            p.getWorld().playSound(p, Sound.MUSIC_DISC_MELLOHI, 10f, 1f);
-        });
+        scheduler.runTask(LordOfTheMinecraft.instance, () -> p.getWorld().playSound(p, Sound.MUSIC_DISC_MELLOHI, 10f, 1f));
 
         new BukkitRunnable() {
             int counter = 0;

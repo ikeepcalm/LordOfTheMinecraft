@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import net.md_5.bungee.api.ChatMessageType;
@@ -52,9 +52,6 @@ public class AirBullet extends Ability {
             sequencePower = pathway.getSequence().getCurrentSequence();
             wasAdjustedOnce = true;
         }
-        double multiplier = (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3);
-
-        double finalMultiplier = multiplier;
 
         final HashMap<Double, double[]> npcMultiplier = new HashMap<>();
         npcMultiplier.put(1.4, new double[]{0.25, 20, 0, 1});
@@ -136,7 +133,7 @@ public class AirBullet extends Ability {
                             if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
                                 if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
                                     world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
-                                ((Damageable) entity).damage(7 * finalMultiplier, caster);
+                                ((Damageable) entity).damage(7 * (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3), caster);
                                 return;
                             }
                         }

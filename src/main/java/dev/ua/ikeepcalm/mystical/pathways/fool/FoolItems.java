@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.*;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities.MarionetteControlling;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.marionetteAbilities.SpiritBodyThreads;
@@ -26,8 +26,7 @@ public class FoolItems extends Items {
         createItems();
     }
 
-    @Override
-    public void initializeAbilityInfos() {
+    private void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("fool", "abilities", "divination")
@@ -92,8 +91,7 @@ public class FoolItems extends Items {
         return itemsForSequence;
     }
 
-    @Override
-    public void createItems() {
+    private void createItems() {
         addAbility(new Divine(1, pathway, 9, this));
 
         addAbility(new FlameControlling(2, pathway, 8, this));

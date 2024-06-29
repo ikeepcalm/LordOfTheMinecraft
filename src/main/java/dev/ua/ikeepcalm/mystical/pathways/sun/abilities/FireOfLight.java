@@ -4,7 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -62,7 +62,7 @@ public class FireOfLight extends Ability {
 
             new BukkitRunnable() {
                 int counter = 0;
-                UUID uuid = UUID.randomUUID();
+                final UUID uuid = UUID.randomUUID();
 
                 @Override
                 public void run() {

@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class Blizzard extends Disaster {
     public Blizzard(LivingEntity e) {
-        super(e);
+        super();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Blizzard extends Disaster {
         new BukkitRunnable() {
 
             int counter = 20 * 60 * 2;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

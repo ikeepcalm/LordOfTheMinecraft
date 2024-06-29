@@ -5,13 +5,13 @@ import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Material;
+import org.bukkit.entity.WanderingTrader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
 import java.util.Random;
@@ -26,7 +26,7 @@ public class GenerationListener implements Listener {
         ItemStack item;
         Random random = new Random();
 
-        if (random.nextInt(100) > 15)
+        if (random.nextInt(100) > 30)
             return;
 
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);
@@ -51,7 +51,7 @@ public class GenerationListener implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
         Inventory inv = e.getInventory();
-        if (inv.getHolder() instanceof Merchant merchant) {
+        if (inv.getHolder() instanceof WanderingTrader merchant) {
             if (merchant.getRecipeCount() == 0) {
                 for (int i = 0; i < merchant.getRecipeCount(); i++) {
                     Random random = new Random();
@@ -64,7 +64,6 @@ public class GenerationListener implements Listener {
                         } else {
                             merchant.setRecipe(merchant.getRecipeCount(), new MerchantRecipe(trade[0], 1));
                         }
-
                     }
                 }
 

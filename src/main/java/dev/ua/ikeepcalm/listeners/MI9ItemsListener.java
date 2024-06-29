@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import net.coreprotect.CoreProtectAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,11 +30,6 @@ public class MI9ItemsListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
         if (event.getItem() == null)
             return;
-        if (event.getClickedBlock() == null)
-            return;
-        if (event.getClickedBlock().getType().isAir())
-            return;
-
 
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
@@ -47,9 +43,13 @@ public class MI9ItemsListener implements Listener {
                     time.put(player, 60);
                 }
 
-
-                if (event.getAction() == org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)
+                if (event.getAction() == org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK) {
+                    if (event.getClickedBlock() == null)
+                        return;
+                    if (event.getClickedBlock().getType().isAir())
+                        return;
                     LordOfTheMinecraft.coreProtect.blockLookup(event.getClickedBlock(), time.get(player));
+                }
 
                 if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     int instantTime = this.time.get(player) * 4;
@@ -75,12 +75,16 @@ public class MI9ItemsListener implements Listener {
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Час дослідження слідів: " + instantTime + " хвилин(и)"));
                     }
                 } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    if (event.getClickedBlock() == null)
+                        return;
+                    if (event.getClickedBlock().getType().isAir())
+                        return;
                     player.sendMessage("§bРезультати дослідження для: " + event.getClickedBlock().getType().name());
                     List<String[]> logs = LordOfTheMinecraft.coreProtect.blockLookup(event.getClickedBlock(), time.get(player));
                     for (String[] log : logs) {
                         CoreProtectAPI.ParseResult result = LordOfTheMinecraft.coreProtect.parseResult(log);
                         player.sendMessage("§f" + getTimeAgo(result.getTimestamp()) + " §7- §f" + result.getPlayer() + " §7- §f" + result.getActionString() + " §7- §f" + result.getType()
-                                + "§7 | §f" + result.getX() + " " + result.getY() + " " + result.getZ());
+                                           + "§7 | §f" + result.getX() + " " + result.getY() + " " + result.getZ());
                     }
                 }
             }
@@ -89,20 +93,20 @@ public class MI9ItemsListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player damager) {
-            if (event.getEntity() instanceof Player player) {
+        if (event.getEntityType() == EntityType.PLAYER) {
+            Player victim = (Player) event.getEntity();
+            if (event.getDamager().getType() == EntityType.PLAYER) {
+                Player damager = (Player) event.getDamager();
                 if (damager.hasPermission(new Permission("mi9items.use"))) {
-                    ItemStack item = damager.getItemInUse();
-                    if (item == null)
-                        return;
+                    ItemStack item = damager.getActiveItem();
                     if (item.getType().isAir())
                         return;
 
                     if (NBT.get(item, (nbt) -> {
                         return nbt.getBoolean("mi9Stick");
                     })) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
                     }
                 }
             }

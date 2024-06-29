@@ -4,13 +4,10 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -44,7 +41,7 @@ public class Petrification extends Ability {
             return;
 
         LivingEntity target = null;
-
+        final UUID oUuid = UUID.randomUUID();
         outerloop:
         for (int i = 0; i < 50; i++) {
             for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
@@ -57,7 +54,18 @@ public class Petrification extends Ability {
             loc.add(dir);
 
             if (loc.getBlock().getType().isSolid()) {
-                petrifyLoc(loc.clone().subtract(dir));
+                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                    ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.clone().subtract(dir), 6, false, true, true);
+
+                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                        for (Block block : blocks) {
+                            if (block.getType().getHardness() < 0 || !block.getType().isSolid())
+                                continue;
+                            block.setType(Material.STONE);
+                            logBlockBreak(oUuid, new CustomLocation(block.getLocation()));
+                        }
+                    });
+                });
                 break;
             }
         }
@@ -74,14 +82,13 @@ public class Petrification extends Ability {
         }
         cooldownEntities.add(finalTarget);
 
-
         HashMap<Block, Material> blocks = new HashMap<>();
         final Location eLoc = finalTarget.getLocation();
 
         new BukkitRunnable() {
             int counter = 120 * 20;
             boolean cancelled = false;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -148,6 +155,7 @@ public class Petrification extends Ability {
             public void cancel() {
                 super.cancel();
                 rollbackChanges(uuid);
+                rollbackChanges(oUuid);
             }
 
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
@@ -158,16 +166,6 @@ public class Petrification extends Ability {
         p = pathway.getBeyonder().getPlayer();
 
         executeAbility(p.getEyeLocation(), p, getMultiplier());
-    }
-
-    private void petrifyLoc(Location loc) {
-
-        ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(loc, 6, false, true, true);
-        for (Block block : blocks) {
-            if (block.getType().getHardness() < 0 || !block.getType().isSolid())
-                continue;
-            block.setType(Material.STONE);
-        }
     }
 
     @Override

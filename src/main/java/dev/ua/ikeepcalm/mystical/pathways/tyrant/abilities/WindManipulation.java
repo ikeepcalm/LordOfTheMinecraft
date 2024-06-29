@@ -4,7 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -251,7 +251,7 @@ public class WindManipulation extends Ability {
 
         new BukkitRunnable() {
             int counter = 20;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {
@@ -312,13 +312,6 @@ public class WindManipulation extends Ability {
     @Override
     public ItemStack getItem() {
         return TyrantItems.createItem(Material.FEATHER, "Володарювання Вітром", "різниться", identifier);
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        switch ((new Random()).nextInt(2)) {
-            case 0 -> bind(caster);
-            case 1 -> blade(caster, multiplier);
-        }
     }
 
     @Override

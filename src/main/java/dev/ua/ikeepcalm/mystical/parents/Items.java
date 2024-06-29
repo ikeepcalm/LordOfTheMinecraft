@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.mystical.parents;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -49,10 +49,6 @@ public abstract class Items {
     public int getSequenceOfAbility(Ability a) {
         return sequenceItems.get(a.getIdentifier() - 1);
     }
-
-    public abstract void createItems();
-
-    public abstract void initializeAbilityInfos();
 
     protected String[] formatAbilityInfo(String pathwayColor, String sequenceName, String... s) {
         String[] formatted = new String[3 + s.length];

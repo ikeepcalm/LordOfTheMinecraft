@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
@@ -34,9 +34,7 @@ public class AirPipe extends Ability {
             @Override
             public void run() {
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false));
-                });
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false)));
 
                 scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                     Location particleLoc = p.getEyeLocation().clone().add(p.getLocation().getDirection().normalize().multiply(0.25));
@@ -50,9 +48,7 @@ public class AirPipe extends Ability {
 
                 if (counter >= 20) {
                     counter = 0;
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 5);
-                    });
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 5));
                 }
 
                 counter++;

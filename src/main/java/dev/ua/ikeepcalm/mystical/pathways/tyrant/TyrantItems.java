@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +23,7 @@ public class TyrantItems extends Items {
         createItems();
     }
 
-    @Override
-    public void initializeAbilityInfos() {
+    private void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("tyrant", "abilities", "raging-blows")
@@ -86,8 +85,7 @@ public class TyrantItems extends Items {
         return itemsForSequence;
     }
 
-    @Override
-    public void createItems() {
+    private void createItems() {
         addAbility(new RagingBlows(1, pathway, 9, this));
 
         addAbility(new WaterSpells(2, pathway, 8, this));

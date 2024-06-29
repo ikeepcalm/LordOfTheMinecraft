@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;

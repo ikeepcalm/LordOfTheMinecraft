@@ -10,7 +10,7 @@ import dev.ua.ikeepcalm.entities.mob.abilities.sun.FlaringSun;
 import dev.ua.ikeepcalm.entities.mob.abilities.sun.HolyLightSummoning;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;
+import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -127,7 +127,7 @@ public class MobsHandler implements Listener {
             return;
 
         for (CustomEntity customEntity : customEntities) {
-            if (Objects.equals(e.getEntity().getMetadata("customEntityId").get(0).value(), customEntity.id())) {
+            if (Objects.equals(e.getEntity().getMetadata("customEntityId").getFirst().value(), customEntity.id())) {
                 livingEntity.getWorld().dropItem(livingEntity.getLocation(), customEntity.drop());
                 break;
             }

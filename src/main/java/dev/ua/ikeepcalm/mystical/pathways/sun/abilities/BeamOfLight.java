@@ -4,7 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
@@ -14,15 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import java.util.UUID;
 
 public class BeamOfLight extends Ability {
-
-    private static final Logger log = LoggerFactory.getLogger(BeamOfLight.class);
 
     public BeamOfLight(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
@@ -73,7 +69,7 @@ public class BeamOfLight extends Ability {
             final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
             final double yaw = -loc.getYaw() * 0.017453292F;
             final double increment = (2 * Math.PI) / circlePoints;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

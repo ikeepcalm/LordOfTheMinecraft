@@ -4,7 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
@@ -93,9 +93,7 @@ public class UnshadowedSpear extends Ability {
                             //entity hit
                             if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
 
-                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                    spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5);
-                                });
+                                scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5));
 
                                 entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
                                 if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
@@ -204,15 +202,11 @@ public class UnshadowedSpear extends Ability {
                             });
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 1000, 0.4, 0.4, 0.4, 0.5);
-                    });
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 1000, 0.4, 0.4, 0.4, 0.5));
                     cancel();
                 }
                 if (counter >= 100) {
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        lastLightBlock.setType(lastMaterial);
-                    });
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> lastLightBlock.setType(lastMaterial));
                     cancel();
                     return;
                 }
@@ -220,9 +214,7 @@ public class UnshadowedSpear extends Ability {
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 5, 0);
 
-        scheduler.runTaskLater(LordOfTheMinecraft.instance, () -> {
-            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-        }, 15);
+        scheduler.runTaskLater(LordOfTheMinecraft.instance, () -> pathway.getSequence().getUsesAbilities()[identifier - 1] = false, 15);
     }
 
     public void buildSpear(Location loc, Vector direc) {

@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
@@ -49,30 +49,6 @@ public class SpaceConcealment extends Ability implements Listener {
             return;
 
         stopped = true;
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        Location target = (new Random()).nextBoolean() ? loc : caster.getLocation();
-        int radius = (new Random()).nextInt(4, 12);
-        World world = loc.getWorld();
-
-        if (world == null)
-            return;
-
-        new BukkitRunnable() {
-            int counter = 20 * 20;
-
-            @Override
-            public void run() {
-                counter--;
-                if (counter <= 0) {
-                    drawSquare(target, Material.AIR, radius, null, true);
-                    cancel();
-                    return;
-                }
-                drawSquare(target, Material.BARRIER, radius, null, true);
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override

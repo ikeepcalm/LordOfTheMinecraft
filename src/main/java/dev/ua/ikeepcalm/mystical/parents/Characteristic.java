@@ -46,15 +46,14 @@ public class Characteristic {
 
     }
 
-
     public ItemStack getCharacteristic(int sequence, String pathway, String pathwayColor) {
         final ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta playerMeta = (SkullMeta) playerHead.getItemMeta();
         assert playerMeta != null;
-        playerMeta.setDisplayName(pathwayColor + GeneralPurposeUtil.capitalize(pathway) + " Позамежна характеристика");
+        playerMeta.setDisplayName(pathwayColor + "Позамежна характеристика");
         String[] playerLore = {
-                pathwayColor + "Характеристика шляху " + GeneralPurposeUtil.capitalize(pathway) + sequence,
-                pathwayColor + "Послідовності  " + sequence
+                pathwayColor + "Шлях: " + GeneralPurposeUtil.capitalize(pathway),
+                pathwayColor + "Послідовність: " + sequence
         };
         playerMeta.setLore(Arrays.asList(playerLore));
         if (blocksForPathway.get(pathway) != null) {
@@ -70,10 +69,4 @@ public class Characteristic {
         return playerHead;
     }
 
-    public int[] getCharacteristicInfo(ItemStack characteristic) {
-        if (allCharacteristics.containsKey(characteristic))
-            return allCharacteristics.get(characteristic);
-        else
-            return new int[]{-1, -1};
-    }
 }

@@ -4,7 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
@@ -20,14 +20,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class FrostSpear extends Ability {
 
-    private static final Logger log = LoggerFactory.getLogger(FrostSpear.class);
     private final Material[] convertMaterials;
     private final Particle.DustOptions dust;
 
@@ -50,121 +47,6 @@ public class FrostSpear extends Ability {
                 Material.GRAVEL,
                 Material.SAND
         };
-    }
-
-    public void executeAbility(Entity caster, double multiplier) {
-        if (!(caster instanceof LivingEntity))
-            return;
-
-        //get block player is looking at
-        BlockIterator iter = new BlockIterator((LivingEntity) caster, 40);
-        Block lastBlock = iter.next();
-        while (iter.hasNext()) {
-            lastBlock = iter.next();
-            if (!lastBlock.getType().isSolid()) {
-                continue;
-            }
-            break;
-        }
-
-        double distance = lastBlock.getLocation().distance(caster.getLocation().add(0, 1.5, 0));
-
-        Location loc = caster.getLocation().add(0, 1.5, 0).add(caster.getLocation().getDirection().normalize().multiply(distance)).clone();
-
-        float angle = caster.getLocation().getYaw() / 60;
-
-        Location spearLocation = caster.getLocation().add(0, 1.5, 0).subtract(Math.cos(angle), 0, Math.sin(angle));
-        Vector dir = loc.toVector().subtract(spearLocation.toVector()).normalize();
-        Vector direction = dir.clone();
-
-        buildSpear(spearLocation.clone(), dir);
-
-        new BukkitRunnable() {
-            int counter = 0;
-
-            UUID uuid = UUID.randomUUID();
-
-            @Override
-            public void run() {
-                spearLocation.add(direction);
-                buildSpear(spearLocation.clone(), direction.clone());
-
-                if (!Objects.requireNonNull(spearLocation.getWorld()).getNearbyEntities(spearLocation, 5, 5, 5).isEmpty()) {
-                    for (Entity entity : spearLocation.getWorld().getNearbyEntities(spearLocation, 5, 5, 5)) {
-                        if (entity instanceof LivingEntity) {
-                            // Ignore player that initiated the shot
-                            if (entity == caster) {
-                                continue;
-                            }
-                            Vector particleMinVector = new Vector(
-                                    spearLocation.getX() - 0.25,
-                                    spearLocation.getY() - 0.25,
-                                    spearLocation.getZ() - 0.25);
-                            Vector particleMaxVector = new Vector(
-                                    spearLocation.getX() + 0.25,
-                                    spearLocation.getY() + 0.25,
-                                    spearLocation.getZ() + 0.25);
-
-                            //entity hit
-                            if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-
-                                entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                ((Damageable) entity).damage(28 * multiplier, caster);
-                                entity.setFreezeTicks(20 * 10);
-
-                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                                cancel();
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                //hits solid block
-                if (spearLocation.getBlock().getType().isSolid()) {
-                    Location freezeLoc = spearLocation.clone();
-                    ArrayList<Block> blocks = GeneralPurposeUtil.getBlocksInCircleRadius(freezeLoc.getBlock(), 13, true);
-
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-
-                    Random random = new Random();
-
-                    for (Block block : blocks) {
-                        if (!Arrays.asList(convertMaterials).contains(block.getType()))
-                            continue;
-
-                        if (random.nextInt(4) == 0)
-                            continue;
-
-                        logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                        block.setType(Material.PACKED_ICE);
-                    }
-
-                    caster.getWorld().spawnParticle(Particle.SNOWFLAKE, freezeLoc, 200, 5, 5, 5, 0);
-
-                    for (Entity entity : caster.getNearbyEntities(10, 10, 10)) {
-                        if (!(entity instanceof LivingEntity livingEntity))
-                            continue;
-
-                        livingEntity.damage(8 * multiplier, caster);
-                        livingEntity.setFreezeTicks(20 * 6);
-                    }
-                    cancel();
-                }
-                if (counter >= 100) {
-                    cancel();
-                    rollbackChanges(uuid);
-                    return;
-                }
-                counter++;
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 5, 0);
-
-        new BukkitRunnable() {
-            public void run() {
-                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-            }
-        }.runTaskLater(LordOfTheMinecraft.instance, 20 * 3);
     }
 
     @Override
@@ -199,7 +81,7 @@ public class FrostSpear extends Ability {
 
         new BukkitRunnable() {
             int counter = 0;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

@@ -1,22 +1,16 @@
-package dev.ua.ikeepcalm.mystical.parents.abilitiies;
+package dev.ua.ikeepcalm.mystical.parents.abilities;
 
 
-import dev.ua.ikeepcalm.mystical.parents.Items;
-import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import jline.internal.Nullable;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 
 @Getter
 public abstract class MobAbility extends Ability {
 
     protected int frequency;
-
-    public MobAbility(int identifier, Pathway pathway, int sequence, Items items) {
-        super(identifier, pathway, sequence, items);
-    }
 
     public MobAbility(int frequency) {
         super(0, null, 0, null);
