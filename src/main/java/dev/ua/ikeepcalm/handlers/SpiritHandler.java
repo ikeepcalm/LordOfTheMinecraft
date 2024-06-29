@@ -154,7 +154,7 @@ public class SpiritHandler implements Listener, CommandExecutor {
 
         for (int i = 0; i < spawnSpirit.getSpawnCount(); i++) {
             if (spiritEntities.size() > 300) {
-                spiritEntities.get(0).getEntity().remove();
+                spiritEntities.getFirst().getEntity().remove();
             }
 
             LivingEntity entity = (LivingEntity) eventEntity.getWorld().spawnEntity(loc, spawnSpirit.getEntityType(), false);

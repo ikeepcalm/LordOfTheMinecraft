@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 public class FlameControlling extends Ability {
@@ -23,28 +24,31 @@ public class FlameControlling extends Ability {
     }
 
     public void executeAbility(Location target, Entity caster, double multiplier) {
-        if (pathway.getSequence().getCurrentSequence() == 7) {
-            if (!p.getInventory().contains(Material.COAL) && !p.getInventory().contains(Material.CHARCOAL)) {
-                Location noFuelLoc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize());
-                if (noFuelLoc.getWorld() == null)
-                    return;
-                noFuelLoc.getWorld().spawnParticle(Particle.SMOKE, noFuelLoc, 25, 0.05, 0.05, 0.05, 0.15);
-                return;
-            }
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
-            ItemStack item;
-            for (int i = 0; i < p.getInventory().getContents().length; i++) {
-                item = p.getInventory().getItem(i);
-                if (item == null)
-                    continue;
-                if (item.getType() == Material.COAL || item.getType() == Material.CHARCOAL) {
-                    item.setAmount(item.getAmount() - 1);
-                    p.getInventory().setItem(i, item);
-                    break;
+        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+            if (pathway.getSequence().getCurrentSequence() == 7) {
+                if (!p.getInventory().contains(Material.COAL) && !p.getInventory().contains(Material.CHARCOAL)) {
+                    Location noFuelLoc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize());
+                    if (noFuelLoc.getWorld() == null)
+                        return;
+                    noFuelLoc.getWorld().spawnParticle(Particle.SMOKE, noFuelLoc, 25, 0.05, 0.05, 0.05, 0.15);
+                    return;
+                }
+
+                ItemStack item;
+                for (int i = 0; i < p.getInventory().getContents().length; i++) {
+                    item = p.getInventory().getItem(i);
+                    if (item == null)
+                        continue;
+                    if (item.getType() == Material.COAL || item.getType() == Material.CHARCOAL) {
+                        item.setAmount(item.getAmount() - 1);
+                        p.getInventory().setItem(i, item);
+                        break;
+                    }
                 }
             }
-        }
-
+        });
 
         Vector direction = caster.getLocation().getDirection().normalize();
         Location loc = caster.getLocation().add(0, 1.5, 0).clone();
@@ -61,37 +65,42 @@ public class FlameControlling extends Ability {
                     cancel();
                     return;
                 }
-                loc.getWorld().spawnParticle(Particle.FLAME, loc, 15, 0.12, 0.12, 0.12, 0.025);
-                loc.getWorld().spawnParticle(Particle.SMOKE, loc.clone().add(0, 0.12, 0), 6, 0.01, 0.01, 0.01, 0);
 
-                if (!loc.getWorld().getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
-                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
-                        Vector v1 = new Vector(
-                                loc.getX() + 0.25,
-                                loc.getY() + 0.25,
-                                loc.getZ() + 0.25
-                        );
-                        Vector v2 = new Vector(
-                                loc.getX() - 0.25,
-                                loc.getY() - 0.25,
-                                loc.getZ() - 0.25
-                        );
-                        if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                            ((Damageable) entity).damage(8 * multiplier, caster);
-                            entity.setFireTicks(250);
-                            cancel();
-                            return;
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    loc.getWorld().spawnParticle(Particle.FLAME, loc, 15, 0.12, 0.12, 0.12, 0.025);
+                    loc.getWorld().spawnParticle(Particle.SMOKE, loc.clone().add(0, 0.12, 0), 6, 0.01, 0.01, 0.01, 0);
+                });
+
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    if (!loc.getWorld().getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
+                            Vector v1 = new Vector(
+                                    loc.getX() + 0.25,
+                                    loc.getY() + 0.25,
+                                    loc.getZ() + 0.25
+                            );
+                            Vector v2 = new Vector(
+                                    loc.getX() - 0.25,
+                                    loc.getY() - 0.25,
+                                    loc.getZ() - 0.25
+                            );
+                            if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                                ((Damageable) entity).damage(8 * multiplier, caster);
+                                entity.setFireTicks(250);
+                                cancel();
+                                return;
+                            }
                         }
                     }
-                }
 
-                if (loc.getBlock().getType().isSolid() || counter >= 100) {
-                    if (loc.getBlock().getType().isSolid() && !loc.clone().add(0, 1, 0).getBlock().getType().isSolid())
-                        loc.clone().add(0, 1, 0).getBlock().setType(Material.FIRE);
-                    cancel();
-                }
+                    if (loc.getBlock().getType().isSolid() || counter >= 100) {
+                        if (loc.getBlock().getType().isSolid() && !loc.clone().add(0, 1, 0).getBlock().getType().isSolid())
+                            loc.clone().add(0, 1, 0).getBlock().setType(Material.FIRE);
+                        cancel();
+                    }
+                });
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override

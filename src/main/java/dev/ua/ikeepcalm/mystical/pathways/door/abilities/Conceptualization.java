@@ -1,11 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -27,6 +27,7 @@ public class Conceptualization extends Ability {
         p = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
+        System.out.println("Conceptualization set to true");
 
         boolean couldFly = p.getAllowFlight();
         float flySpeed = p.getFlySpeed();
@@ -52,7 +53,7 @@ public class Conceptualization extends Ability {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 1, false, false, false));
                 p.setFireTicks(0);
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 220) {
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 420) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.showPlayer(LordOfTheMinecraft.instance, p);
                     }
@@ -76,6 +77,6 @@ public class Conceptualization extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.NETHER_STAR, "Астральні Руни", "420", identifier);
+        return DoorItems.createItem(Material.NETHER_STAR, "Астральні Руни", "420/c", identifier);
     }
 }

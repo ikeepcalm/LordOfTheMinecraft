@@ -1,10 +1,10 @@
 package dev.ua.ikeepcalm.entities.spirits;
 
-import jline.internal.Nullable;
 import lombok.Getter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class Spirit {
 

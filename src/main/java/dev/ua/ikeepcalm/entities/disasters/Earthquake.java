@@ -22,7 +22,7 @@ public class Earthquake extends Disaster implements Listener {
     private final ArrayList<FallingBlock> fallingBlocks;
 
     public Earthquake(LivingEntity p) {
-        super(p);
+        super();
         fallingBlocks = new ArrayList<>();
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
     }
@@ -41,7 +41,7 @@ public class Earthquake extends Disaster implements Listener {
 
         new BukkitRunnable() {
             int counter = 20 * 60;
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

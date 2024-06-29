@@ -1,10 +1,9 @@
 package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,7 +42,6 @@ public class MeteorShower extends Ability {
         if (loc.getWorld() == null)
             return;
 
-
         Random random = new Random();
 
         for (int i = 0; i < random.nextInt(40, 80); i++) {
@@ -57,35 +55,45 @@ public class MeteorShower extends Ability {
             if (starLoc.getWorld() == null || startLoc.getWorld() == null)
                 return;
 
+            // Run the meteor falling task asynchronously
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    BukkitRunnable mainThreadTask = new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            for (Entity entity : startLoc.getWorld().getNearbyEntities(starLoc, 150, 150, 150)) {
+                                if (!(entity instanceof Player player))
+                                    continue;
+                                player.spawnParticle(Particle.LAVA, startLoc, 2, 0, 0, 0, 0);
+                                player.spawnParticle(Particle.SMOKE, startLoc, 2, 0, 0, 0, 0);
+                            }
 
-                    for (Entity entity : startLoc.getWorld().getNearbyEntities(starLoc, 150, 150, 150)) {
-                        if (!(entity instanceof Player player))
-                            continue;
-                        player.spawnParticle(Particle.LAVA, startLoc, 2, 0, 0, 0, 0);
-                        player.spawnParticle(Particle.SMOKE, startLoc, 2, 0, 0, 0, 0);
-                    }
+                            startLoc.add(fallDir);
 
-                    startLoc.add(fallDir);
-
-                    if (startLoc.getBlock().getType().isSolid()) {
-
-                        for (Entity entity : startLoc.getWorld().getNearbyEntities(startLoc, 10, 10, 10)) {
-                            if (entity == p)
-                                continue;
-                            if (entity instanceof Damageable d)
-                                d.damage(50, p);
+                            if (startLoc.getBlock().getType().isSolid()) {
+                                handleImpact(startLoc);
+                                cancel();
+                            }
                         }
+                    };
 
-                        startLoc.getWorld().createExplosion(startLoc, 25, true);
-                        rollbackChanges(new CustomLocation(startLoc), 25);
-                        cancel();
-                    }
+                    // Run the main thread task synchronously
+                    mainThreadTask.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
                 }
-            }.runTaskTimer(LordOfTheMinecraft.instance, random.nextInt(20 * 4), 0);
+            }.runTaskLater(LordOfTheMinecraft.instance, random.nextInt(20 * 4));
         }
+    }
+
+    private void handleImpact(Location impactLocation) {
+        for (Entity entity : impactLocation.getWorld().getNearbyEntities(impactLocation, 10, 10, 10)) {
+            if (entity == p)
+                continue;
+            if (entity instanceof Damageable d)
+                d.damage(50, p);
+        }
+
+        impactLocation.getWorld().createExplosion(impactLocation, 25, true);
     }
 
     @Override

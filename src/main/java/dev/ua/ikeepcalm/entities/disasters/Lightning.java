@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Lightning extends Disaster {
     public Lightning(Player p) {
-        super(p);
+        super();
     }
 
     @Override

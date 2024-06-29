@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
 import de.tr7zw.nbtapi.NBT;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import lombok.Getter;
 import lombok.Setter;

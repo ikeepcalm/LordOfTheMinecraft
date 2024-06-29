@@ -19,7 +19,7 @@ import java.util.Random;
 public class LightningTornado extends Disaster {
 
     public LightningTornado(LivingEntity p) {
-        super(p);
+        super();
     }
 
     @Override

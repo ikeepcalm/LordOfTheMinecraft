@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.mystical.parents.abilitiies;
+package dev.ua.ikeepcalm.mystical.parents.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
@@ -51,7 +51,6 @@ public abstract class Ability {
         }
     }
 
-    // Method to rollback changes
     protected void rollbackChanges(UUID uuid) {
         new BukkitRunnable() {
             @Override
@@ -68,26 +67,6 @@ public abstract class Ability {
             }
         }.runTaskLaterAsynchronously(LordOfTheMinecraft.instance, 20 * 20L);
     }
-
-    protected void rollbackChanges(CustomLocation location, int power) {
-        power *= 30;
-        int finalPower = power;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                coreProtectAPI.performRollback(
-                        30,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        finalPower,
-                        location.toLocation());
-            }
-        }.runTaskLaterAsynchronously(LordOfTheMinecraft.instance, 20 * 20L);
-    }
-
 
     public double getMultiplier() {
         return getMultiplier(pathway);

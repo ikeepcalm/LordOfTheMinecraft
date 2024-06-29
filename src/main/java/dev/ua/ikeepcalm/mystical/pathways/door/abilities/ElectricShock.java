@@ -1,9 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
+import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -26,30 +28,34 @@ public class ElectricShock extends Ability {
     public void executeAbility(Location target, Entity caster, double multiplier) {
         Location loc = caster.getLocation().add(0, 1.5, 0);
 
-        Random random = new Random();
-
         if (loc.getWorld() == null)
             return;
 
-        Vector v = loc.getDirection().normalize().multiply(.5);
-        outerloop:
-        for (int i = 0; i < 30; i++) {
-            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                if ((!(entity instanceof Mob) && !(entity instanceof Player)) || entity == caster)
-                    continue;
-                ((LivingEntity) entity).damage(4 * multiplier, caster);
-                break outerloop;
-            }
+        // Asynchronous task to perform the main logic
+        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+            Random random = new Random();
+            Vector v = loc.getDirection().normalize().multiply(.5);
 
-            loc.add(v);
-            loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, loc, 2, random.nextDouble(-.2, .2), random.nextDouble(-.2, .2), random.nextDouble(-.2, .2), 0);
-        }
+            for (int i = 0; i < 30; i++) {
+                Location finalLoc = loc.clone();
+                // Run Spigot API interactions on the main thread
+                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                    for (Entity entity : finalLoc.getWorld().getNearbyEntities(finalLoc, 1, 1, 1)) {
+                        if ((!(entity instanceof Mob) && !(entity instanceof Player)) || entity == caster)
+                            continue;
+                        ((LivingEntity) entity).damage(4 * multiplier, caster);
+                        return;
+                    }
+                    finalLoc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, finalLoc, 2, random.nextDouble(-.2, .2), random.nextDouble(-.2, .2), random.nextDouble(-.2, .2), 0);
+                });
+                loc.add(v);
+            }
+        });
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         executeAbility(p.getEyeLocation(), p, 1);
     }
 

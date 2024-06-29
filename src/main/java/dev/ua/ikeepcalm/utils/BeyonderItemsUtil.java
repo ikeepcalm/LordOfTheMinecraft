@@ -90,7 +90,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.PRISMARINE_CRYSTALS);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§Зоряний Аквамарин");
+        itemMeta.setDisplayName("§3Зоряний Аквамарин");
         item.setItemMeta(itemMeta);
 
         list.add(item);

@@ -21,12 +21,11 @@ import java.util.Random;
 public class Meteor extends Disaster {
 
     public Meteor(Player p) {
-        super(p);
+        super();
     }
 
     @Override
     public void spawnDisaster(LivingEntity p, Location loc) {
-        this.e = p;
 
         float angle = p.getEyeLocation().getYaw() / 60;
 

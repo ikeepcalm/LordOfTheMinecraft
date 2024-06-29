@@ -23,7 +23,7 @@ import java.util.UUID;
 public class Tornado extends Disaster {
 
     public Tornado(LivingEntity p) {
-        super(p);
+        super();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Tornado extends Disaster {
             double spiralXVel;
             double spiralZVel;
 
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

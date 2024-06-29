@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
 import org.bukkit.Location;
@@ -11,10 +11,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 public class LightningStorm extends Ability {
 
@@ -70,20 +71,23 @@ public class LightningStorm extends Ability {
             return;
 
         Random random = new Random();
+        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
-        new BukkitRunnable() {
+        CompletableFuture.runAsync(() -> {
             int counter = 10 * 30;
+            while (counter > 0) {
+                Location lightningLoc = loc.clone().add(random.nextInt(-25, 25), 0, random.nextInt(-25, 25));
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> spawnLighting(lightningLoc, caster, multiplier));
 
-            @Override
-            public void run() {
-                spawnLighting(loc.clone().add(random.nextInt(-25, 25), 0, random.nextInt(-25, 25)), caster, multiplier);
+                try {
+                    Thread.sleep(40); // Sleep for 2 ticks (40ms)
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
 
                 counter--;
-                if (counter <= 0) {
-                    cancel();
-                }
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
+        });
     }
 
     private void spawnLighting(Location loc, Entity caster, double multiplier) {

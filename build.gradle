@@ -10,6 +10,7 @@ repositories {
     mavenLocal()
     maven { url 'https://repo.xenondevs.xyz/releases' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'https://oss.sonatype.org/content/repositories/central' }
@@ -26,7 +27,7 @@ repositories {
 dependencies {
     implementation 'com.github.ForestTechMC:ForestColorAPI:1.4'
     implementation 'xyz.xenondevs.invui:invui:1.32'
-    compileOnly 'org.spigotmc:spigot:1.21-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT'
     compileOnly 'net.byteflux:libby-bukkit:1.1.5'
     compileOnly 'org.projectlombok:lombok:1.18.32'

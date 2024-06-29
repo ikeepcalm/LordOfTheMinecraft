@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.mob.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.MobAbility;
+import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;

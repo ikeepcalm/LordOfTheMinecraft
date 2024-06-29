@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.tyrant.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
@@ -54,8 +54,7 @@ public class Roar extends Ability {
             @Override
             public void run() {
 
-                //Particle effects
-                //Calls rotateAroundAxis() functions from VectorUtils class
+                // Particle effects
                 for (int i = 0; i < circlePoints; i++) {
                     double angle = i * increment + circlePointOffset;
                     double x = radius * Math.cos(angle);
@@ -65,7 +64,6 @@ public class Roar extends Ability {
                     MathVectorUtils.rotateAroundAxisX(vec, pitch);
                     MathVectorUtils.rotateAroundAxisY(vec, yaw);
                     loc.add(vec);
-
 
                     GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DUST, loc, 0, 0, 0, 0, 0);
                     loc.subtract(vec);
@@ -77,7 +75,7 @@ public class Roar extends Ability {
                 loc.add(dir);
                 radius += .225;
 
-                //Check if hit Entity
+                // Check if hit Entity
                 if (!world.getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
                     for (Entity entity : world.getNearbyEntities(loc, 5, 5, 5)) {
                         if (GeneralPurposeUtil.testForValidEntity(entity, caster, true, true)) {

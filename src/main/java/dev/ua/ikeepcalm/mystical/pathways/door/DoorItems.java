@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.mystical.pathways.door;
 
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +23,7 @@ public class DoorItems extends Items {
         createItems();
     }
 
-    @Override
-    public void initializeAbilityInfos() {
+    private void initializeAbilityInfos() {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("door", "abilities", "door-opening")
@@ -94,8 +93,7 @@ public class DoorItems extends Items {
         return itemsForSequence;
     }
 
-    @Override
-    public void createItems() {
+    private void createItems() {
         addAbility(new DoorOpening(1, pathway, 9, this));
         addAbility(new Fog(2, pathway, 8, this));
         addAbility(new Wind(3, pathway, 8, this));

@@ -63,10 +63,6 @@ public class TyrantSequence extends Sequence implements Listener {
         lightningColor.put(0, new Particle.DustOptions(Color.fromRGB(137, 20, 204), 2f));
     }
 
-    public HashMap<Integer, Particle.DustOptions> getLightningColor() {
-        return lightningColor;
-    }
-
     //Passive effects
     public void initEffects() {
         PotionEffect[] effects9 = {

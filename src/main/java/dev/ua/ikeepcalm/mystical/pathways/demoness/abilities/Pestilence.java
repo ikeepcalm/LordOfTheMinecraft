@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pestilence extends Ability {
 
@@ -46,8 +47,10 @@ public class Pestilence extends Ability {
                     pathway.getSequence().removeSpirituality(50);
                 }
 
+                // Fetch nearby entities on the main thread
+                List<Entity> nearbyEntities = caster.getNearbyEntities(250, 60, 250);
 
-                for (Entity entity : caster.getNearbyEntities(250, 60, 250)) {
+                for (Entity entity : nearbyEntities) {
                     if (infected.contains(entity))
                         continue;
 
@@ -55,50 +58,44 @@ public class Pestilence extends Ability {
                         continue;
 
                     infected.add(entity);
-                    new BukkitRunnable() {
-                        long counter = 80;
-
-                        @Override
-                        public void run() {
-
-                            if (counter % 80 == 0) {
-                                if (counter < 8 * 20)
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 0));
-                                else if (counter <= 18 * 20) {
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 2));
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 200, 4));
-                                } else {
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 200, 4));
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 4));
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-                                }
-                            }
-
-                            counter++;
-
-                            if (counter >= 9223372036854775800L)
-                                infected.remove(entity);
-
-                            if (!pathway.getSequence().getUsesAbilities()[identifier - 1])
-                                infected.remove(entity);
-
-                            if (!caster.getNearbyEntities(250, 60, 250).contains(entity)) {
-                                infected.remove(entity);
-                            }
-
-                            if (!infected.contains(entity)) {
-                                cancel();
-                                return;
-                            }
-
-                            if (!livingEntity.isValid())
-                                cancel();
-
-                        }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+                    applyPestilenceEffects(livingEntity);
                 }
 
+                // Cancel the task if ability is no longer active
                 if (!pathway.getSequence().getUsesAbilities()[identifier - 1])
+                    cancel();
+            }
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+    }
+
+    private void applyPestilenceEffects(LivingEntity entity) {
+        new BukkitRunnable() {
+            long counter = 0;
+
+            @Override
+            public void run() {
+                if (counter % 80 == 0) {
+                    if (counter < 8 * 20)
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 0));
+                    else if (counter <= 18 * 20) {
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 2));
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 200, 4));
+                    } else {
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 200, 4));
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 4));
+                        entity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
+                    }
+                }
+
+                counter++;
+
+                if (counter >= 9223372036854775800L)
+                    infected.remove(entity);
+
+                if (!pathway.getSequence().getUsesAbilities()[identifier - 1])
+                    infected.remove(entity);
+
+                if (!entity.isValid())
                     cancel();
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);

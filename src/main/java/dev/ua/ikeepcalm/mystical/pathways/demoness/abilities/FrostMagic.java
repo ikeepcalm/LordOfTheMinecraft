@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.demoness.abilities;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.abilitiies.Ability;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
@@ -19,8 +19,6 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +27,6 @@ import java.util.UUID;
 
 public class FrostMagic extends Ability {
 
-    private static final Logger log = LoggerFactory.getLogger(FrostMagic.class);
     private Category selectedCategory = Category.Attack;
     private final Category[] categories = Category.values();
     private int selected = 0;
@@ -54,13 +51,6 @@ public class FrostMagic extends Ability {
                 Material.GRAVEL,
                 Material.SAND
         };
-    }
-
-    public void executeAbility(Location loc, Entity caster, double multiplier) {
-        if ((new Random()).nextBoolean())
-            attack(true, loc, caster, multiplier);
-        else
-            freeze(true, caster, multiplier);
     }
 
     enum Category {

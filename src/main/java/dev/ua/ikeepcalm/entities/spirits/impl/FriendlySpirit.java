@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.spirits.impl;
 
 import dev.ua.ikeepcalm.entities.spirits.Spirit;
-import jline.internal.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
