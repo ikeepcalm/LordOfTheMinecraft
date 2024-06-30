@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,27 +44,35 @@ public class Tsunami extends Ability implements Listener {
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            for (final int[] i = {0}; i[0] < 60; i[0]++) {
-                final Location currentLoc = loc.clone();
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                        if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
-                            continue;
-                        i[0] = 60;
-                        break;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    for (final int[] i = {0}; i[0] < 60; i[0]++) {
+                        final Location currentLoc = loc.clone();
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
+                                if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
+                                    continue;
+                                i[0] = 60;
+                                break;
+                            }
+                        });
+
+                        if (i[0] >= 60 || loc.getBlock().getType().isSolid()) {
+                            break;
+                        }
+
+                        loc.add(dir);
                     }
-                });
 
-                if (i[0] >= 60 || loc.getBlock().getType().isSolid()) {
-                    break;
+                    executeAbility(loc, p, getMultiplier());
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Tsunami");
+                    cancel();
                 }
-
-                loc.add(dir);
             }
-
-            executeAbility(loc, p, getMultiplier());
-        });
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
     }
 
     @Override

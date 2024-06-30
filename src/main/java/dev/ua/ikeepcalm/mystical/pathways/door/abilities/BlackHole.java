@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -57,70 +58,75 @@ public class BlackHole extends Ability {
 
                 @Override
                 public void run() {
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        cancel();
-                        return;
-                    }
-
-                    GeneralPurposeUtil.drawSphere(loc, 1, 20, dust, null, 0);
-
-                    counter++;
-
-                    if (counter >= 3 * 20) {
-                        counter = 0;
-                        blocks[0] = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
-                    }
-
-                    for (int i = 0; i < 5; i++) {
-                        if (blocks[0].isEmpty())
-                            continue;
-                        Block b = blocks[0].get(random.nextInt(blocks[0].size()));
-
-                        Material blockMaterial = b.getType();
-                        logBlockBreak(uuid, new CustomLocation(b.getLocation()));
-                        b.setType(Material.AIR);
-
-                        if (blockMaterial == Material.WATER || blockMaterial == Material.LAVA)
-                            continue;
-
-                        FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(b.getLocation().clone().add(0, 1, 0), blockMaterial.createBlockData());
-                        fallingBlock.setGravity(false);
-                        fallingBlock.setDropItem(false);
-
-                        if (fallingBlock.getBlockData().getMaterial() == Material.WATER) {
-                            fallingBlock.remove();
-                            continue;
+                    try {
+                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                            cancel();
+                            return;
                         }
 
-                        Vector dir = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
-                        fallingBlock.setVelocity(dir);
+                        GeneralPurposeUtil.drawSphere(loc, 1, 20, dust, null, 0);
 
-                        new BukkitRunnable() {
-                            int life = 20 * 6;
+                        counter++;
 
-                            @Override
-                            public void run() {
-                                if (!fallingBlock.isValid()) {
-                                    cancel();
-                                    return;
-                                }
+                        if (counter >= 3 * 20) {
+                            counter = 0;
+                            blocks[0] = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
+                        }
 
-                                life--;
+                        for (int i = 0; i < 5; i++) {
+                            if (blocks[0].isEmpty())
+                                continue;
+                            Block b = blocks[0].get(random.nextInt(blocks[0].size()));
 
-                                if (life <= 0 || fallingBlock.getBlockData().getMaterial() == Material.WATER) {
-                                    fallingBlock.remove();
-                                    cancel();
-                                    return;
-                                }
+                            Material blockMaterial = b.getType();
+                            logBlockBreak(uuid, new CustomLocation(b.getLocation()));
+                            b.setType(Material.AIR);
 
-                                Vector direction = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
-                                fallingBlock.setVelocity(direction);
+                            if (blockMaterial == Material.WATER || blockMaterial == Material.LAVA)
+                                continue;
 
-                                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                                    fallingBlock.remove();
-                                }
+                            FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(b.getLocation().clone().add(0, 1, 0), blockMaterial.createBlockData());
+                            fallingBlock.setGravity(false);
+                            fallingBlock.setDropItem(false);
+
+                            if (fallingBlock.getBlockData().getMaterial() == Material.WATER) {
+                                fallingBlock.remove();
+                                continue;
                             }
-                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother movement
+
+                            Vector dir = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
+                            fallingBlock.setVelocity(dir);
+
+                            new BukkitRunnable() {
+                                int life = 20 * 6;
+
+                                @Override
+                                public void run() {
+                                    if (!fallingBlock.isValid()) {
+                                        cancel();
+                                        return;
+                                    }
+
+                                    life--;
+
+                                    if (life <= 0 || fallingBlock.getBlockData().getMaterial() == Material.WATER) {
+                                        fallingBlock.remove();
+                                        cancel();
+                                        return;
+                                    }
+
+                                    Vector direction = loc.clone().toVector().subtract(fallingBlock.getLocation().toVector()).normalize().multiply(.55);
+                                    fallingBlock.setVelocity(direction);
+
+                                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                                        fallingBlock.remove();
+                                    }
+                                }
+                            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother movement
+                        }
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Black Hole");
+                        cancel();
                     }
                 }
 
@@ -135,34 +141,41 @@ public class BlackHole extends Ability {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        cancel();
-                        return;
-                    }
+                    try {
 
-                    if (loc.getWorld() == null)
-                        return;
 
-                    // Run entity interactions on the main thread
-                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
-                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
-                            if (entity == caster)
-                                continue;
-
-                            Vector dir = loc.clone().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.5);
-                            entity.setVelocity(dir);
+                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                            cancel();
+                            return;
                         }
 
-                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 2, 2, 2)) {
-                            if (!(entity instanceof LivingEntity livingEntity)) {
-                                if (!(entity instanceof Item))
-                                    entity.remove();
-                                continue;
+                        if (loc.getWorld() == null)
+                            return;
+
+                        // Run entity interactions on the main thread
+                        Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
+                                if (entity == caster)
+                                    continue;
+
+                                Vector dir = loc.clone().toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.5);
+                                entity.setVelocity(dir);
                             }
 
-                            livingEntity.damage(8 * multiplier, caster);
-                        }
-                    });
+                            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 2, 2, 2)) {
+                                if (!(entity instanceof LivingEntity livingEntity)) {
+                                    if (!(entity instanceof Item))
+                                        entity.remove();
+                                    continue;
+                                }
+
+                                livingEntity.damage(8 * multiplier, caster);
+                            }
+                        });
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Black Hole");
+                        cancel();
+                    }
                 }
             }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother handling
         });

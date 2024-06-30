@@ -18,11 +18,10 @@ public class WantedListener implements Listener {
         String name = p.getName();
         List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
         if (excList.contains(name)) {
-            Bukkit.broadcastMessage("========================================");
+            Bukkit.broadcastMessage("§7========================================");
             Bukkit.broadcastMessage("§c" + name + " знаходиться у розшуку!");
             Bukkit.broadcastMessage("§cЙого останні координати: " + p.getLocation().getBlockX() + " " + p.getLocation().getBlockY() + " " + p.getLocation().getBlockZ());
-            Bukkit.broadcastMessage("§cЖивим або мертвим!");
-            Bukkit.broadcastMessage("========================================");
+            Bukkit.broadcastMessage("§7========================================");
         }
     }
 
@@ -32,14 +31,13 @@ public class WantedListener implements Listener {
         String name = p.getName();
         List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
         if (excList.contains(name)) {
-            Bukkit.broadcastMessage("========================================");
+            Bukkit.broadcastMessage("§7========================================");
             Bukkit.broadcastMessage("§c" + name + " знаходиться у розшуку!");
             int x = p.getLocation().getBlockX() + (int) (Math.random() * 100);
             int y = p.getLocation().getBlockY() + (int) (Math.random() * 100);
             int z = p.getLocation().getBlockZ() + (int) (Math.random() * 100);
-            Bukkit.broadcastMessage("Приблизні координати його зникнення: " + p.getLocation().getBlockX()  + " " + p.getLocation().getBlockY() + " " + p.getLocation().getBlockZ());
-            Bukkit.broadcastMessage("§cЖивим або мертвим!");
-            Bukkit.broadcastMessage("========================================");
+            Bukkit.broadcastMessage("Приблизні координати його зникнення: " + x + " " + y + " " + z);
+            Bukkit.broadcastMessage("§7========================================");
         }
     }
 

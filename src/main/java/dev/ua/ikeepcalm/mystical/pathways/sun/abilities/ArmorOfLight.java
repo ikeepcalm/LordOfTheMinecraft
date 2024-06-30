@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -80,40 +81,45 @@ public class ArmorOfLight extends Ability implements Listener {
 
             @Override
             public void run() {
-                Location loc = p.getLocation().add(0, 0.5, 0);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0);
-                loc.getWorld().spawnParticle(Particle.END_ROD, loc, 1, 0.3, 0.7, 0.3, 0);
+                try {
+                    Location loc = p.getLocation().add(0, 0.5, 0);
+                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0);
+                    loc.getWorld().spawnParticle(Particle.END_ROD, loc, 1, 0.3, 0.7, 0.3, 0);
 
-                if (counter >= 20) {
-                    pathway.getSequence().removeSpirituality(100);
-                    counter = 0;
-                }
+                    if (counter >= 20) {
+                        pathway.getSequence().removeSpirituality(100);
+                        counter = 0;
+                    }
 
-                if (pathway.getBeyonder().getSpirituality() <= 100) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    cancel();
-                }
-                counter++;
+                    if (pathway.getBeyonder().getSpirituality() <= 100) {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        cancel();
+                    }
+                    counter++;
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || dead) {
-                    p.getInventory().setHelmet(lastItems[0]);
-                    p.getInventory().setChestplate(lastItems[1]);
-                    p.getInventory().setLeggings(lastItems[2]);
-                    p.getInventory().setBoots(lastItems[3]);
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || dead) {
+                        p.getInventory().setHelmet(lastItems[0]);
+                        p.getInventory().setChestplate(lastItems[1]);
+                        p.getInventory().setLeggings(lastItems[2]);
+                        p.getInventory().setBoots(lastItems[3]);
 
-                    p.getInventory().remove(helmet);
-                    p.getInventory().remove(chest);
-                    p.getInventory().remove(leggings);
-                    p.getInventory().remove(boots);
-                    p.getInventory().remove(sword);
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    dead = false;
-                    cancel();
-                }
+                        p.getInventory().remove(helmet);
+                        p.getInventory().remove(chest);
+                        p.getInventory().remove(leggings);
+                        p.getInventory().remove(boots);
+                        p.getInventory().remove(sword);
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        dead = false;
+                        cancel();
+                    }
 
-                if (!pathway.getBeyonder().online) {
-                    removeOnRejoin = true;
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    if (!pathway.getBeyonder().online) {
+                        removeOnRejoin = true;
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Armor of Light");
                     cancel();
                 }
             }

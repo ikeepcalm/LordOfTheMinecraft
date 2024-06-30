@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -39,40 +40,47 @@ public class LightOfHoliness extends Ability {
 
             @Override
             public void run() {
-                counter++;
+                try {
 
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    // Particles
-                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                    spawnParticles(loc, dust);
-                });
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    // Light at current loc
-                    loc.getBlock().setType(lastMaterial[0]);
-                    loc.subtract(0, 1, 0);
-                    lastMaterial[0] = loc.getBlock().getType();
-                    loc.getBlock().setType(Material.LIGHT);
+                    counter++;
 
-                    // Reached ground
-                    if ((lastMaterial[0].isSolid() && counter >= 17) || counter >= 200) {
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        // Particles
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                        spawnParticles(loc, dust);
+                    });
+
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        // Light at current loc
                         loc.getBlock().setType(lastMaterial[0]);
-                        counter = 0;
-                        cancel();
+                        loc.subtract(0, 1, 0);
+                        lastMaterial[0] = loc.getBlock().getType();
+                        loc.getBlock().setType(Material.LIGHT);
 
-                        // Light that stays at the ground for a bit
-                        lightGround(loc);
+                        // Reached ground
+                        if ((lastMaterial[0].isSolid() && counter >= 17) || counter >= 200) {
+                            loc.getBlock().setType(lastMaterial[0]);
+                            counter = 0;
+                            cancel();
 
-                        // Replace the ground with burned stuff
-                        burnGround(loc, caster, uuid);
+                            // Light that stays at the ground for a bit
+                            lightGround(loc);
 
-                        // Damage nearby entities
-                        damageNearbyEntities(loc, caster, multiplier);
+                            // Replace the ground with burned stuff
+                            burnGround(loc, caster, uuid);
 
-                        // Particles on ground
-                        spawnGroundParticles(loc);
-                    }
-                });
+                            // Damage nearby entities
+                            damageNearbyEntities(loc, caster, multiplier);
+
+                            // Particles on ground
+                            spawnGroundParticles(loc);
+                        }
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    cancel();
+                }
             }
 
             @Override

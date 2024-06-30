@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -85,39 +86,47 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                double x = Math.cos(counter);
-                double z = Math.sin(counter);
-                final double[] y = {Math.sin(counter)};
 
-                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                            continue;
-                        if (loc.getWorld() == null)
-                            return;
+                try {
 
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
-                        y[0] = Math.cos(counter);
-                        GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.BUBBLE_POP);
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    }
-                });
 
-                if (loc.getBlock().getType().isSolid())
-                    counter = 0;
+                    double x = Math.cos(counter);
+                    double z = Math.sin(counter);
+                    final double[] y = {Math.sin(counter)};
 
-                for (Entity entity : world.getNearbyEntities(loc, 1, 1, 1)) {
-                    if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                        livingEntity.damage(8.5 * multiplier);
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                                continue;
+                            if (loc.getWorld() == null)
+                                return;
+
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                            y[0] = Math.cos(counter);
+                            GeneralPurposeUtil.drawParticleSphere(loc, .35, 10, null, null, 0, Particle.BUBBLE_POP);
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                        }
+                    });
+
+                    if (loc.getBlock().getType().isSolid())
                         counter = 0;
+
+                    for (Entity entity : world.getNearbyEntities(loc, 1, 1, 1)) {
+                        if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                            livingEntity.damage(8.5 * multiplier);
+                            counter = 0;
+                        }
                     }
-                }
 
-                loc.add(direction);
+                    loc.add(direction);
 
-                counter--;
-                if (counter <= 0) {
+                    counter--;
+                    if (counter <= 0) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Water Spells");
                     cancel();
                 }
             }
@@ -144,29 +153,36 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                            continue;
-                        p.spawnParticle(Particle.DRIPPING_WATER, loc, 15, .05, .05, .05, 0);
-                    }
-                });
+                try {
 
-                if (loc.getBlock().getType().isSolid())
-                    counter = 0;
 
-                for (Entity entity : world.getNearbyEntities(loc, 1, 1, 1)) {
-                    if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                        livingEntity.damage(7.5 * multiplier);
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                                continue;
+                            p.spawnParticle(Particle.DRIPPING_WATER, loc, 15, .05, .05, .05, 0);
+                        }
+                    });
+
+                    if (loc.getBlock().getType().isSolid())
                         counter = 0;
+
+                    for (Entity entity : world.getNearbyEntities(loc, 1, 1, 1)) {
+                        if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                            livingEntity.damage(7.5 * multiplier);
+                            counter = 0;
+                        }
                     }
-                }
 
-                loc.add(direction);
+                    loc.add(direction);
 
-                counter--;
-                if (counter <= 0)
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Water Spells");
                     cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
@@ -197,40 +213,47 @@ public class WaterSpells extends Ability {
 
                 @Override
                 public void run() {
-                    spiralX = spiralRadius * Math.cos(spiral);
-                    spiralZ = spiralRadius * Math.sin(spiral);
-                    spiral += 0.75;
-                    height += .025;
-                    spiralRadius += .025;
-                    if (height >= 3.5) {
-                        height = 0;
-                        spiralRadius = .65;
-                    }
+                    try {
 
-                    if (loc.getWorld() == null)
-                        return;
 
-                    counter--;
-                    if (counter <= 0) {
-                        cancel();
-                        return;
-                    }
-
-                    if (j == 0) {
-                        if (counter % 10 == 0)
-                            GeneralPurposeUtil.damageNearbyEntities(caster, loc, 6, 6, 6, 8 * multiplier);
-
-                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 10, 10, 10)) {
-                            if (entity.getType() == EntityType.ARMOR_STAND || entity == caster)
-                                continue;
-
-                            Vector direction = loc.toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.25);
-                            entity.setVelocity(direction);
+                        spiralX = spiralRadius * Math.cos(spiral);
+                        spiralZ = spiralRadius * Math.sin(spiral);
+                        spiral += 0.75;
+                        height += .025;
+                        spiralRadius += .025;
+                        if (height >= 3.5) {
+                            height = 0;
+                            spiralRadius = .65;
                         }
-                    }
 
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                        if (loc.getWorld() == null)
+                            return;
+
+                        counter--;
+                        if (counter <= 0) {
+                            cancel();
+                            return;
+                        }
+
+                        if (j == 0) {
+                            if (counter % 10 == 0)
+                                GeneralPurposeUtil.damageNearbyEntities(caster, loc, 6, 6, 6, 8 * multiplier);
+
+                            for (Entity entity : loc.getWorld().getNearbyEntities(loc, 10, 10, 10)) {
+                                if (entity.getType() == EntityType.ARMOR_STAND || entity == caster)
+                                    continue;
+
+                                Vector direction = loc.toVector().subtract(entity.getLocation().toVector()).normalize().multiply(.25);
+                                entity.setVelocity(direction);
+                            }
+                        }
+
+                        GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                        GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Water Spells");
+                        cancel();
+                    }
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, i * 25, 2);
         }
@@ -263,26 +286,31 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                if (loc.getWorld() == null)
-                    return;
+                try {
+                    if (loc.getWorld() == null)
+                        return;
 
-                counter++;
-                double x = Math.cos(counter);
-                double z = Math.sin(counter);
-                double y = Math.sin(counter);
-                if (random.nextBoolean())
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
-                if (random.nextBoolean())
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY() + y, loc.getZ(), 1, 0, 0, 0, 0);
-                y = Math.cos(counter);
-                if (random.nextBoolean())
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX(), loc.getY() + y, loc.getZ() + z, 1, 0, 0, 0, 0);
+                    counter++;
+                    double x = Math.cos(counter);
+                    double z = Math.sin(counter);
+                    double y = Math.sin(counter);
+                    if (random.nextBoolean())
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
+                    if (random.nextBoolean())
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY() + y, loc.getZ(), 1, 0, 0, 0, 0);
+                    y = Math.cos(counter);
+                    if (random.nextBoolean())
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX(), loc.getY() + y, loc.getZ() + z, 1, 0, 0, 0, 0);
 
-                loc.getWorld().spawnParticle(Particle.DUST, loc, 10, 0.25, 0.25, 0.25, dust);
+                    loc.getWorld().spawnParticle(Particle.DUST, loc, 10, 0.25, 0.25, 0.25, dust);
 
-                if (counter >= 15 * 20) {
-                    logBlockBreak(uuid, new CustomLocation(loc));
-                    loc.getBlock().setType(Material.AIR);
+                    if (counter >= 15 * 20) {
+                        logBlockBreak(uuid, new CustomLocation(loc));
+                        loc.getBlock().setType(Material.AIR);
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Water Spells");
                     cancel();
                 }
             }
@@ -330,23 +358,29 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
-                    GeneralPurposeUtil.drawDustsForNearbyPlayers(finalLoc, 30, 12, 12, 12, dust);
-                });
-                GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.POISON, 20 * 5, 4, false, false));
-                GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.WITHER, 20 * 2, 1, false, false));
+                try {
 
-                if (!blocks.isEmpty()) {
-                    Block block = blocks.get(random.nextInt(blocks.size()));
-                    if (block.getType().getHardness() > 0)
-                        block.setType(Material.AIR);
-                }
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 500, 12, 5, 12, 1);
+                        GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, finalLoc.clone().subtract(0, 2.5, 0), 50, 12, 5, 12, 1);
+                        GeneralPurposeUtil.drawDustsForNearbyPlayers(finalLoc, 30, 12, 12, 12, dust);
+                    });
+                    GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.POISON, 20 * 5, 4, false, false));
+                    GeneralPurposeUtil.effectForNearbyEntities(caster, finalLoc.clone(), 12, 12, 12, new PotionEffect(PotionEffectType.WITHER, 20 * 2, 1, false, false));
 
-                counter--;
-                if (counter <= 0)
+                    if (!blocks.isEmpty()) {
+                        Block block = blocks.get(random.nextInt(blocks.size()));
+                        if (block.getType().getHardness() > 0)
+                            block.setType(Material.AIR);
+                    }
+
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Water Spells");
                     cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
@@ -367,48 +401,53 @@ public class WaterSpells extends Ability {
 
             @Override
             public void run() {
-                double x = 2 * Math.cos(counter);
-                double z = 2 * Math.sin(counter);
-                final double[] y = {2 * Math.sin(counter)};
+                try {
+                    double x = 2 * Math.cos(counter);
+                    double z = 2 * Math.sin(counter);
+                    final double[] y = {2 * Math.sin(counter)};
 
-                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                            continue;
-                        if (loc.getWorld() == null)
-                            return;
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                                continue;
+                            if (loc.getWorld() == null)
+                                return;
 
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
-                        y[0] = Math.cos(counter);
-                        GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.BUBBLE_POP);
-                        loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
-                    }
-                });
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY(), loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX() + x, loc.getY() + y[0], loc.getZ(), 15, 0.05, 0.05, 0.05, 0);
+                            y[0] = Math.cos(counter);
+                            GeneralPurposeUtil.drawParticleSphere(loc, 2, 20, null, null, 0, Particle.BUBBLE_POP);
+                            loc.getWorld().spawnParticle(Particle.FALLING_WATER, loc.getX(), loc.getY() + y[0], loc.getZ() + z, 15, 0.05, 0.05, 0.05, 0);
+                        }
+                    });
 
-                if (loc.getBlock().getType().isSolid()) {
-                    counter = 0;
+                    if (loc.getBlock().getType().isSolid()) {
+                        counter = 0;
 
-                    loc.getWorld().createExplosion(loc, 4);
-                    for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(loc, 3, false, false, true)) {
-                        if (!block.getType().isSolid()) {
-                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                            block.setType(Material.WATER);
+                        loc.getWorld().createExplosion(loc, 4);
+                        for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(loc, 3, false, false, true)) {
+                            if (!block.getType().isSolid()) {
+                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                                block.setType(Material.WATER);
+                            }
                         }
                     }
-                }
 
-                for (Entity entity : world.getNearbyEntities(loc, 2, 2, 2)) {
-                    if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                        livingEntity.damage(15 * multiplier);
-                        counter = 0;
+                    for (Entity entity : world.getNearbyEntities(loc, 2, 2, 2)) {
+                        if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                            livingEntity.damage(15 * multiplier);
+                            counter = 0;
+                        }
                     }
-                }
 
-                loc.add(direction);
+                    loc.add(direction);
 
-                counter--;
-                if (counter <= 0) {
+                    counter--;
+                    if (counter <= 0) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Water Spells");
                     cancel();
                 }
             }
@@ -418,7 +457,9 @@ public class WaterSpells extends Ability {
                 super.cancel();
                 rollbackChanges(uuid);
             }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+        }.
+
+                runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
     @Override

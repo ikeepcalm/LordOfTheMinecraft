@@ -1,10 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -37,50 +38,63 @@ public class UnshadowedDomain extends Ability {
         BukkitScheduler scheduler = Bukkit.getScheduler();
 
         // Using async task for computationally heavy operations
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            for (int i = 15; i > -15; i--) {
-                for (int x = -radius; x <= radius; x++) {
-                    for (int z = -radius; z <= radius; z++) {
-                        if ((x * x) + (z * z) <= Math.pow(radius, 2)) {
-                            Block block = p.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
-                            if (block.getType() == Material.AIR && block.getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
-                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                    block.setType(Material.LIGHT);
-                                    blocks.add(block);
-                                });
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = 15; i > -15; i--) {
+                        for (int x = -radius; x <= radius; x++) {
+                            for (int z = -radius; z <= radius; z++) {
+                                if ((x * x) + (z * z) <= Math.pow(radius, 2)) {
+                                    Block block = p.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
+                                    if (block.getType() == Material.AIR && block.getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
+                                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                            block.setType(Material.LIGHT);
+                                            blocks.add(block);
+                                        });
+                                    }
+                                }
                             }
                         }
                     }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Unshadowed Domain");
+                    cancel();
                 }
             }
-        });
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
 
         new BukkitRunnable() {
             int counter = 0;
 
             @Override
             public void run() {
-                counter++;
+                try {
+                    counter++;
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc, 65, 40, 40, 40, 0, dustSphere);
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc, 65, 40, 40, 40, 0);
-
-                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
-                        if (entity instanceof LivingEntity) {
-                            ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
-                        }
-                    }
-                });
-
-                if (counter > 20 * 20) {
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        for (Block b : blocks) {
-                            b.setType(Material.AIR);
+                        Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc, 65, 40, 40, 40, 0, dustSphere);
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc, 65, 40, 40, 40, 0);
+
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 30, 30, 30)) {
+                            if (entity instanceof LivingEntity) {
+                                ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
+                            }
                         }
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     });
+
+                    if (counter > 20 * 20) {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            for (Block b : blocks) {
+                                b.setType(Material.AIR);
+                            }
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        });
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Unshadowed Domain");
                     cancel();
                 }
             }

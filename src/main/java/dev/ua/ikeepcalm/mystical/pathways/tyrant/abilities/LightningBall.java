@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -40,15 +41,14 @@ public class LightningBall extends Ability {
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {
         Location startLoc = caster.getLocation().add(0, .75, 0);
-        Vector dir = loc.toVector().subtract(caster.getLocation().add(0, .75, 0).toVector()).normalize().multiply(2);
+        Vector dir = loc.toVector().subtract(startLoc.toVector()).normalize().multiply(2);
 
         Random random = new Random();
 
         Particle.DustOptions dustBlue = new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.5f);
         Particle.DustOptions dustPurple = new Particle.DustOptions(Color.fromRGB(87, 20, 204), 1.5f);
 
-        if (startLoc.getWorld() == null)
-            return;
+        if (startLoc.getWorld() == null) return;
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
@@ -57,32 +57,45 @@ public class LightningBall extends Ability {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustBlue, null, .05, Particle.DUST);
-                GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustPurple, null, .05, Particle.DUST);
+                try {
+                    GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustBlue, null, .05, Particle.DUST);
+                    GeneralPurposeUtil.drawParticleSphere(startLoc, 2, 10, dustPurple, null, .05, Particle.DUST);
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    if (startLoc.getBlock().getType().isSolid() || (!startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).isEmpty() && !startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).contains(caster))) {
-                        new BukkitRunnable() {
-                            int counter = 16;
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        try {
+                            if (startLoc.getBlock().getType().isSolid() || (!startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).isEmpty() && !startLoc.getWorld().getNearbyEntities(startLoc, 1, 1, 1).contains(caster))) {
+                                new BukkitRunnable() {
+                                    int counter = 16;
 
-                            @Override
-                            public void run() {
-                                TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
+                                        } catch (Exception e) {
+                                            ErrorLoggerUtil.logAbility(e, "Lightning Ball - Spawn Lightning");
+                                            cancel();
+                                        }
 
-                                counter--;
-                                if (counter <= 0)
-                                    cancel();
+                                        counter--;
+                                        if (counter <= 0) cancel();
+                                    }
+                                }.runTaskTimer(LordOfTheMinecraft.instance, 0, 4);
+                                this.counter = 0;
                             }
-                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 4);
-                        this.counter = 0;
-                    }
-                });
+                        } catch (Exception e) {
+                            ErrorLoggerUtil.logAbility(e, "Lightning Ball - Secondary Task Check");
+                            cancel();
+                        }
+                    });
 
-                startLoc.add(dir);
+                    startLoc.add(dir);
 
-                counter--;
-                if (counter <= 0)
+                    counter--;
+                    if (counter <= 0) cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Lightning Ball - Main Task");
                     cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }

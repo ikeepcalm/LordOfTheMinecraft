@@ -19,4 +19,8 @@ public abstract class MobAbility extends Ability {
 
     public abstract void useAbility(Location startLoc, Location endLoc, double multiplier, Entity user, @Nullable Entity target);
 
+    @Override
+    public void useAbility() {
+        throw new UnsupportedOperationException("This method is not supported for Mob Abilities");
+    }
 }

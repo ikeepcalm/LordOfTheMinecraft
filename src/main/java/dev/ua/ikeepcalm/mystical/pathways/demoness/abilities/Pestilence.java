@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -34,36 +35,41 @@ public class Pestilence extends Ability {
 
             @Override
             public void run() {
-                caster.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, caster.getLocation().add(0, 1.5, 0), 500, 250, 60, 250, 0);
+                try {
+                    caster.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, caster.getLocation().add(0, 1.5, 0), 500, 250, 60, 250, 0);
 
-                if (pathway.getBeyonder().getSpirituality() <= 50) {
+                    if (pathway.getBeyonder().getSpirituality() <= 50) {
+                        cancel();
+                        return;
+                    }
+
+                    drainer++;
+                    if (drainer >= 20) {
+                        drainer = 0;
+                        pathway.getSequence().removeSpirituality(50);
+                    }
+
+                    // Fetch nearby entities on the main thread
+                    List<Entity> nearbyEntities = caster.getNearbyEntities(250, 60, 250);
+
+                    for (Entity entity : nearbyEntities) {
+                        if (infected.contains(entity))
+                            continue;
+
+                        if (!(entity instanceof LivingEntity livingEntity))
+                            continue;
+
+                        infected.add(entity);
+                        applyPestilenceEffects(livingEntity);
+                    }
+
+                    // Cancel the task if ability is no longer active
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1])
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Pestilence");
                     cancel();
-                    return;
                 }
-
-                drainer++;
-                if (drainer >= 20) {
-                    drainer = 0;
-                    pathway.getSequence().removeSpirituality(50);
-                }
-
-                // Fetch nearby entities on the main thread
-                List<Entity> nearbyEntities = caster.getNearbyEntities(250, 60, 250);
-
-                for (Entity entity : nearbyEntities) {
-                    if (infected.contains(entity))
-                        continue;
-
-                    if (!(entity instanceof LivingEntity livingEntity))
-                        continue;
-
-                    infected.add(entity);
-                    applyPestilenceEffects(livingEntity);
-                }
-
-                // Cancel the task if ability is no longer active
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1])
-                    cancel();
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }

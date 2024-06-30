@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,26 +55,31 @@ public class Illuminate extends Ability {
 
             @Override
             public void run() {
-                counter++;
+                try {
+                    counter++;
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    double x = Math.cos(counter);
-                    double z = Math.sin(counter);
-                    double y = Math.sin(counter);
-                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
-                    loc.getWorld().spawnParticle(Particle.FLAME, loc.getX() + x, loc.getY() + y, loc.getZ(), 1, 0, 0, 0, 0);
-                    y = Math.cos(counter);
-                    loc.getWorld().spawnParticle(Particle.FLAME, loc.getX(), loc.getY() + y, loc.getZ() + z, 1, 0, 0, 0, 0);
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        double x = Math.cos(counter);
+                        double z = Math.sin(counter);
+                        double y = Math.sin(counter);
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0, 0, 0, 0);
+                        loc.getWorld().spawnParticle(Particle.FLAME, loc.getX() + x, loc.getY() + y, loc.getZ(), 1, 0, 0, 0, 0);
+                        y = Math.cos(counter);
+                        loc.getWorld().spawnParticle(Particle.FLAME, loc.getX(), loc.getY() + y, loc.getZ() + z, 1, 0, 0, 0, 0);
 
-                    loc.getWorld().spawnParticle(Particle.END_ROD, loc, 5, 0.25, 0.25, 0.25, 0);
-                });
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc, 5, 0.25, 0.25, 0.25, 0);
+                    });
 
-                if (counter == 2 * 20) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                }
+                    if (counter == 2 * 20) {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    }
 
-                if (counter >= 15 * 20) {
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> loc.getBlock().setType(Material.AIR));
+                    if (counter >= 15 * 20) {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> loc.getBlock().setType(Material.AIR));
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Illuminate");
                     cancel();
                 }
             }

@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,28 +34,33 @@ public class Wind extends Ability {
 
             @Override
             public void run() {
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8) {
+                try {
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 8) {
+                        cancel();
+                        return;
+                    }
+
+                    // Schedule velocity and particle effects on the main thread
+                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                        for (Entity entity : caster.getNearbyEntities(7, 7, 7)) {
+                            entity.setVelocity(dir);
+                        }
+
+                        for (int i = 0; i < 8; i++) {
+                            Location tempLoc = caster.getLocation().add(0, 1.5, 0).add(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
+                            caster.getWorld().spawnParticle(Particle.CLOUD, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
+                        }
+                    });
+
+                    counter++;
+
+                    if (counter >= 20) {
+                        counter = 0;
+                        pathway.getSequence().removeSpirituality(8);
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Wind");
                     cancel();
-                    return;
-                }
-
-                // Schedule velocity and particle effects on the main thread
-                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : caster.getNearbyEntities(7, 7, 7)) {
-                        entity.setVelocity(dir);
-                    }
-
-                    for (int i = 0; i < 8; i++) {
-                        Location tempLoc = caster.getLocation().add(0, 1.5, 0).add(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
-                        caster.getWorld().spawnParticle(Particle.CLOUD, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
-                    }
-                });
-
-                counter++;
-
-                if (counter >= 20) {
-                    counter = 0;
-                    pathway.getSequence().removeSpirituality(8);
                 }
             }
         }.runTaskTimerAsynchronously(LordOfTheMinecraft.instance, 0, 1);

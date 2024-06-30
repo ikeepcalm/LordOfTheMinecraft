@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.entities.mob.abilities.sun;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -66,50 +67,55 @@ public class FlaringSun extends MobAbility {
 
             @Override
             public void run() {
-                counter++;
+                try {
+                    counter++;
 
-                //Spawn particles
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc, 50, 2, 2, 2, 0);
-                loc.getWorld().spawnParticle(Particle.END_ROD, loc, 70, 2, 2, 2, 0);
-                for (double i = 0; i <= Math.PI; i += Math.PI / 15) {
-                    double radius = Math.sin(i) * sphereRadius;
-                    double y = Math.cos(i) * sphereRadius;
-                    for (double a = 0; a < Math.PI * 2; a += Math.PI / 15) {
-                        double x = Math.cos(a) * radius;
-                        double z = Math.sin(a) * radius;
-                        sphereLoc.add(x, y, z);
-                        Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                        Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
-                        sphereLoc.getWorld().spawnParticle(Particle.FLAME, sphereLoc, 1, 0.25, 0.25, 0.25, 0);
-                        if (counter == 1 && !sphereLoc.getBlock().getType().isSolid()) {
-                            airBlocks.add(sphereLoc.getBlock());
-                            sphereLoc.getBlock().setType(Material.LIGHT);
-                        }
-                        sphereLoc.subtract(x, y, z);
-                    }
-                }
-
-                //damage nearby entities
-                ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 10, 10, 10);
-                for (Entity entity : nearbyEntities) {
-                    if (entity instanceof LivingEntity livingEntity) {
-                         if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                            ((Damageable) entity).damage(7 * multiplier, user);
-                            livingEntity.setFireTicks(20 * 20);
-                        } else if (entity != user) {
-                            livingEntity.setFireTicks(10 * 20);
-                            ((Damageable) entity).damage(3, user);
+                    //Spawn particles
+                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc, 50, 2, 2, 2, 0);
+                    loc.getWorld().spawnParticle(Particle.END_ROD, loc, 70, 2, 2, 2, 0);
+                    for (double i = 0; i <= Math.PI; i += Math.PI / 15) {
+                        double radius = Math.sin(i) * sphereRadius;
+                        double y = Math.cos(i) * sphereRadius;
+                        for (double a = 0; a < Math.PI * 2; a += Math.PI / 15) {
+                            double x = Math.cos(a) * radius;
+                            double z = Math.sin(a) * radius;
+                            sphereLoc.add(x, y, z);
+                            Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                            Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
+                            sphereLoc.getWorld().spawnParticle(Particle.FLAME, sphereLoc, 1, 0.25, 0.25, 0.25, 0);
+                            if (counter == 1 && !sphereLoc.getBlock().getType().isSolid()) {
+                                airBlocks.add(sphereLoc.getBlock());
+                                sphereLoc.getBlock().setType(Material.LIGHT);
+                            }
+                            sphereLoc.subtract(x, y, z);
                         }
                     }
-                }
 
-                if (counter >= 20 * 20) {
-                    for (Block b : airBlocks) {
-                        b.setType(Material.AIR);
+                    //damage nearby entities
+                    ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc, 10, 10, 10);
+                    for (Entity entity : nearbyEntities) {
+                        if (entity instanceof LivingEntity livingEntity) {
+                            if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                ((Damageable) entity).damage(7 * multiplier, user);
+                                livingEntity.setFireTicks(20 * 20);
+                            } else if (entity != user) {
+                                livingEntity.setFireTicks(10 * 20);
+                                ((Damageable) entity).damage(3, user);
+                            }
+                        }
                     }
+
+                    if (counter >= 20 * 20) {
+                        for (Block b : airBlocks) {
+                            b.setType(Material.AIR);
+                        }
+                        cancel();
+                        if (pathway != null)
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Flaring Sun");
                     cancel();
-                    if (pathway != null)
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);

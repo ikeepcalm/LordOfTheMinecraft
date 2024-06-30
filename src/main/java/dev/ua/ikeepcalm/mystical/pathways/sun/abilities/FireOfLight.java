@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -29,81 +30,90 @@ public class FireOfLight extends Ability {
 
     public void executeAbility(Location target, Entity caster, double multiplier) {
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-            if (!target.getBlock().getType().isSolid()) {
-                target.getBlock().setType(Material.FIRE);
-            }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
 
-            target.add(1, 0, 0);
+                    if (!target.getBlock().getType().isSolid()) {
+                        target.getBlock().setType(Material.FIRE);
+                    }
 
-            if (!target.getBlock().getType().isSolid()) {
-                target.getBlock().setType(Material.FIRE);
-            }
+                    target.add(1, 0, 0);
 
-            target.add(-2, 0, 0);
+                    if (!target.getBlock().getType().isSolid()) {
+                        target.getBlock().setType(Material.FIRE);
+                    }
 
-            if (!target.getBlock().getType().isSolid()) {
-                target.getBlock().setType(Material.FIRE);
-            }
-            target.add(1, 0, -1);
-            if (!target.getBlock().getType().isSolid()) {
-                target.getBlock().setType(Material.FIRE);
-            }
-            target.add(0, 0, 2);
-            if (!target.getBlock().getType().isSolid()) {
-                target.getBlock().setType(Material.FIRE);
-            }
-            target.subtract(0, 0, 1);
+                    target.add(-2, 0, 0);
 
-            target.add(0.5, 0.5, 0.5);
+                    if (!target.getBlock().getType().isSolid()) {
+                        target.getBlock().setType(Material.FIRE);
+                    }
+                    target.add(1, 0, -1);
+                    if (!target.getBlock().getType().isSolid()) {
+                        target.getBlock().setType(Material.FIRE);
+                    }
+                    target.add(0, 0, 2);
+                    if (!target.getBlock().getType().isSolid()) {
+                        target.getBlock().setType(Material.FIRE);
+                    }
+                    target.subtract(0, 0, 1);
 
-            final Material[] lightBlock = {target.getBlock().getType()};
-            target.getBlock().setType(Material.LIGHT);
+                    target.add(0.5, 0.5, 0.5);
 
-            new BukkitRunnable() {
-                int counter = 0;
-                final UUID uuid = UUID.randomUUID();
+                    final Material[] lightBlock = {target.getBlock().getType()};
+                    target.getBlock().setType(Material.LIGHT);
 
-                @Override
-                public void run() {
-                    counter++;
+                    new BukkitRunnable() {
+                        int counter = 0;
+                        final UUID uuid = UUID.randomUUID();
 
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        Objects.requireNonNull(target.getWorld()).spawnParticle(Particle.FLAME, target, 50, 0.75, 0.75, 0.75, 0);
-                        target.getWorld().spawnParticle(Particle.END_ROD, target, 8, 0.75, 0.75, 0.75, 0);
+                        @Override
+                        public void run() {
+                            counter++;
 
-                        // damage nearby entities
-                        ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) target.getWorld().getNearbyEntities(target, 2, 2, 2);
-                        for (Entity entity : nearbyEntities) {
-                            if (entity instanceof LivingEntity livingEntity) {
-                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                    ((Damageable) entity).damage(10 * multiplier, caster);
-                                    livingEntity.setFireTicks(10 * 20);
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                Objects.requireNonNull(target.getWorld()).spawnParticle(Particle.FLAME, target, 50, 0.75, 0.75, 0.75, 0);
+                                target.getWorld().spawnParticle(Particle.END_ROD, target, 8, 0.75, 0.75, 0.75, 0);
+
+                                // damage nearby entities
+                                ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) target.getWorld().getNearbyEntities(target, 2, 2, 2);
+                                for (Entity entity : nearbyEntities) {
+                                    if (entity instanceof LivingEntity livingEntity) {
+                                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                            ((Damageable) entity).damage(10 * multiplier, caster);
+                                            livingEntity.setFireTicks(10 * 20);
+                                        }
+                                        if (entity != caster)
+                                            livingEntity.setFireTicks(10 * 20);
+                                    }
                                 }
-                                if (entity != caster)
-                                    livingEntity.setFireTicks(10 * 20);
+                            });
+
+                            if (counter >= 5 * 20) {
+                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                    logBlockBreak(uuid, new CustomLocation(target));
+                                    target.getBlock().setType(Material.AIR);
+                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                    target.getBlock().setType(lightBlock[0]);
+                                });
+                                cancel();
                             }
                         }
-                    });
 
-                    if (counter >= 5 * 20) {
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            logBlockBreak(uuid, new CustomLocation(target));
-                            target.getBlock().setType(Material.AIR);
-                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                            target.getBlock().setType(lightBlock[0]);
-                        });
-                        cancel();
-                    }
+                        @Override
+                        public void cancel() {
+                            super.cancel();
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> rollbackChanges(uuid));
+                        }
+                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Fire of Light");
+                    cancel();
                 }
-
-                @Override
-                public void cancel() {
-                    super.cancel();
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> rollbackChanges(uuid));
-                }
-            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
-        });
+            }
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
     }
 
     @Override

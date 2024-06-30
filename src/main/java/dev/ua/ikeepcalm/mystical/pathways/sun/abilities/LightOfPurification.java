@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -34,35 +35,41 @@ public class LightOfPurification extends Ability {
 
             @Override
             public void run() {
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    Particle.DustOptions dustRipple = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                    radius = radius + 0.75;
-                    for (int j = 0; j < 30 * radius; j++) {
-                        double x = radius * Math.cos(j);
-                        double z = radius * Math.sin(j);
-                        int finalJ = j;
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 5, 0.2, 1, 0.2, 0, dustRipple);
-                            Random rand = new Random();
-                            if (finalJ % (rand.nextInt(8) + 1) == 0)
-                                loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0.2, 1, 0.2, 0);
+                try {
 
-                            // Checking for entities
-                            for (Entity entity : loc.getWorld().getNearbyEntities(new Location(loc.getWorld(), loc.getX() + x, loc.getY(), loc.getZ() + z), 1, 3, 1)) {
-                                if (entity instanceof LivingEntity) {
-                                    if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                        ((Damageable) entity).damage(25 * multiplier, caster);
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        Particle.DustOptions dustRipple = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                        radius = radius + 0.75;
+                        for (int j = 0; j < 30 * radius; j++) {
+                            double x = radius * Math.cos(j);
+                            double z = radius * Math.sin(j);
+                            int finalJ = j;
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 5, 0.2, 1, 0.2, 0, dustRipple);
+                                Random rand = new Random();
+                                if (finalJ % (rand.nextInt(8) + 1) == 0)
+                                    loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x, loc.getY(), loc.getZ() + z, 1, 0.2, 1, 0.2, 0);
+
+                                // Checking for entities
+                                for (Entity entity : loc.getWorld().getNearbyEntities(new Location(loc.getWorld(), loc.getX() + x, loc.getY(), loc.getZ() + z), 1, 3, 1)) {
+                                    if (entity instanceof LivingEntity) {
+                                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                            ((Damageable) entity).damage(25 * multiplier, caster);
+                                        }
                                     }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
 
-                    if (radius >= 20) {
-                        cancel();
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getSequence().getUsesAbilities()[identifier - 1] = false);
-                    }
-                });
+                        if (radius >= 20) {
+                            cancel();
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getSequence().getUsesAbilities()[identifier - 1] = false);
+                        }
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Light of Purification");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }

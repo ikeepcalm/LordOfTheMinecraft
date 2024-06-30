@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -64,104 +66,113 @@ public class AirBullet extends Ability {
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            final double circlePoints = valuesForSequence.get(pathway.getSequence().getCurrentSequence()) != null
-                    ? valuesForSequence.get(sequencePower)[1]
-                    : 20;
+        new BukkitRunnable() {
 
-            double radius = valuesForSequence.get(sequencePower) != null
-                    ? valuesForSequence.get(sequencePower)[0]
-                    : 0.25;
+            @Override
+            public void run() {
+                try {
+                    final double circlePoints = valuesForSequence.get(pathway.getSequence().getCurrentSequence()) != null
+                            ? valuesForSequence.get(sequencePower)[1]
+                            : 20;
 
-            final Location locCopy = loc.clone();
-            final World world = loc.getWorld();
-            final Vector dir = caster.getLocation().getDirection().normalize();
+                    double radius = valuesForSequence.get(sequencePower) != null
+                            ? valuesForSequence.get(sequencePower)[0]
+                            : 0.25;
 
-            final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
-            final double yaw = -loc.getYaw() * 0.017453292F;
+                    final Location locCopy = loc.clone();
+                    final World world = loc.getWorld();
+                    final Vector dir = caster.getLocation().getDirection().normalize();
 
-            final double increment = (2 * Math.PI) / circlePoints;
-            double circlePointOffset = 0;
+                    final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
+                    final double yaw = -loc.getYaw() * 0.017453292F;
 
-            int counter = 0;
+                    final double increment = (2 * Math.PI) / circlePoints;
+                    double circlePointOffset = 0;
 
-            while (counter < 50) {
-                if (world == null)
-                    return;
+                    int counter = 0;
 
-                // Particle effects
-                double finalRadius = radius;
-                double finalCirclePointOffset = circlePointOffset;
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    for (int i = 0; i < circlePoints; i++) {
-                        double angle = i * increment + finalCirclePointOffset;
-                        double x = finalRadius * Math.cos(angle);
-                        double z = finalRadius * Math.sin(angle);
+                    while (counter < 50) {
+                        if (world == null)
+                            return;
 
-                        Vector vec = new Vector(x, 0, z);
-                        MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                        MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                        locCopy.add(vec);
+                        // Particle effects
+                        double finalRadius = radius;
+                        double finalCirclePointOffset = circlePointOffset;
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            for (int i = 0; i < circlePoints; i++) {
+                                double angle = i * increment + finalCirclePointOffset;
+                                double x = finalRadius * Math.cos(angle);
+                                double z = finalRadius * Math.sin(angle);
 
-                        world.spawnParticle(Particle.DUST, locCopy, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 255, 255), 1));
-                        locCopy.subtract(vec);
-                    }
-                });
+                                Vector vec = new Vector(x, 0, z);
+                                MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                                MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                                locCopy.add(vec);
 
-                circlePointOffset += increment / 3;
-                if (circlePointOffset >= increment) {
-                    circlePointOffset = 0;
-                }
-                locCopy.add(dir);
-                radius -= (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[0] : 0.25) / 70;
-
-                // Check if hit Entity
-                double finalRadius1 = radius;
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    if (!world.getNearbyEntities(locCopy, 5, 5, 5).isEmpty()) {
-                        for (Entity entity : world.getNearbyEntities(locCopy, 5, 5, 5)) {
-                            Vector v1 = new Vector(
-                                    locCopy.getX() + finalRadius1 / 2,
-                                    locCopy.getY() + finalRadius1 / 2,
-                                    locCopy.getZ() + finalRadius1 / 2
-                            );
-                            Vector v2 = new Vector(
-                                    locCopy.getX() - finalRadius1 / 2,
-                                    locCopy.getY() - finalRadius1 / 2,
-                                    locCopy.getZ() - finalRadius1 / 2
-                            );
-                            if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                                if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
-                                    world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
-                                ((Damageable) entity).damage(7 * (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3), caster);
-                                return;
+                                world.spawnParticle(Particle.DUST, locCopy, 0, new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 255, 255), 1));
+                                locCopy.subtract(vec);
                             }
-                        }
-                    }
-                });
+                        });
 
-                if (locCopy.getBlock().getType().isSolid()) {
+                        circlePointOffset += increment / 3;
+                        if (circlePointOffset >= increment) {
+                            circlePointOffset = 0;
+                        }
+                        locCopy.add(dir);
+                        radius -= (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[0] : 0.25) / 70;
+
+                        // Check if hit Entity
+                        double finalRadius1 = radius;
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            if (!world.getNearbyEntities(locCopy, 5, 5, 5).isEmpty()) {
+                                for (Entity entity : world.getNearbyEntities(locCopy, 5, 5, 5)) {
+                                    Vector v1 = new Vector(
+                                            locCopy.getX() + finalRadius1 / 2,
+                                            locCopy.getY() + finalRadius1 / 2,
+                                            locCopy.getZ() + finalRadius1 / 2
+                                    );
+                                    Vector v2 = new Vector(
+                                            locCopy.getX() - finalRadius1 / 2,
+                                            locCopy.getY() - finalRadius1 / 2,
+                                            locCopy.getZ() - finalRadius1 / 2
+                                    );
+                                    if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                                        if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
+                                            world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
+                                        ((Damageable) entity).damage(7 * (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3), caster);
+                                        return;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (locCopy.getBlock().getType().isSolid()) {
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
+                                    world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
+                            });
+                            return;
+                        }
+
+                        try {
+                            Thread.sleep(50); // Sleep for 1 tick (50ms)
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+
+                        counter++;
+                    }
+
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                         if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
                             world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
                     });
-                    return;
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Air Bullet");
+                    cancel();
                 }
-
-                try {
-                    Thread.sleep(50); // Sleep for 1 tick (50ms)
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
-                counter++;
             }
-
-            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
-                    world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
-            });
-        });
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
     }
 
     @Override

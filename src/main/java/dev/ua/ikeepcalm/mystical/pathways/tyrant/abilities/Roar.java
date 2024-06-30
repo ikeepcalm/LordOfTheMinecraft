@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
@@ -35,8 +36,8 @@ public class Roar extends Ability {
 
         world.playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 5, 1);
 
+        // First scheduled task
         new BukkitRunnable() {
-
             final double circlePoints = 100;
             double radius = .1;
 
@@ -53,50 +54,53 @@ public class Roar extends Ability {
 
             @Override
             public void run() {
+                try {
+                    // Particle effects
+                    for (int i = 0; i < circlePoints; i++) {
+                        double angle = i * increment + circlePointOffset;
+                        double x = radius * Math.cos(angle);
+                        double z = radius * Math.sin(angle);
 
-                // Particle effects
-                for (int i = 0; i < circlePoints; i++) {
-                    double angle = i * increment + circlePointOffset;
-                    double x = radius * Math.cos(angle);
-                    double z = radius * Math.sin(angle);
+                        Vector vec = new Vector(x, 0, z);
+                        MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                        MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                        loc.add(vec);
 
-                    Vector vec = new Vector(x, 0, z);
-                    MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                    MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                    loc.add(vec);
+                        GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DUST, loc, 0, 0, 0, 0, 0);
+                        loc.subtract(vec);
+                    }
+                    circlePointOffset += increment / 3;
+                    if (circlePointOffset >= increment) {
+                        circlePointOffset = 0;
+                    }
+                    loc.add(dir);
+                    radius += .225;
 
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.DUST, loc, 0, 0, 0, 0, 0);
-                    loc.subtract(vec);
-                }
-                circlePointOffset += increment / 3;
-                if (circlePointOffset >= increment) {
-                    circlePointOffset = 0;
-                }
-                loc.add(dir);
-                radius += .225;
-
-                // Check if hit Entity
-                if (!world.getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
-                    for (Entity entity : world.getNearbyEntities(loc, 5, 5, 5)) {
-                        if (GeneralPurposeUtil.testForValidEntity(entity, caster, true, true)) {
-                            world.createExplosion(loc, (int) (radius * 1.75f));
-                            ((LivingEntity) entity).damage(20 * multiplier, caster);
-                            entity.setVelocity(dir.clone().normalize());
-                            cancel();
-                            return;
+                    // Check if hit Entity
+                    if (!world.getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
+                        for (Entity entity : world.getNearbyEntities(loc, 5, 5, 5)) {
+                            if (GeneralPurposeUtil.testForValidEntity(entity, caster, true, true)) {
+                                world.createExplosion(loc, (int) (radius * 1.75f));
+                                ((LivingEntity) entity).damage(20 * multiplier, caster);
+                                entity.setVelocity(dir.clone().normalize());
+                                cancel();
+                                return;
+                            }
                         }
                     }
-                }
 
-                counter++;
+                    counter++;
 
-                if (loc.getBlock().getType().isSolid() || counter >= 100) {
-                    world.createExplosion(loc, (int) (radius * 1.75f));
-                    if (counter >= 100)
-                        cancel();
+                    if (loc.getBlock().getType().isSolid() || counter >= 100) {
+                        world.createExplosion(loc, (int) (radius * 1.75f));
+                        if (counter >= 100)
+                            cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Roar");
+                    cancel();
                 }
             }
-
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 

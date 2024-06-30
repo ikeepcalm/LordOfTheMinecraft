@@ -36,8 +36,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -48,7 +46,6 @@ import static dev.ua.ikeepcalm.LordOfTheMinecraft.bossBarUtil;
 
 public class Beyonder implements Listener {
 
-    private static final Logger log = LoggerFactory.getLogger(Beyonder.class);
     @Getter
     protected final UUID uuid;
     private final int[] healthIndex;

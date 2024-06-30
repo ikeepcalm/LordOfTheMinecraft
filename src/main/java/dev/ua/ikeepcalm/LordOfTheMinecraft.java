@@ -120,6 +120,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 new PotionHandler(),
                 new PotionListener(),
                 new DeathListener(),
+                new ExplosionListener(),
                 new WantedListener(),
                 divination,
                 new BlockHandler(),

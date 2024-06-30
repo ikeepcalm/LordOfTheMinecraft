@@ -36,7 +36,6 @@ public class ThreadManipulation extends Ability {
     }
 
     private void placeThreads(boolean npc, Entity e, Location target) {
-        Entity caster = npc ? e : p;
         UUID uuid = UUID.randomUUID();
         Location loc = npc ? target : p.getEyeLocation();
 

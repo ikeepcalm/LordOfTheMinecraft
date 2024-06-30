@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -71,146 +72,151 @@ public class UnshadowedSpear extends Ability {
 
             @Override
             public void run() {
-                spearLocation.add(direction);
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> buildSpear(spearLocation.clone(), direction.clone()));
+                try {
+                    spearLocation.add(direction);
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> buildSpear(spearLocation.clone(), direction.clone()));
 
-                if (!Objects.requireNonNull(spearLocation.getWorld()).getNearbyEntities(spearLocation, 5, 5, 5).isEmpty()) {
-                    for (Entity entity : spearLocation.getWorld().getNearbyEntities(spearLocation, 5, 5, 5)) {
-                        if (entity instanceof LivingEntity) {
-                            // Ignore player that initiated the shot
-                            if (entity == p) {
-                                continue;
-                            }
-                            Vector particleMinVector = new Vector(
-                                    spearLocation.getX() - 0.25,
-                                    spearLocation.getY() - 0.25,
-                                    spearLocation.getZ() - 0.25);
-                            Vector particleMaxVector = new Vector(
-                                    spearLocation.getX() + 0.25,
-                                    spearLocation.getY() + 0.25,
-                                    spearLocation.getZ() + 0.25);
-
-                            //entity hit
-                            if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-
-                                scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5));
-
-                                entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                    ((Damageable) entity).damage(25 * multiplier, p);
-                                } else {
-                                    ((Damageable) entity).damage(14 * multiplier, p);
+                    if (!Objects.requireNonNull(spearLocation.getWorld()).getNearbyEntities(spearLocation, 5, 5, 5).isEmpty()) {
+                        for (Entity entity : spearLocation.getWorld().getNearbyEntities(spearLocation, 5, 5, 5)) {
+                            if (entity instanceof LivingEntity) {
+                                // Ignore player that initiated the shot
+                                if (entity == p) {
+                                    continue;
                                 }
+                                Vector particleMinVector = new Vector(
+                                        spearLocation.getX() - 0.25,
+                                        spearLocation.getY() - 0.25,
+                                        spearLocation.getZ() - 0.25);
+                                Vector particleMaxVector = new Vector(
+                                        spearLocation.getX() + 0.25,
+                                        spearLocation.getY() + 0.25,
+                                        spearLocation.getZ() + 0.25);
 
-                                Location sphereLoc = ((LivingEntity) entity).getEyeLocation().clone();
+                                //entity hit
+                                if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
 
-                                new BukkitRunnable() {
-                                    double sphereRadius = 1;
+                                    scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 200, 0, 0, 0, 0.5));
 
-                                    @Override
-                                    public void run() {
-                                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                            for (double i = 0; i <= Math.PI; i += Math.PI / 25) {
-                                                double radius = Math.sin(i) * sphereRadius;
-                                                double y = Math.cos(i) * sphereRadius;
-                                                for (double a = 0; a < Math.PI * 2; a += Math.PI / 25) {
-                                                    double x = Math.cos(a) * radius;
-                                                    double z = Math.sin(a) * radius;
-                                                    sphereLoc.add(x, y, z);
-                                                    Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                                                    Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 4, 0.15, 0.15, 0.15, 0, dustSphere);
-                                                    sphereLoc.subtract(x, y, z);
-                                                }
-                                            }
-                                            sphereRadius += 0.2;
-                                            if (sphereRadius >= 7) {
-                                                lastLightBlock.setType(lastMaterial);
-                                                this.cancel();
-                                            }
-                                        });
+                                    entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
+                                    if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                        ((Damageable) entity).damage(25 * multiplier, p);
+                                    } else {
+                                        ((Damageable) entity).damage(14 * multiplier, p);
                                     }
-                                }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                                cancel();
-                                return;
+
+                                    Location sphereLoc = ((LivingEntity) entity).getEyeLocation().clone();
+
+                                    new BukkitRunnable() {
+                                        double sphereRadius = 1;
+
+                                        @Override
+                                        public void run() {
+                                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                                for (double i = 0; i <= Math.PI; i += Math.PI / 25) {
+                                                    double radius = Math.sin(i) * sphereRadius;
+                                                    double y = Math.cos(i) * sphereRadius;
+                                                    for (double a = 0; a < Math.PI * 2; a += Math.PI / 25) {
+                                                        double x = Math.cos(a) * radius;
+                                                        double z = Math.sin(a) * radius;
+                                                        sphereLoc.add(x, y, z);
+                                                        Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                                                        Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 4, 0.15, 0.15, 0.15, 0, dustSphere);
+                                                        sphereLoc.subtract(x, y, z);
+                                                    }
+                                                }
+                                                sphereRadius += 0.2;
+                                                if (sphereRadius >= 7) {
+                                                    lastLightBlock.setType(lastMaterial);
+                                                    this.cancel();
+                                                }
+                                            });
+                                        }
+                                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+                                    cancel();
+                                    return;
+                                }
                             }
                         }
                     }
-                }
 
-                //hits solid block
-                if (spearLocation.getBlock().getType().isSolid()) {
-                    Location sphereLoc = spearLocation.clone();
-                    UUID uuid = UUID.randomUUID();
-                    new BukkitRunnable() {
-                        double sphereRadius = 1;
+                    //hits solid block
+                    if (spearLocation.getBlock().getType().isSolid()) {
+                        Location sphereLoc = spearLocation.clone();
+                        UUID uuid = UUID.randomUUID();
+                        new BukkitRunnable() {
+                            double sphereRadius = 1;
 
-                        @Override
-                        public void run() {
-                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                for (double i = 0; i <= Math.PI; i += Math.PI / 27) {
-                                    double radius = Math.sin(i) * sphereRadius;
-                                    double y = Math.cos(i) * sphereRadius;
-                                    for (double a = 0; a < Math.PI * 2; a += Math.PI / 27) {
-                                        double x = Math.cos(a) * radius;
-                                        double z = Math.sin(a) * radius;
-                                        sphereLoc.add(x, y, z);
-                                        Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                                        Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
+                            @Override
+                            public void run() {
+                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                    for (double i = 0; i <= Math.PI; i += Math.PI / 27) {
+                                        double radius = Math.sin(i) * sphereRadius;
+                                        double y = Math.cos(i) * sphereRadius;
+                                        for (double a = 0; a < Math.PI * 2; a += Math.PI / 27) {
+                                            double x = Math.cos(a) * radius;
+                                            double z = Math.sin(a) * radius;
+                                            sphereLoc.add(x, y, z);
+                                            Particle.DustOptions dustSphere = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                                            Objects.requireNonNull(sphereLoc.getWorld()).spawnParticle(Particle.DUST, sphereLoc, 1, 0.25, 0.25, 0.25, 0, dustSphere);
 
-                                        //damage entities
-                                        if (!sphereLoc.getWorld().getNearbyEntities(sphereLoc, 2, 2, 2).isEmpty()) {
-                                            for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
-                                                if (entity instanceof LivingEntity) {
-                                                    // Ignore player that initiated the shot
-                                                    if (entity == p) {
-                                                        continue;
-                                                    }
-                                                    Vector particleMinVector = new Vector(
-                                                            sphereLoc.getX() - 0.25,
-                                                            sphereLoc.getY() - 0.25,
-                                                            sphereLoc.getZ() - 0.25);
-                                                    Vector particleMaxVector = new Vector(
-                                                            sphereLoc.getX() + 0.25,
-                                                            sphereLoc.getY() + 0.25,
-                                                            sphereLoc.getZ() + 0.25);
+                                            //damage entities
+                                            if (!sphereLoc.getWorld().getNearbyEntities(sphereLoc, 2, 2, 2).isEmpty()) {
+                                                for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
+                                                    if (entity instanceof LivingEntity) {
+                                                        // Ignore player that initiated the shot
+                                                        if (entity == p) {
+                                                            continue;
+                                                        }
+                                                        Vector particleMinVector = new Vector(
+                                                                sphereLoc.getX() - 0.25,
+                                                                sphereLoc.getY() - 0.25,
+                                                                sphereLoc.getZ() - 0.25);
+                                                        Vector particleMaxVector = new Vector(
+                                                                sphereLoc.getX() + 0.25,
+                                                                sphereLoc.getY() + 0.25,
+                                                                sphereLoc.getZ() + 0.25);
 
-                                                    //entity hit
-                                                    if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
-                                                        if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType()))
-                                                            ((Damageable) entity).damage(18 * multiplier, p);
-                                                        else
-                                                            ((Damageable) entity).damage(8 * multiplier, p);
+                                                        //entity hit
+                                                        if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
+                                                            if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType()))
+                                                                ((Damageable) entity).damage(18 * multiplier, p);
+                                                            else
+                                                                ((Damageable) entity).damage(8 * multiplier, p);
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        if (sphereLoc.getBlock().getType().getHardness() > -1) {
-                                            CustomLocation customLocation = new CustomLocation(sphereLoc);
-                                            logBlockBreak(uuid, customLocation);
-                                            sphereLoc.getBlock().setType(Material.AIR);
+                                            if (sphereLoc.getBlock().getType().getHardness() > -1) {
+                                                CustomLocation customLocation = new CustomLocation(sphereLoc);
+                                                logBlockBreak(uuid, customLocation);
+                                                sphereLoc.getBlock().setType(Material.AIR);
+                                            }
+                                            sphereLoc.subtract(x, y, z);
                                         }
-                                        sphereLoc.subtract(x, y, z);
                                     }
-                                }
-                                sphereRadius += 0.2;
-                                if (sphereRadius >= 10) {
-                                    lastLightBlock.setType(lastMaterial);
-                                    rollbackChanges(uuid);
-                                    this.cancel();
-                                }
-                            });
-                        }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 1000, 0.4, 0.4, 0.4, 0.5));
+                                    sphereRadius += 0.2;
+                                    if (sphereRadius >= 10) {
+                                        lastLightBlock.setType(lastMaterial);
+                                        rollbackChanges(uuid);
+                                        this.cancel();
+                                    }
+                                });
+                            }
+                        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> spearLocation.getWorld().spawnParticle(Particle.END_ROD, spearLocation, 1000, 0.4, 0.4, 0.4, 0.5));
+                        cancel();
+                    }
+                    if (counter >= 100) {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> lastLightBlock.setType(lastMaterial));
+                        cancel();
+                        return;
+                    }
+                    counter++;
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Unshadowed Spear");
                     cancel();
                 }
-                if (counter >= 100) {
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> lastLightBlock.setType(lastMaterial));
-                    cancel();
-                    return;
-                }
-                counter++;
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 5, 0);
 
@@ -219,69 +225,77 @@ public class UnshadowedSpear extends Ability {
 
     public void buildSpear(Location loc, Vector direc) {
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-            Particle.DustOptions dustRipple = new Particle.DustOptions(Color.fromBGR(0, 215, 255), .3f);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    Particle.DustOptions dustRipple = new Particle.DustOptions(Color.fromBGR(0, 215, 255), .3f);
 
-            for (int i = 0; i < 6; i++) {
-                loc.subtract(direc);
-            }
+                    for (int i = 0; i < 6; i++) {
+                        loc.subtract(direc);
+                    }
 
-            lastLightBlock.setType(lastMaterial);
-            lastLightBlock = loc.getBlock();
-            loc.getBlock().setType(Material.LIGHT);
+                    lastLightBlock.setType(lastMaterial);
+                    lastLightBlock = loc.getBlock();
+                    loc.getBlock().setType(Material.LIGHT);
 
-            int circlePoints = 10;
-            double radius = 0.2;
-            Location playerLoc = loc.clone();
-            Vector dir = loc.clone().getDirection().normalize().multiply(0.15);
-            double pitch = (playerLoc.getPitch() + 90.0F) * 0.017453292F;
-            double yaw = -playerLoc.getYaw() * 0.017453292F;
-            double increment = (2 * Math.PI) / circlePoints;
-            for (int k = 0; k < 5; k++) {
-                radius -= 0.009;
-                for (int i = 0; i < circlePoints; i++) {
-                    double angle = i * increment;
-                    double x = radius * Math.cos(angle);
-                    double z = radius * Math.sin(angle);
-                    Vector vec = new Vector(x, 0, z);
-                    MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                    MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                    playerLoc.subtract(vec);
-                    Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone(), 1, 0, 0, 0, 0, dustRipple);
-                    playerLoc.add(vec);
+                    int circlePoints = 10;
+                    double radius = 0.2;
+                    Location playerLoc = loc.clone();
+                    Vector dir = loc.clone().getDirection().normalize().multiply(0.15);
+                    double pitch = (playerLoc.getPitch() + 90.0F) * 0.017453292F;
+                    double yaw = -playerLoc.getYaw() * 0.017453292F;
+                    double increment = (2 * Math.PI) / circlePoints;
+                    for (int k = 0; k < 5; k++) {
+                        radius -= 0.009;
+                        for (int i = 0; i < circlePoints; i++) {
+                            double angle = i * increment;
+                            double x = radius * Math.cos(angle);
+                            double z = radius * Math.sin(angle);
+                            Vector vec = new Vector(x, 0, z);
+                            MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                            MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                            playerLoc.subtract(vec);
+                            Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone(), 1, 0, 0, 0, 0, dustRipple);
+                            playerLoc.add(vec);
+                        }
+                        playerLoc.subtract(dir);
+                    }
+
+                    direc.multiply(0.125);
+                    for (int i = 0; i < 64; i++) {
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.clone().subtract(.03, .03, .03), 30, 0.03, 0.03, 0.03, 0, dustRipple);
+                        loc.add(direc);
+                    }
+
+                    circlePoints = 20;
+                    radius = 0.25;
+                    playerLoc = loc.clone();
+                    dir = loc.clone().getDirection().normalize().multiply(0.15);
+                    pitch = (playerLoc.getPitch() + 90.0F) * 0.017453292F;
+                    yaw = -playerLoc.getYaw() * 0.017453292F;
+                    increment = (2 * Math.PI) / circlePoints;
+                    for (int k = 0; k < 13; k++) {
+                        radius -= 0.019;
+                        for (int i = 0; i < circlePoints; i++) {
+                            double angle = i * increment;
+                            double x = radius * Math.cos(angle);
+                            double z = radius * Math.sin(angle);
+                            Vector vec = new Vector(x, 0, z);
+                            MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                            MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                            playerLoc.add(vec);
+                            Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone().subtract(0, 0.1, 0), 1, 0, 0, 0, 0, dustRipple);
+                            playerLoc.subtract(vec);
+                        }
+                        playerLoc.add(dir);
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Unshadowed Spear");
+                    cancel();
                 }
-                playerLoc.subtract(dir);
             }
-
-            direc.multiply(0.125);
-            for (int i = 0; i < 64; i++) {
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.clone().subtract(.03, .03, .03), 30, 0.03, 0.03, 0.03, 0, dustRipple);
-                loc.add(direc);
-            }
-
-            circlePoints = 20;
-            radius = 0.25;
-            playerLoc = loc.clone();
-            dir = loc.clone().getDirection().normalize().multiply(0.15);
-            pitch = (playerLoc.getPitch() + 90.0F) * 0.017453292F;
-            yaw = -playerLoc.getYaw() * 0.017453292F;
-            increment = (2 * Math.PI) / circlePoints;
-            for (int k = 0; k < 13; k++) {
-                radius -= 0.019;
-                for (int i = 0; i < circlePoints; i++) {
-                    double angle = i * increment;
-                    double x = radius * Math.cos(angle);
-                    double z = radius * Math.sin(angle);
-                    Vector vec = new Vector(x, 0, z);
-                    MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                    MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                    playerLoc.add(vec);
-                    Objects.requireNonNull(playerLoc.getWorld()).spawnParticle(Particle.DUST, playerLoc.clone().subtract(0, 0.1, 0), 1, 0, 0, 0, 0, dustRipple);
-                    playerLoc.subtract(vec);
-                }
-                playerLoc.add(dir);
-            }
-        });
+        }.runTask(LordOfTheMinecraft.instance);
     }
 
     @Override

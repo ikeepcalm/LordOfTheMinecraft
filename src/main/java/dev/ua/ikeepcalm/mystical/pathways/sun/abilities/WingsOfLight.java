@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -57,32 +58,37 @@ public class WingsOfLight extends Ability {
 
                 @Override
                 public void run() {
-                    counter++;
+                    try {
+                        counter++;
 
-                    if (counter >= 20) {
-                        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 500);
-                        counter = 0;
-                    }
+                        if (counter >= 20) {
+                            pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 500);
+                            counter = 0;
+                        }
 
-                    if (counterVelocity < 4)
-                        counterVelocity++;
-                    else if (counterVelocity == 4) {
-                        p.setVelocity(new Vector(0, 0, 0));
-                        counterVelocity = 5;
-                    }
+                        if (counterVelocity < 4)
+                            counterVelocity++;
+                        else if (counterVelocity == 4) {
+                            p.setVelocity(new Vector(0, 0, 0));
+                            counterVelocity = 5;
+                        }
 
-                    Location loc = p.getLocation();
-                    drawParticles(loc);
-                    p.setGravity(false);
+                        Location loc = p.getLocation();
+                        drawParticles(loc);
+                        p.setGravity(false);
 
-                    if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
-                        p.setGravity(true);
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                        cancel();
-                    }
+                        if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
+                            p.setGravity(true);
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                            cancel();
+                        }
 
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        p.setGravity(true);
+                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                            p.setGravity(true);
+                            cancel();
+                        }
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Wind of Light");
                         cancel();
                     }
                 }

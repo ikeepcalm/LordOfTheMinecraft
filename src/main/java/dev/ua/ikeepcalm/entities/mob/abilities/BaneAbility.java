@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.entities.mob.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -15,10 +16,6 @@ public class BaneAbility extends MobAbility {
 
     public BaneAbility(int frequency) {
         super(frequency);
-    }
-
-    @Override
-    public void useAbility() {
     }
 
     @Override
@@ -36,17 +33,22 @@ public class BaneAbility extends MobAbility {
 
             @Override
             public void run() {
-                user.getWorld().spawnParticle(Particle.DUST, loc, 45, .5, .5, .5, dust);
-                loc.add(vector);
+                try {
+                    user.getWorld().spawnParticle(Particle.DUST, loc, 45, .5, .5, .5, dust);
+                    loc.add(vector);
 
-                for (Entity e : user.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                    if (e instanceof LivingEntity livingEntity)
-                        livingEntity.damage(12, user);
-                }
+                    for (Entity e : user.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
+                        if (e instanceof LivingEntity livingEntity)
+                            livingEntity.damage(12, user);
+                    }
 
-                counter++;
-                if (counter > 50)
+                    counter++;
+                    if (counter > 50)
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Bane");
                     cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }

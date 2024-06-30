@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -35,18 +36,23 @@ public class HolySong extends Ability {
 
             @Override
             public void run() {
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    p.getWorld().spawnParticle(Particle.NOTE, p.getLocation(), 50, 5, 5, 5);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 0, false, false, false));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false, false));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 0, false, false, false));
-                });
+                try {
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        p.getWorld().spawnParticle(Particle.NOTE, p.getLocation(), 50, 5, 5, 5);
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 0, false, false, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 0, false, false, false));
+                    });
 
-                counter++;
-                if (counter >= 95) {
-                    counter = 0;
+                    counter++;
+                    if (counter >= 95) {
+                        counter = 0;
+                        cancel();
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Song");
                     cancel();
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 1, 20);

@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -34,30 +35,35 @@ public class ColdWind extends Ability {
 
             @Override
             public void run() {
-                npcTimer--;
+                try {
+                    npcTimer--;
 
-                for (Entity entity : caster.getNearbyEntities(9, 9, 9)) {
-                    entity.setVelocity(dir);
-                    entity.setFreezeTicks(20 * 8);
-                }
+                    for (Entity entity : caster.getNearbyEntities(9, 9, 9)) {
+                        entity.setVelocity(dir);
+                        entity.setFreezeTicks(20 * 8);
+                    }
 
-                for (int i = 0; i < 30; i++) {
-                    Location tempLoc = caster.getLocation().add(0, 1, 0).add(random.nextInt(16) - 8, random.nextInt(10) - 5, random.nextInt(16) - 8);
-                    caster.getWorld().spawnParticle(Particle.SNOWFLAKE, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
-                }
+                    for (int i = 0; i < 30; i++) {
+                        Location tempLoc = caster.getLocation().add(0, 1, 0).add(random.nextInt(16) - 8, random.nextInt(10) - 5, random.nextInt(16) - 8);
+                        caster.getWorld().spawnParticle(Particle.SNOWFLAKE, tempLoc, 0, dir.getX(), dir.getY(), dir.getZ(), .4);
+                    }
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 10) {
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 10) {
+                        cancel();
+                        return;
+                    }
+
+                    counter++;
+
+                    if (counter >= 20) {
+                        counter = 0;
+                        pathway.getSequence().removeSpirituality(10);
+                    }
+
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Cold Wind");
                     cancel();
-                    return;
                 }
-
-                counter++;
-
-                if (counter >= 20) {
-                    counter = 0;
-                    pathway.getSequence().removeSpirituality(10);
-                }
-
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }

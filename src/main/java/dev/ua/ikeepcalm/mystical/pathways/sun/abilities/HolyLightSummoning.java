@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -36,34 +37,39 @@ public class HolyLightSummoning extends Ability {
 
             @Override
             public void run() {
-                counter++;
+                try {
+                    counter++;
 
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    // Particles
-                    spawnParticles(loc);
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        // Particles
+                        spawnParticles(loc);
 
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        loc.getBlock().setType(lastMaterial[0]);
-                        loc.subtract(0, 1, 0);
-                        lastMaterial[0] = loc.getBlock().getType();
-                        loc.getBlock().setType(Material.LIGHT);
-
-                        if ((lastMaterial[0].isSolid() && counter >= 12) || counter >= 200) {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                             loc.getBlock().setType(lastMaterial[0]);
-                            counter = 0;
-                            cancel();
+                            loc.subtract(0, 1, 0);
+                            lastMaterial[0] = loc.getBlock().getType();
+                            loc.getBlock().setType(Material.LIGHT);
 
-                            // Light that stays at the ground for a bit
-                            lightGround(loc);
+                            if ((lastMaterial[0].isSolid() && counter >= 12) || counter >= 200) {
+                                loc.getBlock().setType(lastMaterial[0]);
+                                counter = 0;
+                                cancel();
 
-                            // Damage nearby entities
-                            damageNearbyEntities(loc, caster, multiplier);
+                                // Light that stays at the ground for a bit
+                                lightGround(loc);
 
-                            // Particles on ground
-                            spawnGroundParticles(loc);
-                        }
+                                // Damage nearby entities
+                                damageNearbyEntities(loc, caster, multiplier);
+
+                                // Particles on ground
+                                spawnGroundParticles(loc);
+                            }
+                        });
                     });
-                });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Light Summoning");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }

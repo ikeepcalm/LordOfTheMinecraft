@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,25 +40,30 @@ public class Meteor extends Disaster {
         new BukkitRunnable() {
             @Override
             public void run() {
-                startLoc.add(vector);
-                spawnFallingBlocks(startLoc);
+                try {
+                    startLoc.add(vector);
+                    spawnFallingBlocks(startLoc);
 
-                startLoc.add(vector);
-                world.spawnParticle(Particle.FLAME, startLoc, 15, 2, 2, 2, 0);
-                world.spawnParticle(Particle.LAVA, startLoc, 35, 1, 1, 1, 0);
-                world.spawnParticle(Particle.SMOKE, startLoc, 35, 2, 2, 2, 0);
+                    startLoc.add(vector);
+                    world.spawnParticle(Particle.FLAME, startLoc, 15, 2, 2, 2, 0);
+                    world.spawnParticle(Particle.LAVA, startLoc, 35, 1, 1, 1, 0);
+                    world.spawnParticle(Particle.SMOKE, startLoc, 35, 2, 2, 2, 0);
 
-                if (startLoc.getBlock().getType().isSolid()) {
-                    for (FallingBlock block : currentBlock) {
-                        block.setGravity(true);
-                        Random random = new Random();
-                        block.setVelocity(new Vector(random.nextInt(3), random.nextInt(3), random.nextInt(3)));
+                    if (startLoc.getBlock().getType().isSolid()) {
+                        for (FallingBlock block : currentBlock) {
+                            block.setGravity(true);
+                            Random random = new Random();
+                            block.setVelocity(new Vector(random.nextInt(3), random.nextInt(3), random.nextInt(3)));
+                        }
+                        startLoc.getWorld().createExplosion(startLoc, 40, true);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(12, 0, 0), 80, true);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(-12, 0, 0), 80, true);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, 12), 80, true);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, -12), 80, true);
+                        cancel();
                     }
-                    startLoc.getWorld().createExplosion(startLoc, 40, true);
-                    startLoc.getWorld().createExplosion(startLoc.clone().add(12, 0, 0), 80, true);
-                    startLoc.getWorld().createExplosion(startLoc.clone().add(-12, 0, 0), 80, true);
-                    startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, 12), 80, true);
-                    startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, -12), 80, true);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logDisaster(e, "Meteor");
                     cancel();
                 }
             }

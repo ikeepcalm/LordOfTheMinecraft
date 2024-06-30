@@ -1,10 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
@@ -76,36 +77,41 @@ public class SpaceConcealment extends Ability implements Listener {
 
             @Override
             public void run() {
-                if (counter >= 8) {
-                    updateConcealedEntities(loc, radius);
-                    counter = 0;
-                }
-                counter++;
+                try {
+                    if (counter >= 8) {
+                        updateConcealedEntities(loc, radius);
+                        counter = 0;
+                    }
+                    counter++;
 
-                for (Entity entity : concealedEntities) {
-                    if (entity instanceof Player concealedPlayer) {
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.hidePlayer(LordOfTheMinecraft.instance, concealedPlayer);
+                    for (Entity entity : concealedEntities) {
+                        if (entity instanceof Player concealedPlayer) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                player.hidePlayer(LordOfTheMinecraft.instance, concealedPlayer);
+                            }
                         }
                     }
-                }
 
-                drawSquare(loc, Material.BARRIER, radius, p, false);
+                    drawSquare(loc, Material.BARRIER, radius, p, false);
 
-                if (!doorInit) {
-                    initializeDoorLocation(random, loc, doorLoc, radius);
-                    doorInit = true;
-                }
+                    if (!doorInit) {
+                        initializeDoorLocation(random, loc, doorLoc, radius);
+                        doorInit = true;
+                    }
 
-                drawDoor(doorLoc, p);
+                    drawDoor(doorLoc, p);
 
-                if (doorLoc.getWorld() == null)
-                    return;
+                    if (doorLoc.getWorld() == null)
+                        return;
 
-                teleportEntities(doorLoc);
+                    teleportEntities(doorLoc);
 
-                if (stopped) {
-                    drawSquare(loc, Material.AIR, radius, p, false);
+                    if (stopped) {
+                        drawSquare(loc, Material.AIR, radius, p, false);
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Space Concealment");
                     cancel();
                 }
             }

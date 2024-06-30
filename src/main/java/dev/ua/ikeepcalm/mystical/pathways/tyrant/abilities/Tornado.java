@@ -5,65 +5,62 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class Tornado extends Ability {
+
     public Tornado(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
+        if (p == null) return;
+
         Vector dir = p.getLocation().getDirection().normalize();
         Location loc = p.getEyeLocation();
-        if (loc.getWorld() == null)
-            return;
+        if (loc.getWorld() == null) return;
 
-        BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < 80; i++) {
+                        Location currentLoc = loc.clone().add(dir.multiply(i));
+                        if (currentLoc.getBlock().getType().isSolid()) break;
 
-        // Run the main logic asynchronously
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            for (final int[] i = {0}; i[0] < 80; i[0]++) {
-                final Location currentLoc = loc.clone();
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                        if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
-                            continue;
-                        // Break the loop by setting i to 80
-                        i[0] = 80;
-                        break;
+                        boolean entityFound = false;
+                        for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
+                            if (entity instanceof LivingEntity && entity != p) {
+                                entityFound = true;
+                                break;
+                            }
+                        }
+                        if (entityFound) break;
                     }
-                });
 
-                if (i[0] >= 80 || loc.getBlock().getType().isSolid()) {
-                    break;
+                    executeAbility(loc, p, getMultiplier());
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Tornado");
+                    cancel();
                 }
-
-                loc.add(dir);
             }
-
-            executeAbility(loc, p, getMultiplier());
-        });
+        }.runTask(LordOfTheMinecraft.instance);
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {
-        if (!(caster instanceof LivingEntity livingEntity))
-            return;
+        if (!(caster instanceof LivingEntity livingEntity)) return;
 
-        LordOfTheMinecraft.instance.getServer().getScheduler().runTask(
-                LordOfTheMinecraft.instance,
-                () -> new dev.ua.ikeepcalm.entities.disasters.Tornado(livingEntity).spawnDisaster(livingEntity, loc)
-        );
+        LordOfTheMinecraft.instance.getServer().getScheduler().runTask(LordOfTheMinecraft.instance, () -> new dev.ua.ikeepcalm.entities.disasters.Tornado(livingEntity).spawnDisaster(livingEntity, loc));
     }
 
     @Override

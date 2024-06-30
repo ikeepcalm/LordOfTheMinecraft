@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,42 +53,47 @@ public class Tsunami extends Disaster {
 
             @Override
             public void run() {
-                counter++;
-                if (counter >= 120) {
-                    cancel();
-                    return;
-                }
+                try {
+                    counter++;
+                    if (counter >= 120) {
+                        cancel();
+                        return;
+                    }
 
-                for (int i = -10; i < Math.min(Math.sqrt(counter) * 1.5, 3020); i++) {
-                    for (int j = -64; j < 65; j++) {
-                        if ((blockedSides.containsKey(j))) {
-                            if (blockedSides.get(j) >= i) {
+                    for (int i = -10; i < Math.min(Math.sqrt(counter) * 1.5, 3020); i++) {
+                        for (int j = -64; j < 65; j++) {
+                            if ((blockedSides.containsKey(j))) {
+                                if (blockedSides.get(j) >= i) {
+                                    continue;
+                                }
+                            }
+                            if (skipped.contains(j))
                                 continue;
+                            Location tempLoc = startLoc.clone();
+                            tempLoc.add(0, i, 0);
+                            tempLoc.add(dirRight.clone().multiply(j));
+                            if (!tempLoc.getBlock().getType().isSolid() || counter < 65) {
+                                logBlockBreak(uuid, new CustomLocation(tempLoc.getBlock().getLocation()));
+                                tempLoc.getBlock().setType(Material.WATER);
+                            } else {
+                                if (i == Math.min(Math.sqrt(counter), 20) - 1)
+                                    skipped.add(j);
+                                else
+                                    blockedSides.put(j, i);
                             }
                         }
-                        if (skipped.contains(j))
-                            continue;
-                        Location tempLoc = startLoc.clone();
-                        tempLoc.add(0, i, 0);
-                        tempLoc.add(dirRight.clone().multiply(j));
-                        if (!tempLoc.getBlock().getType().isSolid() || counter < 65) {
-                            logBlockBreak(uuid, new CustomLocation(tempLoc.getBlock().getLocation()));
-                            tempLoc.getBlock().setType(Material.WATER);
-                        } else {
-                            if (i == Math.min(Math.sqrt(counter), 20) - 1)
-                                skipped.add(j);
-                            else
-                                blockedSides.put(j, i);
-                        }
                     }
-                }
 
-                startLoc.subtract(dir);
-                for (Entity entity : startLoc.getWorld().getNearbyEntities(startLoc, 8, 8, 8)) {
-                    if (!(entity instanceof LivingEntity livingEntity) || entity == p)
-                        continue;
+                    startLoc.subtract(dir);
+                    for (Entity entity : startLoc.getWorld().getNearbyEntities(startLoc, 8, 8, 8)) {
+                        if (!(entity instanceof LivingEntity livingEntity) || entity == p)
+                            continue;
 
-                    livingEntity.damage(7, p);
+                        livingEntity.damage(7, p);
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logDisaster(e, "Tsunami");
+                    cancel();
                 }
             }
 

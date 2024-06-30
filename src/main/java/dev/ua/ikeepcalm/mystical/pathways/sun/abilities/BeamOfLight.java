@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -44,19 +45,24 @@ public class BeamOfLight extends Ability {
 
             @Override
             public void run() {
-                counter++;
-                Location tempLoc = loc.clone();
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                try {
+                    counter++;
+                    Location tempLoc = loc.clone();
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
 
-                BukkitScheduler scheduler = Bukkit.getScheduler();
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (int i = 0; i < 48; i++) {
-                        tempLoc.add(direction);
-                        world.spawnParticle(Particle.DUST, tempLoc, 2, 0, 0, 0, dust);
-                    }
-                });
+                    BukkitScheduler scheduler = Bukkit.getScheduler();
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (int i = 0; i < 48; i++) {
+                            tempLoc.add(direction);
+                            world.spawnParticle(Particle.DUST, tempLoc, 2, 0, 0, 0, dust);
+                        }
+                    });
 
-                if (counter > 25) cancel();
+                    if (counter > 25) cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
 
@@ -73,59 +79,66 @@ public class BeamOfLight extends Ability {
 
             @Override
             public void run() {
-                BukkitScheduler scheduler = Bukkit.getScheduler();
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    Location tempLoc = loc.clone();
-                    for (int i = 0; i < 48; i++) {
-                        tempLoc.add(direction);
+                try {
+                    BukkitScheduler scheduler = Bukkit.getScheduler();
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        Location tempLoc = loc.clone();
+                        for (int i = 0; i < 48; i++) {
+                            tempLoc.add(direction);
 
-                        // Particle effects and block interactions
-                        for (int j = 0; j < circlePoints; j++) {
-                            double angle = j * increment;
-                            double x = radius * Math.cos(angle);
-                            double z = radius * Math.sin(angle);
+                            // Particle effects and block interactions
+                            for (int j = 0; j < circlePoints; j++) {
+                                double angle = j * increment;
+                                double x = radius * Math.cos(angle);
+                                double z = radius * Math.sin(angle);
 
-                            Vector vec = new Vector(x, 0, z);
-                            MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                            MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                            tempLoc.add(vec);
+                                Vector vec = new Vector(x, 0, z);
+                                MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                                MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                                tempLoc.add(vec);
 
-                            world.spawnParticle(Particle.END_ROD, tempLoc, 1, .05, .05, .05, 0);
-                            if (tempLoc.getBlock().getType().getHardness() > 0) {
-                                if (random.nextInt(3) == 0) {
-                                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                        logBlockBreak(uuid, new CustomLocation(tempLoc));
-                                        tempLoc.getBlock().setType(Material.FIRE);
-                                    });
-                                } else {
-                                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                        logBlockBreak(uuid, new CustomLocation(tempLoc));
-                                        tempLoc.getBlock().setType(Material.AIR);
-                                    });
+                                world.spawnParticle(Particle.END_ROD, tempLoc, 1, .05, .05, .05, 0);
+                                if (tempLoc.getBlock().getType().getHardness() > 0) {
+                                    if (random.nextInt(3) == 0) {
+                                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                            logBlockBreak(uuid, new CustomLocation(tempLoc));
+                                            tempLoc.getBlock().setType(Material.FIRE);
+                                        });
+                                    } else {
+                                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                            logBlockBreak(uuid, new CustomLocation(tempLoc));
+                                            tempLoc.getBlock().setType(Material.AIR);
+                                        });
+                                    }
                                 }
+
+                                tempLoc.subtract(vec);
                             }
 
-                            tempLoc.subtract(vec);
-                        }
-
-                        // Entity interactions
-                        for (Entity e : world.getNearbyEntities(tempLoc, 4, 4, 4)) {
-                            if (!(e instanceof LivingEntity livingEntity) || e == p) continue;
+                            // Entity interactions
                             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(e.getType())) livingEntity.damage(18 * multiplier);
-                                livingEntity.damage(10 * multiplier);
+                                for (Entity e : world.getNearbyEntities(tempLoc, 4, 4, 4)) {
+                                    if (!(e instanceof LivingEntity livingEntity) || e == p) continue;
+                                    if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(e.getType())) {
+                                        livingEntity.damage(18 * multiplier);
+                                    }
+                                    livingEntity.damage(10 * multiplier);
+                                }
                             });
                         }
-                    }
 
-                    radius += .25;
+                        radius += .25;
 
-                    if (radius > 1.75) {
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> rollbackChanges(uuid));
-                        cancel();
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    }
-                });
+                        if (radius > 1.75) {
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> rollbackChanges(uuid));
+                            cancel();
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        }
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 25, 0);
 
@@ -141,34 +154,39 @@ public class BeamOfLight extends Ability {
 
             @Override
             public void run() {
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                Location tempLoc = loc.clone();
+                try {
+                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
+                    Location tempLoc = loc.clone();
 
-                BukkitScheduler scheduler = Bukkit.getScheduler();
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (int i = 0; i < 48; i++) {
-                        tempLoc.add(direction);
+                    BukkitScheduler scheduler = Bukkit.getScheduler();
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (int i = 0; i < 48; i++) {
+                            tempLoc.add(direction);
 
-                        // Particle effects
-                        for (int j = 0; j < circlePoints; j++) {
-                            double angle = j * increment;
-                            double x = radius * Math.cos(angle);
-                            double z = radius * Math.sin(angle);
+                            // Particle effects
+                            for (int j = 0; j < circlePoints; j++) {
+                                double angle = j * increment;
+                                double x = radius * Math.cos(angle);
+                                double z = radius * Math.sin(angle);
 
-                            Vector vec = new Vector(x, 0, z);
-                            MathVectorUtils.rotateAroundAxisX(vec, pitch);
-                            MathVectorUtils.rotateAroundAxisY(vec, yaw);
-                            tempLoc.add(vec);
+                                Vector vec = new Vector(x, 0, z);
+                                MathVectorUtils.rotateAroundAxisX(vec, pitch);
+                                MathVectorUtils.rotateAroundAxisY(vec, yaw);
+                                tempLoc.add(vec);
 
-                            world.spawnParticle(Particle.DUST, tempLoc, 5, .15, .15, .15, dust);
+                                world.spawnParticle(Particle.DUST, tempLoc, 5, .15, .15, .15, dust);
 
-                            tempLoc.subtract(vec);
+                                tempLoc.subtract(vec);
+                            }
                         }
-                    }
 
-                    radius += .6;
-                    if (radius > 2.5) cancel();
-                });
+                        radius += .6;
+                        if (radius > 2.5) cancel();
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 24, 0);
     }

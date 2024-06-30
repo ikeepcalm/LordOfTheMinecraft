@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,56 +45,62 @@ public class Conceptualize extends Ability {
 
             @Override
             public void run() {
-                if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    cancel();
-                    return;
-                }
+                try {
 
-                counter++;
-                npcTimer--;
-                target.damage(8, caster);
-
-                if (counter >= 20) {
-                    counter = 0;
-                    if (pathway.getBeyonder().getSpirituality() <= Math.pow(110, timer)) {
+                    if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                         cancel();
                         return;
                     }
-                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> pathway.getSequence().removeSpirituality(Math.pow(110, timer)));
-                    timer += .08;
-                }
 
-                for (int i = 0; i < 3; i++) {
-                    int j = i;
-                    new BukkitRunnable() {
-                        final double spiralRadius = 1;
-                        double spiral = 0;
-                        double height = j * .25;
-                        double spiralX;
-                        double spiralZ;
+                    counter++;
+                    npcTimer--;
+                    target.damage(8, caster);
 
-                        @Override
-                        public void run() {
-                            if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
-                                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                                cancel();
-                                return;
-                            }
-
-                            Location entityLoc = target.getLocation().clone();
-                            entityLoc.add(0, 0.75, 0);
-
-                            spiralX = spiralRadius * Math.cos(spiral);
-                            spiralZ = spiralRadius * Math.sin(spiral);
-                            spiral += 0.05;
-                            height += .01;
-                            if (height >= 2.5)
-                                height = 0;
-                            if (entityLoc.getWorld() != null)
-                                entityLoc.getWorld().spawnParticle(Particle.ENCHANT, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 1, 0, 0, 0, 0);
+                    if (counter >= 20) {
+                        counter = 0;
+                        if (pathway.getBeyonder().getSpirituality() <= Math.pow(110, timer)) {
+                            cancel();
+                            return;
                         }
-                    }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 1);
+                        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> pathway.getSequence().removeSpirituality(Math.pow(110, timer)));
+                        timer += .08;
+                    }
+
+                    for (int i = 0; i < 3; i++) {
+                        int j = i;
+                        new BukkitRunnable() {
+                            final double spiralRadius = 1;
+                            double spiral = 0;
+                            double height = j * .25;
+                            double spiralX;
+                            double spiralZ;
+
+                            @Override
+                            public void run() {
+                                if (!target.isValid() || (!pathway.getSequence().getUsesAbilities()[identifier - 1])) {
+                                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                                    cancel();
+                                    return;
+                                }
+
+                                Location entityLoc = target.getLocation().clone();
+                                entityLoc.add(0, 0.75, 0);
+
+                                spiralX = spiralRadius * Math.cos(spiral);
+                                spiralZ = spiralRadius * Math.sin(spiral);
+                                spiral += 0.05;
+                                height += .01;
+                                if (height >= 2.5)
+                                    height = 0;
+                                if (entityLoc.getWorld() != null)
+                                    entityLoc.getWorld().spawnParticle(Particle.ENCHANT, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 1, 0, 0, 0, 0);
+                            }
+                        }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 1);
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Conceptualize");
+                    cancel();
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);

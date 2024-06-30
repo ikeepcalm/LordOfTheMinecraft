@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.entities.mob.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -16,11 +17,6 @@ import org.bukkit.util.Vector;
 public class PlundererAbility extends MobAbility {
     public PlundererAbility(int frequency) {
         super(frequency);
-    }
-
-    @Override
-    public void useAbility() {
-
     }
 
     @Override
@@ -40,21 +36,27 @@ public class PlundererAbility extends MobAbility {
 
             @Override
             public void run() {
-                user.getWorld().spawnParticle(Particle.DUST, startLoc, 4, .05, .05, .05, dust);
-                startLoc.add(vector);
+                try {
+                    user.getWorld().spawnParticle(Particle.DUST, startLoc, 4, .05, .05, .05, dust);
+                    startLoc.add(vector);
 
-                for (Entity e : user.getWorld().getNearbyEntities(startLoc, 1, 1, 1)) {
-                    if (e != playerTarget)
-                        continue;
-                    playerTarget.damage(4, user);
-                    playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
-                    playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
+
+                    for (Entity e : user.getWorld().getNearbyEntities(startLoc, 1, 1, 1)) {
+                        if (e != playerTarget)
+                            continue;
+                        playerTarget.damage(4, user);
+                        playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
+                        playerTarget.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
+                        cancel();
+                    }
+
+                    counter++;
+                    if (counter > 50)
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Plunderer");
                     cancel();
                 }
-
-                counter++;
-                if (counter > 50)
-                    cancel();
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 4);
     }

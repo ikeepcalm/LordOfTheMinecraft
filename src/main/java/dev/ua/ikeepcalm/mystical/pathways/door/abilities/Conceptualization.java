@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,7 +28,6 @@ public class Conceptualization extends Ability {
         p = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
-        System.out.println("Conceptualization set to true");
 
         boolean couldFly = p.getAllowFlight();
         float flySpeed = p.getFlySpeed();
@@ -41,35 +41,40 @@ public class Conceptualization extends Ability {
 
             @Override
             public void run() {
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANT, p.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
+                try {
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANT, p.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.hidePlayer(LordOfTheMinecraft.instance, p);
-                }
-
-                p.setAllowFlight(true);
-                p.setFlying(true);
-
-                p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 1, false, false, false));
-                p.setFireTicks(0);
-
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 420) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.showPlayer(LordOfTheMinecraft.instance, p);
+                        player.hidePlayer(LordOfTheMinecraft.instance, p);
                     }
-                    p.setAllowFlight(couldFly);
-                    p.setFlySpeed(flySpeed);
+
+                    p.setAllowFlight(true);
+                    p.setFlying(true);
+
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 1, false, false, false));
                     p.setFireTicks(0);
+
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 420) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.showPlayer(LordOfTheMinecraft.instance, p);
+                        }
+                        p.setAllowFlight(couldFly);
+                        p.setFlySpeed(flySpeed);
+                        p.setFireTicks(0);
+                        cancel();
+                        return;
+                    }
+
+                    counter--;
+
+                    if (counter <= 0) {
+                        counter = 20;
+                        pathway.getSequence().removeSpirituality(250 * spiritCounter);
+                        spiritCounter++;
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Conceptualization");
                     cancel();
-                    return;
-                }
-
-                counter--;
-
-                if (counter <= 0) {
-                    counter = 20;
-                    pathway.getSequence().removeSpirituality(250 * spiritCounter);
-                    spiritCounter++;
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);

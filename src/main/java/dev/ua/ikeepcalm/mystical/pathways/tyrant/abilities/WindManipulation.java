@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -113,30 +114,35 @@ public class WindManipulation extends Ability {
 
                 @Override
                 public void run() {
-                    Location entityLoc = finalTarget.getLocation().clone();
-                    entityLoc.add(0, -0.75, 0);
+                    try {
+                        Location entityLoc = finalTarget.getLocation().clone();
+                        entityLoc.add(0, -0.75, 0);
 
-                    counter--;
-                    if (counter <= 0) {
+                        counter--;
+                        if (counter <= 0) {
+                            cancel();
+                            return;
+                        }
+
+                        spiralX = spiralRadius * Math.cos(spiral);
+                        spiralZ = spiralRadius * Math.sin(spiral);
+                        spiral += 0.25;
+                        height += .025;
+                        if (height >= 2.3) {
+                            height = 0;
+                        }
+
+                        if (entityLoc.getWorld() == null)
+                            return;
+
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
+                                continue;
+                            player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
+                        }
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Bind");
                         cancel();
-                        return;
-                    }
-
-                    spiralX = spiralRadius * Math.cos(spiral);
-                    spiralZ = spiralRadius * Math.sin(spiral);
-                    spiral += 0.25;
-                    height += .025;
-                    if (height >= 2.3) {
-                        height = 0;
-                    }
-
-                    if (entityLoc.getWorld() == null)
-                        return;
-
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
-                            continue;
-                        player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
                     }
                 }
             }.runTaskTimer(LordOfTheMinecraft.instance, i * 15, 2);
@@ -175,16 +181,21 @@ public class WindManipulation extends Ability {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (pathway.getBeyonder().getSpirituality() <= 6) {
-                    flying = false;
+                try {
+                    if (pathway.getBeyonder().getSpirituality() <= 6) {
+                        flying = false;
+                        cancel();
+                        return;
+                    }
+
+                    pathway.getSequence().removeSpirituality(6);
+
+                    if (!flying)
+                        cancel();
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Flight");
                     cancel();
-                    return;
                 }
-
-                pathway.getSequence().removeSpirituality(6);
-
-                if (!flying)
-                    cancel();
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 20);
 
@@ -199,33 +210,38 @@ public class WindManipulation extends Ability {
 
                 @Override
                 public void run() {
-                    Location entityLoc = caster.getLocation().clone();
-                    entityLoc.add(0, -0.75, 0);
+                    try {
+                        Location entityLoc = caster.getLocation().clone();
+                        entityLoc.add(0, -0.75, 0);
 
-                    spiralX = spiralRadius * Math.cos(spiral);
-                    spiralZ = spiralRadius * Math.sin(spiral);
-                    spiral += 0.25;
-                    height += .025;
-                    spiralRadius += .015;
-                    if (height >= 2.3) {
-                        height = 0;
-                        spiralRadius = .1;
-                    }
+                        spiralX = spiralRadius * Math.cos(spiral);
+                        spiralZ = spiralRadius * Math.sin(spiral);
+                        spiral += 0.25;
+                        height += .025;
+                        spiralRadius += .015;
+                        if (height >= 2.3) {
+                            height = 0;
+                            spiralRadius = .1;
+                        }
 
-                    if (entityLoc.getWorld() == null)
-                        return;
+                        if (entityLoc.getWorld() == null)
+                            return;
 
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
-                            continue;
-                        player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
-                    }
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (player.getWorld() != entityLoc.getWorld() || player.getLocation().distance(entityLoc) > 100)
+                                continue;
+                            player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
+                        }
 
-                    caster.setAllowFlight(true);
-                    caster.setFlying(true);
+                        caster.setAllowFlight(true);
+                        caster.setFlying(true);
 
-                    if (!flying) {
-                        caster.setAllowFlight(allowFlight);
+                        if (!flying) {
+                            caster.setAllowFlight(allowFlight);
+                            cancel();
+                        }
+                    } catch (Exception e) {
+                        ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Flight Particles");
                         cancel();
                     }
                 }
@@ -255,35 +271,40 @@ public class WindManipulation extends Ability {
 
             @Override
             public void run() {
-                Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
-                            continue;
-                        drawBlade(loc, p, direction);
+                try {
+                    Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (p.getWorld() != loc.getWorld() || p.getLocation().distance(loc) > 100)
+                                continue;
+                            drawBlade(loc, p, direction);
+                        }
+                    });
+
+                    if (loc.getBlock().getType().isSolid()) {
+                        if (loc.getBlock().getType().getHardness() < 0 || loc.getBlock().getType().getHardness() > .7)
+                            counter = 0;
+                        else {
+                            logBlockBreak(uuid, new CustomLocation(loc));
+                            loc.getBlock().setType(Material.AIR);
+                        }
                     }
-                });
 
-                if (loc.getBlock().getType().isSolid()) {
-                    if (loc.getBlock().getType().getHardness() < 0 || loc.getBlock().getType().getHardness() > .7)
-                        counter = 0;
-                    else {
-                        logBlockBreak(uuid, new CustomLocation(loc));
-                        loc.getBlock().setType(Material.AIR);
+                    for (Entity entity : world.getNearbyEntities(loc, 1, 3, 1)) {
+                        if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
+                            livingEntity.damage(12 * multiplier);
+                            counter = 0;
+                        }
                     }
-                }
 
-                for (Entity entity : world.getNearbyEntities(loc, 1, 3, 1)) {
-                    if (entity instanceof LivingEntity livingEntity && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
-                        livingEntity.damage(12 * multiplier);
-                        counter = 0;
+                    loc.add(direction);
+
+                    counter--;
+                    if (counter <= 0) {
+                        rollbackChanges(uuid);
+                        cancel();
                     }
-                }
-
-                loc.add(direction);
-
-                counter--;
-                if (counter <= 0) {
-                    rollbackChanges(uuid);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Blade");
                     cancel();
                 }
             }

@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -55,31 +56,37 @@ public class Exile extends Ability {
 
             @Override
             public void run() {
-                counter++;
-                if (counter >= 20 * 60) {
-                    cancel();
-                    return;
-                }
+                try {
 
-                npcCounter--;
-
-                for (Location location : locations) {
-                    drawDoor(location);
-                }
-
-                Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
-                        if (entity == caster)
-                            continue;
-
-                        if (!(entity instanceof Mob) && !(entity instanceof Player))
-                            continue;
-
-                        handleEntityTeleport(entity, caster, random);
+                    counter++;
+                    if (counter >= 20 * 60) {
+                        cancel();
+                        return;
                     }
-                });
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                    npcCounter--;
+
+                    for (Location location : locations) {
+                        drawDoor(location);
+                    }
+
+                    Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
+                        for (Entity entity : loc.getWorld().getNearbyEntities(loc, 5, 5, 5)) {
+                            if (entity == caster)
+                                continue;
+
+                            if (!(entity instanceof Mob) && !(entity instanceof Player))
+                                continue;
+
+                            handleEntityTeleport(entity, caster, random);
+                        }
+                    });
+
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Exile");
                     cancel();
                 }
             }

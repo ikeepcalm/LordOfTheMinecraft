@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -54,47 +55,70 @@ public class ExtremeColdness extends Ability {
         new BukkitRunnable() {
             @Override
             public void run() {
-                CompletableFuture.runAsync(() -> {
-                    for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(caster.getLocation(), 20, false, true, false)) {
-                        if (block.getType() == Material.ICE || block.getType() == Material.PACKED_ICE) continue;
-
-                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER) {
-                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                                block.setType(Material.ICE);
-                            } else {
-                                logBlockBreak(uuid, new CustomLocation(block.getLocation()));
-                                block.setType(Material.PACKED_ICE);
+                try {
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(caster.getLocation(), 20, false, true, false)) {
+                                if (block.getType() == Material.ICE || block.getType() == Material.PACKED_ICE) continue;
+                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                    try {
+                                        if (block.getType().getHardness() <= .4f || block.getType() == Material.WATER) {
+                                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                                            block.setType(Material.ICE);
+                                        } else {
+                                            logBlockBreak(uuid, new CustomLocation(block.getLocation()));
+                                            block.setType(Material.PACKED_ICE);
+                                        }
+                                        GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
+                                    } catch (Exception e) {
+                                        ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Block Modification");
+                                        cancel();
+                                    }
+                                });
                             }
-                            GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
-                        });
-                    }
-                });
+                        } catch (Exception e) {
+                            ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Async Block Processing");
+                            cancel();
+                        }
+                    });
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : caster.getWorld().getNearbyEntities(caster.getLocation(), 60, 60, 60)) {
-                        if (entity instanceof LivingEntity livingEntity && entity != caster) {
-                            livingEntity.damage(8 * multiplier);
-                            for (double x = -livingEntity.getWidth() + .5; x < livingEntity.getWidth() + .5; x++) {
-                                for (double z = -livingEntity.getWidth() + .5; z < livingEntity.getWidth() + .5; z++) {
-                                    for (int i = 0; i < livingEntity.getHeight(); i++) {
-                                        livingEntity.getLocation().add(x, i, z).getBlock().setType(Material.PACKED_ICE);
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        try {
+                            for (Entity entity : caster.getWorld().getNearbyEntities(caster.getLocation(), 60, 60, 60)) {
+                                if (entity instanceof LivingEntity livingEntity && entity != caster) {
+                                    try {
+                                        livingEntity.damage(8 * multiplier);
+                                        for (double x = -livingEntity.getWidth() + .5; x < livingEntity.getWidth() + .5; x++) {
+                                            for (double z = -livingEntity.getWidth() + .5; z < livingEntity.getWidth() + .5; z++) {
+                                                for (int i = 0; i < livingEntity.getHeight(); i++) {
+                                                    livingEntity.getLocation().add(x, i, z).getBlock().setType(Material.PACKED_ICE);
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Entity Damage and Ice Block Setting");
+                                        cancel();
                                     }
                                 }
                             }
+
+                            if (!caster.isValid() || inUse.get(caster) == null || !inUse.get(caster)) {
+                                try {
+                                    rollbackChanges(uuid);
+                                } catch (Exception e) {
+                                    ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Rollback Changes");
+                                }
+                                cancel();
+                            }
+                        } catch (Exception e) {
+                            ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Main Task");
+                            cancel();
                         }
-                    }
-
-                    if (!caster.isValid() || inUse.get(caster) == null || !inUse.get(caster)) {
-                        rollbackChanges(uuid);
-                        cancel();
-                    }
-                });
-            }
-
-            @Override
-            public void cancel() {
-                scheduler.cancelTasks(LordOfTheMinecraft.instance);
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Extreme Coldness");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 8);
     }

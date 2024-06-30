@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,19 +31,24 @@ public class Lightning extends Disaster {
 
             @Override
             public void run() {
-                counter++;
+                try {
+                    counter++;
 
-                world.setClearWeatherDuration(0);
-                world.setStorm(true);
-                world.setThundering(true);
-                world.setThunderDuration(10 * 60 * 20);
+                    world.setClearWeatherDuration(0);
+                    world.setStorm(true);
+                    world.setThundering(true);
+                    world.setThunderDuration(10 * 60 * 20);
 
-                Random random = new Random();
-                for (int i = 0; i < 8; i++) {
-                    world.strikeLightning(startLoc.clone().add(random.nextInt(25) - 12.5, 0, random.nextInt(25) - 12.5));
-                }
+                    Random random = new Random();
+                    for (int i = 0; i < 8; i++) {
+                        world.strikeLightning(startLoc.clone().add(random.nextInt(25) - 12.5, 0, random.nextInt(25) - 12.5));
+                    }
 
-                if (counter >= 100) {
+                    if (counter >= 100) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logDisaster(e, "Lightning");
                     cancel();
                 }
             }

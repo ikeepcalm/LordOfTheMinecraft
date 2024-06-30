@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -24,8 +25,12 @@ public class RagingBlows extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        executeAbility(p.getLocation(), p, getMultiplier());
+        try {
+            p = pathway.getBeyonder().getPlayer();
+            executeAbility(p.getLocation(), p, getMultiplier());
+        } catch (Exception e) {
+            ErrorLoggerUtil.logAbility(e, "RagingBlows - useAbility");
+        }
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {
@@ -36,21 +41,28 @@ public class RagingBlows extends Ability {
 
             @Override
             public void run() {
-                Random random = new Random();
-                Location startLoc = MathVectorUtils.getRelativeLocation(caster, random.nextDouble(1, 2), random.nextDouble(-1.5, 1.5), random.nextDouble(-.5, .5));
+                try {
+                    Random random = new Random();
+                    Location startLoc = MathVectorUtils.getRelativeLocation(caster, random.nextDouble(1, 2), random.nextDouble(-1.5, 1.5), random.nextDouble(-.5, .5));
 
-                world.spawnParticle(Particle.EXPLOSION, startLoc, 10, 0, 0, 0, .25);
-                world.spawnParticle(Particle.CRIT, startLoc, 10, 0, 0, 0, .25);
-                world.playSound(startLoc, Sound.ENTITY_GENERIC_EXPLODE, .25f, 1f);
+                    if (world != null) {
+                        world.spawnParticle(Particle.EXPLOSION, startLoc, 10, 0, 0, 0, .25);
+                        world.spawnParticle(Particle.CRIT, startLoc, 10, 0, 0, 0, .25);
+                        world.playSound(startLoc, Sound.ENTITY_GENERIC_EXPLODE, .25f, 1f);
 
-                for (Entity hit : world.getNearbyEntities(startLoc, 1.2, 1.2, 1.2)) {
-                    if (hit instanceof LivingEntity livingEntity && hit.getType() != EntityType.ARMOR_STAND && hit != caster) {
-                        livingEntity.damage(6.5 * multiplier, caster);
+                        for (Entity hit : world.getNearbyEntities(startLoc, 1.2, 1.2, 1.2)) {
+                            if (hit instanceof LivingEntity livingEntity && hit.getType() != EntityType.ARMOR_STAND && hit != caster) {
+                                livingEntity.damage(6.5 * multiplier, caster);
+                            }
+                        }
                     }
-                }
 
-                counter--;
-                if (counter <= 0) {
+                    counter--;
+                    if (counter <= 0) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "RagingBlows - executeAbility");
                     cancel();
                 }
             }

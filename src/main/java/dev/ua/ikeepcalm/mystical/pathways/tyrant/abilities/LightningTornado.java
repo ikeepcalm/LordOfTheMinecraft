@@ -5,12 +5,14 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -27,44 +29,54 @@ public class LightningTornado extends Ability {
         p = pathway.getBeyonder().getPlayer();
         Vector dir = p.getLocation().getDirection().normalize();
         Location loc = p.getEyeLocation();
-        if (loc.getWorld() == null)
-            return;
+        if (loc.getWorld() == null) return;
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
 
-        // Run the main logic asynchronously
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            for (final int[] i = {0}; i[0] < 80; i[0]++) {
-                final Location currentLoc = loc.clone();
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                        if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
-                            continue;
-                        // Break the loop by setting i to 80
-                        i[0] = 80;
-                        break;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    for (final int[] i = {0}; i[0] < 80; i[0]++) {
+                        final Location currentLoc = loc.clone();
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            try {
+                                for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
+                                    if (entity.getType() == EntityType.ARMOR_STAND || entity == p) continue;
+                                    // Break the loop by setting i to 80
+                                    i[0] = 80;
+                                    break;
+                                }
+                            } catch (Exception e) {
+                                ErrorLoggerUtil.logAbility(e, "Lightning Tornado - Entity Check");
+                                cancel();
+                            }
+                        });
+
+                        if (i[0] >= 80 || loc.getBlock().getType().isSolid()) {
+                            break;
+                        }
+
+                        loc.add(dir);
                     }
-                });
 
-                if (i[0] >= 80 || loc.getBlock().getType().isSolid()) {
-                    break;
+                    executeAbility(loc, p, getMultiplier());
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Lightning Tornado");
+                    cancel();
                 }
-
-                loc.add(dir);
             }
-
-            executeAbility(loc, p, getMultiplier());
-        });
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {
-        if (!(caster instanceof LivingEntity livingEntity))
-            return;
+        if (!(caster instanceof LivingEntity livingEntity)) return;
 
-        LordOfTheMinecraft.instance.getServer().getScheduler().runTask(
-                LordOfTheMinecraft.instance,
-                () -> new dev.ua.ikeepcalm.entities.disasters.LightningTornado(livingEntity).spawnDisaster(livingEntity, loc)
-        );
+        try {
+            LordOfTheMinecraft.instance.getServer().getScheduler().runTask(LordOfTheMinecraft.instance, () -> new dev.ua.ikeepcalm.entities.disasters.LightningTornado(livingEntity).spawnDisaster(livingEntity, loc));
+        } catch (Exception e) {
+            ErrorLoggerUtil.logAbility(e, "Lightning Tornado - Spawn Disaster");
+        }
     }
 
     @Override
@@ -72,3 +84,4 @@ public class LightningTornado extends Ability {
         return TyrantItems.createItem(Material.BLUE_CANDLE, "Вихор Блискавок", "5000", identifier);
     }
 }
+

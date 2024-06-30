@@ -1,10 +1,11 @@
 package dev.ua.ikeepcalm.mystical.pathways.sun.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -30,18 +31,26 @@ public class HolyOath extends Ability {
 
         // Particle effects
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            double radius = 1;
-            for (double y = 0; y <= 2; y += 0.05) {
-                double x = radius * Math.cos(y * 20);
-                double z = radius * Math.sin(y * 20);
-                double x2 = radius * Math.sin(y * 20);
-                double z2 = radius * Math.cos(y * 20);
-                Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1.25f);
-                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY() + y, loc.getZ() + z, 10, dust);
-                loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x2, loc.getY() + y, loc.getZ() + z2, 2, 0, 0, 0, 0);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    double radius = 1;
+                    for (double y = 0; y <= 2; y += 0.05) {
+                        double x = radius * Math.cos(y * 20);
+                        double z = radius * Math.sin(y * 20);
+                        double x2 = radius * Math.sin(y * 20);
+                        double z2 = radius * Math.cos(y * 20);
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1.25f);
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY() + y, loc.getZ() + z, 10, dust);
+                        loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x2, loc.getY() + y, loc.getZ() + z2, 2, 0, 0, 0, 0);
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    cancel();
+                }
             }
-        });
+        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
 
         // Short light placement
         Material[] lightMaterial = {loc.add(0, 1, 0).getBlock().getType()};
@@ -52,20 +61,25 @@ public class HolyOath extends Ability {
         new BukkitRunnable() {
             @Override
             public void run() {
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 2, false, false, false));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 2, false, false, false));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 2, false, false, false));
-                });
+                try {
+                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 2, false, false, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 2, false, false, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 2, false, false, false));
+                    });
 
-                if (pathway.getBeyonder().getSpirituality() <= 45 || !pathway.getBeyonder().online) {
-                    pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                    cancel();
-                }
+                    if (pathway.getBeyonder().getSpirituality() <= 45 || !pathway.getBeyonder().online) {
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        cancel();
+                    }
 
-                pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 45);
+                    pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 45);
 
-                if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                        cancel();
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
                     cancel();
                 }
             }
@@ -78,30 +92,35 @@ public class HolyOath extends Ability {
 
             @Override
             public void run() {
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    counter = counter + 0.25;
-                    counterY = counterY + 0.25;
+                try {
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        counter = counter + 0.25;
+                        counterY = counterY + 0.25;
 
-                    double radiusActive = 0.75;
-                    double x = radiusActive * Math.cos(counter);
-                    double z = radiusActive * Math.sin(counter);
+                        double radiusActive = 0.75;
+                        double x = radiusActive * Math.cos(counter);
+                        double z = radiusActive * Math.sin(counter);
 
-                    Location pLoc = p.getLocation();
+                        Location pLoc = p.getLocation();
 
-                    Objects.requireNonNull(pLoc.getWorld()).spawnParticle(Particle.END_ROD, pLoc.getX() + x, pLoc.getY() + counterY, pLoc.getZ() + z, 20, 0, 0, 0, 0);
+                        Objects.requireNonNull(pLoc.getWorld()).spawnParticle(Particle.END_ROD, pLoc.getX() + x, pLoc.getY() + counterY, pLoc.getZ() + z, 20, 0, 0, 0, 0);
 
-                    if (counterY >= 2)
-                        counterY = 0;
+                        if (counterY >= 2)
+                            counterY = 0;
 
-                    if (pathway.getBeyonder().getSpirituality() <= 5 || !pathway.getBeyonder().online) {
-                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                        cancel();
-                    }
+                        if (pathway.getBeyonder().getSpirituality() <= 5 || !pathway.getBeyonder().online) {
+                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                            cancel();
+                        }
 
-                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        cancel();
-                    }
-                });
+                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                            cancel();
+                        }
+                    });
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
 

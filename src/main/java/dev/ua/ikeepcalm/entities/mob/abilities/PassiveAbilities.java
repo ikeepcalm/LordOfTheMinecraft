@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.entities.mob.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Damageable;
@@ -27,30 +28,35 @@ public class PassiveAbilities {
         new BukkitRunnable() {
             @Override
             public void run() {
-                burnedLocations.put(System.currentTimeMillis(), entity.getLocation());
-
-                for (Location loc : burnedLocations.values()) {
-                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc, 2, .05, .05, .05, 0);
-                    if (loc.getWorld().getNearbyEntities(loc, 1, 1, 1).isEmpty())
-                        continue;
-                    for (Entity e : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
-                        if (!(e instanceof Damageable damageable) || damageable == entity)
-                            continue;
-                        damageable.damage(6, entity);
-                    }
-                }
-
                 try {
-                    for (Long l : burnedLocations.keySet()) {
-                        long temp = l;
-                        if ((temp + (1000 * 5)) < System.currentTimeMillis())
-                            burnedLocations.remove(l);
-                    }
-                } catch (Exception ignored) {
-                }
+                    burnedLocations.put(System.currentTimeMillis(), entity.getLocation());
 
-                if (random.nextInt(20 * 60 * 3) == 0) {
-                    entity.getWorld().dropItem(entity.getLocation(), BeyonderItemsUtil.getRoosterComb());
+                    for (Location loc : burnedLocations.values()) {
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc, 2, .05, .05, .05, 0);
+                        if (loc.getWorld().getNearbyEntities(loc, 1, 1, 1).isEmpty())
+                            continue;
+                        for (Entity e : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
+                            if (!(e instanceof Damageable damageable) || damageable == entity)
+                                continue;
+                            damageable.damage(6, entity);
+                        }
+                    }
+
+                    try {
+                        for (Long l : burnedLocations.keySet()) {
+                            long temp = l;
+                            if ((temp + (1000 * 5)) < System.currentTimeMillis())
+                                burnedLocations.remove(l);
+                        }
+                    } catch (Exception ignored) {
+                    }
+
+                    if (random.nextInt(20 * 60 * 3) == 0) {
+                        entity.getWorld().dropItem(entity.getLocation(), BeyonderItemsUtil.getRoosterComb());
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Rooster");
+                    cancel();
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);

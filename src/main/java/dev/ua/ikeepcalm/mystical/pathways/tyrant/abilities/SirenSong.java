@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -49,18 +50,21 @@ public class SirenSong extends Ability {
     }
 
     private void chaotic(Entity caster, double multiplier) {
-
         new BukkitRunnable() {
             int counter = 30 * 2;
 
             @Override
             public void run() {
+                try {
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
 
-                counter--;
-                if (counter <= 0)
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Siren Song");
                     cancel();
-
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 10);
 
@@ -69,15 +73,19 @@ public class SirenSong extends Ability {
 
             @Override
             public void run() {
+                try {
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
 
-                counter--;
-                if (counter <= 0)
+                    GeneralPurposeUtil.damageNearbyEntities(caster, caster.getLocation(), 10, 10, 10, 1.5 * multiplier);
+                    if (counter % 2 == 0) {
+                        GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.OOZING, 20 * 10, 1));
+                        GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 1));
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Siren Song");
                     cancel();
-
-                GeneralPurposeUtil.damageNearbyEntities(caster, caster.getLocation(), 10, 10, 10, 1.5 * multiplier);
-                if (counter % 2 == 0) {
-                    GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.OOZING, 20 * 10, 1));
-                    GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 1));
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 40);
@@ -91,11 +99,17 @@ public class SirenSong extends Ability {
             @Override
             public void run() {
 
-                counter--;
-                if (counter <= 0)
-                    cancel();
+                try {
 
-                GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
+
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Siren Song");
+                    cancel();
+                }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 10);
 
@@ -104,15 +118,19 @@ public class SirenSong extends Ability {
 
             @Override
             public void run() {
+                try {
+                    counter--;
+                    if (counter <= 0)
+                        cancel();
 
-                counter--;
-                if (counter <= 0)
+                    if (caster instanceof LivingEntity livingEntity) {
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20 * 8, 2, false, false));
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 20 * 8, 2, false, false));
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 8, 2, false, false));
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Siren Song");
                     cancel();
-
-                if (caster instanceof LivingEntity livingEntity) {
-                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20 * 8, 2, false, false));
-                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 20 * 8, 2, false, false));
-                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 8, 2, false, false));
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 40);

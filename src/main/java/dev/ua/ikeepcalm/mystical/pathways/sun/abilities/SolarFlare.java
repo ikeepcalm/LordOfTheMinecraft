@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -66,26 +67,30 @@ public class SolarFlare extends Ability {
 
             @Override
             public void run() {
-                scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                    Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), 50f);
-                    GeneralPurposeUtil.drawSphere(loc, (int) Math.round((i * power * 1.25)), 60, dust, null, .2);
-                });
-
-                i += (int) (tempPower * 1.25);
-                if (i >= (tempPower * 1.25 * 10)) {
-                    cancel();
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        loc.getWorld().createExplosion(loc, power * 10, true, true, p);
-                        for (double i = 0; i < (power * 1.25 * 10); i += (power * 1.25)) {
-                            loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true, true, p);
-                            loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true, true, p);
-                            loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
-                            loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
-                        }
+                try {
+                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
+                        Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), 50f);
+                        GeneralPurposeUtil.drawSphere(loc, (int) Math.round((i * power * 1.25)), 60, dust, null, .2);
                     });
+
+                    i += (int) (tempPower * 1.25);
+                    if (i >= (tempPower * 1.25 * 10)) {
+                        cancel();
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            loc.getWorld().createExplosion(loc, power * 10, true, true, p);
+                            for (double i = 0; i < (power * 1.25 * 10); i += (power * 1.25)) {
+                                loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true, true, p);
+                                loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true, true, p);
+                                loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
+                                loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logAbility(e, "Solar Flare");
+                    cancel();
                 }
             }
-
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 2);
     }
 

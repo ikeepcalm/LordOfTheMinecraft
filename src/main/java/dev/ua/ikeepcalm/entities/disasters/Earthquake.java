@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
+import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -45,46 +46,51 @@ public class Earthquake extends Disaster implements Listener {
 
             @Override
             public void run() {
-                counter--;
-                if (counter <= 0) {
-                    cancel();
-                    return;
-                }
+                try {
+                    counter--;
+                    if (counter <= 0) {
+                        cancel();
+                        return;
+                    }
 
-                for (Entity entity : world.getNearbyEntities(startLoc, 60, 60, 60)) {
-                    if (entity == p || !(entity instanceof LivingEntity livingEntity))
-                        continue;
-
-                    if (!entity.isOnGround())
-                        continue;
-
-                    livingEntity.damage(4, p);
-                    if (counter % 15 == 0)
-                        livingEntity.setVelocity(new Vector(random.nextDouble(-1, 1), 0, random.nextDouble(-1, 1)));
-                }
-
-                for (int j = 0; j < 12; j++) {
-                    Block b = startLoc.clone().add(random.nextInt(-35, 35), random.nextInt(-5, 15), random.nextInt(-35, 35)).getBlock();
-                    for (int i = 0; i < 55; i++) {
-                        Material m = b.getType();
-
-                        if (m == Material.AIR)
+                    for (Entity entity : world.getNearbyEntities(startLoc, 60, 60, 60)) {
+                        if (entity == p || !(entity instanceof LivingEntity livingEntity))
                             continue;
 
-                        logBlockBreak(uuid, new CustomLocation(b.getLocation()));
-                        b.setType(Material.AIR);
+                        if (!entity.isOnGround())
+                            continue;
 
-                        FallingBlock fallingBlock = world.spawnFallingBlock(b.getLocation().clone().add(0, .5, 0), m.createBlockData());
-                        fallingBlock.setVelocity(new Vector(random.nextDouble(-.1, .1), random.nextDouble(.25, 1), random.nextDouble(-.1, .1)));
-
-                        fallingBlocks.add(fallingBlock);
-
-                        b = b.getLocation().add(new Vector(random.nextInt(-1, 1), 0, random.nextInt(-1, 1))).getBlock();
+                        livingEntity.damage(4, p);
+                        if (counter % 15 == 0)
+                            livingEntity.setVelocity(new Vector(random.nextDouble(-1, 1), 0, random.nextDouble(-1, 1)));
                     }
-                }
 
-                if (counter % 20 == 0)
-                    world.spawnParticle(Particle.DUST, startLoc, 200, 35, 0, 35, dust);
+                    for (int j = 0; j < 12; j++) {
+                        Block b = startLoc.clone().add(random.nextInt(-35, 35), random.nextInt(-5, 15), random.nextInt(-35, 35)).getBlock();
+                        for (int i = 0; i < 55; i++) {
+                            Material m = b.getType();
+
+                            if (m == Material.AIR)
+                                continue;
+
+                            logBlockBreak(uuid, new CustomLocation(b.getLocation()));
+                            b.setType(Material.AIR);
+
+                            FallingBlock fallingBlock = world.spawnFallingBlock(b.getLocation().clone().add(0, .5, 0), m.createBlockData());
+                            fallingBlock.setVelocity(new Vector(random.nextDouble(-.1, .1), random.nextDouble(.25, 1), random.nextDouble(-.1, .1)));
+
+                            fallingBlocks.add(fallingBlock);
+
+                            b = b.getLocation().add(new Vector(random.nextInt(-1, 1), 0, random.nextInt(-1, 1))).getBlock();
+                        }
+                    }
+
+                    if (counter % 20 == 0)
+                        world.spawnParticle(Particle.DUST, startLoc, 200, 35, 0, 35, dust);
+                } catch (Exception e) {
+                    ErrorLoggerUtil.logDisaster(e, "Earthquake");
+                    cancel();
+                }
             }
 
             @Override
