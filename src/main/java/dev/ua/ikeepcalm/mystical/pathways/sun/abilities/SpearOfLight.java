@@ -310,6 +310,6 @@ public class SpearOfLight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SPECTRAL_ARROW, "Світловий Спис", "7500", identifier);
+        return SunItems.createItem(Material.SPECTRAL_ARROW, "Світловий Спис", "1200", identifier);
     }
 }

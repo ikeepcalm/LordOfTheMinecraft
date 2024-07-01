@@ -204,6 +204,6 @@ public class HolyLightSummoning extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.BLAZE_ROD, "Проміння", "30", identifier);
+        return SunItems.createItem(Material.BLAZE_ROD, "Проміння", "50", identifier);
     }
 }

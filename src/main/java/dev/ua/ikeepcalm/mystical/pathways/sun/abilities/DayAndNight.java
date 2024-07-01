@@ -45,6 +45,6 @@ public class DayAndNight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.CLOCK, "День і Ніч", "1000", identifier);
+        return SunItems.createItem(Material.CLOCK, "День і Ніч", "1000/c", identifier);
     }
 }

@@ -28,15 +28,11 @@ public abstract class Sequence {
     protected int currentSequence;
     @Setter
     protected Pathway pathway;
-
     protected boolean[] usesAbilities;
-
     @Setter
     protected ArrayList<Ability> abilities;
-
     protected HashMap<Integer, PotionEffect[]> sequenceEffects;
     protected HashMap<Integer, PotionEffectType[]> sequenceResistances;
-
     protected HashMap<Integer, Double> sequenceMultiplier;
 
 

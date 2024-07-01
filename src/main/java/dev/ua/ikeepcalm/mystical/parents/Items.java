@@ -52,12 +52,12 @@ public abstract class Items {
 
     protected String[] formatAbilityInfo(String pathwayColor, String sequenceName, String... s) {
         String[] formatted = new String[3 + s.length];
-        formatted[0] = ColorAPI.colorize( pathwayColor + "Знання " + sequenceName);
+        formatted[0] = ColorAPI.colorize(pathwayColor + "Знання " + sequenceName);
         formatted[1] = ColorAPI.colorize(pathwayColor + "-----------------------------");
         for (int i = 0; i < s.length; i++) {
             s[i] = ColorAPI.colorize(pathwayColor + s[i]);
         }
-        formatted[2 + s.length] = ColorAPI.colorize( pathwayColor + "-----------------------------");
+        formatted[2 + s.length] = ColorAPI.colorize(pathwayColor + "-----------------------------");
 
         System.arraycopy(s, 0, formatted, 2, s.length);
 
@@ -65,6 +65,7 @@ public abstract class Items {
     }
 
     public static ItemStack createItem(Material item, String name, String spirituality, int id) {
+        spirituality = spirituality.replace("/с", "");
         ItemStack currentItem = new ItemStack(item);
         ItemMeta itemMeta = currentItem.getItemMeta();
         assert itemMeta != null;
@@ -78,8 +79,9 @@ public abstract class Items {
         lore.add("§8§l-----------------");
         itemMeta.setLore(lore);
         currentItem.setItemMeta(itemMeta);
+        String finalSpirituality = spirituality;
         NBT.modify(currentItem, (nbt) -> {
-            nbt.setString("spiritualityDrainage", spirituality);
+            nbt.setString("spiritualityDrainage", finalSpirituality);
         });
         return currentItem;
     }

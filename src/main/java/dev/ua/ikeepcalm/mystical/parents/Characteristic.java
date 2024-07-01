@@ -1,7 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,11 +21,10 @@ public class Characteristic {
 
     private final HashMap<String, URL> blocksForPathway;
     private final UUID uuid;
-
     private final HashMap<ItemStack, int[]> allCharacteristics;
 
     @SneakyThrows
-    public Characteristic(){
+    public Characteristic() {
         blocksForPathway = new HashMap<>();
         uuid = LordOfTheMinecraft.randomUUID;
         blocksForPathway.put("fool", new URL("http://textures.minecraft.net/texture/855af6c5ff21eb55631a25221d753cdc9a0f679d5cacf555b350ba0e3521e092"));
@@ -52,7 +50,7 @@ public class Characteristic {
         assert playerMeta != null;
         playerMeta.setDisplayName(pathwayColor + "Позамежна характеристика");
         String[] playerLore = {
-                pathwayColor + "Шлях: " + GeneralPurposeUtil.capitalize(pathway),
+                pathwayColor + "Шлях: " + translatePathway(pathway),
                 pathwayColor + "Послідовність: " + sequence
         };
         playerMeta.setLore(Arrays.asList(playerLore));
@@ -67,6 +65,17 @@ public class Characteristic {
         playerHead.setItemMeta(playerMeta);
 
         return playerHead;
+    }
+
+    private String translatePathway(String pathway) {
+        return switch (pathway) {
+            case "sun" -> "Сонце";
+            case "fool" -> "Шут";
+            case "door" -> "Брама";
+            case "demoness" -> "Демонеса";
+            case "tyrant" -> "Тиран";
+            default -> "Невідомий";
+        };
     }
 
 }

@@ -113,6 +113,6 @@ public class HolyLight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.GLOWSTONE_DUST, "Світло", "45", identifier);
+        return SunItems.createItem(Material.GLOWSTONE_DUST, "Світло", "40", identifier);
     }
 }

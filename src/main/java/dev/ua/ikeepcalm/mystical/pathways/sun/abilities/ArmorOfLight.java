@@ -129,7 +129,7 @@ public class ArmorOfLight extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.TOTEM_OF_UNDYING, "Світлова Броня", "100", identifier);
+        return SunItems.createItem(Material.TOTEM_OF_UNDYING, "Світлова Броня", "30/c", identifier);
     }
 
     public ItemStack createSword() {
@@ -265,6 +265,8 @@ public class ArmorOfLight extends Ability implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         p = pathway.getBeyonder().getPlayer();
+        if (p == null)
+            return;
         if (!e.getPlayer().getUniqueId().equals(p.getUniqueId()))
             return;
         if (!removeOnRejoin)

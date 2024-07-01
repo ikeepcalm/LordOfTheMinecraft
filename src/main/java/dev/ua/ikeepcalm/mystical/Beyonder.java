@@ -280,7 +280,7 @@ public class Beyonder implements Listener {
                 //scoreboard
                 counter++;
 
-                if (spirituality <= maxSpirituality / 80 && !loosingControl) {
+                if (spirituality <= maxSpirituality * 0.1 && !loosingControl) {
                     looseControl(20, 10);
                 }
 
@@ -353,11 +353,18 @@ public class Beyonder implements Listener {
     }
 
     public void updateSpirituality() {
-        if (pathway.getSequence().getCurrentSequence() > 8)
+        if (pathway.getSequence().getCurrentSequence() > 8) {
             spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()), 2);
-        else if (pathway.getSequence().getCurrentSequence() > 4)
-            spirituality = (int) Math.pow((double) (90 / pathway.getSequence().getCurrentSequence()) * 1.4, 2);
-        else spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 3, 2);
+        } else if (pathway.getSequence().getCurrentSequence() > 6) {
+            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 1.5, 2);
+        } else if (pathway.getSequence().getCurrentSequence() > 4) {
+            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 2.0, 2);
+        } else if (pathway.getSequence().getCurrentSequence() > 2) {
+            spirituality = (int) Math.pow((double) (90 / pathway.getSequence().getCurrentSequence()) * 2.5, 2);
+        } else {
+            spirituality = (int) Math.pow((float) (90 / pathway.getSequence().getCurrentSequence()) * 3, 2);
+        }
+
         maxSpirituality = spirituality;
     }
 
@@ -422,7 +429,6 @@ public class Beyonder implements Listener {
                     return;
                 }
 
-
                 if (random.nextInt(25) + 1 == 5 && getPlayer().getHealth() > 2) {
                     if (random.nextBoolean()) {
                         getPlayer().sendMessage(Component.text("Ні... Ні, ні, НІ, НІ, НІ! ТІЛЬКИ НЕ ЦЕ, НЕ ЗАЛИШАЙ МЕНЕ! Я БЛАГАЮ!!!").color(TextColor.color(Color.RED.getRGB())));
@@ -458,6 +464,7 @@ public class Beyonder implements Listener {
                     }
                     loosingControl = false;
                     cancel();
+                    getPlayer().sendMessage(Component.text("Вам вдається заспокоїтися... Чи варте воно того?").color(TextColor.color(Color.GREEN.getRGB())));
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);

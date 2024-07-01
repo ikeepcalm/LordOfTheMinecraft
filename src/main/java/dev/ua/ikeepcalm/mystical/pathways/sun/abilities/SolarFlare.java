@@ -77,12 +77,12 @@ public class SolarFlare extends Ability {
                     if (i >= (tempPower * 1.25 * 10)) {
                         cancel();
                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            loc.getWorld().createExplosion(loc, power * 10, true, true, p);
+                            loc.getWorld().createExplosion(loc, power * 10, true);
                             for (double i = 0; i < (power * 1.25 * 10); i += (power * 1.25)) {
-                                loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true, true, p);
-                                loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true, true, p);
-                                loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
-                                loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true, true, p);
+                                loc.getWorld().createExplosion(loc.clone().add(0, 0, i), Math.round((power * .5 * 10)), true);
+                                loc.getWorld().createExplosion(loc.clone().add(0, 0, -i), Math.round((power * .5 * 10)), true);
+                                loc.getWorld().createExplosion(loc.clone().add(i, 0, 0), Math.round((power * .5 * 10)), true);
+                                loc.getWorld().createExplosion(loc.clone().add(-i, 0, 0), Math.round((power * .5 * 10)), true);
                             }
                         });
                     }

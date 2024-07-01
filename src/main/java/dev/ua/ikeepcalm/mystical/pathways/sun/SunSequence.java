@@ -19,7 +19,7 @@ public class SunSequence extends Sequence {
 
     @Override
     public List<Integer> getIds() {
-        Integer[] ids = {18, 17, 13, 6};
+        Integer[] ids = {6, 13, 17, 18};
         return Arrays.asList(ids);
     }
 

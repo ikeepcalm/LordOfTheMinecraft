@@ -5,9 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -24,8 +22,8 @@ public class WingsOfLight extends Ability {
         items.addToSequenceItems(identifier - 1, sequence);
     }
 
-    final boolean x = true;
-    final boolean o = false;
+    boolean x = true;
+    boolean o = false;
 
     private final boolean[][] shape = {
             {o, o, o, x, o, o, o, o, o, o, o, o, x, o, o, o},
@@ -48,7 +46,6 @@ public class WingsOfLight extends Ability {
     @Override
     public void useAbility() {
         p = pathway.getBeyonder().getPlayer();
-
         if (pathway.getSequence().getCurrentSequence() > 1) {
             p.setVelocity(new Vector(0, 1, 0));
             pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
@@ -58,37 +55,33 @@ public class WingsOfLight extends Ability {
 
                 @Override
                 public void run() {
-                    try {
-                        counter++;
+                    counter++;
 
-                        if (counter >= 20) {
-                            pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 500);
-                            counter = 0;
-                        }
+                    if (counter >= 20) {
+                        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 500);
+                        counter = 0;
+                    }
 
-                        if (counterVelocity < 4)
-                            counterVelocity++;
-                        else if (counterVelocity == 4) {
-                            p.setVelocity(new Vector(0, 0, 0));
-                            counterVelocity = 5;
-                        }
+                    if (counterVelocity < 4)
+                        counterVelocity++;
+                    else if (counterVelocity == 4) {
+                        p.setVelocity(new Vector(0, 0, 0));
+                        counterVelocity = 5;
+                    }
 
-                        Location loc = p.getLocation();
-                        drawParticles(loc);
-                        p.setGravity(false);
+                    Location loc = p.getLocation();
+                    drawParticles(loc);
+                    p.setGravity(false);
 
-                        if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
-                            p.setGravity(true);
-                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                            cancel();
-                        }
 
-                        if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                            p.setGravity(true);
-                            cancel();
-                        }
-                    } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Wind of Light");
+                    if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
+                        p.setGravity(true);
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                        cancel();
+                    }
+
+                    if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
+                        p.setGravity(true);
                         cancel();
                     }
                 }
@@ -140,45 +133,41 @@ public class WingsOfLight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.FEATHER, "Світлові Крила", "не використ.", identifier);
+        return SunItems.createItem(Material.FEATHER, "Крила Світла", "500/c", identifier);
     }
 
     private void drawParticles(Location loc) {
-        Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-            double space = 0.24;
-            double defX = loc.getX() - (space * shape[0].length / 2) + space;
-            double x = defX;
-            double y = loc.clone().getY() + 2.8;
-            double fire = -((loc.getYaw() + 180) / 60);
-            fire += (loc.getYaw() < -180 ? 3.25 : 2.985);
+        double space = 0.24;
+        double defX = loc.getX() - (space * shape[0].length / 2) + space;
+        double x = defX;
+        double y = loc.clone().getY() + 2.8;
+        double fire = -((loc.getYaw() + 180) / 60);
+        fire += (loc.getYaw() < -180 ? 3.25 : 2.985);
 
-            for (boolean[] booleans : shape) {
-                for (boolean aBoolean : booleans) {
-                    if (aBoolean) {
+        for (boolean[] booleans : shape) {
+            for (boolean aBoolean : booleans) {
+                if (aBoolean) {
 
-                        Location target = loc.clone();
-                        target.setX(x);
-                        target.setY(y);
+                    Location target = loc.clone();
+                    target.setX(x);
+                    target.setY(y);
 
-                        Vector v = target.toVector().subtract(loc.toVector());
-                        Vector v2 = MathVectorUtils.getBackVector(loc);
-                        v = MathVectorUtils.rotateAroundAxisY(v, fire);
-                        v2.setY(0).multiply(-0.5);
+                    Vector v = target.toVector().subtract(loc.toVector());
+                    Vector v2 = MathVectorUtils.getBackVector(loc);
+                    v = MathVectorUtils.rotateAroundAxisY(v, fire);
+                    v2.setY(0).multiply(-0.5);
 
-                        loc.add(v);
-                        loc.add(v2);
-                        Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
-                            for (int k = 0; k < 3; k++)
-                                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ELECTRIC_SPARK, loc, 1, 0.02, 0.02, 0.02, 0);
-                        });
-                        loc.subtract(v2);
-                        loc.subtract(v);
-                    }
-                    x += space;
+                    loc.add(v);
+                    loc.add(v2);
+                    for (int k = 0; k < 3; k++)
+                        Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ELECTRIC_SPARK, loc, 1, 0.02, 0.02, 0.02, 0);
+                    loc.subtract(v2);
+                    loc.subtract(v);
                 }
-                y -= space;
-                x = defX;
+                x += space;
             }
-        });
+            y -= space;
+            x = defX;
+        }
     }
 }

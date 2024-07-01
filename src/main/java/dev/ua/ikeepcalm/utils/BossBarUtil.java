@@ -47,14 +47,13 @@ public class BossBarUtil {
         if (bossBar != null) {
             if (progress < 0.3) {
                 bossBar.setColor(BarColor.RED);
-            }
-
-            if (progress < 0.5) {
+                bossBar.setStyle(BarStyle.SEGMENTED_10);
+            } else if (progress < 0.5) {
                 bossBar.setColor(BarColor.YELLOW);
-            }
-
-            if (progress >= 0.5) {
+                bossBar.setStyle(BarStyle.SOLID);
+            } else if (progress >= 0.5) {
                 bossBar.setColor(BarColor.BLUE);
+                bossBar.setStyle(BarStyle.SOLID);
             }
 
             bossBar.setProgress(progress);

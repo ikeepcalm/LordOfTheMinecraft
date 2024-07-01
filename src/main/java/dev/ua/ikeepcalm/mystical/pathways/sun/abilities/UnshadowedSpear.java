@@ -300,6 +300,6 @@ public class UnshadowedSpear extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SPECTRAL_ARROW, "Спис Безтіння", "1300", identifier);
+        return SunItems.createItem(Material.SPECTRAL_ARROW, "Спис Безтіння", "400", identifier);
     }
 }

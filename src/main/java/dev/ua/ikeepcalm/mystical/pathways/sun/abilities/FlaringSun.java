@@ -186,6 +186,6 @@ public class FlaringSun extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SUNFLOWER, "Спалахуюче Сонце", "200", identifier);
+        return SunItems.createItem(Material.SUNFLOWER, "Спалахуюче Сонце", "300", identifier);
     }
 }

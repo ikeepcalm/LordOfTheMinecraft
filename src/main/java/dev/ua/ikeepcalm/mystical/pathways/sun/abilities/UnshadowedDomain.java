@@ -104,6 +104,6 @@ public class UnshadowedDomain extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.SHROOMLIGHT, "Безтіння", "350", identifier);
+        return SunItems.createItem(Material.SHROOMLIGHT, "Безтіння", "1000", identifier);
     }
 }

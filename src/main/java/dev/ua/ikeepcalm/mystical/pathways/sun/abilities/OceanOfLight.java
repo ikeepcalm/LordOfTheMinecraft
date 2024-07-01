@@ -113,6 +113,6 @@ public class OceanOfLight extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return SunItems.createItem(Material.GOLD_BLOCK, "Океан Світла", "2000", identifier);
+        return SunItems.createItem(Material.GOLD_BLOCK, "Океан Світла", "8000", identifier);
     }
 }
