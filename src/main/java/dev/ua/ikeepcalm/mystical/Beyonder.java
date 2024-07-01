@@ -10,6 +10,9 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,10 +20,7 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -30,6 +30,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,6 +38,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
@@ -90,14 +92,11 @@ public class Beyonder implements Listener {
 
         this.resurrections = 0;
 
-        this.healthIndex = new int[]{
-                0, 180, 120, 80, 70, 55, 40, 30, 25, 20
-        };
+        this.healthIndex = new int[]{0, 180, 120, 80, 70, 55, 40, 30, 25, 20};
 
         pathway.init();
 
-        if (getPlayer() == null || !Bukkit.getOnlinePlayers().contains(getPlayer()))
-            return;
+        if (getPlayer() == null || !Bukkit.getOnlinePlayers().contains(getPlayer())) return;
 
         this.initializedOnce = true;
 
@@ -112,10 +111,8 @@ public class Beyonder implements Listener {
     @EventHandler
     //Restarts everything when Beyonder rejoins
     public void onJoin(PlayerJoinEvent e) {
-        if (!e.getPlayer().getUniqueId().equals(uuid))
-            return;
-        if (!beyonder)
-            return;
+        if (!e.getPlayer().getUniqueId().equals(uuid)) return;
+        if (!beyonder) return;
 
         pathway.setBeyonder(this);
 
@@ -132,25 +129,19 @@ public class Beyonder implements Listener {
     @EventHandler
     //Stops everything when Beyonder leaves
     public void onLeave(PlayerQuitEvent e) {
-        if (!e.getPlayer().getUniqueId().equals(uuid))
-            return;
-        if (!beyonder)
-            return;
+        if (!e.getPlayer().getUniqueId().equals(uuid)) return;
+        if (!beyonder) return;
 
-        if (!e.getPlayer().getUniqueId().equals(uuid))
-            return;
-        if (!beyonder)
-            return;
+        if (!e.getPlayer().getUniqueId().equals(uuid)) return;
+        if (!beyonder) return;
         online = false;
         lastSpirituality = spirituality;
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        if (!e.getPlayer().getUniqueId().equals(uuid))
-            return;
-        if (!beyonder)
-            return;
+        if (!e.getPlayer().getUniqueId().equals(uuid)) return;
+        if (!beyonder) return;
 
         setAbilitiesShortcut(e.getPlayer());
     }
@@ -158,27 +149,22 @@ public class Beyonder implements Listener {
     @EventHandler
     //Removes Items on Death
     public void onDeath(PlayerDeathEvent e) {
-        if (!beyonder)
-            return;
-        if (e.getEntity() != getPlayer())
-            return;
+        if (!beyonder) return;
+        if (e.getEntity() != getPlayer()) return;
         Player p = e.getEntity();
         Location deathLoc = p.getLocation();
 
-        if (pathway.getSequence() == null)
-            return;
+        if (pathway.getSequence() == null) return;
 
 
         if (pathway instanceof FoolPathway && pathway.getSequence().getCurrentSequence() <= 2 && resurrections < 5 && !loosingControl) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (deathLoc.getWorld() == null)
-                        return;
+                    if (deathLoc.getWorld() == null) return;
 
                     for (Entity entity : deathLoc.getWorld().getNearbyEntities(deathLoc, 20, 20, 20)) {
-                        if (!(entity instanceof Item))
-                            continue;
+                        if (!(entity instanceof Item)) continue;
 
                         entity.remove();
                     }
@@ -190,8 +176,7 @@ public class Beyonder implements Listener {
                     p.teleport(deathLoc);
 
                     for (Ability ability : pathway.getSequence().getAbilities()) {
-                        if (ability instanceof Hiding hiding)
-                            hiding.useAbility();
+                        if (ability instanceof Hiding hiding) hiding.useAbility();
                     }
 
                     resurrections++;
@@ -203,16 +188,13 @@ public class Beyonder implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (deathLoc.getWorld() == null)
-                    return;
+                if (deathLoc.getWorld() == null) return;
 
                 for (Entity entity : deathLoc.getWorld().getNearbyEntities(deathLoc, 20, 20, 20)) {
-                    if (!(entity instanceof Item item))
-                        continue;
+                    if (!(entity instanceof Item item)) continue;
 
                     for (ItemStack itemStack : pathway.getItems().returnItemsFromSequence(pathway.getSequence().getCurrentSequence())) {
-                        if (itemStack.isSimilar(item.getItemStack()))
-                            entity.remove();
+                        if (itemStack.isSimilar(item.getItemStack())) entity.remove();
                     }
                 }
             }
@@ -266,8 +248,7 @@ public class Beyonder implements Listener {
                     return;
                 }
 
-                if (loosingControl)
-                    return;
+                if (loosingControl) return;
 
                 Player p = getPlayer();
 
@@ -309,8 +290,7 @@ public class Beyonder implements Listener {
                 if (spirituality < maxSpirituality && counter >= 8) {
                     counter = 0;
                     spirituality += (maxSpirituality / 200);
-                    if (spirituality > maxSpirituality)
-                        spirituality = maxSpirituality;
+                    if (spirituality > maxSpirituality) spirituality = maxSpirituality;
                 }
 
 
@@ -327,8 +307,7 @@ public class Beyonder implements Listener {
                     bossBar = false;
                 }
 
-                if (loosingControl)
-                    return;
+                if (loosingControl) return;
 
                 Player p = getPlayer();
 
@@ -423,11 +402,13 @@ public class Beyonder implements Listener {
     public void looseControl(int lostControl, int timeOfLoosingControl) {
         Random random = new Random();
         boolean survives = ((random.nextInt(100) + 1) <= lostControl);
+        LordOfTheMinecraft.instance.getLogger().info("Survives: " + survives);
 
         loosingControl = true;
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.OOZING, 20 * timeOfLoosingControl, 3, false, false));
+        getPlayer().showTitle(Title.title(Component.text("Що?...."), Component.text("Мені... погано....")));
 
         //Damaging player
         new BukkitRunnable() {
@@ -441,17 +422,32 @@ public class Beyonder implements Listener {
                     return;
                 }
 
-                if (random.nextInt(25) + 1 == 5 && getPlayer().getHealth() > 2)
+
+                if (random.nextInt(25) + 1 == 5 && getPlayer().getHealth() > 2) {
+                    if (random.nextBoolean()) {
+                        getPlayer().sendMessage(Component.text("Ні... Ні, ні, НІ, НІ, НІ! ТІЛЬКИ НЕ ЦЕ, НЕ ЗАЛИШАЙ МЕНЕ! Я БЛАГАЮ!!!").color(TextColor.color(Color.RED.getRGB())));
+                    } else {
+                        getPlayer().sendMessage(Component.text("Я... я... Це неможливо! Я ВІДМОВЛЯЮСЯ У ЦЕ ВІРИТИ!").color(TextColor.color(Color.RED.getRGB())));
+                    }
                     getPlayer().damage(2);
+                }
 
                 counter++;
-                if (counter == timeOfLoosingControl * 20) {
+                if (counter >= timeOfLoosingControl * 20) {
                     //When not survives, summons a Warden
                     if (!survives) {
-                        Entity rampager = Objects.requireNonNull(getPlayer().getLocation().getWorld()).spawnEntity(getPlayer().getLocation(), EntityType.WARDEN);
+                        if (pathway.getSequence().getCurrentSequence() <= 4) {
+                            getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога"), Component.text("Цей світ здригається...")));
+                        }
+
+                        LivingEntity rampager = (LivingEntity) Objects.requireNonNull(getPlayer().getLocation().getWorld()).spawnEntity(getPlayer().getLocation(), EntityType.WARDEN);
                         rampager.setGlowing(true);
                         rampager.setCustomNameVisible(true);
                         rampager.setCustomName(pathway.getStringColor() + getPlayer().getName());
+                        rampager.setMetadata("pathway", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getNameNormalized()));
+                        rampager.setMetadata("sequence", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getSequence().getCurrentSequence()));
+                        Objects.requireNonNull(rampager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
+                        rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
                         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
                         getPlayer().setHealth(0);
                         loosingControl = false;
@@ -467,10 +463,25 @@ public class Beyonder implements Listener {
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
     }
 
+    public static int calculateScaledHealth(int value, int baseHealth) {
+        double multiplier = switch (value) {
+            case 9 -> 1.0;
+            case 8 -> 1.2;
+            case 7 -> 1.5;
+            case 6 -> 1.8;
+            case 5 -> 2.1;
+            case 4 -> 2.5;
+            case 3 -> 3.0;
+            case 2 -> 3.5;
+            case 1 -> 4.0;
+            default -> 1.0;
+        };
+        return (int) (baseHealth * multiplier);
+    }
+
     //Called from the PotionListener
     public void consumePotion(int sequence, Potion potion) {
-        if (sequence >= pathway.getSequence().getCurrentSequence())
-            return;
+        if (sequence >= pathway.getSequence().getCurrentSequence()) return;
 
         if (!getPathway().getNameNormalized().equals(potion.getName())) {
             looseControl(0, 10);
@@ -521,23 +532,7 @@ public class Beyonder implements Listener {
 
     @Override
     public String toString() {
-        return "Beyonder{" +
-               "beyonder=" + beyonder +
-               ", uuid=" + uuid +
-               ", healthIndex=" + Arrays.toString(healthIndex) +
-               ", online=" + online +
-               ", pathway=" + pathway +
-               ", spirituality=" + spirituality +
-               ", maxSpirituality=" + maxSpirituality +
-               ", lastSpirituality=" + lastSpirituality +
-               ", actingProgress=" + actingProgress +
-               ", actingNeeded=" + actingNeeded +
-               ", digested=" + digested +
-               ", loosingControl=" + loosingControl +
-               ", initializedOnce=" + initializedOnce +
-               ", team=" + team +
-               ", resurrections=" + resurrections +
-               '}';
+        return "Beyonder{" + "beyonder=" + beyonder + ", uuid=" + uuid + ", healthIndex=" + Arrays.toString(healthIndex) + ", online=" + online + ", pathway=" + pathway + ", spirituality=" + spirituality + ", maxSpirituality=" + maxSpirituality + ", lastSpirituality=" + lastSpirituality + ", actingProgress=" + actingProgress + ", actingNeeded=" + actingNeeded + ", digested=" + digested + ", loosingControl=" + loosingControl + ", initializedOnce=" + initializedOnce + ", team=" + team + ", resurrections=" + resurrections + '}';
     }
 }
 

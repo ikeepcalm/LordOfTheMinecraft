@@ -56,6 +56,7 @@ public class MI9Cmd implements CommandExecutor {
             meta.setCustomModelData(1);
             List<String> lore = List.of("§7Монокль для дослідження злочинів", "§7ЛКМ - змінити період дослідження", "§7ПКМ - провести дослідження");
             meta.setLore(lore);
+            meta.setCustomModelData(3);
             monocle.setItemMeta(meta);
             NBT.modify(monocle, (nbt) -> {
                 nbt.setBoolean("mi9Monocle", true);
@@ -73,7 +74,7 @@ public class MI9Cmd implements CommandExecutor {
             ItemStack stick = new ItemStack(Material.STICK);
             ItemMeta meta = stick.getItemMeta();
             meta.setDisplayName("§6Палиця");
-            meta.setCustomModelData(1);
+            meta.setCustomModelData(3);
             stick.setItemMeta(meta);
             NBT.modify(stick, (nbt) -> {
                 nbt.setBoolean("mi9Stick", true);

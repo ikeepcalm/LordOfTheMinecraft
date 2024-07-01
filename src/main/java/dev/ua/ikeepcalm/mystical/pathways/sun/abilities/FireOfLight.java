@@ -113,7 +113,7 @@ public class FireOfLight extends Ability {
                     cancel();
                 }
             }
-        }.runTaskAsynchronously(LordOfTheMinecraft.instance);
+        }.runTask(LordOfTheMinecraft.instance);
     }
 
     @Override

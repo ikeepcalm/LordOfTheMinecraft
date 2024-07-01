@@ -41,7 +41,22 @@ public class BossBarUtil {
 
     public void setProgress(Player player, double progress) {
         BossBar bossBar = bossBars.get(player.getUniqueId());
+        if (progress < 0 || progress >= 1) {
+            return;
+        }
         if (bossBar != null) {
+            if (progress < 0.3) {
+                bossBar.setColor(BarColor.RED);
+            }
+
+            if (progress < 0.5) {
+                bossBar.setColor(BarColor.YELLOW);
+            }
+
+            if (progress >= 0.5) {
+                bossBar.setColor(BarColor.BLUE);
+            }
+
             bossBar.setProgress(progress);
         }
     }

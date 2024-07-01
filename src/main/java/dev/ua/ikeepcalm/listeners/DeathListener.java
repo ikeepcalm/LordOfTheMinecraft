@@ -1,10 +1,13 @@
 package dev.ua.ikeepcalm.listeners;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathListener implements Listener {
@@ -17,6 +20,18 @@ public class DeathListener implements Listener {
             Location loc = e.getEntity().getLocation();
             if (loc.getWorld() != null)
                 loc.getWorld().spawnParticle(Particle.CLOUD, loc.clone().subtract(0, 0.25, 0), 100, 0.35, 1, 0.35, 0);
+        }
+    }
+
+    @EventHandler
+    public void onRampagerDeath(EntityDeathEvent e) {
+        Entity entity = e.getEntity();
+        if (!entity.getMetadata("pathway").isEmpty()) {
+            LordOfTheMinecraft.instance.getLogger().info("Rampager died");
+            entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().clone().add(0, 0.5, 0), 100, 0.35, 1, 0.35, 0);
+            String pathway = entity.getMetadata("pathway").getFirst().asString();
+            String sequence = entity.getMetadata("sequence").getFirst().asString();
+            entity.getWorld().dropItem(entity.getLocation(), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(GeneralPurposeUtil.parseInt(sequence), pathway, "§a"));
         }
     }
 }

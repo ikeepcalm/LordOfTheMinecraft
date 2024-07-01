@@ -317,7 +317,7 @@ public class GeneralItemsUtil {
     }
 
     public static ItemStack getRandomGrimoire() {
-        ItemStack book = new ItemStack(Material.WRITABLE_BOOK);
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
 
@@ -331,6 +331,7 @@ public class GeneralItemsUtil {
        List<String> content = LocalizationUtil.getLocalizedArray("grimoires", tome,"grimoire-lore");
 
         bookMeta.setPages(content);
+        bookMeta.setAuthor("at one's last grasp");
         bookMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         bookMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         book.setItemMeta(bookMeta);

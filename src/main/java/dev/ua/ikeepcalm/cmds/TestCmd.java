@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.cmds;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -35,6 +36,10 @@ public class TestCmd implements CommandExecutor {
         if (args[0].equalsIgnoreCase("acting")) {
             Beyonder beyonder = LordOfTheMinecraft.beyonders.get(p.getUniqueId());
             p.sendMessage(beyonder.getActingProgress() + " / " + beyonder.getActingNeeded());
+        }
+
+        if (args[0].equalsIgnoreCase("tome")) {
+            p.getInventory().addItem(GeneralItemsUtil.getRandomGrimoire());
         }
 
         return true;
