@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.cmds;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;

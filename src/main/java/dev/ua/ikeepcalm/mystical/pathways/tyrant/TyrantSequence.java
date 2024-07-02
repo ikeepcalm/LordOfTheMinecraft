@@ -217,7 +217,7 @@ public class TyrantSequence extends Sequence implements Listener {
             int radius = sequence > 4 ? 6 : 10;
             int power = sequence > 4 ? 5 : sequence > 2 ? 11 : sequence > 1 ? 15 : 30;
 
-            loc.getWorld().createExplosion(particleLoc, power, true);
+            loc.getWorld().createExplosion(particleLoc, power, false, false);
 
 
             ArrayList<Block> blocks = GeneralPurposeUtil.getBlocksInCircleRadius(particleLoc.getBlock(), radius, true);

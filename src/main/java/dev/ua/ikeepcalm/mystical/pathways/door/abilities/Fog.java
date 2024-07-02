@@ -50,6 +50,6 @@ public class Fog extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.LIGHT_GRAY_DYE, "Туман", "20", identifier);
+        return DoorItems.createItem(Material.LIGHT_GRAY_DYE, "Туман", "50", identifier);
     }
 }

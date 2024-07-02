@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
@@ -134,7 +134,7 @@ public class Exile extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.CRIMSON_DOOR, "Вигнання", "450", identifier);
+        return DoorItems.createItem(Material.CRIMSON_DOOR, "Вигнання", "1000", identifier);
     }
 
     final int o = 0;

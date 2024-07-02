@@ -61,6 +61,6 @@ public class ElectricShock extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.IRON_NUGGET, "Статичний Розряд", "40", identifier);
+        return DoorItems.createItem(Material.IRON_NUGGET, "Статичний Розряд", "20", identifier);
     }
 }

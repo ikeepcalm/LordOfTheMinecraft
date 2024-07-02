@@ -108,19 +108,19 @@ public class SpiritBodyThreads extends Ability implements Listener {
             switch (getTargetSequence() - pathway.getSequence().getCurrentSequence()) {
                 case -4 -> {
                     p.damage(100, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 6);
+                    p.getWorld().createExplosion(p.getLocation(), 6, false, false);
                     controlling = false;
                     return;
                 }
                 case -3 -> {
                     p.damage(60, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 4);
+                    p.getWorld().createExplosion(p.getLocation(), 4, false, false);
                     controlling = false;
                     return;
                 }
                 case -2 -> {
                     p.damage(20, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 2);
+                    p.getWorld().createExplosion(p.getLocation(), 2, false, false);
                     controlling = false;
                     return;
                 }

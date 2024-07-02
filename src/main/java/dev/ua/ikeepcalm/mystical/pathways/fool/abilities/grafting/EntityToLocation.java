@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities.grafting;
 
 
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import lombok.Getter;
 import org.bukkit.Location;

@@ -2,12 +2,12 @@ package dev.ua.ikeepcalm.handlers;
 
 import dev.ua.ikeepcalm.utils.BeyonderMobUtil;
 import dev.ua.ikeepcalm.entities.custom.CustomEntity;
-import dev.ua.ikeepcalm.entities.mob.abilities.BaneAbility;
-import dev.ua.ikeepcalm.entities.mob.abilities.PlundererAbility;
-import dev.ua.ikeepcalm.entities.mob.abilities.RoosterAbility;
-import dev.ua.ikeepcalm.entities.mob.abilities.SpawnVex;
-import dev.ua.ikeepcalm.entities.mob.abilities.sun.FlaringSun;
-import dev.ua.ikeepcalm.entities.mob.abilities.sun.HolyLightSummoning;
+import dev.ua.ikeepcalm.entities.mobs.BaneAbility;
+import dev.ua.ikeepcalm.entities.mobs.PlundererAbility;
+import dev.ua.ikeepcalm.entities.mobs.RoosterAbility;
+import dev.ua.ikeepcalm.entities.mobs.SpawnVex;
+import dev.ua.ikeepcalm.entities.mobs.FlaringSun;
+import dev.ua.ikeepcalm.entities.mobs.HolyLightSummoning;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;

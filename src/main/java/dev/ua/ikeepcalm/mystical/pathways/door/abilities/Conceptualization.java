@@ -82,6 +82,6 @@ public class Conceptualization extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.NETHER_STAR, "Астральні Руни", "420/c", identifier);
+        return DoorItems.createItem(Material.NETHER_STAR, "Астральні Руни", "200/c", identifier);
     }
 }

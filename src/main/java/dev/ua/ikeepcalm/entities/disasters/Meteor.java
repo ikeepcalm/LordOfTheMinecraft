@@ -55,11 +55,11 @@ public class Meteor extends Disaster {
                             Random random = new Random();
                             block.setVelocity(new Vector(random.nextInt(3), random.nextInt(3), random.nextInt(3)));
                         }
-                        startLoc.getWorld().createExplosion(startLoc, 40, true);
-                        startLoc.getWorld().createExplosion(startLoc.clone().add(12, 0, 0), 80, true);
-                        startLoc.getWorld().createExplosion(startLoc.clone().add(-12, 0, 0), 80, true);
-                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, 12), 80, true);
-                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, -12), 80, true);
+                        startLoc.getWorld().createExplosion(startLoc, 40, true, false);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(12, 0, 0), 80, false, false);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(-12, 0, 0), 80, false, false);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, 12), 80, false, false);
+                        startLoc.getWorld().createExplosion(startLoc.clone().add(0, 0, -12), 80, false, false);
                         cancel();
                     }
                 } catch (Exception e) {

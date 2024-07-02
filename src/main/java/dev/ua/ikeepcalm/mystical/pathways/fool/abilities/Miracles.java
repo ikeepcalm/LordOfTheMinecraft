@@ -403,6 +403,6 @@ public class Miracles extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.NETHER_STAR, "Вища Сила", "різниться", identifier);
+        return FoolItems.createItem(Material.NETHER_STAR, "Вища Сила", "8000", identifier);
     }
 }

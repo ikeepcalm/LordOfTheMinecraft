@@ -248,7 +248,7 @@ public class FogOfHistory extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.QUARTZ, "Завіса Історії", "100", identifier);
+        return FoolItems.createItem(Material.QUARTZ, "Завіса Історії", "800", identifier);
     }
 
     public void addItem(ItemStack item) {

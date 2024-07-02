@@ -51,6 +51,6 @@ public class Blink extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDER_PEARL, "Теле-стрибок", "20", identifier);
+        return DoorItems.createItem(Material.ENDER_PEARL, "Теле-стрибок", "80", identifier);
     }
 }

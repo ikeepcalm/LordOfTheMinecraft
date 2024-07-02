@@ -1,10 +1,8 @@
-package dev.ua.ikeepcalm.mystical;
+package dev.ua.ikeepcalm.mystical.parents;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.Pathway;
-import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
@@ -39,7 +37,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -464,7 +461,8 @@ public class Beyonder implements Listener {
                     }
                     loosingControl = false;
                     cancel();
-                    getPlayer().sendMessage(Component.text("Вам вдається заспокоїтися... Чи варте воно того?").color(TextColor.color(Color.GREEN.getRGB())));
+                    spirituality = maxSpirituality * 0.2;
+                    getPlayer().sendMessage(Component.text("Вам вдається заспокоїтися...").color(TextColor.color(Color.GREEN.getRGB())));
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
@@ -537,10 +535,6 @@ public class Beyonder implements Listener {
         pathway = null;
     }
 
-    @Override
-    public String toString() {
-        return "Beyonder{" + "beyonder=" + beyonder + ", uuid=" + uuid + ", healthIndex=" + Arrays.toString(healthIndex) + ", online=" + online + ", pathway=" + pathway + ", spirituality=" + spirituality + ", maxSpirituality=" + maxSpirituality + ", lastSpirituality=" + lastSpirituality + ", actingProgress=" + actingProgress + ", actingNeeded=" + actingNeeded + ", digested=" + digested + ", loosingControl=" + loosingControl + ", initializedOnce=" + initializedOnce + ", team=" + team + ", resurrections=" + resurrections + '}';
-    }
 }
 
 

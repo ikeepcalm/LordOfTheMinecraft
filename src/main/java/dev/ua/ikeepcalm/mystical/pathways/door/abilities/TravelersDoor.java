@@ -237,7 +237,7 @@ public class TravelersDoor extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.WARPED_DOOR, "Врата Мандрівника", "75", identifier);
+        return DoorItems.createItem(Material.WARPED_DOOR, "Врата Мандрівника", "600", identifier);
     }
 
     final int o = 0;

@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.utils;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.entities.mob.abilities.PassiveAbilities;
+import dev.ua.ikeepcalm.entities.mobs.PassiveAbilities;
 import dev.ua.ikeepcalm.entities.custom.CustomEntity;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import org.bukkit.entity.Entity;

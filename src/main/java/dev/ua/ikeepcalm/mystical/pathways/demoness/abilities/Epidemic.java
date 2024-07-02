@@ -123,6 +123,6 @@ public class Epidemic extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.GUNPOWDER, "Смертельна Епідемія", "10", identifier);
+        return DemonessItems.createItem(Material.GUNPOWDER, "Смертельна Епідемія", "40", identifier);
     }
 }

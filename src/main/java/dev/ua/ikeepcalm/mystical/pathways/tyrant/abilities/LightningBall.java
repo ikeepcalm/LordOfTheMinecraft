@@ -36,7 +36,7 @@ public class LightningBall extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.PURPLE_DYE, "Громова Куля", "5000", identifier);
+        return TyrantItems.createItem(Material.PURPLE_DYE, "Громова Куля", "8000", identifier);
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {

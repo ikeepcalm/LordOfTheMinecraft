@@ -71,7 +71,7 @@ public class LightningStorm extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Грозова Симфонія", "750", identifier);
+        return TyrantItems.createItem(Material.LIGHT_BLUE_DYE, "Грозова Симфонія", "3000", identifier);
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {

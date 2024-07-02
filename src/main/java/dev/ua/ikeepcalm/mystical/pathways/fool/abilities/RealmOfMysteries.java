@@ -101,7 +101,7 @@ public class RealmOfMysteries extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.BLACK_DYE, "Царство Таємниць", "20000", identifier);
+        return FoolItems.createItem(Material.BLACK_DYE, "Царство Таємниць", "40000", identifier);
     }
 
     @Override

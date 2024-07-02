@@ -192,6 +192,6 @@ public class BlackHole extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Чорна Діра", "10000", identifier);
+        return DoorItems.createItem(Material.ENDERMAN_SPAWN_EGG, "Чорна Діра", "7000", identifier);
     }
 }

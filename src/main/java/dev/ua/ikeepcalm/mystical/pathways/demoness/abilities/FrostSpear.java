@@ -229,6 +229,6 @@ public class FrostSpear extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.IRON_SWORD, "Крижаний Спис", "85", identifier);
+        return DemonessItems.createItem(Material.IRON_SWORD, "Крижаний Спис", "300", identifier);
     }
 }

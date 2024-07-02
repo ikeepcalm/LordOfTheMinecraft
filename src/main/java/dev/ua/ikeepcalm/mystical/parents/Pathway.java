@@ -1,7 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPathway;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;

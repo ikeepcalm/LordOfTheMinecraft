@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.listeners;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;

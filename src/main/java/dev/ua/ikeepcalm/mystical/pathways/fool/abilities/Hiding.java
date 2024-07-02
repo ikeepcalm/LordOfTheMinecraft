@@ -1,9 +1,9 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatMessageType;
@@ -112,7 +112,7 @@ public class Hiding extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "85", identifier);
+        return FoolItems.createItem(Material.LIGHT_GRAY_DYE, "Стрибок у Завісу Історії", "100", identifier);
     }
 
 }

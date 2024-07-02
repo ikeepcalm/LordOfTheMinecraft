@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.cmds;
 
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Material;
 import org.bukkit.command.Command;

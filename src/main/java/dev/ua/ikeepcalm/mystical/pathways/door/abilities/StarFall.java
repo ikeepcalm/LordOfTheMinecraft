@@ -71,11 +71,11 @@ public class StarFall extends Ability {
                                     d.damage(50, p);
                             }
 
-                            startLoc.getWorld().createExplosion(startLoc, 15f);
+                            startLoc.getWorld().createExplosion(startLoc, 15f, false, false);
                             cancel();
                         }
                     }
-                }.runTaskTimer(LordOfTheMinecraft.instance, random.nextInt(20 * 4), 1); // Changed interval to 1 tick for smoother movement
+                }.runTaskTimer(LordOfTheMinecraft.instance, random.nextInt(20 * 4), 1);
             }
         });
     }

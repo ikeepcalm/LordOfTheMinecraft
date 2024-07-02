@@ -98,6 +98,6 @@ public class ThreadManipulation extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.COBWEB, "Маніпуляція Павутинням", "40", identifier);
+        return DemonessItems.createItem(Material.COBWEB, "Маніпуляція Павутинням", "250", identifier);
     }
 }

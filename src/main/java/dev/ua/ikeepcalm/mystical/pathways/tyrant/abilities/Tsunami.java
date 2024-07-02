@@ -77,7 +77,7 @@ public class Tsunami extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.WATER_BUCKET, "Поклик Цунамі", "750", identifier);
+        return TyrantItems.createItem(Material.WATER_BUCKET, "Поклик Цунамі", "1600", identifier);
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {

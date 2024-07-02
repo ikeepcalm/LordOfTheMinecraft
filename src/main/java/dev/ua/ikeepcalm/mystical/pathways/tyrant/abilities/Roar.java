@@ -80,7 +80,7 @@ public class Roar extends Ability {
                     if (!world.getNearbyEntities(loc, 5, 5, 5).isEmpty()) {
                         for (Entity entity : world.getNearbyEntities(loc, 5, 5, 5)) {
                             if (GeneralPurposeUtil.testForValidEntity(entity, caster, true, true)) {
-                                world.createExplosion(loc, (int) (radius * 1.75f));
+                                world.createExplosion(loc, (int) (radius * 1.75f), false, false);
                                 ((LivingEntity) entity).damage(20 * multiplier, caster);
                                 entity.setVelocity(dir.clone().normalize());
                                 cancel();
@@ -92,7 +92,7 @@ public class Roar extends Ability {
                     counter++;
 
                     if (loc.getBlock().getType().isSolid() || counter >= 100) {
-                        world.createExplosion(loc, (int) (radius * 1.75f));
+                        world.createExplosion(loc, (int) (radius * 1.75f), false, false);
                         if (counter >= 100)
                             cancel();
                     }

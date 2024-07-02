@@ -19,6 +19,7 @@ public abstract class Items {
     @Setter
     @Getter
     protected Pathway pathway;
+    private static Pathway internalPathway;
     @Setter
     @Getter
     protected ArrayList<ItemStack> items;
@@ -32,6 +33,7 @@ public abstract class Items {
 
     public Items(Pathway pathway) {
         this.pathway = pathway;
+        internalPathway = pathway;
     }
 
     public abstract ArrayList<ItemStack> returnItemsFromSequence(int sequence);
@@ -74,9 +76,10 @@ public abstract class Items {
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("§6Натисніть, щоб використати");
         lore.add("§6Витрати духовності: §7" + spirituality);
-        lore.add("§8§l-----------------");
+        if (internalPathway.getSequence().getIds().contains(id)) {
+            lore.add("§6Дію цієї здібності можна відмінити вручну");
+        }
         itemMeta.setLore(lore);
         currentItem.setItemMeta(itemMeta);
         String finalSpirituality = spirituality;

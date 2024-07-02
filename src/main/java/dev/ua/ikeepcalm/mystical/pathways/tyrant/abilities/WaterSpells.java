@@ -424,7 +424,7 @@ public class WaterSpells extends Ability {
                     if (loc.getBlock().getType().isSolid()) {
                         counter = 0;
 
-                        loc.getWorld().createExplosion(loc, 4);
+                        loc.getWorld().createExplosion(loc, 4, false, false);
                         for (Block block : GeneralPurposeUtil.getNearbyBlocksInSphere(loc, 3, false, false, true)) {
                             if (!block.getType().isSolid()) {
                                 logBlockBreak(uuid, new CustomLocation(block.getLocation()));

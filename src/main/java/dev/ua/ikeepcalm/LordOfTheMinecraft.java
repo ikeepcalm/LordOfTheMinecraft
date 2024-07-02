@@ -9,7 +9,7 @@ import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
 import dev.ua.ikeepcalm.listeners.*;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.*;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPotions;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPotions;

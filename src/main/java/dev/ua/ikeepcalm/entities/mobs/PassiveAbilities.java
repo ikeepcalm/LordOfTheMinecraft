@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.entities.mob.abilities;
+package dev.ua.ikeepcalm.entities.mobs;
 
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;

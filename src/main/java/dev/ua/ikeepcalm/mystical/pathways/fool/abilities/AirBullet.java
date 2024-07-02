@@ -79,7 +79,7 @@ public class AirBullet extends Ability {
                             ? valuesForSequence.get(sequencePower)[0]
                             : 0.25;
 
-                    final Location locCopy = loc.clone();
+                    final Location locCopy = loc.clone().add(0, 2, 0);
                     final World world = loc.getWorld();
                     final Vector dir = caster.getLocation().getDirection().normalize();
 
@@ -138,7 +138,7 @@ public class AirBullet extends Ability {
                                     );
                                     if (entity.getBoundingBox().overlaps(v1, v2) && entity instanceof Damageable && entity != caster && entity.getType() != EntityType.ARMOR_STAND) {
                                         if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 1)
-                                            world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1));
+                                            world.createExplosion(entity.getLocation(), (int) (valuesForSequence.get(sequencePower)[2] - 1), false, false);
                                         ((Damageable) entity).damage(7 * (valuesForSequence.get(sequencePower) != null ? valuesForSequence.get(sequencePower)[3] : 3), caster);
                                         return;
                                     }
@@ -149,7 +149,7 @@ public class AirBullet extends Ability {
                         if (locCopy.getBlock().getType().isSolid()) {
                             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                                 if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
-                                    world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
+                                    world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]), false, false);
                             });
                             return;
                         }
@@ -165,7 +165,7 @@ public class AirBullet extends Ability {
 
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                         if (valuesForSequence.get(sequencePower) != null && valuesForSequence.get(sequencePower)[2] > 0)
-                            world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]));
+                            world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]), false, false);
                     });
                 } catch (Exception e) {
                     ErrorLoggerUtil.logAbility(e, "Air Bullet");

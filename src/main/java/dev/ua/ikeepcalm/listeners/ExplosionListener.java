@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.listeners;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.Beyonder;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -10,14 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class ExplosionListener implements Listener {
 
-    private static final Logger log = LoggerFactory.getLogger(ExplosionListener.class);
     private final CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
     private final Map<UUID, Long> activeSeries = new HashMap<>();
     private final Map<UUID, Set<Location>> seriesBlocks = new HashMap<>();

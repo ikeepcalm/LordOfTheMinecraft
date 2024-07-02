@@ -81,7 +81,7 @@ public class LightningTornado extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return TyrantItems.createItem(Material.BLUE_CANDLE, "Вихор Блискавок", "5000", identifier);
+        return TyrantItems.createItem(Material.BLUE_CANDLE, "Вихор Блискавок", "10000", identifier);
     }
 }
 

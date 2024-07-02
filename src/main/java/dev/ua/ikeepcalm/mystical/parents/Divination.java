@@ -1,6 +1,5 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
-import dev.ua.ikeepcalm.mystical.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;

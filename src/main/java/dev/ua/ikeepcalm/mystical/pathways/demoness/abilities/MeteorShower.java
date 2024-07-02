@@ -93,7 +93,7 @@ public class MeteorShower extends Ability {
                 d.damage(50, p);
         }
 
-        impactLocation.getWorld().createExplosion(impactLocation, 25, true);
+        impactLocation.getWorld().createExplosion(impactLocation, 25, false, false);
     }
 
     @Override
