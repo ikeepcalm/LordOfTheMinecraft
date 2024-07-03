@@ -38,12 +38,10 @@ public class Marionette implements Listener {
     private final SpiritBodyThreads ability;
     @Setter
     private MarionetteControlling marionetteControllingAbility;
-
     private boolean isAngry;
     @Getter
     private boolean alive;
     private LivingEntity currentTarget;
-
     @Setter
     private boolean shouldFollow;
     private boolean isBeingControlled;
@@ -235,10 +233,18 @@ public class Marionette implements Listener {
 
         alive = false;
 
-        getPlayer().sendMessage("Ваша маріонетка " + name + " §rбула вбита.");
+        if (getPlayer() != null) {
+            getPlayer().sendMessage("Ваша маріонетка " + name + " §rбула вбита.");
+        }
 
         ability.removeMarionette(this);
         npc.destroy();
+
+        if (entity instanceof LivingEntity livingEntity) {
+            if (!(livingEntity instanceof Player)){
+                livingEntity.setHealth(0);
+            }
+        }
 
         alive = false;
     }

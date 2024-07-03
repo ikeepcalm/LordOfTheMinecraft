@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
+import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -63,6 +64,11 @@ public class Characteristic {
         playerMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         playerMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         playerHead.setItemMeta(playerMeta);
+
+        NBT.modify(playerHead, (nbt) -> {
+            nbt.setString("pathway", pathway);
+            nbt.setString("sequence", String.valueOf(sequence));
+        });
 
         return playerHead;
     }

@@ -1,6 +1,7 @@
 package dev.ua.ikeepcalm.listeners;
 
 import cz.foresttech.api.ColorAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
@@ -44,6 +45,10 @@ public class PotionHandler implements Listener {
         }
 
         if (e.getClickedBlock().getLocation().subtract(0, 1, 0).getBlock().getType() != Material.SOUL_CAMPFIRE) {
+            return;
+        }
+
+        if (e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
@@ -120,23 +125,36 @@ public class PotionHandler implements Listener {
                 if (supplementaryIngredients.size() != potion.getSupplIngredients(i).length)
                     continue;
 
-                boolean isCorrect = mainIngredients.size() == potion.getMainIngredients(i).length;
+                boolean isCorrect = mainIngredients.size() == potion.getMainIngredients(i).length || mainIngredients.size() == 1;
+
                 for (int j = 0; j < mainIngredients.size(); j++) {
-                    if (!isCorrect)
+                    if (!isCorrect) {
                         break;
+                    }
+
                     if (!mainIngredients.get(j).isSimilar(potion.getMainIngredients(i)[j]))
                         isCorrect = false;
                 }
 
                 if (!isCorrect) {
-                    if (!mainIngredients.isEmpty() && mainIngredients.getFirst().isSimilar(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()))) {
-                        isCorrect = true;
+                    if (!mainIngredients.isEmpty()) {
+                        NBTItem actual = new NBTItem(mainIngredients.getFirst());
+                        NBTItem expected = new NBTItem(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()));
+                        if (actual.getString("pathway").equals(expected.getString("pathway"))) {
+                            if (actual.getString("sequence").equals(expected.getString("sequence"))) {
+                                isCorrect = true;
+                            }
+                        }
                     }
                 }
 
+                if (!isCorrect)
+                    continue;
+
                 for (int j = 0; j < supplementaryIngredients.size(); j++) {
-                    if (!supplementaryIngredients.get(j).isSimilar(potion.getSupplIngredients(i)[j]))
+                    if (!supplementaryIngredients.get(j).isSimilar(potion.getSupplIngredients(i)[j])) {
                         isCorrect = false;
+                    }
                 }
 
                 if (!isCorrect)
@@ -167,7 +185,6 @@ public class PotionHandler implements Listener {
         if (inv.getItem(index) != null)
             ingredients.add(inv.getItem(index));
     }
-
 
     private Inventory createInventory(Player p) {
 

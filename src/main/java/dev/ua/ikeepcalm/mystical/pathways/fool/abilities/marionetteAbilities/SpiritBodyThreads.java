@@ -25,6 +25,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 
 public class SpiritBodyThreads extends Ability implements Listener {
 
+    private static final Logger log = LoggerFactory.getLogger(SpiritBodyThreads.class);
     private boolean controlling;
     private Entity currentEntity;
     private int index;
@@ -77,7 +80,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
         };
 
         maxDistance = new int[]{
-                100000000,
+                1000,
                 200,
                 150,
                 125,
@@ -97,6 +100,18 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
         if (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == currentEntity))
             return;
+
+        if (currentEntity == null) {
+            getNearbyEntities();
+            if (nearbyEntities.isEmpty()) {
+                return;
+            }
+            if (nearbyEntities.getFirst() instanceof Player player) {
+                if (player.getUniqueId().equals(p.getUniqueId())) {
+                    return;
+                }
+            }
+        }
 
         ((LivingEntity) currentEntity).damage(0, p);
         currentEntity.setMetadata("isBeingControlled", new FixedMetadataValue(LordOfTheMinecraft.instance, p.getUniqueId()));
@@ -344,17 +359,21 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return FoolItems.createItem(Material.LEAD, "Маріонетковий Ткач", "100", identifier);
+        return FoolItems.createItem(Material.COAL, "Маріонетковий Ткач", "100", identifier);
     }
 
     @EventHandler
     public void onSlotChange(PlayerItemHeldEvent e) {
-        if (e.getPlayer() != p)
+        if (!e.getPlayer().getName().equals(p.getName())) {
             return;
+        } else {
+            p = e.getPlayer();
+        }
 
         ItemStack item = e.getPlayer().getInventory().getItem(e.getNewSlot());
-        if (item == null || !item.isSimilar(getItem()))
+        if (item == null || !item.isSimilar(getItem())) {
             return;
+        }
 
         getNearbyEntities();
     }
@@ -390,5 +409,4 @@ public class SpiritBodyThreads extends Ability implements Listener {
     public void removeMarionette(Marionette marionette) {
         marionettes.remove(marionette);
     }
-
 }

@@ -1,10 +1,10 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
-import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
+import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
+import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +31,7 @@ public class FoolPotions extends Potion {
         putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "fool", stringColor));
 
         putSupplIntoHashMap(9, new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.MUTTON));
-        putSupplIntoHashMap(8, GeneralItemsUtil.getWaterPotion(), new ItemStack(Material.SUNFLOWER), new ItemStack(Material.SHORT_GRASS));
+        putSupplIntoHashMap(8, GeneralItemsUtil.getWaterPotion(), new ItemStack(Material.SUNFLOWER), new ItemStack(Material.LIGHT_BLUE_DYE));
         putSupplIntoHashMap(7, GeneralItemsUtil.getMundanePotion(), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GLOW_INK_SAC));
         putSupplIntoHashMap(6, new ItemStack(Material.SKELETON_SKULL), new ItemStack(Material.SOUL_SAND), new ItemStack(Material.GOLDEN_CARROT));
         putSupplIntoHashMap(5, GeneralItemsUtil.getRegenPotion(), new ItemStack(Material.DARK_OAK_LOG), new ItemStack(Material.FERMENTED_SPIDER_EYE));

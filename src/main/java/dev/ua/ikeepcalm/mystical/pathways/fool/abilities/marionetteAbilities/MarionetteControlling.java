@@ -36,7 +36,6 @@ public class MarionetteControlling extends Ability implements Listener {
 
 
     //TODO: Hiding in FOH enable controlling
-
     public MarionetteControlling(int identifier, Pathway pathway, int sequence, Items items, SpiritBodyThreads spiritBodyThreadsAbility) {
         super(identifier, pathway, sequence, items);
 

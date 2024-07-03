@@ -131,6 +131,28 @@ public class Beyonder implements Listener {
 
         if (!e.getPlayer().getUniqueId().equals(uuid)) return;
         if (!beyonder) return;
+
+        if (loosingControl) {
+            if (pathway.getSequence().getCurrentSequence() <= 4) {
+                getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога"), Component.text("Цей світ здригається...")));
+            }
+
+            LivingEntity rampager = (LivingEntity) Objects.requireNonNull(getPlayer().getLocation().getWorld()).spawnEntity(getPlayer().getLocation(), EntityType.WARDEN);
+            rampager.setGlowing(true);
+            rampager.setCustomNameVisible(true);
+            rampager.setCustomName(pathway.getStringColor() + getPlayer().getName());
+            rampager.setMetadata("pathway", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getNameNormalized()));
+            rampager.setMetadata("sequence", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getSequence().getCurrentSequence()));
+            Objects.requireNonNull(rampager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
+            rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
+            Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
+            getPlayer().setHealth(0);
+            loosingControl = false;
+            removeBeyonder();
+            bossBarUtil.removePlayer(getPlayer());
+            return;
+        }
+
         online = false;
         lastSpirituality = spirituality;
     }

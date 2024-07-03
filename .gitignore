@@ -12,6 +12,7 @@ gradle
 gradlew
 gradlew.bat
 build
+run
 
 # Compiled class file
 *.class

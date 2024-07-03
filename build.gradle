@@ -4,6 +4,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id("io.github.goooler.shadow") version "8.1.7"
+    id("xyz.jpenilla.run-paper") version "2.3.0"
 }
 
 repositories {
@@ -56,3 +57,13 @@ tasks.withType(ShadowJar).configureEach {
     relocate('cz.foresttech.api', 'dev.ua.ikeepcalm.colorapi')
 }
 
+tasks {
+    runServer {
+        minecraftVersion("1.21")
+        downloadPlugins {
+            modrinth("nbtapi", "2.13.1")
+            url("https://www.patreon.com/file?h=104200466&i=18902237")
+            url("https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3454.jar")
+        }
+    }
+}
