@@ -27,7 +27,6 @@ public class DeathListener implements Listener {
     public void onRampagerDeath(EntityDeathEvent e) {
         Entity entity = e.getEntity();
         if (!entity.getMetadata("pathway").isEmpty()) {
-            LordOfTheMinecraft.instance.getLogger().info("Rampager died");
             entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation().clone().add(0, 0.5, 0), 100, 0.35, 1, 0.35, 0);
             String pathway = entity.getMetadata("pathway").getFirst().asString();
             String sequence = entity.getMetadata("sequence").getFirst().asString();

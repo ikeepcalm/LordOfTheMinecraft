@@ -9,7 +9,6 @@ import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
 import dev.ua.ikeepcalm.listeners.*;
-import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.*;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPotions;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPotions;
@@ -104,7 +103,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     private void enablePlugin() {
         characteristic = new Characteristic();
-        spiritHandler = new SpiritHandler();
         try {
             createBeyondersConfig();
             createFoHConfig();
@@ -114,6 +112,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
         divination = new Divination();
         mobsHandler = new MobsHandler();
+        spiritHandler = new SpiritHandler();
 
         registerEvents(
                 new InteractListener(),
@@ -129,7 +128,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
-            registerEvents(mobsHandler);
+            registerEvents(mobsHandler, spiritHandler);
         }
 
         Objects.requireNonNull(this.getCommand("boon")).setExecutor(new BoonCmd());

@@ -93,7 +93,6 @@ public class MI9Cmd implements CommandExecutor {
             List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
             List<Item> items = new ArrayList<>();
             for (Beyonder b : beyonder.values()) {
-                System.out.println(b);
                 ItemStack itemStack = createHeadForPlayer(b.getPlayer());
                 ItemMeta meta = itemStack.getItemMeta();
                 if (excList.contains(b.getPlayer().getName())) {

@@ -55,6 +55,7 @@ public class BlackHole extends Ability {
             // Synchronous task to interact with Spigot API
             new BukkitRunnable() {
                 int counter = 0;
+                int maxLife = 20 * 20;
 
                 @Override
                 public void run() {
@@ -71,6 +72,11 @@ public class BlackHole extends Ability {
                         if (counter >= 3 * 20) {
                             counter = 0;
                             blocks[0] = GeneralPurposeUtil.getNearbyBlocksInSphere(loc.getBlock().getLocation(), 32, false, true, true);
+                        }
+
+                        if (maxLife-- <= 0) {
+                            cancel();
+                            return;
                         }
 
                         for (int i = 0; i < 5; i++) {

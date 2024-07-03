@@ -35,9 +35,6 @@ public class Faceless extends Ability {
     public void useAbility() {
         List<Item> items = new ArrayList<>();
         for (Player b : LordOfTheMinecraft.instance.getServer().getOnlinePlayers()) {
-            System.out.println(b.getName());
-            System.out.println(b.getPlayer().getName());
-
             ItemStack itemStack = MI9Cmd.createHeadForPlayer(b);
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName("§a" + b.getPlayer().getName());

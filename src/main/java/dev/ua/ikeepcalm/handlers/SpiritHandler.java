@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.handlers;
 
-import dev.ua.ikeepcalm.entities.spirits.Spirit;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.entities.spirits.Spirit;
 import dev.ua.ikeepcalm.entities.spirits.impl.*;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
@@ -27,7 +27,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 public class SpiritHandler implements Listener, CommandExecutor {
@@ -38,9 +37,6 @@ public class SpiritHandler implements Listener, CommandExecutor {
     private final ArrayList<Spirit> spiritEntities;
 
     public SpiritHandler() {
-        LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
-        Objects.requireNonNull(LordOfTheMinecraft.instance.getCommand("spirit")).setExecutor(this);
-
         spirits = new ArrayList<>();
         spiritEntities = new ArrayList<>();
         spawnTypes = new EntityType[]{

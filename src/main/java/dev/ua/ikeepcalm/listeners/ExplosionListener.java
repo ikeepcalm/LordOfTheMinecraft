@@ -72,7 +72,6 @@ public class ExplosionListener implements Listener {
                     activeSeries.remove(seriesUUID);
                     seriesBlocks.remove(seriesUUID);
                     scheduledTasks.remove(seriesUUID);
-                    System.out.println("Rollback completed for UUID: " + seriesUUID);
                 }
             }
         };

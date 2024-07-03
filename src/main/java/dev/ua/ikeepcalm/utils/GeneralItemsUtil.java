@@ -52,9 +52,7 @@ public class GeneralItemsUtil {
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
         item.setItemMeta(itemMeta);
-
         list.add(item);
-
         return item;
     }
 
