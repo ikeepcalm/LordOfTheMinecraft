@@ -23,6 +23,8 @@ repositories {
     maven { url 'https://repo.codemc.io/repository/maven-public/' }
     maven { url 'https://maven.playpro.com' }
     maven { url 'https://repository.minecodes.pl/releases' }
+    maven { url 'https://repo.md-5.net/content/groups/public/' }
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
 }
 
 dependencies {
@@ -34,7 +36,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.32'
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.13.0'
     compileOnly 'net.coreprotect:coreprotect:22.2'
-    compileOnlyApi 'LibsDisguises:LibsDisguises:10.0.44'
+    compileOnly 'LibsDisguises:LibsDisguises:10.0.44'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
@@ -64,6 +67,9 @@ tasks {
             modrinth("nbtapi", "2.13.1")
             url("https://www.patreon.com/file?h=104200466&i=18902237")
             url("https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3454.jar")
+            url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
+            url("https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar")
+            url("https://ci.codemc.io/job/SkinsRestorer/job/SkinsRestorer/lastSuccessfulBuild/artifact/build/libs/SkinsRestorer.jar")
         }
     }
 }

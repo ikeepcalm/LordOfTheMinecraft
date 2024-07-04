@@ -8,6 +8,8 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
 import lombok.Getter;
 import lombok.Setter;
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
@@ -131,6 +133,12 @@ public class Beyonder implements Listener {
 
         if (!e.getPlayer().getUniqueId().equals(uuid)) return;
         if (!beyonder) return;
+
+        Disguise disguise = DisguiseAPI.getDisguise(e.getPlayer());
+        if (disguise != null) {
+            disguise.removeDisguise();
+            LordOfTheMinecraft.disguises.remove(e.getPlayer().getUniqueId());
+        }
 
         if (loosingControl) {
             if (pathway.getSequence().getCurrentSequence() <= 4) {

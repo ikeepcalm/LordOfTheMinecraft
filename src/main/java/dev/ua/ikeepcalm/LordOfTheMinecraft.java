@@ -56,6 +56,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     public static HashMap<UUID, Player> fakePlayers = new HashMap<>();
     public static final HashMap<UUID, FogOfHistory> fogOfHistories = new HashMap<>();
     public static BossBarUtil bossBarUtil;
+    public static Set<UUID> disguises = new HashSet<>();
     @Getter
     public FileConfiguration langConfig;
     @Getter

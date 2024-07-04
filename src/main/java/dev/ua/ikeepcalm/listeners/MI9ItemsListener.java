@@ -33,7 +33,8 @@ public class MI9ItemsListener implements Listener {
 
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
-
+        if (item.isEmpty() || item.getType().isAir())
+            return;
         if (NBT.get(item, (nbt) -> {
             return nbt.getBoolean("mi9Monocle");
         })) {

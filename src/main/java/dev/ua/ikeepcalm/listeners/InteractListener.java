@@ -5,6 +5,10 @@ import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.xenondevs.invui.gui.Gui;
@@ -38,6 +43,17 @@ public class InteractListener implements Listener {
         LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getSequence().useAbility(e.getItem(), e);
     }
 
+    @EventHandler
+    public void onSpectatorMove(PlayerMoveEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            Location from = event.getTo();
+            if (from.getBlock().isSolid()) {
+                event.getPlayer().teleport(event.getFrom());
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(Component.text("Ваша сутність надто щільна для проходження через цей блок!").color(TextColor.color(255, 0, 0)));
+            }
+        }
+    }
 
     @EventHandler
     //Check if Player is Beyonder

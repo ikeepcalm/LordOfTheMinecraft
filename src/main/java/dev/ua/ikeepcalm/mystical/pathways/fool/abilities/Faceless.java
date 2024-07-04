@@ -7,10 +7,16 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -40,7 +46,25 @@ public class Faceless extends Ability {
             meta.setDisplayName("§a" + b.getPlayer().getName());
             meta.setLore(List.of("§aПКМ - вкрасти лице"));
             itemStack.setItemMeta(meta);
-            items.add(new SimpleItem(itemStack));
+            items.add(new SimpleItem(itemStack, e -> {
+                Player player = e.getPlayer();
+                SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+                String name = skullMeta.getOwningPlayer().getName();
+                if (name.equals(player.getName())) {
+                    Disguise disguise = DisguiseAPI.getDisguise(player);
+                    if (disguise != null) {
+                        disguise.removeDisguise();
+                        LordOfTheMinecraft.disguises.remove(player.getUniqueId());
+                        player.sendMessage(Component.text("Вирішив передумати, еге ж?").color(TextColor.color(10, 250, 160)));
+                        return;
+                    }
+                }
+                PlayerDisguise playerDisguise = new PlayerDisguise(name);
+                playerDisguise.setEntity(player);
+                playerDisguise.startDisguise();
+                LordOfTheMinecraft.disguises.add(player.getUniqueId());
+                p.sendMessage(Component.text("В який момент новий ти перестанеш бути собою?").color(TextColor.color(150, 255, 0)));
+            }));
         }
         Gui gui = PagedGui.items()
                 .setStructure(
