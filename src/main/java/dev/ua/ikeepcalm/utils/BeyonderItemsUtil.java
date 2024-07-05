@@ -66,7 +66,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.IRON_DOOR);
         ItemMeta magentaPaneMeta = item.getItemMeta();
         assert magentaPaneMeta != null;
-        magentaPaneMeta.setDisplayName("§bМутовані Врата");
+        magentaPaneMeta.setDisplayName("§bМутована Брама");
         item.setItemMeta(magentaPaneMeta);
 
         list.add(item);
@@ -357,7 +357,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FERMENTED_SPIDER_EYE);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§5Око Перевертеня");
+        itemMeta.setDisplayName("§5Око Перевертня");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 

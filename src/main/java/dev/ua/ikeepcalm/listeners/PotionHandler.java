@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -113,7 +114,6 @@ public class PotionHandler implements Listener {
         addToIngredients(inv, supplementaryIngredients, 24);
         addToIngredients(inv, supplementaryIngredients, 25);
 
-
         ItemStack correctPotion = null;
 
         outerloop:
@@ -209,5 +209,24 @@ public class PotionHandler implements Listener {
             inv.setItem(i, itemMap.get(invConfig[i]));
         }
         return inv;
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e) {
+        Inventory inv = e.getInventory();
+        Player p = (Player) e.getPlayer();
+
+        if (openInvs.containsKey(p) && openInvs.get(p).equals(inv)) {
+            // Remove the inventory from the map since it's being closed
+            openInvs.remove(p);
+
+            // Collect items to give back to the player
+            for (int i : new int[]{10, 11, 15, 16, 19, 20, 24, 25}) {
+                ItemStack item = inv.getItem(i);
+                if (item != null && item.getType() != Material.AIR) {
+                    p.getInventory().addItem(item);
+                }
+            }
+        }
     }
 }

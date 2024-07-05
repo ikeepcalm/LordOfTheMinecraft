@@ -34,7 +34,7 @@ public class MI9Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
-        if (!s.hasPermission(new Permission("mi9items.use"))) {
+        if (!s.hasPermission(new Permission("  lordoftheminecraft.mi9"))) {
             s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
             return true;
         }

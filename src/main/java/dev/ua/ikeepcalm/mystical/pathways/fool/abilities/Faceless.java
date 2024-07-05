@@ -60,6 +60,9 @@ public class Faceless extends Ability {
                     }
                 }
                 PlayerDisguise playerDisguise = new PlayerDisguise(name);
+                playerDisguise.setDisplayedInTab(false);
+                playerDisguise.setKeepDisguiseOnPlayerDeath(true);
+                playerDisguise.setNameVisible(false);
                 playerDisguise.setEntity(player);
                 playerDisguise.startDisguise();
                 LordOfTheMinecraft.disguises.add(player.getUniqueId());

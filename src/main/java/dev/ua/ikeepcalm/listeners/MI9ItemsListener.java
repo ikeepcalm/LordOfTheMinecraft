@@ -38,7 +38,7 @@ public class MI9ItemsListener implements Listener {
         if (NBT.get(item, (nbt) -> {
             return nbt.getBoolean("mi9Monocle");
         })) {
-            if (player.hasPermission(new Permission("mi9items.use"))) {
+            if (player.hasPermission(new Permission("lordoftheminecraft.mi9"))) {
                 event.setCancelled(true);
                 if (!time.containsKey(player)) {
                     time.put(player, 60);
@@ -98,16 +98,16 @@ public class MI9ItemsListener implements Listener {
             Player victim = (Player) event.getEntity();
             if (event.getDamager().getType() == EntityType.PLAYER) {
                 Player damager = (Player) event.getDamager();
-                if (damager.hasPermission(new Permission("mi9items.use"))) {
-                    ItemStack item = damager.getActiveItem();
+                if (damager.hasPermission(new Permission("lordoftheminecraft.mi9"))) {
+                    ItemStack item = damager.getItemInHand();
                     if (item.getType().isAir())
                         return;
 
                     if (NBT.get(item, (nbt) -> {
                         return nbt.getBoolean("mi9Stick");
                     })) {
-                        victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 2));
-                        victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 2));
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 2));
+                        victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10 * 20, 2));
                     }
                 }
             }

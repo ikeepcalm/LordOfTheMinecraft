@@ -319,14 +319,14 @@ public class GeneralItemsUtil {
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
 
-        String[] s = {"tome-one", "tome-two", "tome-three", "tome-four"};
+        String[] s = {"tome-one", "tome-two", "tome-three", "tome-four", "tome-five"};
 
         Random ran = new Random();
         String tome = s[ran.nextInt(s.length)];
 
-        bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoires", tome,"grimoire-name")));
+        bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoires", tome, "grimoire-name")));
 
-       List<String> content = LocalizationUtil.getLocalizedArray("grimoires", tome,"grimoire-lore");
+        List<String> content = LocalizationUtil.getLocalizedArray("grimoires", tome, "grimoire-lore");
 
         bookMeta.setPages(content);
         bookMeta.setAuthor("at one's last grasp");
