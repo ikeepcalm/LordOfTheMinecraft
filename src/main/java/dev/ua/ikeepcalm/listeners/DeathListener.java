@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -20,6 +21,13 @@ public class DeathListener implements Listener {
             Location loc = e.getEntity().getLocation();
             if (loc.getWorld() != null)
                 loc.getWorld().spawnParticle(Particle.CLOUD, loc.clone().subtract(0, 0.25, 0), 100, 0.35, 1, 0.35, 0);
+        }
+
+        Player p = e.getPlayer();
+        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
+            p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+            p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE).getDefaultValue());
+            p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED).getDefaultValue());
         }
     }
 

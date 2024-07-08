@@ -77,8 +77,10 @@ public abstract class Items {
         itemMeta.addItemFlags(ItemFlag.values());
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§6Витрати духовності: §7" + spirituality);
-        if (internalPathway.getSequence().getIds().contains(id)) {
-            lore.add("§6Дію цієї здібності можна відмінити вручну");
+        if (internalPathway.getSequence() != null) {
+            if (internalPathway.getSequence().getIds().contains(id)) {
+                lore.add("§6Дію цієї здібності можна відмінити вручну");
+            }
         }
         itemMeta.setLore(lore);
         currentItem.setItemMeta(itemMeta);

@@ -2,7 +2,6 @@ package dev.ua.ikeepcalm.entities.spirits.impl;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.spirits.Spirit;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
@@ -12,6 +11,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class MediumSpirit extends Spirit implements Listener {
 
@@ -66,6 +66,10 @@ public class MediumSpirit extends Spirit implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent e) {
+        if (entity == null) {
+            return;
+        }
+
         if (e.getEntity().getShooter() != entity)
             return;
 
@@ -79,5 +83,6 @@ public class MediumSpirit extends Spirit implements Listener {
             livingEntity.damage(13, entity);
 
         hitEntity.teleport(entity);
+
     }
 }

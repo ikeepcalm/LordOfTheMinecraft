@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.listeners;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
@@ -13,10 +14,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.xenondevs.invui.gui.Gui;
@@ -35,22 +39,79 @@ public class InteractListener implements Listener {
     //Call the useAbility function from the Beyonder
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId()))
-            return;
+
+        ItemStack item = e.getItem();
+
+        if (item == null) return;
+
         if (e.getMaterial() == Material.AIR)
             return;
+
+        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
+            NBTItem nbtItem = new NBTItem(item);
+            if (nbtItem.hasTag("spiritualityDrainage") || nbtItem.hasTag("openAbilities")) {
+                p.getInventory().removeItem(item);
+                p.sendMessage(Component.text("Містичне знання розсіюється прямо у вас в руках...").color(TextColor.color(255, 0, 0)));
+            }
+            return;
+        }
 
         LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getSequence().useAbility(e.getItem(), e);
     }
 
     @EventHandler
+    public void onInventoryInteraction(InventoryClickEvent event) {
+        ItemStack item = event.getCurrentItem();
+        if (item == null) return;
+        if (item.getType() == Material.AIR) return;
+        if (event.getWhoClicked() instanceof Player p) {
+            if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
+                NBTItem nbtItem = new NBTItem(item);
+                if (nbtItem.hasTag("spiritualityDrainage") || nbtItem.hasTag("openAbilities")) {
+                    p.getInventory().removeItem(item);
+                    p.sendMessage(Component.text("Містичне знання розсіюється прямо у вас в руках...").color(TextColor.color(255, 0, 0)));
+                }
+            } else {
+                NBTItem nbtItem = new NBTItem(item);
+                if (nbtItem.hasTag("spiritualityDrainage") || nbtItem.hasTag("openAbilities")) {
+                    if (item.getAmount() > 1) {
+                        item.setAmount(1);
+                    }
+                }
+            }
+
+        }
+    }
+
+    @EventHandler
     public void onSpectatorMove(PlayerMoveEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            if (event.getPlayer().isOp()) {
+                return;
+            }
             Location from = event.getTo();
             if (from.getBlock().isSolid()) {
                 event.getPlayer().teleport(event.getFrom());
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(Component.text("Ваша сутність надто щільна для проходження через цей блок!").color(TextColor.color(255, 0, 0)));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerHeadPlacement(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack item = event.getItem();
+            if (item == null) return;
+            if (item.getType() == Material.AIR) return;
+
+            if (item.getType() == Material.PLAYER_HEAD) {
+                NBTItem nbtItem = new NBTItem(item);
+                if (nbtItem.hasTag("pathway")) {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(Component.text("Ваші пальці не можуть відпустити цей предмет...").color(TextColor.color(255, 230, 120)));
+                }
             }
         }
     }
@@ -71,6 +132,12 @@ public class InteractListener implements Listener {
 
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId()))
             return;
+
+
+        InventoryView view = event.getView();
+        if (view.getType() != InventoryType.CRAFTING) {
+            return;
+        }
 
         if (event.getSlot() == 9) {
             if (event.isLeftClick()) {

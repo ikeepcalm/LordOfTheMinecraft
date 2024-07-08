@@ -61,7 +61,6 @@ public class DemonessSequence extends Sequence implements Listener {
                 new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
                 new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 1, false, false, true),
-                new PotionEffect(PotionEffectType.NIGHT_VISION, 620, 1, false, false, true)
         };
         sequenceEffects.put(9, effects9);
 

@@ -160,6 +160,10 @@ public class SpaceSwapping extends Ability implements Listener {
     public void onShift(PlayerToggleSneakEvent e) {
         p = pathway.getBeyonder().getPlayer();
 
+        if (p == null) {
+            return;
+        }
+
         if (e.getPlayer() != p || e.getPlayer().isSneaking() || !p.getInventory().getItemInMainHand().isSimilar(getItem()) || isSwapping)
             return;
 

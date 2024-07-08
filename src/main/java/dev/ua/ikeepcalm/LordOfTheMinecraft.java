@@ -347,9 +347,14 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 int acting = configSave.getInt("beyonders." + s + ".acting");
                 int spirituality = configSave.getInt("beyonders." + s + ".spirituality");
 
-                if (pathway == null || acting == 0 || spirituality == 0) {
+                if (pathway == null) {
                     Bukkit.getConsoleSender().sendMessage("Failed to initialize " + s + ": missing attributes");
                     continue;
+                }
+
+                if (acting == 0 || spirituality == 0) {
+                    acting = 1;
+                    spirituality = 100;
                 }
 
                 Pathway.initializeNew(pathway, UUID.fromString(s), sequence, acting, spirituality);

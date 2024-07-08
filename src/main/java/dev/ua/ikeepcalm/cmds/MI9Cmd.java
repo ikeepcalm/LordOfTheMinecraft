@@ -34,7 +34,7 @@ public class MI9Cmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
-        if (!s.hasPermission(new Permission("  lordoftheminecraft.mi9"))) {
+        if (!s.hasPermission(new Permission("lordoftheminecraft.mi9"))) {
             s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
             return true;
         }
@@ -50,13 +50,13 @@ public class MI9Cmd implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("monocle")) {
-            ItemStack monocle = new ItemStack(Material.CLOCK);
+            ItemStack monocle = new ItemStack(Material.GLOWSTONE_DUST);
             ItemMeta meta = monocle.getItemMeta();
             meta.setDisplayName("§6Монокль");
             meta.setCustomModelData(1);
             List<String> lore = List.of("§7Монокль для дослідження злочинів", "§7ЛКМ - змінити період дослідження", "§7ПКМ - провести дослідження");
             meta.setLore(lore);
-            meta.setCustomModelData(3);
+            meta.setCustomModelData(7);
             monocle.setItemMeta(meta);
             NBT.modify(monocle, (nbt) -> {
                 nbt.setBoolean("mi9Monocle", true);
@@ -71,10 +71,10 @@ public class MI9Cmd implements CommandExecutor {
                 return true;
             }
         } else if (args[0].equalsIgnoreCase("stick")) {
-            ItemStack stick = new ItemStack(Material.STICK);
+            ItemStack stick = new ItemStack(Material.GLOWSTONE_DUST);
             ItemMeta meta = stick.getItemMeta();
             meta.setDisplayName("§6Палиця");
-            meta.setCustomModelData(3);
+            meta.setCustomModelData(6);
             stick.setItemMeta(meta);
             NBT.modify(stick, (nbt) -> {
                 nbt.setBoolean("mi9Stick", true);
