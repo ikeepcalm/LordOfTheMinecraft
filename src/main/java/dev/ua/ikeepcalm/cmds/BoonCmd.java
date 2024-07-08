@@ -22,7 +22,7 @@ public class BoonCmd implements CommandExecutor {
             return true;
         }
         if (args.length != 2) {
-            s.sendMessage("§cНеправильне використання: Використовуйте /beyonder <Шлях> <Послідовність>!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /boon <Шлях> <Послідовність>!");
             return true;
         }
 
@@ -30,7 +30,7 @@ public class BoonCmd implements CommandExecutor {
         try {
             sequence = Integer.parseInt(args[1]);
         } catch (Exception exc) {
-            s.sendMessage("§cНеправильне використання: Використовуйте /beyonder <Шлях> <Послідовність>!");
+            s.sendMessage("§cНеправильне використання: Використовуйте /boon <Шлях> <Послідовність>!");
             return true;
         }
 
