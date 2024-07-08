@@ -27,7 +27,7 @@ public class DeathListener implements Listener {
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
             p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
             p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_ATTACK_DAMAGE).getDefaultValue());
-            p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED).getDefaultValue());
+            p.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
         }
     }
 

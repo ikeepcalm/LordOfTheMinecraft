@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionType;
-import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 
 import java.net.MalformedURLException;
@@ -133,15 +132,16 @@ public class GeneralItemsUtil {
         cowMeta.setDisplayName("§6Сутності");
         String[] cowLore = {"§5Визначте місцезнаходження будь-якої сутності"};
         cowMeta.setLore(Arrays.asList(cowLore));
-        PlayerProfile cowProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
-        PlayerTextures cowTextures = cowProfile.getTextures();
+
+        com.destroystokyo.paper.profile.PlayerProfile playerProfile = Bukkit.createProfile(LordOfTheMinecraft.randomUUID);
+        PlayerTextures playerTextures = playerProfile.getTextures();
         try {
-            cowTextures.setSkin(new URL("https://textures.minecraft.net/texture/c5a9cd58d4c67bccc8fb1f5f756a2d381c9ffac2924b7f4cb71aa9fa13fb5c"));
+            playerTextures.setSkin(new URL("https://textures.minecraft.net/texture/c5a9cd58d4c67bccc8fb1f5f756a2d381c9ffac2924b7f4cb71aa9fa13fb5c"));
         } catch (MalformedURLException ignored) {
         }
-        cowMeta.setOwnerProfile(cowProfile);
+        playerProfile.setTextures(playerTextures);
+        cowMeta.setPlayerProfile(playerProfile);
         cowHead.setItemMeta(cowMeta);
-
         list.add(cowHead);
 
         return cowHead;
@@ -154,13 +154,17 @@ public class GeneralItemsUtil {
         grassMeta.setDisplayName("§6Біоми");
         String[] grassLore = {"§5Визначте місцезнаходження будь-якого біома"};
         grassMeta.setLore(Arrays.asList(grassLore));
-        PlayerProfile grassProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
-        PlayerTextures grassTextures = grassProfile.getTextures();
+
+        com.destroystokyo.paper.profile.PlayerProfile playerProfile = Bukkit.createProfile(LordOfTheMinecraft.randomUUID);
+        PlayerTextures playerTextures = playerProfile.getTextures();
         try {
-            grassTextures.setSkin(new URL("http://textures.minecraft.net/texture/16bb9fb97ba87cb727cd0ff477f769370bea19ccbfafb581629cd5639f2fec2b"));
+            playerTextures.setSkin(new URL("http://textures.minecraft.net/texture/16bb9fb97ba87cb727cd0ff477f769370bea19ccbfafb581629cd5639f2fec2b"));
         } catch (MalformedURLException ignored) {
         }
-        grassMeta.setOwnerProfile(grassProfile);
+        playerProfile.setTextures(playerTextures);
+        grassMeta.setPlayerProfile(playerProfile);
+
+        grassMeta.setPlayerProfile(playerProfile);
         grassHead.setItemMeta(grassMeta);
 
         list.add(grassHead);
@@ -175,15 +179,16 @@ public class GeneralItemsUtil {
         playerMeta.setDisplayName("§6Гравці");
         String[] playerLore = {"§5Визначте місцезнаходження будь-якого гравця"};
         playerMeta.setLore(Arrays.asList(playerLore));
-        PlayerProfile playerProfile = Bukkit.createPlayerProfile(LordOfTheMinecraft.randomUUID);
+
+        com.destroystokyo.paper.profile.PlayerProfile playerProfile = Bukkit.createProfile(LordOfTheMinecraft.randomUUID);
         PlayerTextures playerTextures = playerProfile.getTextures();
         try {
             playerTextures.setSkin(new URL("http://textures.minecraft.net/texture/4d9d043adc884b979b4f42bdb350f2a301327cab49c4ce2de42a8f4601fe9dbf"));
         } catch (MalformedURLException ignored) {
         }
-        playerMeta.setOwnerProfile(playerProfile);
+        playerProfile.setTextures(playerTextures);
+        playerMeta.setPlayerProfile(playerProfile);
         playerHead.setItemMeta(playerMeta);
-
         list.add(playerHead);
 
         return playerHead;

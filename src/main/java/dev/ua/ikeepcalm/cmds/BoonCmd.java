@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.cmds;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,46 +22,92 @@ public class BoonCmd implements CommandExecutor {
             s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
             return true;
         }
-        if (args.length != 2) {
-            s.sendMessage("§cНеправильне використання: Використовуйте /boon <Шлях> <Послідовність>!");
-            return true;
-        }
+        if (args.length >= 2 && args.length < 4) {
+            if (args.length == 2) {
+                int sequence;
+                try {
+                    sequence = Integer.parseInt(args[1]);
+                } catch (Exception exc) {
+                    s.sendMessage("§cНеправильне використання: Використовуйте /boon <Шлях> <Послідовність>!");
+                    return true;
+                }
 
-        int sequence;
-        try {
-            sequence = Integer.parseInt(args[1]);
-        } catch (Exception exc) {
-            s.sendMessage("§cНеправильне використання: Використовуйте /boon <Шлях> <Послідовність>!");
-            return true;
-        }
-
-        if (sequence > 9 || sequence < 1) {
-            s.sendMessage("§cВи можете обрати Послідовність тільки від 9 до 1!");
-            return true;
-        }
+                if (sequence > 9 || sequence < 1) {
+                    s.sendMessage("§cВи можете обрати Послідовність тільки від 9 до 1!");
+                    return true;
+                }
 
 
-        //Check if Player is already a Beyonder.
-        // If he is, then remove him from the pathway and initialize a new one for the player
-        //If he isn't then just initialize a pathway for him
-        if (LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
-            LordOfTheMinecraft.beyonders.get(p.getUniqueId()).removeBeyonder();
-            Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
-            if (pathway == null) {
-                p.sendMessage("§c" + args[0].toLowerCase() + " не є дійсним Шляхом! Видалення вашого статусу Потойбічного");
+                //Check if Player is already a Beyonder.
+                // If he is, then remove him from the pathway and initialize a new one for the player
+                //If he isn't then just initialize a pathway for him
+                if (LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
+                    LordOfTheMinecraft.beyonders.get(p.getUniqueId()).removeBeyonder();
+                    Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
+                    if (pathway == null) {
+                        p.sendMessage("§c" + args[0].toLowerCase() + " не є дійсним Шляхом! Видалення вашого статусу Потойбічного");
+                        return true;
+                    }
+                    p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
+                    return true;
+                }
+
+
+                Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
+                if (pathway == null) {
+                    p.sendMessage("§c" + args[0].toLowerCase() + " не є Шляхом");
+                    return true;
+                }
+                p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
+                return true;
+            } else {
+
+                Player target = Bukkit.getPlayer(args[0]);
+                if (target == null) {
+                    s.sendMessage("§cГравець" + args[0] + " не знайдений!");
+                    return true;
+                }
+
+                int sequence;
+                try {
+                    sequence = Integer.parseInt(args[2]);
+                } catch (Exception exc) {
+                    s.sendMessage("§cНеправильне використання: Використовуйте /boon <Гравець> <Шлях> <Послідовність>!");
+                    return true;
+                }
+
+                if (sequence > 9 || sequence < 1) {
+                    s.sendMessage("§cВи можете обрати Послідовність тільки від 9 до 1!");
+                    return true;
+                }
+
+
+                //Check if Player is already a Beyonder.
+                // If he is, then remove him from the pathway and initialize a new one for the player
+                //If he isn't then just initialize a pathway for him
+                if (LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
+                    LordOfTheMinecraft.beyonders.get(p.getUniqueId()).removeBeyonder();
+                    Pathway pathway = Pathway.initializeNew(args[1].toLowerCase(), p.getUniqueId(), sequence);
+                    if (pathway == null) {
+                        p.sendMessage("§c" + args[1].toLowerCase() + " не є дійсним Шляхом! Видалення вашого статусу Потойбічного");
+                        return true;
+                    }
+                    target.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
+                    return true;
+                }
+
+
+                Pathway pathway = Pathway.initializeNew(args[1].toLowerCase(), p.getUniqueId(), sequence);
+                if (pathway == null) {
+                    p.sendMessage("§c" + args[1].toLowerCase() + " не є Шляхом");
+                    return true;
+                }
+                target.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
                 return true;
             }
-            p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
+        } else {
+            s.sendMessage("§cНеправильне використання: Використовуйте /boon <Гравець?> <Шлях> <Послідовність>!");
             return true;
         }
-
-
-        Pathway pathway = Pathway.initializeNew(args[0].toLowerCase(), p.getUniqueId(), sequence);
-        if (pathway == null) {
-            p.sendMessage("§c" + args[0].toLowerCase() + " не є Шляхом");
-            return true;
-        }
-        p.sendMessage(pathway.getStringColor() + "Тепер ви - Потойбічній Шляху \"" + pathway.getName() + "\" " + sequence + " послідовності!");
-        return true;
     }
 }

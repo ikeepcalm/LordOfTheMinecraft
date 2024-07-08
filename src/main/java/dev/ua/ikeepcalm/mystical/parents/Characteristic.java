@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import lombok.SneakyThrows;
@@ -9,7 +10,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 
 import java.net.URL;
@@ -47,23 +47,25 @@ public class Characteristic {
 
     public ItemStack getCharacteristic(int sequence, String pathway, String pathwayColor) {
         final ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta playerMeta = (SkullMeta) playerHead.getItemMeta();
-        assert playerMeta != null;
-        playerMeta.setDisplayName(pathwayColor + "Позамежна характеристика");
+        SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
+        assert skullMeta != null;
+        skullMeta.setDisplayName(pathwayColor + "Позамежна характеристика");
         String[] playerLore = {
                 pathwayColor + "Шлях: " + translatePathway(pathway),
-                pathwayColor + "Послідовність: " + sequence
+                pathwayColor + "Послідовність: " + sequence,
+                pathwayColor + "Замінює головні інгрідієнти зілля"
         };
-        playerMeta.setLore(Arrays.asList(playerLore));
+        skullMeta.setLore(Arrays.asList(playerLore));
         if (blocksForPathway.get(pathway) != null) {
-            PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid);
+            PlayerProfile playerProfile = Bukkit.createProfile(uuid);
             PlayerTextures playerTextures = playerProfile.getTextures();
             playerTextures.setSkin(blocksForPathway.get(pathway));
-            playerMeta.setOwnerProfile(playerProfile);
+            playerProfile.setTextures(playerTextures);
+            skullMeta.setPlayerProfile(playerProfile);
         }
-        playerMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-        playerMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-        playerHead.setItemMeta(playerMeta);
+        skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        skullMeta.addEnchant(Enchantment.CHANNELING, 1, true);
+        playerHead.setItemMeta(skullMeta);
 
         NBT.modify(playerHead, (nbt) -> {
             nbt.setString("pathway", pathway);

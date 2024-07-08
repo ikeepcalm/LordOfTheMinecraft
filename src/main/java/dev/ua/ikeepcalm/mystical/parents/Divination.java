@@ -1,14 +1,15 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -20,16 +21,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class Divination implements Listener {
 
     private final HashMap<Beyonder, Inventory> openInv;
     private final HashMap<Beyonder, Collection<Entity>> animalDowsing;
     private final ArrayList<Beyonder> dreamDivination;
+    private final ArrayList<Beyonder> playerDowsing;
 
     private final ItemStack magentaPane;
     private final ItemStack stick;
@@ -37,13 +36,13 @@ public class Divination implements Listener {
     private final ItemStack dream;
 
     private final ItemStack cowHead;
-    private final ItemStack grassHead;
     private final ItemStack playerHead;
 
     public Divination() {
         openInv = new HashMap<>();
         animalDowsing = new HashMap<>();
         dreamDivination = new ArrayList<>();
+        playerDowsing = new ArrayList<>();
 
         magentaPane = GeneralItemsUtil.getMagentaPane();
         stick = GeneralItemsUtil.getDowsingRod();
@@ -51,7 +50,6 @@ public class Divination implements Listener {
         dream = GeneralItemsUtil.getDreamDivination();
 
         cowHead = GeneralItemsUtil.getCowHead();
-        grassHead = GeneralItemsUtil.getGrassHead();
         playerHead = GeneralItemsUtil.getDivinationHead();
     }
 
@@ -91,7 +89,7 @@ public class Divination implements Listener {
         inv.setItem(10, magentaPane);
         inv.setItem(11, cowHead);
         inv.setItem(12, magentaPane);
-        inv.setItem(13, grassHead);
+        inv.setItem(13, magentaPane);
         inv.setItem(14, magentaPane);
         inv.setItem(15, playerHead);
         inv.setItem(16, magentaPane);
@@ -136,6 +134,15 @@ public class Divination implements Listener {
             dreamDivination.add(beyonder);
         }
 
+        if (Objects.equals(e.getCurrentItem(), playerHead)) {
+            openInv.remove(beyonder);
+            Player p = (Player) e.getWhoClicked();
+            p.closeInventory();
+            p.sendMessage("§5Введіть назву гравця, якого хочете знайти");
+            remove(beyonder);
+            playerDowsing.add(beyonder);
+        }
+
         if (Objects.equals(e.getCurrentItem(), cowHead)) {
             openInv.remove(beyonder);
             Player p = (Player) e.getWhoClicked();
@@ -158,7 +165,7 @@ public class Divination implements Listener {
         openInv.remove(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId()));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDreamChat(AsyncPlayerChatEvent e) {
         if (!LordOfTheMinecraft.beyonders.containsKey(e.getPlayer().getUniqueId()) || !dreamDivination.contains(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId())))
             return;
@@ -232,7 +239,7 @@ public class Divination implements Listener {
     }
 
     @EventHandler
-    public void onDowsingChat(AsyncPlayerChatEvent e) {
+    public void onDowsingEntityChat(AsyncPlayerChatEvent e) {
         if (!LordOfTheMinecraft.beyonders.containsKey(e.getPlayer().getUniqueId()) || !animalDowsing.containsKey(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId())))
             return;
 
@@ -288,4 +295,51 @@ public class Divination implements Listener {
             particleLoc.add(v.normalize().multiply(0.5));
         }
     }
+
+    @EventHandler
+    public void onDowsingPlayerChat(AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
+        UUID playerUUID = p.getUniqueId();
+
+        // Check if the player is in the beyonder list and in player dowsing mode
+        if (!LordOfTheMinecraft.beyonders.containsKey(playerUUID) ||
+            !playerDowsing.contains(LordOfTheMinecraft.beyonders.get(playerUUID))) {
+            return;
+        }
+
+        e.setCancelled(true);
+        handlePlayerDowsing(p, e.getMessage());
+    }
+
+    private void handlePlayerDowsing(Player p, String chatMsg) {
+        UUID playerUUID = p.getUniqueId();
+
+        // Stop dowsing if the player sends "стоп"
+        if (chatMsg.equalsIgnoreCase("стоп")) {
+            p.sendMessage("§cТретє Око заплющилося...");
+            playerDowsing.remove(LordOfTheMinecraft.beyonders.get(playerUUID));
+            return;
+        }
+
+        // Find the target player by name
+        Player targetPlayer = Bukkit.getPlayerExact(chatMsg);
+        if (targetPlayer == null) {
+            p.sendMessage("§c" + GeneralPurposeUtil.capitalize(chatMsg) + " не знайдено онлайн! Якщо бажаєте заплющити Третє Око, введіть \"стоп\"");
+            return;
+        }
+
+        // Start location for the particles
+        Vector v = targetPlayer.getLocation().toVector().subtract(p.getEyeLocation().toVector());
+
+        Location particleLoc = p.getEyeLocation().clone().add(v.normalize().multiply(0.5));
+        for (int i = 0; i < 50; i++) {
+            p.spawnParticle(Particle.PORTAL, particleLoc, 50, 0.01, 0.0, 0.01, 0);
+            particleLoc.add(v.normalize().multiply(0.5));
+        }
+
+        // Remove the player from the dowsing list
+        playerDowsing.remove(LordOfTheMinecraft.beyonders.get(playerUUID));
+    }
+
+
 }

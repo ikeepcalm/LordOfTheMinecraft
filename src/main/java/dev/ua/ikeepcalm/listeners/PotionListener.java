@@ -48,11 +48,11 @@ public class PotionListener implements Listener {
             }
             //makes new Beyonder loose control accordingly
             switch (9 - sequence) {
-                case 0 -> pathway.getBeyonder().looseControl(93, 20);
-                case 1 -> pathway.getBeyonder().looseControl(50, 20);
-                case 2 -> pathway.getBeyonder().looseControl(25, 16);
-                case 3, 4 -> pathway.getBeyonder().looseControl(15, 16);
-                case 5 -> pathway.getBeyonder().looseControl(1, 20);
+                case 0 -> pathway.getBeyonder().looseControl(95, 20);
+                case 1 -> pathway.getBeyonder().looseControl(30, 20);
+                case 2 -> pathway.getBeyonder().looseControl(20, 16);
+                case 3, 4 -> pathway.getBeyonder().looseControl(10, 16);
+                case 5 -> pathway.getBeyonder().looseControl(5, 20);
                 default -> pathway.getBeyonder().looseControl(0, 10);
             }
 

@@ -57,6 +57,7 @@ public class Beyonder implements Listener {
     @Setter
     @Getter
     private double spirituality;
+    @Getter
     private double maxSpirituality;
     private double lastSpirituality;
     @Getter
@@ -163,6 +164,7 @@ public class Beyonder implements Listener {
 
         online = false;
         lastSpirituality = spirituality;
+        LordOfTheMinecraft.instance.saveBeyonder(this);
     }
 
     @EventHandler
@@ -437,7 +439,6 @@ public class Beyonder implements Listener {
         Random random = new Random();
         boolean survives = ((random.nextInt(100) + 1) <= lostControl);
         LordOfTheMinecraft.instance.getLogger().info("Survives: " + survives);
-
         loosingControl = true;
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * timeOfLoosingControl, 3, false, false));
@@ -528,8 +529,7 @@ public class Beyonder implements Listener {
         }
 
         if (!digested) {
-            looseControl(5, 12);
-
+            looseControl(30, 12);
         } else {
             switch (getPathway().getSequence().getCurrentSequence() - 1 - sequence) {
                 case 0 -> looseControl(93, 20);

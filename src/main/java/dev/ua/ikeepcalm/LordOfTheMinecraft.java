@@ -78,7 +78,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         createSaveLangConfig();
         createSaveExcConfig();
         prefix = "§8[§5Lord of the Minecraft§8] ";
-        randomUUID = UUID.fromString("1af36f3a-d8a3-11ed-afa1-0242ac120002");
+        randomUUID = UUID.fromString("9ba0f84e-cc9c-3df2-a75d-6105d789e0d3");
         instance = this;
         beyonders = new HashMap<>();
         fakePlayers = new HashMap<>();
@@ -155,12 +155,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Override
     //call the save function to save the beyonders.yml file and the fools.yml file
     public void onDisable() {
-        try {
-            save();
-        } catch (IOException e) {
-            log("Failed to save beyonders.yml");
-        }
-
+        saveBeyonders();
         saveResource("fools.yml", true);
 
         for (FogOfHistory foh : fogOfHistories.values()) {
@@ -280,18 +275,70 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     //    uuid:
     //        pathway: "pathway-name"
     //        sequence: "sequence-number"
-    public void save() throws IOException {
+    public void saveBeyonders() {
         Bukkit.getConsoleSender().sendMessage(prefix + "§aSaving Beyonders");
 
-        for (Map.Entry<UUID, Beyonder> entry : beyonders.entrySet()) {
-            configSave.set("beyonders." + entry.getKey() + ".pathway", entry.getValue().getPathway().getNameNormalized());
-            configSave.set("beyonders." + entry.getKey() + ".sequence", entry.getValue().getPathway().getSequence().getCurrentSequence());
-            configSave.set("beyonders." + entry.getKey() + ".acting", (int) entry.getValue().getActingProgress());
-            configSave.set("beyonders." + entry.getKey() + ".spirituality", (int) entry.getValue().getSpirituality());
+        configSave = YamlConfiguration.loadConfiguration(configSaveFile);
+
+        try {
+            for (Map.Entry<UUID, Beyonder> entry : beyonders.entrySet()) {
+                UUID uuid = entry.getKey();
+                Beyonder beyonder = entry.getValue();
+
+                String basePath = "beyonders." + uuid;
+                configSave.set(basePath + ".pathway", beyonder.getPathway().getNameNormalized());
+                configSave.set(basePath + ".sequence", beyonder.getPathway().getSequence().getCurrentSequence());
+
+                int acting = (int) beyonder.getActingProgress();
+                int spirituality = (int) beyonder.getSpirituality();
+                if (acting == 0) {
+                    acting = 1;
+                }
+                if (spirituality == 0) {
+                    spirituality = (int) (beyonder.getMaxSpirituality() * 0.3);
+                }
+                configSave.set(basePath + ".acting", acting);
+                configSave.set(basePath + ".spirituality", spirituality);
+
+                log(prefix + "§aSaved beyonder: " + Bukkit.getOfflinePlayer(uuid).getName());
+            }
+
+            // Save the configuration back to the file after updating all entries
+            configSave.save(configSaveFile);
+
+        } catch (IOException exc) {
+            log("Failed to save beyonders: " + exc.getMessage());
         }
-        configSave.save(configSaveFile);
     }
 
+
+    public void saveBeyonder(Beyonder beyonder) {
+        // Load the configuration from the file to ensure we have the latest version
+        configSave = YamlConfiguration.loadConfiguration(configSaveFile);
+
+        // Update the specific player's section
+        String basePath = "beyonders." + beyonder.getUuid();
+        configSave.set(basePath + ".pathway", beyonder.getPathway().getNameNormalized());
+        configSave.set(basePath + ".sequence", beyonder.getPathway().getSequence().getCurrentSequence());
+
+        int acting = (int) beyonder.getActingProgress();
+        int spirituality = (int) beyonder.getSpirituality();
+        if (acting == 0) {
+            acting = 1;
+        }
+        if (spirituality == 0) {
+            spirituality = (int) (beyonder.getMaxSpirituality() * 0.3);
+        }
+        configSave.set(basePath + ".acting", acting);
+        configSave.set(basePath + ".spirituality", spirituality);
+
+        // Save the configuration back to the file
+        try {
+            configSave.save(configSaveFile);
+        } catch (IOException exc) {
+            log("Failed to save beyonder: " + exc.getMessage());
+        }
+    }
 
     public void loadFohConfig() {
         if (configSaveFoh.getConfigurationSection("fools") == null)
@@ -352,14 +399,17 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                     continue;
                 }
 
-                if (acting == 0 || spirituality == 0) {
+                if (acting == 0) {
                     acting = 1;
+                }
+
+                if (spirituality == 0) {
                     spirituality = 100;
                 }
 
                 Pathway.initializeNew(pathway, UUID.fromString(s), sequence, acting, spirituality);
             } catch (Exception exception) {
-                Bukkit.getConsoleSender().sendMessage("Failed to initialize " + s);
+                log(prefix + "Failed to initialize " + s);
 
                 // Error message
                 StringWriter sw = new StringWriter();

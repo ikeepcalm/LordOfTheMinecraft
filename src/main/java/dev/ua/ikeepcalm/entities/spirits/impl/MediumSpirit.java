@@ -48,20 +48,21 @@ public class MediumSpirit extends Spirit implements Listener {
         if (e.getEntity().getShooter() != entity)
             return;
 
-        Fireball fireball = (Fireball) e.getEntity();
-        fireball.setDirection(fireball.getDirection().multiply(5));
+        if (e.getEntity() instanceof Fireball fireball) {
+            fireball.setDirection(fireball.getDirection().multiply(5));
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!fireball.isValid())
-                    cancel();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!fireball.isValid())
+                        cancel();
 
-                fireball.getWorld().spawnParticle(Particle.DUST, fireball.getLocation(), 10, .2, .2, .2, dust);
-                fireball.setVisualFire(false);
-                fireball.setFireTicks(0);
-            }
-        }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+                    fireball.getWorld().spawnParticle(Particle.DUST, fireball.getLocation(), 10, .2, .2, .2, dust);
+                    fireball.setVisualFire(false);
+                    fireball.setFireTicks(0);
+                }
+            }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+        }
     }
 
     @EventHandler
