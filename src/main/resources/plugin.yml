@@ -21,6 +21,12 @@ commands:
   mi9:
     description: Only for the MI9 members!
     usage: /<cmd>
+  sleep:
+    description: Ask the server to skip the night
+    usage: /<cmd>
+  insomnia:
+    description: Ask the server to not skip the night
+    usage: /<cmd>
 permissions:
   lordoftheminecraft.boon:
     description: Allows the player to become a Beyonder

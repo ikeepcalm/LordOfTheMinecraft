@@ -4,6 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.WanderingTrader;
@@ -25,6 +26,11 @@ public class GenerationListener implements Listener {
 
     @EventHandler
     public void onLootGenerate(LootGenerateEvent e) {
+        Location location = e.getLootContext().getLocation();
+        if (e.getWorld().getBlockAt(location).getType() == Material.DECORATED_POT) {
+            return;
+        }
+
         ItemStack item;
         Random random = new Random();
 

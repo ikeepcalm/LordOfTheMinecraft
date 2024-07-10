@@ -17,19 +17,16 @@ public class BoonCmd implements CommandExecutor {
             s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
             return true;
         }
-        if (!(s instanceof Player p)) {
-            s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
-            return true;
-        }
+
         if (args.length < 2 || args.length > 3) {
             s.sendMessage("§cНеправильне використання: Використовуйте /boon <Гравець?> <Шлях> <Послідовність>!");
             return true;
         }
 
-        Player target = p;
         String pathwayName;
         int sequence;
 
+        Player target = null;
         if (args.length == 3) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
@@ -44,6 +41,10 @@ public class BoonCmd implements CommandExecutor {
                 return true;
             }
         } else {
+            if (!(s instanceof Player p)) {
+                s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
+                return true;
+            }
             pathwayName = args[0].toLowerCase();
             try {
                 sequence = Integer.parseInt(args[1]);
@@ -58,6 +59,9 @@ public class BoonCmd implements CommandExecutor {
             return true;
         }
 
+        if (target == null) {
+            return true;
+        }
         handlePathwayAssignment(target, pathwayName, sequence);
         return true;
     }

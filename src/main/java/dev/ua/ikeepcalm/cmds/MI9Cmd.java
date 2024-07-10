@@ -54,7 +54,7 @@ public class MI9Cmd implements CommandExecutor {
             ItemMeta meta = monocle.getItemMeta();
             meta.setDisplayName("§6Монокль");
             meta.setCustomModelData(1);
-            List<String> lore = List.of("§7Монокль для дослідження злочинів", "§7ЛКМ - змінити період дослідження", "§7ПКМ - провести дослідження");
+            List<String> lore = List.of("§7Монокль для дослідження злочинів", "§7ПКМ - увімкнути режим дослідження", "§7ЛКМ - провести дослідження поруч");
             meta.setLore(lore);
             meta.setCustomModelData(7);
             monocle.setItemMeta(meta);

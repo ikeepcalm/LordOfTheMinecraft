@@ -60,6 +60,27 @@ public class InteractListener implements Listener {
     }
 
     @EventHandler
+    public void onItemMoveEvent(InventoryClickEvent event) {
+        ItemStack item = event.getCurrentItem();
+        if (item == null) return;
+        if (item.getType() == Material.AIR) return;
+
+        NBTItem nbtItem = new NBTItem(item);
+        if (nbtItem.hasTag("spiritualityDrainage") || nbtItem.hasTag("openAbilities")) {
+            InventoryView view = event.getView();
+            if (view.getType() != InventoryType.CRAFTING) {
+                event.setCancelled(true);
+            }
+        } else if (nbtItem.hasTag("pathway")) {
+            InventoryView view = event.getView();
+            event.setCancelled(view.getType() != InventoryType.CRAFTING && view.getType() != InventoryType.CHEST
+                               && view.getType() != InventoryType.ENDER_CHEST && view.getType() != InventoryType.SHULKER_BOX
+                               && view.getType() != InventoryType.BARREL);
+        }
+
+    }
+
+    @EventHandler
     public void onInventoryInteraction(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
         if (item == null) return;

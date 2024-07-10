@@ -438,7 +438,6 @@ public class Beyonder implements Listener {
     public void looseControl(int lostControl, int timeOfLoosingControl) {
         Random random = new Random();
         boolean survives = ((random.nextInt(100) + 1) <= lostControl);
-        LordOfTheMinecraft.instance.getLogger().info("Survives: " + survives);
         loosingControl = true;
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * timeOfLoosingControl, 3, false, false));

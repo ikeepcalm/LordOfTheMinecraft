@@ -1,10 +1,7 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.ua.ikeepcalm.cmds.BoonCmd;
-import dev.ua.ikeepcalm.cmds.MI9Cmd;
-import dev.ua.ikeepcalm.cmds.SpawnCmd;
-import dev.ua.ikeepcalm.cmds.TestCmd;
+import dev.ua.ikeepcalm.cmds.*;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
@@ -136,6 +133,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCmd());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCmd());
         Objects.requireNonNull(this.getCommand("mi9")).setExecutor(new MI9Cmd());
+        Objects.requireNonNull(this.getCommand("sleep")).setExecutor(new SleepCmd());
+        Objects.requireNonNull(this.getCommand("insomnia")).setExecutor(new InsomniaCmd());
 
         potions.add(new SunPotions());
         potions.add(new FoolPotions());
@@ -300,7 +299,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 configSave.set(basePath + ".acting", acting);
                 configSave.set(basePath + ".spirituality", spirituality);
 
-                log(prefix + "§aSaved beyonder: " + Bukkit.getOfflinePlayer(uuid).getName());
+                log("§aSaved beyonder: " + Bukkit.getOfflinePlayer(uuid).getName());
             }
 
             // Save the configuration back to the file after updating all entries
