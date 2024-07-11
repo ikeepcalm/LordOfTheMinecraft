@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.cmds;
+package dev.ua.ikeepcalm.optional.sleep;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import net.kyori.adventure.text.Component;
@@ -15,14 +15,14 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 
-public class InsomniaCmd implements CommandExecutor {
+public class SleepCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NonNull CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
         String notification = LordOfTheMinecraft.instance.getConfig().getString("notification");
-        String insomniaMessage = LordOfTheMinecraft.instance.getConfig().getString("insomnia-message");
+        String sleepMessage = LordOfTheMinecraft.instance.getConfig().getString("sleep-message");
 
-        if (notification == null || insomniaMessage == null) {
+        if (notification == null || sleepMessage == null) {
             return false;
         }
 
@@ -32,9 +32,9 @@ public class InsomniaCmd implements CommandExecutor {
                     List<Player> players = player.getWorld().getPlayers();
                     for (Player p : players) {
                         if (notification.equals("CHAT")) {
-                            p.sendMessage(Component.text(insomniaMessage.replace("{player}", player.getName())));
+                            p.sendMessage(Component.text(sleepMessage.replace("{player}", player.getName())));
                         } else {
-                            sendActionbar(p, insomniaMessage.replace("{player}", player.getName()), 5);
+                            sendActionbar(p, sleepMessage.replace("{player}", player.getName()), 5);
                         }
                     }
                 } else {

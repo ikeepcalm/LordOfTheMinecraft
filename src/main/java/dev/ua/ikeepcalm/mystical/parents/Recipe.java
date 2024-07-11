@@ -2,7 +2,6 @@ package dev.ua.ikeepcalm.mystical.parents;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -11,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Recipe {
 
@@ -19,16 +17,15 @@ public class Recipe {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
-        bookMeta.setDisplayName(potion.getStringColor() + "Містичний рецепт: " + translateName(potion.getName()) + " " + sequence);
         bookMeta.title(Component.text("Містичний рецепт: " + translateName(potion.getName()) + " " + sequence).color(TextColor.color(0x00FF00)));
         StringBuilder mainIngredients = new StringBuilder();
         for (ItemStack item : potion.getMainIngredients(sequence)) {
-            setDisplayName(mainIngredients, item);
+            appendContent(mainIngredients, item);
         }
 
         StringBuilder supplIngredients = new StringBuilder();
         for (ItemStack item : potion.getSupplIngredients(sequence)) {
-            setDisplayName(supplIngredients, item);
+            appendContent(supplIngredients, item);
         }
 
         ArrayList<String> content = new ArrayList<>();
@@ -52,11 +49,11 @@ public class Recipe {
         return book;
     }
 
-    private void setDisplayName(StringBuilder supplIngredients, ItemStack item) {
+    private void appendContent(StringBuilder supplIngredients, ItemStack item) {
         if (item.getItemMeta().hasDisplayName()) {
-            supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(item.getItemMeta().displayName()))).append("\n");
+            supplIngredients.append(item.getItemMeta().getDisplayName()).append("\n");
         } else {
-            supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Component.translatable(Objects.requireNonNull(item.getType().getItemTranslationKey())))).append("\n");
+            supplIngredients.append(item.getType()).append("\n");
         }
         supplIngredients.append("\n");
     }

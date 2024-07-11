@@ -13,6 +13,9 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPotions;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
+import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
+import dev.ua.ikeepcalm.optional.sleep.InsomniaCmd;
+import dev.ua.ikeepcalm.optional.sleep.SleepCmd;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
 import net.coreprotect.CoreProtect;
@@ -135,6 +138,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("mi9")).setExecutor(new MI9Cmd());
         Objects.requireNonNull(this.getCommand("sleep")).setExecutor(new SleepCmd());
         Objects.requireNonNull(this.getCommand("insomnia")).setExecutor(new InsomniaCmd());
+        Objects.requireNonNull(this.getCommand("emporium")).setExecutor(new EmporiumCmd());
 
         potions.add(new SunPotions());
         potions.add(new FoolPotions());

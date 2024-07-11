@@ -1,8 +1,8 @@
 package dev.ua.ikeepcalm.mystical.pathways.door.abilities;
 
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +32,9 @@ public class DoorOpening extends Ability {
             return;
 
         for (int i = 0; i < 100; i++) {
+            if (startLoc.getBlock().getType() == Material.BEDROCK)
+                break;
+
             if (!startLoc.getBlock().getType().isSolid())
                 break;
 

@@ -402,7 +402,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.COAL);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§Трансформоване Серце Демонічного Вовка Завіси");
+        itemMeta.setDisplayName("§5Трансформоване Серце Демонічного Вовка Завіси");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
 

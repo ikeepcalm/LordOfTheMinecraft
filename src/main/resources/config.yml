@@ -11,3 +11,9 @@ enable-mobs: true
 notification: ACTIONBAR # Possible values: ACTIONBAR, CHAT
 sleep-message: "&9☽ &7|&f Гравець &6 {player} &fбажає пропустити цю ніч"
 insomnia-message: "&e☀ &7|&f Гравець &6 {player} &cне бажає &fпропускати цю ніч!"
+
+# Emporium prices
+recipe: 10
+potion: 40
+characteristic: 20
+ingredient: 5

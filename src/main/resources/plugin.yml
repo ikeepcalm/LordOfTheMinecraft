@@ -27,6 +27,9 @@ commands:
   insomnia:
     description: Ask the server to not skip the night
     usage: /<cmd>
+  emporium:
+    description: Open the emporium
+    usage: /<cmd>
 permissions:
   lordoftheminecraft.boon:
     description: Allows the player to become a Beyonder
