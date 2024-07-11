@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -29,6 +30,7 @@ public class Divination implements Listener {
     private final HashMap<Beyonder, Collection<Entity>> animalDowsing;
     private final ArrayList<Beyonder> dreamDivination;
     private final ArrayList<Beyonder> playerDowsing;
+    private final HashMap<UUID, Location> playerLocations;
 
     private final ItemStack magentaPane;
     private final ItemStack stick;
@@ -43,6 +45,7 @@ public class Divination implements Listener {
         animalDowsing = new HashMap<>();
         dreamDivination = new ArrayList<>();
         playerDowsing = new ArrayList<>();
+        playerLocations = new HashMap<>();
 
         magentaPane = GeneralItemsUtil.getMagentaPane();
         stick = GeneralItemsUtil.getDowsingRod();
@@ -224,6 +227,7 @@ public class Divination implements Listener {
             public void run() {
                 p.setGameMode(GameMode.SPECTATOR);
                 p.setSpectatorTarget(finalTarget);
+                playerLocations.put(p.getUniqueId(), prevLoc);
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 0);
 
@@ -234,8 +238,18 @@ public class Divination implements Listener {
                 p.setSpectatorTarget(null);
                 p.setGameMode(prevGameMode);
                 p.teleport(prevLoc);
+                playerLocations.remove(p.getUniqueId());
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 20 * 5);
+    }
+
+    @EventHandler
+    public void onJoinEvent(PlayerJoinEvent e) {
+        if (playerLocations.containsKey(e.getPlayer().getUniqueId())) {
+            e.getPlayer().teleport(playerLocations.get(e.getPlayer().getUniqueId()));
+            e.getPlayer().setGameMode(GameMode.SURVIVAL);
+            playerLocations.remove(e.getPlayer().getUniqueId());
+        }
     }
 
     @EventHandler

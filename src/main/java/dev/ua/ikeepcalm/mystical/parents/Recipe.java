@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.mystical.parents;
 
-import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -19,26 +19,16 @@ public class Recipe {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) book.getItemMeta();
         assert bookMeta != null;
-        bookMeta.setDisplayName(potion.getStringColor() + GeneralPurposeUtil.capitalize("Містичний рецепт: " + potion.getName()) + " " + sequence);
-
+        bookMeta.setDisplayName(potion.getStringColor() + "Містичний рецепт: " + translateName(potion.getName()) + " " + sequence);
+        bookMeta.title(Component.text("Містичний рецепт: " + translateName(potion.getName()) + " " + sequence).color(TextColor.color(0x00FF00)));
         StringBuilder mainIngredients = new StringBuilder();
         for (ItemStack item : potion.getMainIngredients(sequence)) {
-            if (item.getItemMeta().hasDisplayName()) {
-                mainIngredients.append(PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(item.getItemMeta().displayName()))).append("\n");
-            } else {
-                mainIngredients.append(PlainTextComponentSerializer.plainText().serialize(Component.translatable(Objects.requireNonNull(item.getType().getItemTranslationKey())))).append("\n");
-            }
-            mainIngredients.append("\n");
+            setDisplayName(mainIngredients, item);
         }
 
         StringBuilder supplIngredients = new StringBuilder();
         for (ItemStack item : potion.getSupplIngredients(sequence)) {
-            if (item.getItemMeta().hasDisplayName()) {
-                supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(item.getItemMeta().displayName()))).append("\n");
-            } else {
-                supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Component.translatable(Objects.requireNonNull(item.getType().getItemTranslationKey())))).append("\n");
-            }
-            supplIngredients.append("\n");
+            setDisplayName(supplIngredients, item);
         }
 
         ArrayList<String> content = new ArrayList<>();
@@ -60,5 +50,25 @@ public class Recipe {
         bookMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         book.setItemMeta(bookMeta);
         return book;
+    }
+
+    private void setDisplayName(StringBuilder supplIngredients, ItemStack item) {
+        if (item.getItemMeta().hasDisplayName()) {
+            supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(item.getItemMeta().displayName()))).append("\n");
+        } else {
+            supplIngredients.append(PlainTextComponentSerializer.plainText().serialize(Component.translatable(Objects.requireNonNull(item.getType().getItemTranslationKey())))).append("\n");
+        }
+        supplIngredients.append("\n");
+    }
+
+    private String translateName(String name) {
+        return switch (name) {
+            case "fool" -> "Шут";
+            case "demoness" -> "Демонесса";
+            case "sun" -> "Сонцеликий";
+            case "tyrant" -> "Тиран";
+            case "door" -> "Брама";
+            default -> "...Помилка?";
+        };
     }
 }

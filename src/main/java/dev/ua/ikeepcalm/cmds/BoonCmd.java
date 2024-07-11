@@ -45,6 +45,7 @@ public class BoonCmd implements CommandExecutor {
                 s.sendMessage("§cВи повинні бути гравцем, щоб використовувати цю команду!");
                 return true;
             }
+            target = p;
             pathwayName = args[0].toLowerCase();
             try {
                 sequence = Integer.parseInt(args[1]);

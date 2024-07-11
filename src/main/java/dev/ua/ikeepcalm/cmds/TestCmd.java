@@ -22,7 +22,8 @@ public class TestCmd implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("recipe")) {
-            p.getInventory().addItem(LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(LordOfTheMinecraft.instance.getPotions().getFirst(), GeneralPurposeUtil.parseInt(args[1])));
+            Beyonder beyonder = LordOfTheMinecraft.beyonders.get(p.getUniqueId());
+            p.getInventory().addItem(LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(LordOfTheMinecraft.instance.getPotions().get(beyonder.getPathway().getPathwayInt()), GeneralPurposeUtil.parseInt(args[1])));
         }
 
         if (args[0].equalsIgnoreCase("potion")) {

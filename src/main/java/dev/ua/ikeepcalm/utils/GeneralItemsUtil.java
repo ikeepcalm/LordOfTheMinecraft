@@ -2,6 +2,8 @@ package dev.ua.ikeepcalm.utils;
 
 import cz.foresttech.api.ColorAPI;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -330,6 +332,7 @@ public class GeneralItemsUtil {
         String tome = s[ran.nextInt(s.length)];
 
         bookMeta.setDisplayName(ColorAPI.colorize(LocalizationUtil.getLocalizedString("grimoires", tome, "grimoire-name")));
+        bookMeta.title(Component.text(LocalizationUtil.getLocalizedString("grimoires", tome, "grimoire-name")).color(TextColor.color(0x00FF00)));
 
         List<String> content = LocalizationUtil.getLocalizedArray("grimoires", tome, "grimoire-lore");
 

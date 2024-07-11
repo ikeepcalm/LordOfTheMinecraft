@@ -77,6 +77,6 @@ public class Instigate extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.STONE_SWORD, "Підбурювання", "65", identifier);
+        return DemonessItems.createItem(Material.CYAN_CANDLE, "Підбурювання", "65", identifier);
     }
 }

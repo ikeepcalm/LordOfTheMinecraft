@@ -4,7 +4,6 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.WanderingTrader;
@@ -26,11 +25,6 @@ public class GenerationListener implements Listener {
 
     @EventHandler
     public void onLootGenerate(LootGenerateEvent e) {
-        Location location = e.getLootContext().getLocation();
-        if (e.getWorld().getBlockAt(location).getType() == Material.DECORATED_POT) {
-            return;
-        }
-
         ItemStack item;
         Random random = new Random();
 
@@ -41,8 +35,7 @@ public class GenerationListener implements Listener {
         Potion potion = LordOfTheMinecraft.instance.getPotions().get(random.nextInt(LordOfTheMinecraft.instance.getPotions().size()));
         switch (random.nextInt(6)) {
             case 1 -> item = LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(potion, sequence);
-            case 2 ->
-                    item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
+            case 2 -> item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
             case 3 -> item = GeneralItemsUtil.getRandomGrimoire();
             case 4 -> item = new ItemStack(Material.SOUL_SAND);
             case 5 -> item = new ItemStack(Material.WITHER_ROSE);
@@ -52,9 +45,9 @@ public class GenerationListener implements Listener {
         if (e.getInventoryHolder() == null)
             return;
 
-        Inventory inv = e.getInventoryHolder().getInventory();
-        inv.setItem(random.nextInt(inv.getSize()), item);
-
+        int randomIndex = random.nextInt(e.getLoot().size());
+        e.getLoot().remove(randomIndex);
+        e.getLoot().add(item);
     }
 
     @EventHandler
