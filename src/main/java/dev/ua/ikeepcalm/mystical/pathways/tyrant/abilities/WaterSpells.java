@@ -260,6 +260,7 @@ public class WaterSpells extends Ability {
     }
 
     private void light(LivingEntity caster) {
+        final UUID uuid = UUID.randomUUID();
         BlockIterator iter = new BlockIterator(caster, 9);
         Block lastBlock = iter.next();
         Block previousBlock;
@@ -274,6 +275,7 @@ public class WaterSpells extends Ability {
         Location loc = lastBlock.getLocation();
 
         loc.getBlock().setType(Material.LIGHT);
+        logBlockBreak(uuid, new CustomLocation(loc));
         loc.add(0.5, 0.5, 0.5);
 
         final Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(143, 255, 244), 1.75f);
@@ -282,7 +284,6 @@ public class WaterSpells extends Ability {
 
         new BukkitRunnable() {
             int counter = 0;
-            final UUID uuid = UUID.randomUUID();
 
             @Override
             public void run() {

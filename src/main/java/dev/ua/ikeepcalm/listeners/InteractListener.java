@@ -6,11 +6,13 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,6 +60,22 @@ public class InteractListener implements Listener {
 
         LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getSequence().useAbility(e.getItem(), e);
     }
+
+    @EventHandler
+    public void onBlockPlacement(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+            if (event.getClickedBlock() != null) {
+                List<Block> blocks = GeneralPurposeUtil.getBlocksInSquare(event.getClickedBlock(), 3, true);
+                for (Block block : blocks) {
+                    if (block.getType() == Material.LIGHT) {
+                        block.setType(Material.AIR);
+                    }
+                }
+            }
+        }
+    }
+
 
     @EventHandler
     public void onItemMoveEvent(InventoryClickEvent event) {
@@ -145,6 +163,19 @@ public class InteractListener implements Listener {
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId()))
             return;
         LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getSequence().destroyItem(e.getItemDrop().getItemStack(), e);
+    }
+
+    @EventHandler
+    public void onMi9Drop(PlayerDropItemEvent e) {
+        ItemStack item = e.getItemDrop().getItemStack();
+        if (item.getType() != Material.AIR){
+            NBTItem nbtItem = new NBTItem(item);
+            if (nbtItem.hasTag("mi9Monocle")) {
+                e.getItemDrop().remove();
+            } else if (nbtItem.hasTag("mi9Stick")) {
+                e.getItemDrop().remove();
+            }
+        }
     }
 
     @EventHandler

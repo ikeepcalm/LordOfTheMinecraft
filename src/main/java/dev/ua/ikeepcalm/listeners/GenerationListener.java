@@ -28,7 +28,7 @@ public class GenerationListener implements Listener {
         ItemStack item;
         Random random = new Random();
 
-        if (random.nextInt(100) > 20)
+        if (random.nextInt(100) > 10)
             return;
 
         int sequence = GeneralPurposeUtil.biasedRandomNumber(PROBABILITY_DISTRIBUTION, MIN_VALUE);

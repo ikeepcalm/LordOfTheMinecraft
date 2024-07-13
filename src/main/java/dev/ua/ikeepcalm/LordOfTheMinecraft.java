@@ -14,6 +14,7 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
 import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
+import dev.ua.ikeepcalm.optional.nicknames.NicknameListener;
 import dev.ua.ikeepcalm.optional.sleep.InsomniaCmd;
 import dev.ua.ikeepcalm.optional.sleep.SleepCmd;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
@@ -125,7 +126,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 divination,
                 new BlockHandler(),
                 new GenerationListener(),
-                new MI9ItemsListener()
+                new MI9ItemsListener(),
+                new NicknameListener()
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
@@ -148,7 +150,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     }
 
 
-    private void registerEvents(Listener... listeners) {
+    public void registerEvents(Listener... listeners) {
         PluginManager pl = this.getServer().getPluginManager();
         for (Listener listener : listeners) {
             pl.registerEvents(listener, this);
@@ -294,14 +296,12 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
                 int acting = (int) beyonder.getActingProgress();
                 int spirituality = (int) beyonder.getSpirituality();
-                if (acting == 0) {
-                    acting = 1;
+                if (acting != 0) {
+                    configSave.set(basePath + ".acting", acting);
                 }
-                if (spirituality == 0) {
-                    spirituality = (int) (beyonder.getMaxSpirituality() * 0.3);
+                if (spirituality != 0) {
+                    configSave.set(basePath + ".spirituality", spirituality);
                 }
-                configSave.set(basePath + ".acting", acting);
-                configSave.set(basePath + ".spirituality", spirituality);
 
                 log("§aSaved beyonder: " + Bukkit.getOfflinePlayer(uuid).getName());
             }
@@ -409,7 +409,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 if (spirituality == 0) {
                     spirituality = 100;
                 }
-
                 Pathway.initializeNew(pathway, UUID.fromString(s), sequence, acting, spirituality);
             } catch (Exception exception) {
                 log(prefix + "Failed to initialize " + s);

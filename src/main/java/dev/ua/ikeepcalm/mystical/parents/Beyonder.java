@@ -61,6 +61,7 @@ public class Beyonder implements Listener {
     private double maxSpirituality;
     private double lastSpirituality;
     @Getter
+    @Setter
     private double actingProgress;
     @Getter
     private double lastActing;
@@ -185,6 +186,8 @@ public class Beyonder implements Listener {
 
         if (pathway.getSequence() == null) return;
 
+        actingProgress -= actingProgress * 0.4;
+        if (actingProgress < 0) actingProgress = 0;
 
         if (pathway instanceof FoolPathway && pathway.getSequence().getCurrentSequence() <= 2 && resurrections < 5 && !loosingControl) {
             new BukkitRunnable() {
@@ -304,6 +307,7 @@ public class Beyonder implements Listener {
                 if (actingCounter >= 50 * 15) {
                     actingCounter = 0;
                     addActing(1);
+                    LordOfTheMinecraft.instance.saveBeyonder(Beyonder.this);
                 }
 
                 //scoreboard
@@ -321,7 +325,6 @@ public class Beyonder implements Listener {
                     spirituality += (maxSpirituality / 200);
                     if (spirituality > maxSpirituality) spirituality = maxSpirituality;
                 }
-
 
                 if (spirituality < maxSpirituality) {
                     if (!bossBar) {
@@ -397,21 +400,32 @@ public class Beyonder implements Listener {
         maxSpirituality = spirituality;
     }
 
-    public void updateActing() {
-        actingNeeded = Math.pow((100f / pathway.getSequence().getCurrentSequence()), 2);
+    public void verifyActing() {
+        if (actingNeeded == 0) {
+            actingNeeded = Math.pow((100f / pathway.getSequence().getCurrentSequence()), 2);
+        }
+
+        int percentage = (int) ((actingProgress / actingNeeded) * 100);
+
         if (actingProgress >= actingNeeded && !digested) {
             digested = true;
             getPlayer().sendMessage("§6Ви засвоїли магічне зілля! Повністю...");
             getPlayer().spawnParticle(Particle.END_ROD, pathway.getBeyonder().getPlayer().getLocation(), 50, 1, 1, 1, 0);
+        } else {
+            int chance = new Random().nextInt(5);
+            if (chance == 1) {
+                getPlayer().sendActionBar(Component.text("Засвоєння: " + percentage + "%").color(TextColor.color(2, 255, 131)));
+            }
         }
     }
 
-    public void acting(int sequence) {
+
+    public void updateActing(int sequence) {
         if (!digested) {
             actingProgress += 10f / sequence;
         }
 
-        updateActing();
+        verifyActing();
     }
 
     public void addActing(int actingAdd) {
@@ -419,7 +433,7 @@ public class Beyonder implements Listener {
             actingProgress += actingAdd;
         }
 
-        updateActing();
+        verifyActing();
     }
 
     private void setAbilitiesShortcut(Player player) {
@@ -479,8 +493,25 @@ public class Beyonder implements Listener {
                         rampager.setCustomName(pathway.getStringColor() + getPlayer().getName());
                         rampager.setMetadata("pathway", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getNameNormalized()));
                         rampager.setMetadata("sequence", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getSequence().getCurrentSequence()));
-                        Objects.requireNonNull(rampager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
-                        rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 400));
+                        Objects.requireNonNull(rampager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 200));
+                        rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 200));
+
+                        if (pathway.getSequence().getCurrentSequence() < 7) {
+                            rampager.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 999999, 1, false, false));
+                        }
+
+                        if (pathway.getSequence().getCurrentSequence() < 5) {
+                            rampager.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 1, false, false));
+                        }
+
+                        if (pathway.getSequence().getCurrentSequence() < 3) {
+                            rampager.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 999999, 1, false, false));
+                        }
+
+                        if (pathway.getSequence().getCurrentSequence() < 2) {
+                            rampager.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 999999, 1, false, false));
+                        }
+
                         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
                         getPlayer().setHealth(0);
                         loosingControl = false;
@@ -511,7 +542,8 @@ public class Beyonder implements Listener {
             case 1 -> 4.0;
             default -> 1.0;
         };
-        return (int) (baseHealth * multiplier);
+        int health = (int) (baseHealth * multiplier);
+        return Math.min(health, 375);
     }
 
     //Called from the PotionListener
@@ -528,14 +560,12 @@ public class Beyonder implements Listener {
         }
 
         if (!digested) {
-            looseControl(30, 12);
+            looseControl(10, 12);
         } else {
             switch (getPathway().getSequence().getCurrentSequence() - 1 - sequence) {
-                case 0 -> looseControl(93, 20);
-                case 1 -> looseControl(50, 20);
-                case 2 -> looseControl(30, 20);
-                case 3, 4 -> looseControl(20, 16);
-                case 5 -> looseControl(1, 16);
+                case 0 -> looseControl(98, 20);
+                case 1, 2 -> looseControl(1, 20);
+                case 3, 4, 5 -> looseControl(1, 16);
                 default -> looseControl(0, 10);
             }
         }
@@ -543,7 +573,7 @@ public class Beyonder implements Listener {
         pathway.getSequence().setCurrentSequence(sequence);
         digested = false;
         actingProgress = 0;
-        updateActing();
+        verifyActing();
         updateSpirituality();
 
         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(healthIndex[pathway.getSequence().getCurrentSequence()]);

@@ -66,7 +66,9 @@ public class Faceless extends Ability {
                 playerDisguise.setEntity(player);
                 playerDisguise.startDisguise();
                 LordOfTheMinecraft.disguises.add(player.getUniqueId());
-                p.sendMessage(Component.text("В який момент новий ти перестанеш бути собою?").color(TextColor.color(150, 255, 0)));
+                if (p != null) {
+                    p.sendMessage(Component.text("В який момент новий ти перестанеш бути собою?").color(TextColor.color(150, 255, 0)));
+                }
             }));
         }
         Gui gui = PagedGui.items()

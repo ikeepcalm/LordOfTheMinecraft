@@ -252,7 +252,7 @@ public class Divination implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDowsingEntityChat(AsyncPlayerChatEvent e) {
         if (!LordOfTheMinecraft.beyonders.containsKey(e.getPlayer().getUniqueId()) || !animalDowsing.containsKey(LordOfTheMinecraft.beyonders.get(e.getPlayer().getUniqueId())))
             return;
@@ -310,7 +310,7 @@ public class Divination implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDowsingPlayerChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         UUID playerUUID = p.getUniqueId();
