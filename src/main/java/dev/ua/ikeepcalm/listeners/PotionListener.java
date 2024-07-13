@@ -2,23 +2,27 @@ package dev.ua.ikeepcalm.listeners;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
-import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class PotionListener implements Listener {
 
     @EventHandler
-    public void onPotionInteract(PlayerInteractEvent e) {
-        if (e.getItem() == null)
+    public void onPotionInteract(PlayerItemConsumeEvent e) {
+        ItemStack item = e.getItem();
+        if (item.getType() == Material.AIR)
+            return;
+
+        if (item.getType() != Material.POTION)
             return;
 
         int sequence = 0;

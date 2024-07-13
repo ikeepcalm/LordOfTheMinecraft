@@ -11,10 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -59,6 +56,29 @@ public class EmporiumCmd implements CommandExecutor {
                         }
                     } else {
                         console.sendMessage("§cГравець не зареєстрований в системі Емпоріуму!");
+                        return true;
+                    }
+                }
+            } else if (s instanceof RemoteConsoleCommandSender remoteConsole) {
+                if (args[0].equalsIgnoreCase("add")) {
+                    String nickname = args[1];
+                    AdvertiserManager advertiserDao = new AdvertiserManager();
+                    if (advertiserDao.existsByNickname(nickname)) {
+                        try {
+                            int amount = Integer.parseInt(args[2]);
+                            if (amount < 0) {
+                                remoteConsole.sendMessage("§cКількість не може бути від'ємною!");
+                                return true;
+                            }
+                            Advertiser advertiser = advertiserDao.findByNickname(nickname);
+                            advertiser.setBalance(advertiser.getBalance() + amount);
+                            advertiserDao.saveAdvertiser(advertiser);
+                            remoteConsole.sendMessage("§aГравцю " + nickname + " було додано " + amount + " балів!");
+                        } catch (NumberFormatException e) {
+                            remoteConsole.sendMessage("§cВведіть коректну кількість!");
+                        }
+                    } else {
+                        remoteConsole.sendMessage("§cГравець не зареєстрований в системі Емпоріуму!");
                         return true;
                     }
                 }

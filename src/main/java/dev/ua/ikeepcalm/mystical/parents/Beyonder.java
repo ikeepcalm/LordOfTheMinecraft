@@ -480,7 +480,7 @@ public class Beyonder implements Listener {
                         rampager.setMetadata("pathway", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getNameNormalized()));
                         rampager.setMetadata("sequence", new FixedMetadataValue(LordOfTheMinecraft.instance, pathway.getSequence().getCurrentSequence()));
                         Objects.requireNonNull(rampager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
-                        rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 250));
+                        rampager.setHealth(calculateScaledHealth(pathway.getSequence().getCurrentSequence(), 400));
                         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
                         getPlayer().setHealth(0);
                         loosingControl = false;
