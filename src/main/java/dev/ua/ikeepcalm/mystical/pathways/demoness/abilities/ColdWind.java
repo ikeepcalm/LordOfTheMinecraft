@@ -79,6 +79,6 @@ public class ColdWind extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.FEATHER, "Холодний Вітер", "10", identifier);
+        return DemonessItems.createItem(Material.FEATHER, "Холодний Вітер", "10/с", identifier);
     }
 }
