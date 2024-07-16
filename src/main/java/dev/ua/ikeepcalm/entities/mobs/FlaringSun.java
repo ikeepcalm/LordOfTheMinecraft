@@ -125,11 +125,11 @@ public class FlaringSun extends MobAbility {
     public void useAbility() {
         double multiplier = getMultiplier();
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         //get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 15);
+        BlockIterator iter = new BlockIterator(player, 15);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -140,7 +140,7 @@ public class FlaringSun extends MobAbility {
         }
 
         Location loc = lastBlock.getLocation().add(0, 1, 0);
-        useAbility(loc, loc, multiplier, p, null);
+        useAbility(loc, loc, multiplier, player, null);
     }
 
     @Override

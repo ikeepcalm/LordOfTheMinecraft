@@ -28,14 +28,14 @@ public class BeamOfLight extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         double multiplier = getMultiplier();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        Location loc = p.getEyeLocation();
+        Location loc = player.getEyeLocation();
         Vector direction = loc.getDirection().normalize().multiply(.5);
-        World world = p.getWorld();
+        World world = player.getWorld();
 
         Random random = new Random();
 
@@ -70,8 +70,8 @@ public class BeamOfLight extends Ability {
         new BukkitRunnable() {
             final int circlePoints = 8;
             double radius = .10;
-            final Location loc = p.getEyeLocation();
-            final World world = p.getWorld();
+            final Location loc = player.getEyeLocation();
+            final World world = player.getWorld();
             final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
             final double yaw = -loc.getYaw() * 0.017453292F;
             final double increment = (2 * Math.PI) / circlePoints;
@@ -118,7 +118,7 @@ public class BeamOfLight extends Ability {
                             // Entity interactions
                             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                                 for (Entity e : world.getNearbyEntities(tempLoc, 4, 4, 4)) {
-                                    if (!(e instanceof LivingEntity livingEntity) || e == p) continue;
+                                    if (!(e instanceof LivingEntity livingEntity) || e == player) continue;
                                     if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(e.getType())) {
                                         livingEntity.damage(18 * multiplier);
                                     }
@@ -146,8 +146,8 @@ public class BeamOfLight extends Ability {
         new BukkitRunnable() {
             final int circlePoints = 20;
             double radius = .15;
-            final Location loc = p.getEyeLocation();
-            final World world = p.getWorld();
+            final Location loc = player.getEyeLocation();
+            final World world = player.getWorld();
             final double pitch = (loc.getPitch() + 90.0F) * 0.017453292F;
             final double yaw = -loc.getYaw() * 0.017453292F;
             final double increment = (2 * Math.PI) / circlePoints;

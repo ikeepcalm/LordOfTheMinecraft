@@ -183,12 +183,12 @@ public class HolyLightSummoning extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
         // Get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 22);
+        BlockIterator iter = new BlockIterator(player, 22);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -199,7 +199,7 @@ public class HolyLightSummoning extends Ability {
         }
         Location loc = lastBlock.getLocation();
 
-        executeAbility(loc, p, multiplier);
+        executeAbility(loc, player, multiplier);
     }
 
     @Override

@@ -68,11 +68,11 @@ public class Wind extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        executeAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(player.getLocation(), player, getMultiplier());
     }
 
     @Override

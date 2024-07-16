@@ -23,16 +23,16 @@ public class Lightning extends Ability {
 
     public Lightning(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         items.addToSequenceItems(identifier - 1, sequence);
         destruction = true;
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        Vector dir = p.getLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        player = pathway.getBeyonder().getPlayer();
+        Vector dir = player.getLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
         if (loc.getWorld() == null)
             return;
 
@@ -48,7 +48,7 @@ public class Lightning extends Ability {
                             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                                 try {
                                     for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                                        if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
+                                        if (entity.getType() == EntityType.ARMOR_STAND || entity == player)
                                             continue;
                                         i[0] = 80;
                                         break;
@@ -82,7 +82,7 @@ public class Lightning extends Ability {
                         ErrorLoggerUtil.logAbility(e, "Lightning - Scheduler Task");
                     }
 
-                    executeAbility(loc, p, getMultiplier());
+                    executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
                     ErrorLoggerUtil.logAbility(e, "Lightning");
                     cancel();
@@ -120,6 +120,6 @@ public class Lightning extends Ability {
         if (destruction)
             Destruction = "увімкнено";
         else Destruction = "вимкнено";
-        p.sendMessage("§aЗнищення блоків: §7" + Destruction);
+        player.sendMessage("§aЗнищення блоків: §7" + Destruction);
     }
 }

@@ -31,16 +31,16 @@ public class ThreadManipulation extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         placeThreads(false, null, null);
     }
 
     private void placeThreads(boolean npc, Entity e, Location target) {
         UUID uuid = UUID.randomUUID();
-        Location loc = npc ? target : p.getEyeLocation();
+        Location loc = npc ? target : player.getEyeLocation();
 
         if (!npc) {
-            Vector dir = p.getEyeLocation().getDirection().normalize();
+            Vector dir = player.getEyeLocation().getDirection().normalize();
             World world = loc.getWorld();
 
             if (world == null)
@@ -52,7 +52,7 @@ public class ThreadManipulation extends Ability {
                 if (loc.getBlock().getType().isSolid())
                     break;
 
-                if (!world.getNearbyEntities(loc, 1.2, 1.2, 1.2).isEmpty() && !world.getNearbyEntities(loc, 1.2, 1.2, 1.2).contains(p))
+                if (!world.getNearbyEntities(loc, 1.2, 1.2, 1.2).isEmpty() && !world.getNearbyEntities(loc, 1.2, 1.2, 1.2).contains(player))
                     break;
             }
         }

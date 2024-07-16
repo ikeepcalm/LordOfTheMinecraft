@@ -61,10 +61,10 @@ public class SpaceSwapping extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
 
         for (int i = 0; i < 80; i++) {
             if (loc.getBlock().getType().isSolid() || loc.getBlock().getType() == Material.WATER)
@@ -86,7 +86,7 @@ public class SpaceSwapping extends Ability implements Listener {
                     Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
                         for (Block block : swappedBlocks) {
                             if (!block.getLocation().add(0, 1, 0).getBlock().getType().isSolid() && block.getType().isSolid()) {
-                                p.getWorld().spawnParticle(Particle.WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
+                                player.getWorld().spawnParticle(Particle.WITCH, block.getLocation().clone().add(0, 1, 0), 2, 0, 0, 0, 0);
                             }
                         }
                     });
@@ -98,7 +98,7 @@ public class SpaceSwapping extends Ability implements Listener {
         if (loc.getWorld() != originLoc.getWorld()) {
             isSwapping = false;
             swappedBlocks = null;
-            p.sendMessage("§cДві ділянки повинні знаходитись в одному вимірі!");
+            player.sendMessage("§cДві ділянки повинні знаходитись в одному вимірі!");
             return;
         }
 
@@ -144,7 +144,7 @@ public class SpaceSwapping extends Ability implements Listener {
     @Override
     public void leftClick() {
         if (isSwapping) {
-            p.sendMessage("§cЗараз ви міняєте місцями ділянки!", "§cЗміну місцями скасовано!");
+            player.sendMessage("§cЗараз ви міняєте місцями ділянки!", "§cЗміну місцями скасовано!");
             isSwapping = false;
             swappedBlocks = null;
             return;
@@ -158,26 +158,26 @@ public class SpaceSwapping extends Ability implements Listener {
 
     @EventHandler
     public void onShift(PlayerToggleSneakEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (p == null) {
+        if (player == null) {
             return;
         }
 
-        if (e.getPlayer() != p || e.getPlayer().isSneaking() || !p.getInventory().getItemInMainHand().isSimilar(getItem()) || isSwapping)
+        if (e.getPlayer() != player || e.getPlayer().isSneaking() || !player.getInventory().getItemInMainHand().isSimilar(getItem()) || isSwapping)
             return;
 
         radius++;
         if (radius >= 43)
             radius = 5;
 
-        p.sendMessage("§bРадіус встановлено на " + radius);
+        player.sendMessage("§bРадіус встановлено на " + radius);
     }
 
     @Override
     public void onHold() {
-        p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bОбраний тип контролю: §7" + useCase.name));
+        player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bОбраний тип контролю: §7" + useCase.name));
     }
 
     @Override

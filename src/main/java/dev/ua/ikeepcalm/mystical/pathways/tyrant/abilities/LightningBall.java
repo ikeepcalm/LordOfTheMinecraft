@@ -25,13 +25,13 @@ public class LightningBall extends Ability {
     public LightningBall(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        executeAbility(GeneralPurposeUtil.getTargetLoc(200, p), p, getMultiplier());
+        player = pathway.getBeyonder().getPlayer();
+        executeAbility(GeneralPurposeUtil.getTargetLoc(200, player), player, getMultiplier());
     }
 
     @Override

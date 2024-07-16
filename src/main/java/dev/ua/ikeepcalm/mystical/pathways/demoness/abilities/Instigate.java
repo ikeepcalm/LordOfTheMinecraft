@@ -27,10 +27,10 @@ public class Instigate extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
         if (loc.getWorld() == null)
             return;
 
@@ -39,7 +39,7 @@ public class Instigate extends Ability {
         outerloop:
         for (int i = 0; i < 25; i++) {
             for (Entity entity : loc.getWorld().getNearbyEntities(loc, 1, 1, 1)) {
-                if (!(entity instanceof LivingEntity e) || entity == p)
+                if (!(entity instanceof LivingEntity e) || entity == player)
                     continue;
                 target = e;
                 break outerloop;
@@ -49,34 +49,34 @@ public class Instigate extends Ability {
         }
 
         if (target == null) {
-            p.sendMessage("§cЦіль не знайдено!");
+            player.sendMessage("§cЦіль не знайдено!");
             return;
         }
 
         if (!isInstigating) {
             if (!(target instanceof Mob mob)) {
-                p.sendMessage("§cЦя сутність не може бути підбурена");
+                player.sendMessage("§cЦя сутність не може бути підбурена");
                 return;
             }
             isInstigating = true;
-            p.sendMessage("§aПідбурюю " + mob.getName() + "!");
-            p.sendMessage("§aОберіть ціль");
+            player.sendMessage("§aПідбурюю " + mob.getName() + "!");
+            player.sendMessage("§aОберіть ціль");
             attacker = mob;
             return;
         }
 
         isInstigating = false;
         if (attacker == null) {
-            p.sendMessage("§cЩось пішло не так!");
+            player.sendMessage("§cЩось пішло не так!");
             return;
         }
 
         attacker.setTarget(target);
-        p.sendMessage("§a" + target.getName() + " тепер є ціллю для " + attacker.getName() + "!");
+        player.sendMessage("§a" + target.getName() + " тепер є ціллю для " + attacker.getName() + "!");
     }
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.CYAN_CANDLE, "Підбурювання", "65", identifier);
+        return DemonessItems.createItem(Material.CYAN_CANDLE, "Підбурювання", "30", identifier);
     }
 }

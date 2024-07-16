@@ -76,7 +76,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (traversing)
             return;
@@ -84,7 +84,7 @@ public class MirrorWorldTraversal extends Ability implements Listener {
         if (onCooldown)
             return;
 
-        ArrayList<Block> nearBlocks = GeneralPurposeUtil.getBlocksInSquare(p.getEyeLocation().getBlock(), 4, false);
+        ArrayList<Block> nearBlocks = GeneralPurposeUtil.getBlocksInSquare(player.getEyeLocation().getBlock(), 4, false);
 
         boolean valid = false;
         for (Block block : nearBlocks) {
@@ -97,14 +97,14 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
 
         if (!valid) {
-            p.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
+            player.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
             return;
         }
 
         traversing = true;
-        prevGameMode = p.getGameMode();
+        prevGameMode = player.getGameMode();
 
-        p.setGameMode(GameMode.SPECTATOR);
+        player.setGameMode(GameMode.SPECTATOR);
 
         onCooldown = true;
         new BukkitRunnable() {
@@ -117,12 +117,12 @@ public class MirrorWorldTraversal extends Ability implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (!traversing || e.getPlayer() != p)
+        if (!traversing || e.getPlayer() != player)
             return;
 
-        ArrayList<Block> nearBlocks = GeneralPurposeUtil.getBlocksInSquare(p.getEyeLocation().getBlock(), 4, false);
+        ArrayList<Block> nearBlocks = GeneralPurposeUtil.getBlocksInSquare(player.getEyeLocation().getBlock(), 4, false);
 
         boolean valid = false;
         for (Block block : nearBlocks) {
@@ -137,11 +137,11 @@ public class MirrorWorldTraversal extends Ability implements Listener {
             return;
 
         if (!valid) {
-            p.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
+            player.sendMessage("§cВи повинні бути поруч із дзеркалом / дзеркальними блоками!");
             return;
         }
 
-        p.setGameMode(prevGameMode);
+        player.setGameMode(prevGameMode);
         onCooldown = false;
         traversing = false;
     }

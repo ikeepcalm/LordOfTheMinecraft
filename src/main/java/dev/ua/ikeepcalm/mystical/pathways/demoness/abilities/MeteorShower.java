@@ -26,10 +26,10 @@ public class MeteorShower extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
 
         for (int i = 0; i < 85; i++) {
             if (loc.getBlock().getType().isSolid())
@@ -47,7 +47,7 @@ public class MeteorShower extends Ability {
         for (int i = 0; i < random.nextInt(40, 80); i++) {
             Location starLoc = (i == 0) ? loc.clone() : loc.clone().add(random.nextInt(-45, 45), 0, random.nextInt(-45, 45));
 
-            float angle = p.getEyeLocation().getYaw() / 60;
+            float angle = player.getEyeLocation().getYaw() / 60;
             Location startLoc = starLoc.clone().add(-Math.cos(angle) * 15, random.nextInt(40, 80), -Math.sin(angle) * 15);
 
             Vector fallDir = starLoc.clone().toVector().subtract(startLoc.clone().toVector()).normalize().multiply(2);
@@ -87,10 +87,10 @@ public class MeteorShower extends Ability {
 
     private void handleImpact(Location impactLocation) {
         for (Entity entity : impactLocation.getWorld().getNearbyEntities(impactLocation, 10, 10, 10)) {
-            if (entity == p)
+            if (entity == player)
                 continue;
             if (entity instanceof Damageable d)
-                d.damage(50, p);
+                d.damage(50, player);
         }
 
         impactLocation.getWorld().createExplosion(impactLocation, 25, false, false);

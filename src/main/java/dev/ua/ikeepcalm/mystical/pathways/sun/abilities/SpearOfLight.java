@@ -238,11 +238,11 @@ public class SpearOfLight extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
-        executeAbility(p, multiplier);
+        executeAbility(player, multiplier);
     }
 
     public void buildSpear(Location loc, Vector direc) {

@@ -23,11 +23,11 @@ public class Tornado extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        if (p == null) return;
+        player = pathway.getBeyonder().getPlayer();
+        if (player == null) return;
 
-        Vector dir = p.getLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
         if (loc.getWorld() == null) return;
 
         new BukkitRunnable() {
@@ -40,7 +40,7 @@ public class Tornado extends Ability {
 
                         boolean entityFound = false;
                         for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                            if (entity instanceof LivingEntity && entity != p) {
+                            if (entity instanceof LivingEntity && entity != player) {
                                 entityFound = true;
                                 break;
                             }
@@ -48,7 +48,7 @@ public class Tornado extends Ability {
                         if (entityFound) break;
                     }
 
-                    executeAbility(loc, p, getMultiplier());
+                    executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
                     ErrorLoggerUtil.logAbility(e, "Tornado");
                     cancel();

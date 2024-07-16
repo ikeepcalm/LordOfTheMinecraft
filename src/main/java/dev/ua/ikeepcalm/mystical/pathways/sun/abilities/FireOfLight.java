@@ -120,11 +120,11 @@ public class FireOfLight extends Ability {
     public void useAbility() {
         double multiplier = getMultiplier();
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         // get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 15);
+        BlockIterator iter = new BlockIterator(player, 15);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -137,7 +137,7 @@ public class FireOfLight extends Ability {
         // setting the fire
         Location loc = lastBlock.getLocation().add(0, 1, 0);
 
-        executeAbility(loc, p, multiplier);
+        executeAbility(loc, player, multiplier);
     }
 
     @Override

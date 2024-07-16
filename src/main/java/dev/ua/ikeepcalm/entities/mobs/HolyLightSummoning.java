@@ -151,11 +151,11 @@ public class HolyLightSummoning extends MobAbility {
         if (pathway == null || items == null) return;
         double multiplier = getMultiplier();
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         //get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 22);
+        BlockIterator iter = new BlockIterator(player, 22);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -166,7 +166,7 @@ public class HolyLightSummoning extends MobAbility {
         }
         Location loc = lastBlock.getLocation();
 
-        useAbility(p.getLocation(), loc.clone(), multiplier, p, null);
+        useAbility(player.getLocation(), loc.clone(), multiplier, player, null);
     }
 
     @Override

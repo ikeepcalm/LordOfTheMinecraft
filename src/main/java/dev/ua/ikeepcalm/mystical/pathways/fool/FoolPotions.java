@@ -27,15 +27,15 @@ public class FoolPotions extends Potion {
         putMainIntoHashMap(5, BeyonderItemsUtil.getWraithDust(), BeyonderItemsUtil.getGargoyleCrystal());
         putMainIntoHashMap(4, BeyonderItemsUtil.getBizarroEye(), BeyonderItemsUtil.getPlundererBody());
         putMainIntoHashMap(3, BeyonderItemsUtil.getWolfEye(), BeyonderItemsUtil.getWolfHeart());
-        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "fool", stringColor));
-        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "fool", stringColor));
+        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "fool", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "fool", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "fool", stringColor));
+        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "fool", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "fool", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "fool", stringColor));
 
         putSupplIntoHashMap(9, new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.MUTTON));
         putSupplIntoHashMap(8, GeneralItemsUtil.getWaterPotion(), new ItemStack(Material.SUNFLOWER), new ItemStack(Material.LIGHT_BLUE_DYE));
         putSupplIntoHashMap(7, GeneralItemsUtil.getMundanePotion(), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GLOW_INK_SAC));
         putSupplIntoHashMap(6, new ItemStack(Material.SKELETON_SKULL), new ItemStack(Material.SOUL_SAND), new ItemStack(Material.GOLDEN_CARROT));
-        putSupplIntoHashMap(5, GeneralItemsUtil.getRegenPotion(), new ItemStack(Material.DARK_OAK_LOG), new ItemStack(Material.FERMENTED_SPIDER_EYE));
-        putSupplIntoHashMap(4, new ItemStack(Material.ENDER_EYE), new ItemStack(Material.BIRCH_LOG), new ItemStack(Material.TURTLE_HELMET));
+        putSupplIntoHashMap(5, GeneralItemsUtil.getRegenPotion(), new ItemStack(Material.NETHER_WART), new ItemStack(Material.FERMENTED_SPIDER_EYE));
+        putSupplIntoHashMap(4, new ItemStack(Material.ENDER_EYE), new ItemStack(Material.ELYTRA), new ItemStack(Material.TURTLE_HELMET));
         putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
         putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
         putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));

@@ -29,9 +29,9 @@ public class UnshadowedDomain extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
         ArrayList<Block> blocks = new ArrayList<>();
 
         int radius = 32;
@@ -46,7 +46,7 @@ public class UnshadowedDomain extends Ability {
                         for (int x = -radius; x <= radius; x++) {
                             for (int z = -radius; z <= radius; z++) {
                                 if ((x * x) + (z * z) <= Math.pow(radius, 2)) {
-                                    Block block = p.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
+                                    Block block = player.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
                                     if (block.getType() == Material.AIR && block.getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
                                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                                             block.setType(Material.LIGHT);

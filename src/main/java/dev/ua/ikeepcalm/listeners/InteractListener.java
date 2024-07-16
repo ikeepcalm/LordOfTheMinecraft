@@ -17,8 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -46,8 +48,7 @@ public class InteractListener implements Listener {
 
         if (item == null) return;
 
-        if (e.getMaterial() == Material.AIR)
-            return;
+        if (e.getMaterial() == Material.AIR) return;
 
         if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) {
             NBTItem nbtItem = new NBTItem(item);
@@ -91,9 +92,7 @@ public class InteractListener implements Listener {
             }
         } else if (nbtItem.hasTag("pathway")) {
             InventoryView view = event.getView();
-            event.setCancelled(view.getType() != InventoryType.CRAFTING && view.getType() != InventoryType.CHEST
-                               && view.getType() != InventoryType.ENDER_CHEST && view.getType() != InventoryType.SHULKER_BOX
-                               && view.getType() != InventoryType.BARREL);
+            event.setCancelled(view.getType() != InventoryType.CRAFTING && view.getType() != InventoryType.CHEST && view.getType() != InventoryType.ENDER_CHEST && view.getType() != InventoryType.SHULKER_BOX && view.getType() != InventoryType.BARREL);
         }
 
     }
@@ -156,19 +155,63 @@ public class InteractListener implements Listener {
     }
 
     @EventHandler
+    public void onPreItemCraft(PrepareItemCraftEvent event) {
+        ItemStack[] ingredients = event.getInventory().getMatrix();
+        for (ItemStack ingredient : ingredients) {
+            if (ingredient == null) continue;
+            if (ingredient.getType() == Material.AIR) continue;
+            NBTItem nbtItem = new NBTItem(ingredient);
+            if (nbtItem.hasTag("spiritualityDrainage") || nbtItem.hasTag("openAbilities")) {
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+            }
+
+            if (nbtItem.hasTag("pathway")) {
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getView().getType() == InventoryType.CRAFTING) {
+            if (event.getSlotType() == InventoryType.SlotType.CRAFTING) {
+                if (event.getAction() == InventoryAction.PLACE_ALL
+                    || event.getAction() == InventoryAction.PLACE_ONE
+                    || event.getAction() == InventoryAction.PLACE_SOME) {
+                    ItemStack item = event.getCursor();
+                    if (item.getType() == Material.AIR) return;
+                    if (item.hasItemMeta()) {
+                        event.setCancelled(true);
+                    }
+                } else if (event.getAction() == InventoryAction.UNKNOWN
+                           || event.getAction() == InventoryAction.HOTBAR_SWAP
+                           || event.getAction() == InventoryAction.SWAP_WITH_CURSOR
+                           || event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY
+                           || event.getAction() == InventoryAction.CLONE_STACK) {
+                    event.setCancelled(true);
+                }
+
+                if (event.getAction() == InventoryAction.NOTHING) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+
+    @EventHandler
     //Check if Player is Beyonder
     //Call the destroyItem function from the Beyonder
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
-        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId()))
-            return;
+        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) return;
         LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getSequence().destroyItem(e.getItemDrop().getItemStack(), e);
     }
 
     @EventHandler
     public void onMi9Drop(PlayerDropItemEvent e) {
         ItemStack item = e.getItemDrop().getItemStack();
-        if (item.getType() != Material.AIR){
+        if (item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
             if (nbtItem.hasTag("mi9Monocle")) {
                 e.getItemDrop().remove();
@@ -182,8 +225,7 @@ public class InteractListener implements Listener {
     public void onItemsInteraction(InventoryClickEvent event) {
         Player p = (Player) event.getWhoClicked();
 
-        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId()))
-            return;
+        if (!LordOfTheMinecraft.beyonders.containsKey(p.getUniqueId())) return;
 
 
         InventoryView view = event.getView();
@@ -205,15 +247,7 @@ public class InteractListener implements Listener {
                     }
                     p.setItemOnCursor(null);
 
-                    Gui gui = Gui.normal()
-                            .setStructure(
-                                    "# # # # # # # # #",
-                                    "# . . . . . . . #",
-                                    "# . . . . . . . #",
-                                    "# . . . . . . . #",
-                                    "# # # # # # # # #")
-                            .addIngredient('#', GeneralItemsUtil.getMagentaPane())
-                            .build();
+                    Gui gui = Gui.normal().setStructure("# # # # # # # # #", "# . . . . . . . #", "# . . . . . . . #", "# . . . . . . . #", "# # # # # # # # #").addIngredient('#', GeneralItemsUtil.getMagentaPane()).build();
 
                     Beyonder beyonder = LordOfTheMinecraft.beyonders.get(p.getUniqueId());
                     int sequence = beyonder.getPathway().getSequence().getCurrentSequence();
@@ -240,8 +274,7 @@ public class InteractListener implements Listener {
                         tempItem.setItemMeta(meta);
 
                         Item simpleItem = new SimpleItem(tempItem, e -> {
-                            if (e.getPlayer().getInventory().contains(originalItem))
-                                return;
+                            if (e.getPlayer().getInventory().contains(originalItem)) return;
                             e.getPlayer().getInventory().addItem(originalItem);
                         });
 
@@ -256,11 +289,7 @@ public class InteractListener implements Listener {
                     }
 
 
-                    Window window = Window.single()
-                            .setViewer(p)
-                            .setTitle(LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getStringColor() + p.getName() + " - Містичні знання")
-                            .setGui(gui)
-                            .build();
+                    Window window = Window.single().setViewer(p).setTitle(LordOfTheMinecraft.beyonders.get(p.getUniqueId()).getPathway().getStringColor() + p.getName() + " - Містичні знання").setGui(gui).build();
 
                     window.open();
                 }

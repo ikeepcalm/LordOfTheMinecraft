@@ -23,18 +23,18 @@ public class Fog extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                p.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, p.getLocation(), 45, 3.5, 3.5, 3.5, 0);
+                player.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, player.getLocation(), 45, 3.5, 3.5, 3.5, 0);
 
-                p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10, 1, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10, 1, false, false, false));
 
-                for (Entity entity : p.getNearbyEntities(3.5, 3.5, 3.5)) {
+                for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
                     if (!(entity instanceof LivingEntity livingEntity))
                         continue;
 

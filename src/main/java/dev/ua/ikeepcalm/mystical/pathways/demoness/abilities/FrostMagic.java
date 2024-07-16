@@ -167,9 +167,9 @@ public class FrostMagic extends Ability {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний варіант використання: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний варіант використання: §f" + selectedCategory.name));
     }
 
     @Override

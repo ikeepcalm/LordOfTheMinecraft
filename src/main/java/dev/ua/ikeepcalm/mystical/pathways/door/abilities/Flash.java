@@ -21,10 +21,10 @@ public class Flash extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
 
         for (int i = 0; i < 20; i++) {
             if (loc.getBlock().getType().isSolid())

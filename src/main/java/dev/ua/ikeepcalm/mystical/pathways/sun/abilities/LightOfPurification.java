@@ -78,11 +78,11 @@ public class LightOfPurification extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
-        executeAbility(p.getLocation(), p, multiplier);
+        executeAbility(player.getLocation(), player, multiplier);
     }
 
     @Override

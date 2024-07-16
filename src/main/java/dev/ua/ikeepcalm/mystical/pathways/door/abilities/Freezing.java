@@ -46,7 +46,7 @@ public class Freezing extends Ability {
         }
 
         if (target == null) {
-            p.sendMessage("§cСутність не знайдено!");
+            player.sendMessage("§cСутність не знайдено!");
             return;
         }
 
@@ -71,9 +71,9 @@ public class Freezing extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        executeAbility(p.getLocation(), p, getMultiplier());
+        executeAbility(player.getLocation(), player, getMultiplier());
     }
 
     @Override

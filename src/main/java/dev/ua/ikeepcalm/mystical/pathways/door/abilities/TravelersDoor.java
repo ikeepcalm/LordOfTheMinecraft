@@ -43,15 +43,15 @@ public class TravelersDoor extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (isTeleportingToCoordinates)
             isTeleportingToCoordinates = false;
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation().clone(); // Clone to avoid modifying original location
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation().clone(); // Clone to avoid modifying original location
 
         // Asynchronously calculate target location
         Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
@@ -67,7 +67,7 @@ public class TravelersDoor extends Ability implements Listener {
             if (loc.getWorld() == null)
                 return;
 
-            boolean teleportToCoordinates = p.isSneaking();
+            boolean teleportToCoordinates = player.isSneaking();
             if (!teleportToCoordinates) {
                 // Synchronously draw the door and handle teleportation
                 Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> new BukkitRunnable() {
@@ -84,7 +84,7 @@ public class TravelersDoor extends Ability implements Listener {
                             if (!(entity instanceof Player player))
                                 continue;
 
-                            if (player != p) {
+                            if (player != TravelersDoor.this.player) {
                                 if (teleportedPlayers.containsKey(player))
                                     continue;
                                 GameMode prevGameModeTeleport = player.getGameMode();
@@ -111,8 +111,8 @@ public class TravelersDoor extends Ability implements Listener {
                                 continue;
                             }
 
-                            prevGameMode = p.getGameMode();
-                            p.setGameMode(GameMode.SPECTATOR);
+                            prevGameMode = TravelersDoor.this.player.getGameMode();
+                            TravelersDoor.this.player.setGameMode(GameMode.SPECTATOR);
                             isTeleporting = true;
                             pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
 
@@ -123,10 +123,10 @@ public class TravelersDoor extends Ability implements Listener {
                                 public void run() {
                                     if (!isTeleporting)
                                         cancel();
-                                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bНатисніть ЛКМ, щоб телепортуватися сюди"));
+                                    TravelersDoor.this.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§bНатисніть ЛКМ, щоб телепортуватися сюди"));
 
                                     for (Player teleportedPlayer : teleportedPlayers.keySet()) {
-                                        teleportedPlayer.teleport(p.getLocation());
+                                        teleportedPlayer.teleport(TravelersDoor.this.player.getLocation());
                                     }
 
                                     if (counter >= 20 * 60 * 2) {
@@ -144,7 +144,7 @@ public class TravelersDoor extends Ability implements Listener {
                     }
                 }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1));
             } else {
-                p.sendMessage("§bВведіть координати, до яких хочете відкрити портал");
+                player.sendMessage("§bВведіть координати, до яких хочете відкрити портал");
                 isTeleportingToCoordinates = true;
             }
         });
@@ -152,9 +152,9 @@ public class TravelersDoor extends Ability implements Listener {
 
     @EventHandler
     public void onAsyncChat(AsyncPlayerChatEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (p == null || !p.isValid())
+        if (player == null || !player.isValid())
             return;
 
         if (!isTeleportingToCoordinates)
@@ -163,8 +163,8 @@ public class TravelersDoor extends Ability implements Listener {
         isTeleportingToCoordinates = false;
         e.setCancelled(true);
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation().clone(); // Clone to avoid modifying original location
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation().clone(); // Clone to avoid modifying original location
 
         // Asynchronously calculate target location
         Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
@@ -183,7 +183,7 @@ public class TravelersDoor extends Ability implements Listener {
             String[] args = e.getMessage().split(" ");
             if (args.length < 3) {
                 pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                p.sendMessage("§cНеправильні координати");
+                player.sendMessage("§cНеправильні координати");
                 return;
             }
 
@@ -196,7 +196,7 @@ public class TravelersDoor extends Ability implements Listener {
 
             if (!areValid[0]) {
                 pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-                p.sendMessage("§cНеправильні координати");
+                player.sendMessage("§cНеправильні координати");
                 return;
             }
 
@@ -225,7 +225,7 @@ public class TravelersDoor extends Ability implements Listener {
                     for (Entity entity : loc.getWorld().getNearbyEntities(loc, .5, .5, .5)) {
                         entity.teleport(teleportLoc);
 
-                        if (entity == p) {
+                        if (entity == player) {
                             pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                             cancel();
                         }
@@ -268,10 +268,10 @@ public class TravelersDoor extends Ability implements Listener {
     private void stopTeleporting() {
         if (!isTeleporting)
             return;
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         isTeleporting = false;
 
-        p.spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 75, .75, .75, .75, 0);
+        player.spawnParticle(Particle.WITCH, player.getEyeLocation().subtract(0, .5, 0), 75, .75, .75, .75, 0);
 
         for (Map.Entry<Player, GameMode> entry : teleportedPlayers.entrySet()) {
             entry.getKey().setGameMode(entry.getValue());
@@ -279,7 +279,7 @@ public class TravelersDoor extends Ability implements Listener {
 
         teleportedPlayers.clear();
 
-        p.setGameMode(prevGameMode);
+        player.setGameMode(prevGameMode);
     }
 
     private void drawDoor(Location loc) {
@@ -326,8 +326,8 @@ public class TravelersDoor extends Ability implements Listener {
 
     @EventHandler
     public void onInterAct(PlayerInteractEvent e) {
-        p = pathway.getBeyonder().getPlayer();
-        if (!isTeleporting || e.getPlayer() != p)
+        player = pathway.getBeyonder().getPlayer();
+        if (!isTeleporting || e.getPlayer() != player)
             return;
 
         stopTeleporting();

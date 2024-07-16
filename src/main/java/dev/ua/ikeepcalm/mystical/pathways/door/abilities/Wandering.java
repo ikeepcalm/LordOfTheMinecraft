@@ -28,9 +28,9 @@ public class Wandering extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
 
         loc.setWorld(Bukkit.getWorld(dimension.id));
 
@@ -41,8 +41,8 @@ public class Wandering extends Ability implements Listener {
             loc.add(0, 1, 0);
         }
 
-        p.teleport(loc);
-        p.getWorld().spawnParticle(Particle.ENCHANT, p.getEyeLocation().clone().subtract(0, .5, 0), 250, .5, .75, .5, 0);
+        player.teleport(loc);
+        player.getWorld().spawnParticle(Particle.ENCHANT, player.getEyeLocation().clone().subtract(0, .5, 0), 250, .5, .75, .5, 0);
     }
 
     private enum Dimension {
@@ -81,8 +81,8 @@ public class Wandering extends Ability implements Listener {
 
     @Override
     public void onHold() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний вимір: " + dimension.name));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний вимір: " + dimension.name));
     }
 }

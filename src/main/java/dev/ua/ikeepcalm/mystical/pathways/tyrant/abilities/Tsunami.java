@@ -26,16 +26,16 @@ public class Tsunami extends Ability implements Listener {
 
     public Tsunami(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         items.addToSequenceItems(identifier - 1, sequence);
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        Vector dir = p.getLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        player = pathway.getBeyonder().getPlayer();
+        Vector dir = player.getLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
@@ -52,7 +52,7 @@ public class Tsunami extends Ability implements Listener {
                         final Location currentLoc = loc.clone();
                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                             for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                                if (entity.getType() == EntityType.ARMOR_STAND || entity == p)
+                                if (entity.getType() == EntityType.ARMOR_STAND || entity == player)
                                     continue;
                                 i[0] = 60;
                                 break;
@@ -66,7 +66,7 @@ public class Tsunami extends Ability implements Listener {
                         loc.add(dir);
                     }
 
-                    executeAbility(loc, p, getMultiplier());
+                    executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
                     ErrorLoggerUtil.logAbility(e, "Tsunami");
                     cancel();

@@ -23,18 +23,18 @@ public class DemonessPotions extends Potion {
         putMainIntoHashMap(8, BeyonderItemsUtil.getTailFeather());
         putMainIntoHashMap(7, BeyonderItemsUtil.getMeteoriteCrystal());
         putMainIntoHashMap(6, BeyonderItemsUtil.getGoatHorn());
-        putMainIntoHashMap(5, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(5, "demoness", stringColor));
-        putMainIntoHashMap(4, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(4, "demoness", stringColor));
-        putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "demoness", stringColor));
-        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "demoness", stringColor));
-        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "demoness", stringColor));
+        putMainIntoHashMap(5, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(5, "demoness", stringColor), BeyonderItemsUtil.getWraithDust());
+        putMainIntoHashMap(4, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(4, "demoness", stringColor), BeyonderItemsUtil.getPlundererBody());
+        putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "demoness", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "demoness", stringColor));
+        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "demoness", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "demoness", stringColor));
+        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "demoness", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "demoness", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "demoness", stringColor));
 
         putSupplIntoHashMap(9, new ItemStack(Material.DIAMOND_SWORD));
         putSupplIntoHashMap(8, new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.MUTTON));
         putSupplIntoHashMap(7, new ItemStack(Material.FLOWER_POT));
         putSupplIntoHashMap(6, new ItemStack(Material.SKELETON_SKULL), new ItemStack(Material.SOUL_SAND), new ItemStack(Material.GOLDEN_CARROT));
-        putSupplIntoHashMap(5, new ItemStack(Material.BLUE_ICE), new ItemStack(Material.ICE));
-        putSupplIntoHashMap(4, new ItemStack(Material.BEEF), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
+        putSupplIntoHashMap(5, new ItemStack(Material.BLUE_ICE), new ItemStack(Material.NETHER_WART));
+        putSupplIntoHashMap(4, new ItemStack(Material.ELYTRA), new ItemStack(Material.DIAMOND), new ItemStack(Material.STICK));
         putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
         putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
         putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));

@@ -37,7 +37,7 @@ public class WaterSpells extends Ability {
     public WaterSpells(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
     }
 
     enum Category {
@@ -59,15 +59,15 @@ public class WaterSpells extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         switch (selectedCategory) {
-            case LIGHT -> light(p);
-            case BEAM -> beam(p, getMultiplier());
-            case BALL -> waterBall(p, getMultiplier());
-            case RAIN -> rain(p, null);
-            case WHIRL -> vortex(p, getMultiplier());
-            case SPHERE -> sphere(p, getMultiplier());
+            case LIGHT -> light(player);
+            case BEAM -> beam(player, getMultiplier());
+            case BALL -> waterBall(player, getMultiplier());
+            case RAIN -> rain(player, null);
+            case WHIRL -> vortex(player, getMultiplier());
+            case SPHERE -> sphere(player, getMultiplier());
         }
     }
 
@@ -480,8 +480,8 @@ public class WaterSpells extends Ability {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
     }
 }

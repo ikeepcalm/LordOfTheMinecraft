@@ -21,10 +21,10 @@ public class Blink extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation().clone();  // Clone to avoid modifying original location
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation().clone();  // Clone to avoid modifying original location
 
         // Asynchronous task to compute target location
         Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
@@ -41,10 +41,10 @@ public class Blink extends Ability {
 
             // Synchronous task to perform teleportation and particle effects
             Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> {
-                loc.getWorld().spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
-                p.teleport(loc);
-                p.setFallDistance(0);
-                loc.getWorld().spawnParticle(Particle.WITCH, p.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
+                loc.getWorld().spawnParticle(Particle.WITCH, player.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
+                player.teleport(loc);
+                player.setFallDistance(0);
+                loc.getWorld().spawnParticle(Particle.WITCH, player.getEyeLocation().subtract(0, .5, 0), 25, .5, .5, .5, 0);
             });
         });
     }

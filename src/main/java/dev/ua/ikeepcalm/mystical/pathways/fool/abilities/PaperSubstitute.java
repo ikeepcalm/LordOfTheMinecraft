@@ -36,27 +36,27 @@ public class PaperSubstitute extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (switching) {
-            p.sendMessage("§cВи вже використовуєте Техніку Підміни!");
+            player.sendMessage("§cВи вже використовуєте Техніку Підміни!");
             return;
         }
 
         //Check if Player has paper in inv
-        if (!p.getInventory().contains(Material.PAPER)) {
-            p.sendMessage("§cПотрібен папір!");
+        if (!player.getInventory().contains(Material.PAPER)) {
+            player.sendMessage("§cПотрібен папір!");
             return;
         }
 
         ItemStack item;
-        for (int i = 0; i < p.getInventory().getContents().length; i++) {
-            item = p.getInventory().getItem(i);
+        for (int i = 0; i < player.getInventory().getContents().length; i++) {
+            item = player.getInventory().getItem(i);
             if (item == null)
                 continue;
             if (item.getType() == Material.PAPER) {
                 item.setAmount(item.getAmount() - 1);
-                p.getInventory().setItem(i, item);
+                player.getInventory().setItem(i, item);
                 break;
             }
         }
@@ -66,12 +66,12 @@ public class PaperSubstitute extends Ability implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (e.getEntity() != p || !switching)
+        if (e.getEntity() != player || !switching)
             return;
 
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
 
         if (loc.getWorld() == null)
             return;
@@ -79,7 +79,7 @@ public class PaperSubstitute extends Ability implements Listener {
         e.setCancelled(true);
         switching = false;
 
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, p.getName());
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, player.getName());
         npc.addTrait(new RemoveOnDamageTrait());
         npc.spawn(loc);
         npc.setProtected(false);
@@ -91,7 +91,7 @@ public class PaperSubstitute extends Ability implements Listener {
                 break;
             newLoc = loc.clone().add((random.nextInt(50) - 25), random.nextInt(25) - 12.5, random.nextInt(50) - 25);
         }
-        p.teleport(newLoc);
+        player.teleport(newLoc);
 
         //remove FakePlayer after a few seconds
         new BukkitRunnable() {

@@ -177,17 +177,17 @@ public class AirBullet extends Ability {
 
     @Override
     public void useAbility() {
-        executeAbility(p.getLocation(), p);
+        executeAbility(player.getLocation(), player);
     }
 
     @Override
     public void onHold() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (pathway.getSequence().getCurrentSequence() > 3)
             return;
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Послідовність: §8" + sequencePower));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Послідовність: §8" + sequencePower));
     }
 
     @Override

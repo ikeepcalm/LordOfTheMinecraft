@@ -164,12 +164,12 @@ public class FlaringSun extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
         // Get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 15);
+        BlockIterator iter = new BlockIterator(player, 15);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -181,7 +181,7 @@ public class FlaringSun extends Ability {
 
         Location loc = lastBlock.getLocation().add(0, 1, 0);
 
-        executeAbility(loc, p, multiplier);
+        executeAbility(loc, player, multiplier);
     }
 
     @Override

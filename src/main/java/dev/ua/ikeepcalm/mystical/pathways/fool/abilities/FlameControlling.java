@@ -28,8 +28,8 @@ public class FlameControlling extends Ability {
 
         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
             if (pathway.getSequence().getCurrentSequence() == 7) {
-                if (!p.getInventory().contains(Material.COAL) && !p.getInventory().contains(Material.CHARCOAL)) {
-                    Location noFuelLoc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize());
+                if (!player.getInventory().contains(Material.COAL) && !player.getInventory().contains(Material.CHARCOAL)) {
+                    Location noFuelLoc = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize());
                     if (noFuelLoc.getWorld() == null)
                         return;
                     noFuelLoc.getWorld().spawnParticle(Particle.SMOKE, noFuelLoc, 25, 0.05, 0.05, 0.05, 0.15);
@@ -37,13 +37,13 @@ public class FlameControlling extends Ability {
                 }
 
                 ItemStack item;
-                for (int i = 0; i < p.getInventory().getContents().length; i++) {
-                    item = p.getInventory().getItem(i);
+                for (int i = 0; i < player.getInventory().getContents().length; i++) {
+                    item = player.getInventory().getItem(i);
                     if (item == null)
                         continue;
                     if (item.getType() == Material.COAL || item.getType() == Material.CHARCOAL) {
                         item.setAmount(item.getAmount() - 1);
-                        p.getInventory().setItem(i, item);
+                        player.getInventory().setItem(i, item);
                         break;
                     }
                 }
@@ -106,8 +106,8 @@ public class FlameControlling extends Ability {
     @Override
     public void useAbility() {
         double multiplier = getMultiplier();
-        p = pathway.getBeyonder().getPlayer();
-        executeAbility(p.getEyeLocation(), p, multiplier);
+        player = pathway.getBeyonder().getPlayer();
+        executeAbility(player.getEyeLocation(), player, multiplier);
     }
 
     @Override

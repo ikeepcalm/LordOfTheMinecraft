@@ -43,14 +43,14 @@ public class RealmOfMysteries extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
 
         concealedEntities = new ArrayList<>();
-        concealedEntities.addAll(p.getNearbyEntities(radius, radius, radius));
-        concealedEntities.add(p);
+        concealedEntities.addAll(player.getNearbyEntities(radius, radius, radius));
+        concealedEntities.add(player);
 
         LordOfTheMinecraft.instance.addToConcealedEntities(concealedEntities);
 
@@ -106,12 +106,12 @@ public class RealmOfMysteries extends Ability implements Listener {
 
     @Override
     public void leftClick() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         radius++;
         if (radius > 30)
             radius = 5;
 
-        p.sendMessage("§5Радіус встановлено на " + radius);
+        player.sendMessage("§5Радіус встановлено на " + radius);
     }
 
     @EventHandler

@@ -132,7 +132,7 @@ public class Petrification extends Ability {
                 }
 
                 if (counter % 20 == 0) {
-                    finalTarget.damage(25, p);
+                    finalTarget.damage(25, player);
                 }
 
                 finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 120, 120));
@@ -163,9 +163,9 @@ public class Petrification extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        executeAbility(p.getEyeLocation(), p, getMultiplier());
+        executeAbility(player.getEyeLocation(), player, getMultiplier());
     }
 
     @Override

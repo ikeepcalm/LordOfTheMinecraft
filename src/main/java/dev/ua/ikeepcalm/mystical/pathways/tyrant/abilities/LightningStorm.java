@@ -25,7 +25,7 @@ public class LightningStorm extends Ability {
 
     public LightningStorm(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         items.addToSequenceItems(identifier - 1, sequence);
         destruction = false;
     }
@@ -33,15 +33,15 @@ public class LightningStorm extends Ability {
     @Override
     public void useAbility() {
         try {
-            p = pathway.getBeyonder().getPlayer();
-            Vector dir = p.getLocation().getDirection().normalize();
-            Location loc = p.getEyeLocation();
+            player = pathway.getBeyonder().getPlayer();
+            Vector dir = player.getLocation().getDirection().normalize();
+            Location loc = player.getEyeLocation();
             if (loc.getWorld() == null)
                 return;
 
             for (int i = 0; i < 80; i++) {
                 boolean entitiesNearby = loc.getWorld().getNearbyEntities(loc, 1, 1, 1).stream()
-                        .anyMatch(entity -> entity.getType() == EntityType.ARMOR_STAND || entity == p);
+                        .anyMatch(entity -> entity.getType() == EntityType.ARMOR_STAND || entity == player);
 
                 if (entitiesNearby)
                     break;
@@ -63,7 +63,7 @@ public class LightningStorm extends Ability {
                 }
             });
 
-            executeAbility(loc, p, getMultiplier());
+            executeAbility(loc, player, getMultiplier());
         } catch (Exception e) {
             ErrorLoggerUtil.logAbility(e, "Lightning Storm");
         }
@@ -114,6 +114,6 @@ public class LightningStorm extends Ability {
     public void leftClick() {
         destruction = !destruction;
         Destruction = destruction ? "увімкнено" : "вимкнено";
-        p.sendMessage("§aЗнищення блоків: §7" + Destruction);
+        player.sendMessage("§aЗнищення блоків: §7" + Destruction);
     }
 }

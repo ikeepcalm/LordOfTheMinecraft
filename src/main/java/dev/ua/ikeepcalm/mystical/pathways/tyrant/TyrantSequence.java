@@ -68,7 +68,7 @@ public class TyrantSequence extends Sequence implements Listener {
         PotionEffect[] effects9 = {
                 new PotionEffect(PotionEffectType.RESISTANCE, 60, 0, false, false, false),
                 new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
-                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 1, false, false, true),
+                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 0, false, false, true),
         };
         sequenceEffects.put(9, effects9);
 
@@ -76,7 +76,7 @@ public class TyrantSequence extends Sequence implements Listener {
                 new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 500, 1, false, false, true),
-                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 4, false, false, true),
+                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 1, false, false, true),
                 new PotionEffect(PotionEffectType.SPEED, 60, 0, false, false, true),
         };
         sequenceEffects.put(6, effects6);
@@ -84,7 +84,7 @@ public class TyrantSequence extends Sequence implements Listener {
                 new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 500, 5, false, false, true),
-                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 4, false, false, true),
+                new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 80, 3, false, false, true),
                 new PotionEffect(PotionEffectType.SPEED, 60, 3, false, false, true),
                 new PotionEffect(PotionEffectType.SATURATION, 60, 10, false, false, true),
         };

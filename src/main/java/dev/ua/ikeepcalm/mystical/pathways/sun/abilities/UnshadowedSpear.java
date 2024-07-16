@@ -35,12 +35,12 @@ public class UnshadowedSpear extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
         //get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 40);
+        BlockIterator iter = new BlockIterator(player, 40);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -50,13 +50,13 @@ public class UnshadowedSpear extends Ability {
             break;
         }
 
-        double distance = lastBlock.getLocation().distance(p.getEyeLocation());
+        double distance = lastBlock.getLocation().distance(player.getEyeLocation());
 
-        Location loc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize().multiply(distance)).clone();
+        Location loc = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(distance)).clone();
 
-        float angle = p.getEyeLocation().getYaw() / 60;
+        float angle = player.getEyeLocation().getYaw() / 60;
 
-        Location spearLocation = p.getEyeLocation().subtract(Math.cos(angle), 0, Math.sin(angle));
+        Location spearLocation = player.getEyeLocation().subtract(Math.cos(angle), 0, Math.sin(angle));
         Vector dir = loc.toVector().subtract(spearLocation.toVector()).normalize().multiply(2);
         Vector direction = dir.clone();
 
@@ -80,7 +80,7 @@ public class UnshadowedSpear extends Ability {
                         for (Entity entity : spearLocation.getWorld().getNearbyEntities(spearLocation, 5, 5, 5)) {
                             if (entity instanceof LivingEntity) {
                                 // Ignore player that initiated the shot
-                                if (entity == p) {
+                                if (entity == player) {
                                     continue;
                                 }
                                 Vector particleMinVector = new Vector(
@@ -99,9 +99,9 @@ public class UnshadowedSpear extends Ability {
 
                                     entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
                                     if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                        ((Damageable) entity).damage(25 * multiplier, p);
+                                        ((Damageable) entity).damage(25 * multiplier, player);
                                     } else {
-                                        ((Damageable) entity).damage(14 * multiplier, p);
+                                        ((Damageable) entity).damage(14 * multiplier, player);
                                     }
 
                                     Location sphereLoc = ((LivingEntity) entity).getEyeLocation().clone();
@@ -164,7 +164,7 @@ public class UnshadowedSpear extends Ability {
                                                 for (Entity entity : sphereLoc.getWorld().getNearbyEntities(sphereLoc, 5, 5, 5)) {
                                                     if (entity instanceof LivingEntity) {
                                                         // Ignore player that initiated the shot
-                                                        if (entity == p) {
+                                                        if (entity == player) {
                                                             continue;
                                                         }
                                                         Vector particleMinVector = new Vector(
@@ -179,9 +179,9 @@ public class UnshadowedSpear extends Ability {
                                                         //entity hit
                                                         if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
                                                             if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType()))
-                                                                ((Damageable) entity).damage(18 * multiplier, p);
+                                                                ((Damageable) entity).damage(18 * multiplier, player);
                                                             else
-                                                                ((Damageable) entity).damage(8 * multiplier, p);
+                                                                ((Damageable) entity).damage(8 * multiplier, player);
                                                         }
                                                     }
                                                 }

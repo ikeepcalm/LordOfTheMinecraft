@@ -25,16 +25,16 @@ public class SunPotions extends Potion {
         putMainIntoHashMap(6, BeyonderItemsUtil.getBirdFeather());
         putMainIntoHashMap(5, BeyonderItemsUtil.getRedRoosterComb());
         putMainIntoHashMap(4, BeyonderItemsUtil.getTailFeather(), BeyonderItemsUtil.getHolyBrillianceRock());
-        putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "sun", stringColor));
-        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "sun", stringColor));
-        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "sun", stringColor));
+        putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "sun", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "sun", stringColor));
+        putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "sun", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "sun", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "sun", stringColor));
+        putMainIntoHashMap(1, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "sun", stringColor),  LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "sun", stringColor),  LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(1, "sun", stringColor));
 
         putSupplIntoHashMap(9, new ItemStack(Material.SHORT_GRASS), new ItemStack(Material.SUNFLOWER));
         putSupplIntoHashMap(8, new ItemStack(Material.SUNFLOWER), new ItemStack(Material.SWEET_BERRIES));
         putSupplIntoHashMap(7, new ItemStack(Material.OBSIDIAN), new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.FEATHER));
         putSupplIntoHashMap(6, BeyonderItemsUtil.getSunflower(), new ItemStack(Material.FERN), new ItemStack(Material.GLOW_BERRIES));
-        putSupplIntoHashMap(5, new ItemStack(Material.MAGMA_CREAM), new ItemStack(Material.SUNFLOWER));
-        putSupplIntoHashMap(4, BeyonderItemsUtil.getRedRoosterComb());
+        putSupplIntoHashMap(5, new ItemStack(Material.MAGMA_CREAM), new ItemStack(Material.NETHER_WART));
+        putSupplIntoHashMap(4, BeyonderItemsUtil.getRedRoosterComb(), new ItemStack(Material.ELYTRA));
         putSupplIntoHashMap(3, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.ANCIENT_DEBRIS), new ItemStack(Material.BOOKSHELF));
         putSupplIntoHashMap(2, new ItemStack(Material.NETHER_STAR), new ItemStack(Material.DRAGON_BREATH), new ItemStack(Material.WITHER_ROSE));
         putSupplIntoHashMap(1, new ItemStack(Material.ENCHANTED_GOLDEN_APPLE));

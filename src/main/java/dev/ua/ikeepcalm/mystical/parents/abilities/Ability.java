@@ -20,7 +20,7 @@ public abstract class Ability {
     protected final int identifier;
     @Getter
     protected final Pathway pathway;
-    protected Player p;
+    protected Player player;
     @Getter
     protected final int sequence;
     protected final Items items;

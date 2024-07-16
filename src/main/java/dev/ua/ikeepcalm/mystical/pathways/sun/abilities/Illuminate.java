@@ -28,10 +28,10 @@ public class Illuminate extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         // Get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 9);
+        BlockIterator iter = new BlockIterator(player, 9);
         Block lastBlock = iter.next();
         Block previousBlock;
         while (iter.hasNext()) {

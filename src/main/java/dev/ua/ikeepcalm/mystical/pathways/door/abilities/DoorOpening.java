@@ -17,10 +17,10 @@ public class DoorOpening extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection();
-        Location startLoc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection();
+        Location startLoc = player.getEyeLocation();
 
         for (int i = 0; i < 3; i++) {
             if (startLoc.getBlock().getType().isSolid())
@@ -44,7 +44,7 @@ public class DoorOpening extends Ability {
         if (startLoc.getBlock().getType().isSolid())
             return;
 
-        p.teleport(startLoc);
+        player.teleport(startLoc);
     }
 
     @Override

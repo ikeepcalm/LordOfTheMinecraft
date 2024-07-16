@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.listeners;
+package dev.ua.ikeepcalm.handlers;
 
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBTItem;
@@ -125,24 +125,21 @@ public class PotionHandler implements Listener {
                 if (supplementaryIngredients.size() != potion.getSupplIngredients(i).length)
                     continue;
 
-                boolean isCorrect = mainIngredients.size() == potion.getMainIngredients(i).length || mainIngredients.size() == 1;
+                boolean isCorrect = mainIngredients.size() == potion.getMainIngredients(i).length;
 
                 for (int j = 0; j < mainIngredients.size(); j++) {
                     if (!isCorrect) {
                         break;
                     }
 
-                    if (!mainIngredients.get(j).isSimilar(potion.getMainIngredients(i)[j]))
-                        isCorrect = false;
-                }
-
-                if (!isCorrect) {
-                    if (!mainIngredients.isEmpty()) {
-                        NBTItem actual = new NBTItem(mainIngredients.getFirst());
+                    if (!mainIngredients.get(j).isSimilar(potion.getMainIngredients(i)[j])) {
+                        NBTItem actual = new NBTItem(mainIngredients.get(j));
                         NBTItem expected = new NBTItem(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()));
-                        if (actual.getString("pathway").equals(expected.getString("pathway"))) {
-                            if (actual.getString("sequence").equals(expected.getString("sequence"))) {
-                                isCorrect = true;
+                        if (!actual.getString("pathway").equals(expected.getString("pathway"))) {
+                            isCorrect = false;
+                        } else {
+                            if (!actual.getString("pathway").equals(expected.getString("pathway"))) {
+                                isCorrect = false;
                             }
                         }
                     }

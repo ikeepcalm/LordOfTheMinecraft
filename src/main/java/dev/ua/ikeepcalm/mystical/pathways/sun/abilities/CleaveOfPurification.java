@@ -27,8 +27,8 @@ public class CleaveOfPurification extends Ability {
     public void useAbility() {
         double multiplier = getMultiplier();
 
-        p = pathway.getBeyonder().getPlayer();
-        Location loc = p.getLocation().add(0, 1, 0);
+        player = pathway.getBeyonder().getPlayer();
+        Location loc = player.getLocation().add(0, 1, 0);
         Vector vector = loc.getDirection();
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -61,9 +61,9 @@ public class CleaveOfPurification extends Ability {
                                 Location entLoc = entity.getLocation();
                                 if (entity instanceof LivingEntity livingEntity) {
                                     if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                        ((Damageable) entity).damage(28 * multiplier, p);
+                                        ((Damageable) entity).damage(28 * multiplier, player);
                                     } else {
-                                        if (entity != p) ((Damageable) entity).damage(12 * multiplier, p);
+                                        if (entity != player) ((Damageable) entity).damage(12 * multiplier, player);
                                     }
                                     Objects.requireNonNull(entLoc.getWorld()).spawnParticle(Particle.FIREWORK, entLoc, 200, 0.2, 0.2, 0.2, 0.15);
                                 }

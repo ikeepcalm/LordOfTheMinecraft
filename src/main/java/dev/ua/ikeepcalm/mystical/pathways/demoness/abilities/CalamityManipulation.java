@@ -41,10 +41,10 @@ public class CalamityManipulation extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
 
         for (int i = 0; i < 200; i++) {
             if (loc.getBlock().getType().isSolid())
@@ -55,10 +55,10 @@ public class CalamityManipulation extends Ability {
         loc.subtract(dir);
 
         switch (selectedCategory) {
-            case TORNADO -> new Tornado(p).spawnDisaster(p, loc);
-            case BLIZZARD -> new Blizzard(p).spawnDisaster(p, loc);
-            case TSUNAMI -> new Tsunami(p).spawnDisaster(p, loc);
-            case EARTHQUAKE -> new Earthquake(p).spawnDisaster(p, loc);
+            case TORNADO -> new Tornado(player).spawnDisaster(player, loc);
+            case BLIZZARD -> new Blizzard(player).spawnDisaster(player, loc);
+            case TSUNAMI -> new Tsunami(player).spawnDisaster(player, loc);
+            case EARTHQUAKE -> new Earthquake(player).spawnDisaster(player, loc);
         }
     }
 
@@ -74,9 +74,9 @@ public class CalamityManipulation extends Ability {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний катаклізм: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний катаклізм: §f" + selectedCategory.name));
     }
 
     @Override

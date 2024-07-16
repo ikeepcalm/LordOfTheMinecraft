@@ -189,11 +189,11 @@ public class BlackHole extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        executeAbility(p.getEyeLocation(), p, getMultiplier());
+        executeAbility(player.getEyeLocation(), player, getMultiplier());
     }
 
     @Override

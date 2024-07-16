@@ -5,7 +5,11 @@
 # Not affiliated with the author or the novel in any way, though it was an inspiration
 # Adapted to be distributed as a standalone plugin on ukrainian minecraft server
 
+# Beyonder creatures and spirits
 enable-mobs: true
+
+# Explosions rollback
+enable-explosions: true
 
 # Sleep / Insomnia notification settings
 notification: ACTIONBAR # Possible values: ACTIONBAR, CHAT

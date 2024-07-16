@@ -38,7 +38,7 @@ public class SolarFlare extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (pathway.getBeyonder().getSpirituality() < spirituality[power - 1])
             return;
@@ -46,7 +46,7 @@ public class SolarFlare extends Ability {
         pathway.getSequence().removeSpirituality(spirituality[power - 1]);
 
         // Get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 300);
+        BlockIterator iter = new BlockIterator(player, 300);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -101,10 +101,10 @@ public class SolarFlare extends Ability {
 
     @Override
     public void leftClick() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         power++;
         if (power > 7)
             power = 1;
-        p.sendMessage("§6Потужність спалаху: " + power);
+        player.sendMessage("§6Потужність спалаху: " + power);
     }
 }

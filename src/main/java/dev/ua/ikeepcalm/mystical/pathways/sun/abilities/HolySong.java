@@ -25,11 +25,11 @@ public class HolySong extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTask(LordOfTheMinecraft.instance, () -> p.getWorld().playSound(p, Sound.MUSIC_DISC_MELLOHI, 10f, 1f));
+        scheduler.runTask(LordOfTheMinecraft.instance, () -> player.getWorld().playSound(player, Sound.MUSIC_DISC_MELLOHI, 10f, 1f));
 
         new BukkitRunnable() {
             int counter = 0;
@@ -38,10 +38,10 @@ public class HolySong extends Ability {
             public void run() {
                 try {
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        p.getWorld().spawnParticle(Particle.NOTE, p.getLocation(), 50, 5, 5, 5);
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 0, false, false, false));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false, false));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 0, false, false, false));
+                        player.getWorld().spawnParticle(Particle.NOTE, player.getLocation(), 50, 5, 5, 5);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 0, false, false, false));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false, false));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 0, false, false, false));
                     });
 
                     counter++;

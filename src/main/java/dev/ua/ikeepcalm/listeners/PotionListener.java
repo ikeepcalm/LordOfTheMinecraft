@@ -40,8 +40,6 @@ public class PotionListener implements Listener {
         if (sequence == 0)
             return;
 
-        e.getPlayer().getInventory().remove(e.getItem());
-
         //Not a beyonder already
         if (!LordOfTheMinecraft.beyonders.containsKey(e.getPlayer().getUniqueId())) {
             //initializing new Pathway

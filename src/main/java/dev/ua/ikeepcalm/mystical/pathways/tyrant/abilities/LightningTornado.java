@@ -21,14 +21,14 @@ public class LightningTornado extends Ability {
     public LightningTornado(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        Vector dir = p.getLocation().getDirection().normalize();
-        Location loc = p.getEyeLocation();
+        player = pathway.getBeyonder().getPlayer();
+        Vector dir = player.getLocation().getDirection().normalize();
+        Location loc = player.getEyeLocation();
         if (loc.getWorld() == null) return;
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
@@ -42,7 +42,7 @@ public class LightningTornado extends Ability {
                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                             try {
                                 for (Entity entity : currentLoc.getWorld().getNearbyEntities(currentLoc, 1, 1, 1)) {
-                                    if (entity.getType() == EntityType.ARMOR_STAND || entity == p) continue;
+                                    if (entity.getType() == EntityType.ARMOR_STAND || entity == player) continue;
                                     // Break the loop by setting i to 80
                                     i[0] = 80;
                                     break;
@@ -60,7 +60,7 @@ public class LightningTornado extends Ability {
                         loc.add(dir);
                     }
 
-                    executeAbility(loc, p, getMultiplier());
+                    executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
                     ErrorLoggerUtil.logAbility(e, "Lightning Tornado");
                     cancel();

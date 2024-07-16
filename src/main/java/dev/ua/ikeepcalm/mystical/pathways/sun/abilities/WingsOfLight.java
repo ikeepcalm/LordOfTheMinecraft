@@ -45,9 +45,9 @@ public class WingsOfLight extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         if (pathway.getSequence().getCurrentSequence() > 1) {
-            p.setVelocity(new Vector(0, 1, 0));
+            player.setVelocity(new Vector(0, 1, 0));
             pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
             new BukkitRunnable() {
                 int counter = 0;
@@ -65,23 +65,23 @@ public class WingsOfLight extends Ability {
                     if (counterVelocity < 4)
                         counterVelocity++;
                     else if (counterVelocity == 4) {
-                        p.setVelocity(new Vector(0, 0, 0));
+                        player.setVelocity(new Vector(0, 0, 0));
                         counterVelocity = 5;
                     }
 
-                    Location loc = p.getLocation();
+                    Location loc = player.getLocation();
                     drawParticles(loc);
-                    p.setGravity(false);
+                    player.setGravity(false);
 
 
                     if (pathway.getBeyonder().getSpirituality() <= 500 || !pathway.getBeyonder().online) {
-                        p.setGravity(true);
+                        player.setGravity(true);
                         pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                         cancel();
                     }
 
                     if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
-                        p.setGravity(true);
+                        player.setGravity(true);
                         cancel();
                     }
                 }
@@ -89,8 +89,8 @@ public class WingsOfLight extends Ability {
             return;
         }
 
-        p.setFallDistance(0);
-        p.setVelocity(p.getEyeLocation().getDirection().normalize().multiply(1.75));
+        player.setFallDistance(0);
+        player.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(1.75));
         new BukkitRunnable() {
             int counter = 0;
 
@@ -102,31 +102,31 @@ public class WingsOfLight extends Ability {
                 }
 
                 counter++;
-                drawParticles(p.getLocation());
+                drawParticles(player.getLocation());
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }
 
     @Override
     public void leftClick() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         if (pathway.getSequence().getCurrentSequence() > 1)
             return;
 
-        p.setVelocity(new Vector(0, 0, 0));
-        p.setFallDistance(0);
-        p.setGravity(!p.hasGravity());
+        player.setVelocity(new Vector(0, 0, 0));
+        player.setFallDistance(0);
+        player.setGravity(!player.hasGravity());
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (p.hasGravity()) {
+                if (player.hasGravity()) {
                     cancel();
                     return;
                 }
 
-                drawParticles(p.getLocation());
-                p.setVelocity(new Vector(0, 0, 0));
+                drawParticles(player.getLocation());
+                player.setVelocity(new Vector(0, 0, 0));
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
     }

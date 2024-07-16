@@ -33,20 +33,20 @@ public class FlameJump extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (teleportBlock == null)
             return;
 
         Location loc = teleportBlock.getLocation().clone().add(0.5, 0.5, 0.5);
-        loc.setDirection(p.getLocation().getDirection());
+        loc.setDirection(player.getLocation().getDirection());
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 1, false, false));
             Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.FLAME, loc.clone().add(0, -0.25, 0), 120, 0.3, 1, 0.3, 0.01);
             Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.SMOKE, loc.clone().add(0, -0.25, 0), 85, 0.3, 1, 0.3, 0.015);
-            p.teleport(loc);
+            player.teleport(loc);
         });
 
         justTeleported = true;
@@ -54,7 +54,7 @@ public class FlameJump extends Ability {
         new BukkitRunnable() {
             @Override
             public void run() {
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> p.setFireTicks(0));
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> player.setFireTicks(0));
                 justTeleported = false;
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 15);
@@ -79,10 +79,10 @@ public class FlameJump extends Ability {
 
     @Override
     public void onHold() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Vector direction = p.getLocation().getDirection().normalize();
-        final Location[] loc = {p.getEyeLocation().clone()};
+        Vector direction = player.getLocation().getDirection().normalize();
+        final Location[] loc = {player.getEyeLocation().clone()};
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
         scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
@@ -94,7 +94,7 @@ public class FlameJump extends Ability {
             double nearestBlockDistance = -1;
             Block nearestBlock = null;
 
-            List<Block> blocks = getNearbyBlocks(p.getLocation(), 60);
+            List<Block> blocks = getNearbyBlocks(player.getLocation(), 60);
 
             for (Block b : blocks) {
                 Material[] validMaterials = {
@@ -126,7 +126,7 @@ public class FlameJump extends Ability {
             Block finalNearestBlock = nearestBlock;
             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                 if (!justTeleported)
-                    p.spawnParticle(Particle.FLASH, loc[0].clone().add(0.5, 0.75, 0.5), 1, 0, 0, 0, 0);
+                    player.spawnParticle(Particle.FLASH, loc[0].clone().add(0.5, 0.75, 0.5), 1, 0, 0, 0, 0);
                 teleportBlock = finalNearestBlock;
             });
         });

@@ -54,7 +54,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
     public SpiritBodyThreads(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         items.addToSequenceItems(identifier - 1, sequence);
 
         controlling = false;
@@ -107,14 +107,14 @@ public class SpiritBodyThreads extends Ability implements Listener {
                 return;
             }
             if (nearbyEntities.getFirst() instanceof Player player) {
-                if (player.getUniqueId().equals(p.getUniqueId())) {
+                if (player.getUniqueId().equals(this.player.getUniqueId())) {
                     return;
                 }
             }
         }
 
-        ((LivingEntity) currentEntity).damage(0, p);
-        currentEntity.setMetadata("isBeingControlled", new FixedMetadataValue(LordOfTheMinecraft.instance, p.getUniqueId()));
+        ((LivingEntity) currentEntity).damage(0, player);
+        currentEntity.setMetadata("isBeingControlled", new FixedMetadataValue(LordOfTheMinecraft.instance, player.getUniqueId()));
 
         controlling = true;
         int convertTimeSeconds = convertTimePerLevel[pathway.getSequence().getCurrentSequence()];
@@ -122,20 +122,20 @@ public class SpiritBodyThreads extends Ability implements Listener {
         if (targetIsBeyonder()) {
             switch (getTargetSequence() - pathway.getSequence().getCurrentSequence()) {
                 case -4 -> {
-                    p.damage(100, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 6, false, false);
+                    player.damage(100, currentEntity);
+                    player.getWorld().createExplosion(player.getLocation(), 6, false, false);
                     controlling = false;
                     return;
                 }
                 case -3 -> {
-                    p.damage(60, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 4, false, false);
+                    player.damage(60, currentEntity);
+                    player.getWorld().createExplosion(player.getLocation(), 4, false, false);
                     controlling = false;
                     return;
                 }
                 case -2 -> {
-                    p.damage(20, currentEntity);
-                    p.getWorld().createExplosion(p.getLocation(), 2, false, false);
+                    player.damage(20, currentEntity);
+                    player.getWorld().createExplosion(player.getLocation(), 2, false, false);
                     controlling = false;
                     return;
                 }
@@ -165,7 +165,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
             @Override
             public void run() {
-                if (currentEntity == null || !currentEntity.isValid() || !controlling || p == null || !p.isValid()) {
+                if (currentEntity == null || !currentEntity.isValid() || !controlling || player == null || !player.isValid()) {
                     controlling = false;
                     if (currentEntity != null && currentEntity.isValid())
                         currentEntity.removeMetadata("isBeingControlled", LordOfTheMinecraft.instance);
@@ -173,7 +173,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
                     return;
                 }
 
-                drawLineToEntity(p.getEyeLocation(), currentEntity.getLocation().add(0, .5, 0), dustPurple);
+                drawLineToEntity(player.getEyeLocation(), currentEntity.getLocation().add(0, .5, 0), dustPurple);
                 giveEffectsToTarget(counter);
 
                 counter--;
@@ -210,7 +210,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
                 sequence,
                 pathway,
                 currentEntity.getType(),
-                p.getUniqueId(),
+                player.getUniqueId(),
                 currentEntity.getLocation(),
                 name,
                 this,
@@ -272,10 +272,10 @@ public class SpiritBodyThreads extends Ability implements Listener {
     public void onHold() {
         int currentSequence = pathway.getSequence().getCurrentSequence();
 
-        if (p == null || nearbyEntities == null || currentEntity == null || controlling)
+        if (player == null || nearbyEntities == null || currentEntity == null || controlling)
             return;
 
-        Location startLoc = p.getEyeLocation();
+        Location startLoc = player.getEyeLocation();
 
         if (!currentEntity.isValid()) {
             index = 0;
@@ -298,7 +298,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
             return;
 
         for (Entity entity : nearbyEntities) {
-            if (entity == p)
+            if (entity == player)
                 continue;
 
             if (marionettes.stream().anyMatch(marionette -> marionette.getEntity() == entity))
@@ -311,12 +311,12 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
         String name = currentEntity.getName();
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана сутність: §8" + name + " §r-- §5Відстань: §8" + Math.round(currentEntity.getLocation().distance(p.getLocation()))));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана сутність: §8" + name + " §r-- §5Відстань: §8" + Math.round(currentEntity.getLocation().distance(player.getLocation()))));
     }
 
     @Override
     public void leftClick() {
-        if (p.isSneaking()) {
+        if (player.isSneaking()) {
             onlyShowPlayers = !onlyShowPlayers;
             getNearbyEntities();
             index = 0;
@@ -344,7 +344,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
                 .multiply(.75);
 
         for (int i = 0; i < target.distance(startLoc); i++) {
-            p.spawnParticle(
+            player.spawnParticle(
                     Particle.DUST,
                     loc,
                     1,
@@ -364,10 +364,10 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
     @EventHandler
     public void onSlotChange(PlayerItemHeldEvent e) {
-        if (!e.getPlayer().getName().equals(p.getName())) {
+        if (!e.getPlayer().getName().equals(player.getName())) {
             return;
         } else {
-            p = e.getPlayer();
+            player = e.getPlayer();
         }
 
         ItemStack item = e.getPlayer().getInventory().getItem(e.getNewSlot());
@@ -391,11 +391,11 @@ public class SpiritBodyThreads extends Ability implements Listener {
         if (!onlyShowPlayers && distance > 75)
             distance = 75;
 
-        nearbyEntities = p.getNearbyEntities(distance, distance, distance)
+        nearbyEntities = player.getNearbyEntities(distance, distance, distance)
                 .stream()
                 .filter(entity -> entity instanceof LivingEntity && !(entity instanceof ArmorStand))
                 .sorted(Comparator.comparing(
-                        entity -> entity.getLocation().distance(p.getEyeLocation())))
+                        entity -> entity.getLocation().distance(player.getEyeLocation())))
                 .filter(entity -> (!onlyShowPlayers || entity.getType() == EntityType.PLAYER))
                 .collect(Collectors.toList());
 

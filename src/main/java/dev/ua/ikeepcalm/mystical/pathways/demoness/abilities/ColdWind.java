@@ -70,11 +70,11 @@ public class ColdWind extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        executeAbility(p.getLocation(), p, 1);
+        executeAbility(player.getLocation(), player, 1);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class SirenSong extends Ability {
     public SirenSong(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
     }
 
     enum Category {
@@ -44,8 +44,8 @@ public class SirenSong extends Ability {
     @Override
     public void useAbility() {
         switch (selectedCategory) {
-            case CHAOTIC -> chaotic(p, getMultiplier());
-            case BOOST -> boost(p);
+            case CHAOTIC -> chaotic(player, getMultiplier());
+            case BOOST -> boost(player);
         }
     }
 
@@ -138,7 +138,7 @@ public class SirenSong extends Ability {
 
     @Override
     public ItemStack getItem() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         return TyrantItems.createItem(Material.MUSIC_DISC_MALL, "Спів Сирени", "400", identifier);
     }
 
@@ -154,8 +154,8 @@ public class SirenSong extends Ability {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана пісня: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана пісня: §f" + selectedCategory.name));
     }
 }

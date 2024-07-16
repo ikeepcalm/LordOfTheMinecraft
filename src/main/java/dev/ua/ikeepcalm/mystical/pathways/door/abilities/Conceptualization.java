@@ -25,14 +25,14 @@ public class Conceptualization extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        boolean couldFly = p.getAllowFlight();
-        float flySpeed = p.getFlySpeed();
+        boolean couldFly = player.getAllowFlight();
+        float flySpeed = player.getFlySpeed();
 
-        p.setFlySpeed(Math.min(flySpeed * 2, 1));
+        player.setFlySpeed(Math.min(flySpeed * 2, 1));
 
         new BukkitRunnable() {
             int counter = 20;
@@ -42,25 +42,25 @@ public class Conceptualization extends Ability {
             @Override
             public void run() {
                 try {
-                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANT, p.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
+                    GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ENCHANT, player.getEyeLocation(), 50, 1.1, 1.1, 1.1, 0);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.hidePlayer(LordOfTheMinecraft.instance, p);
+                        player.hidePlayer(LordOfTheMinecraft.instance, Conceptualization.this.player);
                     }
 
-                    p.setAllowFlight(true);
-                    p.setFlying(true);
+                    player.setAllowFlight(true);
+                    player.setFlying(true);
 
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 1, false, false, false));
-                    p.setFireTicks(0);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 5, 1, false, false, false));
+                    player.setFireTicks(0);
 
                     if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || pathway.getBeyonder().getSpirituality() <= 420) {
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.showPlayer(LordOfTheMinecraft.instance, p);
+                            player.showPlayer(LordOfTheMinecraft.instance, Conceptualization.this.player);
                         }
-                        p.setAllowFlight(couldFly);
-                        p.setFlySpeed(flySpeed);
-                        p.setFireTicks(0);
+                        player.setAllowFlight(couldFly);
+                        player.setFlySpeed(flySpeed);
+                        player.setFireTicks(0);
                         cancel();
                         return;
                     }

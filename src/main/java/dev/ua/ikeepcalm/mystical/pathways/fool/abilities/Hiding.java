@@ -31,9 +31,9 @@ public class Hiding extends Ability implements Listener {
         items.addToSequenceItems(identifier - 1, sequence);
 
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
-        p = pathway.getBeyonder().getPlayer();
-        p.setInvisible(false);
-        p.setInvulnerable(false);
+        player = pathway.getBeyonder().getPlayer();
+        player.setInvisible(false);
+        player.setInvulnerable(false);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(LordOfTheMinecraft.instance, pathway.getBeyonder().getPlayer());
@@ -45,16 +45,16 @@ public class Hiding extends Ability implements Listener {
         if (hiding)
             return;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         hiding = true;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.hidePlayer(LordOfTheMinecraft.instance, p);
+            player.hidePlayer(LordOfTheMinecraft.instance, this.player);
         }
 
-        p.setInvulnerable(true);
-        p.setInvisible(true);
+        player.setInvulnerable(true);
+        player.setInvisible(true);
 
         new BukkitRunnable() {
             final Particle.DustOptions dust = new Particle.DustOptions(Color.fromRGB(216, 216, 216), 50f);
@@ -62,22 +62,22 @@ public class Hiding extends Ability implements Listener {
             @Override
             public void run() {
 
-                p.spawnParticle(Particle.DUST, p.getLocation(), 500, 6, 6, 6, dust);
+                player.spawnParticle(Particle.DUST, player.getLocation(), 500, 6, 6, 6, dust);
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.hidePlayer(LordOfTheMinecraft.instance, p);
+                    player.hidePlayer(LordOfTheMinecraft.instance, Hiding.this.player);
                 }
 
-                p.setInvulnerable(true);
-                p.setInvisible(true);
+                player.setInvulnerable(true);
+                player.setInvisible(true);
 
                 if (!hiding) {
                     cancel();
-                    p.setInvisible(false);
+                    player.setInvisible(false);
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         p.showPlayer(LordOfTheMinecraft.instance, pathway.getBeyonder().getPlayer());
                     }
 
-                    p.setInvulnerable(false);
+                    player.setInvulnerable(false);
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 8);
@@ -85,7 +85,7 @@ public class Hiding extends Ability implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (e.getPlayer() != p || !hiding)
+        if (e.getPlayer() != player || !hiding)
             return;
 
         e.setCancelled(true);
@@ -93,7 +93,7 @@ public class Hiding extends Ability implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (e.getPlayer() != p || !hiding)
+        if (e.getPlayer() != player || !hiding)
             return;
 
         e.setCancelled(true);
@@ -107,7 +107,7 @@ public class Hiding extends Ability implements Listener {
     @Override
     public void onHold() {
         if (hiding)
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Натисніть ЛКМ щоб вийти із Завіси"));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Натисніть ЛКМ щоб вийти із Завіси"));
     }
 
     @Override

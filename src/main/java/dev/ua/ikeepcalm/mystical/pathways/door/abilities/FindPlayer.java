@@ -28,25 +28,25 @@ public class FindPlayer extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (finding) {
             finding = false;
-            p.sendMessage("§cСкасовано");
+            player.sendMessage("§cСкасовано");
             return;
         }
 
-        p.sendMessage("§bВведіть ім'я гравця, до якого хочете телепортуватися");
-        p.sendMessage("§bНатисніть ПКМ знов, щоб скасувати");
+        player.sendMessage("§bВведіть ім'я гравця, до якого хочете телепортуватися");
+        player.sendMessage("§bНатисніть ПКМ знов, щоб скасувати");
 
         finding = true;
     }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (!finding || e.getPlayer() != p)
+        if (!finding || e.getPlayer() != player)
             return;
 
         e.setCancelled(true);
@@ -67,12 +67,12 @@ public class FindPlayer extends Ability implements Listener {
 
 
                 if (tp == null) {
-                    p.sendMessage("§cГравця " + e.getMessage() + " не знайдено!");
-                    p.sendMessage("§cСкасовано");
+                    player.sendMessage("§cГравця " + e.getMessage() + " не знайдено!");
+                    player.sendMessage("§cСкасовано");
                     return;
                 }
 
-                p.teleport(tp);
+                player.teleport(tp);
             }
         }.runTaskLater(LordOfTheMinecraft.instance, 0);
     }

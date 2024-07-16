@@ -56,25 +56,25 @@ public class ArmorOfLight extends Ability implements Listener {
         boots = createBoots();
         sword = createSword();
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        lastItems[0] = p.getInventory().getHelmet();
-        lastItems[1] = p.getInventory().getChestplate();
-        lastItems[2] = p.getInventory().getLeggings();
-        lastItems[3] = p.getInventory().getBoots();
+        lastItems[0] = player.getInventory().getHelmet();
+        lastItems[1] = player.getInventory().getChestplate();
+        lastItems[2] = player.getInventory().getLeggings();
+        lastItems[3] = player.getInventory().getBoots();
 
-        p.getInventory().setHelmet(createHelmet());
-        p.getInventory().setChestplate(createChestPlate());
-        p.getInventory().setLeggings(createLeggings());
-        p.getInventory().setBoots(createBoots());
+        player.getInventory().setHelmet(createHelmet());
+        player.getInventory().setChestplate(createChestPlate());
+        player.getInventory().setLeggings(createLeggings());
+        player.getInventory().setBoots(createBoots());
 
-        p.getInventory().addItem(createSword());
+        player.getInventory().addItem(createSword());
 
         new BukkitRunnable() {
             int counter = 0;
@@ -82,7 +82,7 @@ public class ArmorOfLight extends Ability implements Listener {
             @Override
             public void run() {
                 try {
-                    Location loc = p.getLocation().add(0, 0.5, 0);
+                    Location loc = player.getLocation().add(0, 0.5, 0);
                     Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.ASH, loc, 2, 0.3, 0.7, 0.3, 0);
                     loc.getWorld().spawnParticle(Particle.END_ROD, loc, 1, 0.3, 0.7, 0.3, 0);
 
@@ -98,16 +98,16 @@ public class ArmorOfLight extends Ability implements Listener {
                     counter++;
 
                     if (!pathway.getSequence().getUsesAbilities()[identifier - 1] || dead) {
-                        p.getInventory().setHelmet(lastItems[0]);
-                        p.getInventory().setChestplate(lastItems[1]);
-                        p.getInventory().setLeggings(lastItems[2]);
-                        p.getInventory().setBoots(lastItems[3]);
+                        player.getInventory().setHelmet(lastItems[0]);
+                        player.getInventory().setChestplate(lastItems[1]);
+                        player.getInventory().setLeggings(lastItems[2]);
+                        player.getInventory().setBoots(lastItems[3]);
 
-                        p.getInventory().remove(helmet);
-                        p.getInventory().remove(chest);
-                        p.getInventory().remove(leggings);
-                        p.getInventory().remove(boots);
-                        p.getInventory().remove(sword);
+                        player.getInventory().remove(helmet);
+                        player.getInventory().remove(chest);
+                        player.getInventory().remove(leggings);
+                        player.getInventory().remove(boots);
+                        player.getInventory().remove(sword);
                         pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                         dead = false;
                         cancel();
@@ -264,10 +264,10 @@ public class ArmorOfLight extends Ability implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        p = pathway.getBeyonder().getPlayer();
-        if (p == null)
+        player = pathway.getBeyonder().getPlayer();
+        if (player == null)
             return;
-        if (!e.getPlayer().getUniqueId().equals(p.getUniqueId()))
+        if (!e.getPlayer().getUniqueId().equals(player.getUniqueId()))
             return;
         if (!removeOnRejoin)
             return;
@@ -287,10 +287,10 @@ public class ArmorOfLight extends Ability implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        p = pathway.getBeyonder().getPlayer();
-        if (p == null)
+        player = pathway.getBeyonder().getPlayer();
+        if (player == null)
             return;
-        if (!e.getEntity().getUniqueId().equals(p.getUniqueId()))
+        if (!e.getEntity().getUniqueId().equals(player.getUniqueId()))
             return;
         dead = true;
         new BukkitRunnable() {

@@ -1,9 +1,13 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.ua.ikeepcalm.cmds.*;
+import dev.ua.ikeepcalm.cmds.BoonCmd;
+import dev.ua.ikeepcalm.cmds.MI9Cmd;
+import dev.ua.ikeepcalm.cmds.SpawnCmd;
+import dev.ua.ikeepcalm.cmds.TestCmd;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
+import dev.ua.ikeepcalm.handlers.PotionHandler;
 import dev.ua.ikeepcalm.handlers.SpiritHandler;
 import dev.ua.ikeepcalm.listeners.*;
 import dev.ua.ikeepcalm.mystical.parents.*;
@@ -13,6 +17,7 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPotions;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
+import dev.ua.ikeepcalm.optional.crafts.StonecutterCrafts;
 import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
 import dev.ua.ikeepcalm.optional.nicknames.NicknameListener;
 import dev.ua.ikeepcalm.optional.sleep.InsomniaCmd;
@@ -121,7 +126,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 new PotionHandler(),
                 new PotionListener(),
                 new DeathListener(),
-                new ExplosionListener(),
                 new WantedListener(),
                 divination,
                 new BlockHandler(),
@@ -132,6 +136,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
         if (getConfig().getBoolean("enable-mobs")) {
             registerEvents(mobsHandler, spiritHandler);
+        }
+
+        if (!getConfig().getBoolean("enable-explosions")) {
+            registerEvents(new ExplosionListener());
         }
 
         Objects.requireNonNull(this.getCommand("boon")).setExecutor(new BoonCmd());
@@ -147,6 +155,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         potions.add(new DoorPotions());
         potions.add(new DemonessPotions());
         potions.add(new TyrantPotions());
+
+        new StonecutterCrafts();
     }
 
 
@@ -301,6 +311,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 }
                 if (spirituality != 0) {
                     configSave.set(basePath + ".spirituality", spirituality);
+                }
+
+                if (entry.getValue().getPlayer() != null) {
+                    configSave.set(basePath + ".nickname", entry.getValue().getPlayer().getName());
                 }
 
                 log("§aSaved beyonder: " + Bukkit.getOfflinePlayer(uuid).getName());

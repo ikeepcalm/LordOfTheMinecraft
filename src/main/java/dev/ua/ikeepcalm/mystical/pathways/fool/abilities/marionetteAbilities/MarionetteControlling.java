@@ -41,7 +41,7 @@ public class MarionetteControlling extends Ability implements Listener {
 
         this.spiritBodyThreadsAbility = spiritBodyThreadsAbility;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         items.addToSequenceItems(identifier - 1, sequence);
 
         dustBlue = new Particle.DustOptions(Color.fromRGB(0, 128, 255), .75f);
@@ -55,7 +55,7 @@ public class MarionetteControlling extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (controlling) {
             stopControlling();
@@ -65,24 +65,24 @@ public class MarionetteControlling extends Ability implements Listener {
         if (selectedMarionette == null)
             return;
 
-        if (p.isSneaking()) {
-            Location playerLoc = p.getLocation();
-            p.teleport(selectedMarionette.getEntity());
+        if (player.isSneaking()) {
+            Location playerLoc = player.getLocation();
+            player.teleport(selectedMarionette.getEntity());
             selectedMarionette.getEntity().teleport(playerLoc);
             return;
         }
 
-        playerLoc = p.getLocation();
+        playerLoc = player.getLocation();
         controlling = true;
 
-        p.teleport(selectedMarionette.getEntity());
-        p.setInvisible(true);
-        p.setInvulnerable(true);
+        player.teleport(selectedMarionette.getEntity());
+        player.setInvisible(true);
+        player.setInvulnerable(true);
 
         selectedMarionette.setBeingControlled(true);
         selectedMarionette.setMarionetteControllingAbility(this);
 
-        fakePlayer = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, p.getName());
+        fakePlayer = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, player.getName());
         fakePlayer.setProtected(false);
         fakePlayer.spawn(playerLoc);
 
@@ -113,14 +113,14 @@ public class MarionetteControlling extends Ability implements Listener {
         if (selectedMarionette == null)
             return;
 
-        if (e.getPlayer() != p)
+        if (e.getPlayer() != player)
             return;
 
-        if (p.getNearbyEntities(5, 5, 5).stream().anyMatch(entity -> entity instanceof LivingEntity && entity != selectedMarionette.getEntity()))
+        if (player.getNearbyEntities(5, 5, 5).stream().anyMatch(entity -> entity instanceof LivingEntity && entity != selectedMarionette.getEntity()))
             return;
 
-        Vector dir = p.getEyeLocation().getDirection().normalize();
-        Location startLoc = p.getEyeLocation();
+        Vector dir = player.getEyeLocation().getDirection().normalize();
+        Location startLoc = player.getEyeLocation();
 
         if (startLoc.getWorld() == null)
             return;
@@ -133,7 +133,7 @@ public class MarionetteControlling extends Ability implements Listener {
                     startLoc.getWorld()
                             .getNearbyEntities(startLoc, 1, 1, 1)
                             .stream()
-                            .anyMatch(entity -> entity != p && entity != selectedMarionette.getEntity() && entity instanceof LivingEntity)
+                            .anyMatch(entity -> entity != player && entity != selectedMarionette.getEntity() && entity instanceof LivingEntity)
             ) {
                 break;
             }
@@ -147,31 +147,31 @@ public class MarionetteControlling extends Ability implements Listener {
     public void stopControlling() {
         controlling = false;
         if (playerLoc != null)
-            p.teleport(playerLoc);
+            player.teleport(playerLoc);
 
         if (selectedMarionette.isAlive()) {
             selectedMarionette.setBeingControlled(false);
         }
 
-        p.setInvisible(false);
-        p.setInvulnerable(false);
+        player.setInvisible(false);
+        player.setInvulnerable(false);
 
         fakePlayer.destroy();
     }
 
     @Override
     public void leftClick() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         if (controlling)
             return;
 
-        if (p.isSneaking()) {
+        if (player.isSneaking()) {
             if (selectedMarionette == null)
                 return;
             selectedMarionette.setShouldFollow(!selectedMarionette.shouldFollow());
 
-            p.sendMessage("Слідування за гравцем " + selectedMarionette.shouldFollow());
+            player.sendMessage("Слідування за гравцем " + selectedMarionette.shouldFollow());
             return;
         }
 
@@ -206,13 +206,13 @@ public class MarionetteControlling extends Ability implements Listener {
                 marionette.destroyMarionette();
                 continue;
             }
-            if (marionette.getEntity().getWorld() != p.getWorld())
+            if (marionette.getEntity().getWorld() != player.getWorld())
                 continue;
 
             if (marionette == selectedMarionette)
-                drawLineToEntity(p.getEyeLocation(), marionette.getEntity().getLocation(), dustWhite);
+                drawLineToEntity(player.getEyeLocation(), marionette.getEntity().getLocation(), dustWhite);
             else
-                drawLineToEntity(p.getEyeLocation(), marionette.getEntity().getLocation(), dustBlue);
+                drawLineToEntity(player.getEyeLocation(), marionette.getEntity().getLocation(), dustBlue);
         }
     }
 
@@ -225,7 +225,7 @@ public class MarionetteControlling extends Ability implements Listener {
                 .multiply(.75);
 
         for (int i = 0; i < target.distance(startLoc); i++) {
-            p.spawnParticle(
+            player.spawnParticle(
                     Particle.DUST,
                     loc,
                     1,
@@ -243,9 +243,9 @@ public class MarionetteControlling extends Ability implements Listener {
         if (!controlling)
             return;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (e.getDamager() != p)
+        if (e.getDamager() != player)
             return;
 
         if (selectedMarionette.getEntity() != e.getEntity())

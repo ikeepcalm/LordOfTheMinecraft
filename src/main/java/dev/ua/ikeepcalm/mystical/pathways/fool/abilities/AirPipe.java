@@ -24,7 +24,7 @@ public class AirPipe extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
@@ -36,10 +36,10 @@ public class AirPipe extends Ability {
             public void run() {
                 try {
 
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false)));
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 60, 1, false, false)));
 
                 scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                    Location particleLoc = p.getEyeLocation().clone().add(p.getLocation().getDirection().normalize().multiply(0.25));
+                    Location particleLoc = player.getEyeLocation().clone().add(player.getLocation().getDirection().normalize().multiply(0.25));
                     while (particleLoc.getBlock().getType() == Material.WATER) {
                         if (particleLoc.getWorld() != null) {
                             particleLoc.getWorld().spawnParticle(Particle.BUBBLE, particleLoc, 1, 0, 0, 0, 0);

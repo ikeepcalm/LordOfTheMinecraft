@@ -55,8 +55,8 @@ public class ElectricShock extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        executeAbility(p.getEyeLocation(), p, 1);
+        player = pathway.getBeyonder().getPlayer();
+        executeAbility(player.getEyeLocation(), player, 1);
     }
 
     @Override

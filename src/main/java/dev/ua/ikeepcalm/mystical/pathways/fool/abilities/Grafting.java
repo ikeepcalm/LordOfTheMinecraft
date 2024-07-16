@@ -80,14 +80,14 @@ public class Grafting extends Ability implements Listener {
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e) {
-        if (!e.isSneaking() || e.getPlayer() != p || !p.getInventory().getItemInMainHand().isSimilar(getItem()) || selectedCategory != Category.Location)
+        if (!e.isSneaking() || e.getPlayer() != player || !player.getInventory().getItemInMainHand().isSimilar(getItem()) || selectedCategory != Category.Location)
             return;
 
         radius++;
         if (radius > 6)
             radius = 1;
 
-        p.sendMessage("§5Радіус встановлено на " + radius);
+        player.sendMessage("§5Радіус встановлено на " + radius);
     }
 
     private Category selectedCategory = Category.Location;
@@ -103,9 +103,9 @@ public class Grafting extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        Location playerLookEntity = p.getEyeLocation();
+        Location playerLookEntity = player.getEyeLocation();
         Vector vectorEntity = playerLookEntity.getDirection().normalize().multiply(.5);
         //Get entity player is looking at
         LivingEntity entity = null;
@@ -113,19 +113,19 @@ public class Grafting extends Ability implements Listener {
         for (int i = 0; i < 500; i++) {
             playerLookEntity.add(vectorEntity);
 
-            if (p.getWorld().getNearbyEntities(playerLookEntity, 1, 1, 1).isEmpty())
+            if (player.getWorld().getNearbyEntities(playerLookEntity, 1, 1, 1).isEmpty())
                 continue;
 
-            Entity e = p.getWorld().getNearbyEntities(playerLookEntity, 1, 1, 1).iterator().next();
+            Entity e = player.getWorld().getNearbyEntities(playerLookEntity, 1, 1, 1).iterator().next();
 
-            if (e == p || !(e instanceof LivingEntity))
+            if (e == player || !(e instanceof LivingEntity))
                 continue;
 
             entity = (LivingEntity) e;
         }
 
         //Get block player is looking at
-        Location playerLook = p.getEyeLocation();
+        Location playerLook = player.getEyeLocation();
         Vector vector = playerLook.getDirection().normalize().multiply(.5);
         for (int i = 0; i < 300; i++) {
             if (playerLook.getBlock().getType().isSolid())
@@ -145,23 +145,23 @@ public class Grafting extends Ability implements Listener {
                     graftedLocations.put(new Location[]{loc1, loc2}, radius);
                 }
 
-                p.spawnParticle(Particle.WITCH, playerLook, 400, radius / 2f, .1525, radius / 2f, 0);
+                player.spawnParticle(Particle.WITCH, playerLook, 400, radius / 2f, .1525, radius / 2f, 0);
 
                 grafting = !grafting;
             }
             case Block -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cНе вдалося знайти сутність");
+                        player.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     graftMaterial = playerLook.getBlock().getType();
                     playerLook.add(0, .5, 0);
-                    p.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
+                    player.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
 
                     new BlockToEntity(tempEnt, graftMaterial);
                     reset();
@@ -171,27 +171,27 @@ public class Grafting extends Ability implements Listener {
             case Entity -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cНе вдалося знайти сутність");
+                        player.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
                     for (EntityToEntity entityToEntity : entityToEntities) {
                         if (entityToEntity.getEntity() == entity) {
-                            p.sendMessage("§cСкасування Алхімії");
+                            player.sendMessage("§cСкасування Алхімії");
                             entityToEntity.stop();
                             entityToEntities.remove(entityToEntity);
                             return;
                         }
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     if (entity == null) {
-                        entity = p;
+                        entity = player;
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     entityToEntities.add(new EntityToEntity(tempEnt, entity));
                     reset();
                 }
@@ -201,23 +201,23 @@ public class Grafting extends Ability implements Listener {
             case Stuck -> {
                 if (!grafting) {
                     if (entity == null) {
-                        p.sendMessage("§cНе вдалося знайти сутність");
+                        player.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
                     for (EntityToLocation entityToLocation : stuckEntities) {
                         if (entityToLocation.getEntity() == entity) {
-                            p.sendMessage("§cСкасування Алхімії");
+                            player.sendMessage("§cСкасування Алхімії");
                             entityToLocation.stop();
                             stuckEntities.remove(entityToLocation);
                             return;
                         }
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
-                    p.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
+                    player.spawnParticle(Particle.WITCH, playerLook, 80, .25, .25, .25, 0);
                     stuckEntities.add(new EntityToLocation(tempEnt, playerLook.clone()));
                     reset();
                 }
@@ -226,7 +226,7 @@ public class Grafting extends Ability implements Listener {
             case Health -> {
 
                 if (entity == null) {
-                    entity = p;
+                    entity = player;
                 }
 
                 try {
@@ -234,13 +234,13 @@ public class Grafting extends Ability implements Listener {
                         if (healthSynchronization.getEntity1() == entity || healthSynchronization.getEntity2() == entity) {
                             healthSynchronization.stop();
                             healthSynchros.remove(healthSynchronization);
-                            p.sendMessage("§cСкасування Алхімії");
+                            player.sendMessage("§cСкасування Алхімії");
                         }
                     }
                 } catch (ConcurrentModificationException ignored) {
                 }
 
-                p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
 
                 if (!grafting)
                     tempEnt = entity;
@@ -253,18 +253,18 @@ public class Grafting extends Ability implements Listener {
             case Target -> {
                 if (!grafting) {
                     if (entity == null) {
-                        entity = p;
+                        entity = player;
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     tempEnt = entity;
                 } else {
                     if (entity == null) {
-                        p.sendMessage("§cНе вдалося знайти сутність");
+                        player.sendMessage("§cНе вдалося знайти сутність");
                         return;
                     }
 
-                    p.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
+                    player.spawnParticle(Particle.WITCH, entity.getLocation(), 50, .5, .5, .5, 0);
                     if (tempEnt == entity) {
                         reset();
                         return;
@@ -288,16 +288,16 @@ public class Grafting extends Ability implements Listener {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний алхімічний рецепт: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обраний алхімічний рецепт: §f" + selectedCategory.name));
 
         for (Map.Entry<Location[], Integer> entry : graftedLocations.entrySet()) {
             if (entry.getKey()[0].getWorld() == null || entry.getKey()[1].getWorld() == null)
                 return;
 
-            p.spawnParticle(Particle.WITCH, entry.getKey()[0], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
-            p.spawnParticle(Particle.WITCH, entry.getKey()[1], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
+            player.spawnParticle(Particle.WITCH, entry.getKey()[0], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
+            player.spawnParticle(Particle.WITCH, entry.getKey()[1], 75, entry.getValue() / 2f, .15, entry.getValue() / 2f, 0);
         }
     }
 

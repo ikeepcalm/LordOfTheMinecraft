@@ -26,13 +26,13 @@ public class DimensionalPocket extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        p.openInventory(p.getEnderChest());
+        player = pathway.getBeyonder().getPlayer();
+        player.openInventory(player.getEnderChest());
     }
 
     @Override
     public ItemStack getItem() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         ItemStack currentItem = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) currentItem.getItemMeta();
         assert skullMeta != null;
@@ -45,7 +45,7 @@ public class DimensionalPocket extends Ability {
         lore.add("§5Духовність: §7150");
         lore.add("§8§l-----------------");
         lore.add("§bВрата - Послідовність (" + sequence + ")");
-        lore.add("§8" + p);
+        lore.add("§8" + player);
         skullMeta.setLore(lore);
 
         PlayerProfile playerProfile = Bukkit.createProfile(LordOfTheMinecraft.randomUUID);

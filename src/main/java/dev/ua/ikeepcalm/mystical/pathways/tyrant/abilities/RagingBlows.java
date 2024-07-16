@@ -26,8 +26,8 @@ public class RagingBlows extends Ability {
     @Override
     public void useAbility() {
         try {
-            p = pathway.getBeyonder().getPlayer();
-            executeAbility(p.getLocation(), p, getMultiplier());
+            player = pathway.getBeyonder().getPlayer();
+            executeAbility(player.getLocation(), player, getMultiplier());
         } catch (Exception e) {
             ErrorLoggerUtil.logAbility(e, "RagingBlows - useAbility");
         }

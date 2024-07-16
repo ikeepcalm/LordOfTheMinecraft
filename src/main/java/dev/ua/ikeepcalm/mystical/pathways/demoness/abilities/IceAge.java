@@ -26,10 +26,10 @@ public class IceAge extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         UUID uuid = UUID.randomUUID();
 
-        ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(p.getLocation(), 100, false, true, true);
+        ArrayList<Block> blocks = GeneralPurposeUtil.getNearbyBlocksInSphere(player.getLocation(), 100, false, true, true);
 
         for (Block block : blocks) {
             block.setBiome(Biome.ICE_SPIKES);
@@ -65,13 +65,13 @@ public class IceAge extends Ability {
             }
         }
 
-        p.getWorld().spawnParticle(Particle.SNOWFLAKE, p.getEyeLocation(), 15000, 100, 100, 100, 0);
+        player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getEyeLocation(), 15000, 100, 100, 100, 0);
 
-        for (Entity entity : p.getNearbyEntities(150, 150, 150)) {
+        for (Entity entity : player.getNearbyEntities(150, 150, 150)) {
             if (!(entity instanceof LivingEntity livingEntity))
                 continue;
 
-            livingEntity.damage(25, p);
+            livingEntity.damage(25, player);
             livingEntity.setFreezeTicks(20 * 60);
         }
 

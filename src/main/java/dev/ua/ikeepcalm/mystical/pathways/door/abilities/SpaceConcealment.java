@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -39,11 +40,27 @@ public class SpaceConcealment extends Ability implements Listener {
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
     }
 
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        player = pathway.getBeyonder().getPlayer();
+        if (player == null) {
+            stopped = true;
+            return;
+        }
+
+        if (event.getPlayer() != null) {
+            if (event.getPlayer().getName().equals(player.getName())) {
+                stopped = true;
+            }
+        }
+    }
+
     @EventHandler
     public void onShift(PlayerToggleSneakEvent e) {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
-        if (e.getPlayer() != p)
+        if (e.getPlayer() != player)
             return;
 
         if (!e.isSneaking())
@@ -54,17 +71,19 @@ public class SpaceConcealment extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         stopped = false;
 
-        Location loc = p.getLocation().clone();
+        getPathway().getSequence().getUsesAbilities()[identifier - 1] = true;
+
+        Location loc = player.getLocation().clone();
         Random random = new Random();
         Location doorLoc = loc.clone();
         doorLoc.setPitch(0);
         doorLoc.setYaw(random.nextInt(4) * 90);
 
-        concealedEntities = new ArrayList<>(p.getNearbyEntities(radiusAdjust, radiusAdjust, radiusAdjust));
-        concealedEntities.add(p);
+        concealedEntities = new ArrayList<>(player.getNearbyEntities(radiusAdjust, radiusAdjust, radiusAdjust));
+        concealedEntities.add(player);
 
         if (loc.getWorld() == null)
             return;
@@ -78,6 +97,10 @@ public class SpaceConcealment extends Ability implements Listener {
             @Override
             public void run() {
                 try {
+                    if (player == null) {
+                        stopped = true;
+                    }
+
                     if (counter >= 8) {
                         updateConcealedEntities(loc, radius);
                         counter = 0;
@@ -92,14 +115,14 @@ public class SpaceConcealment extends Ability implements Listener {
                         }
                     }
 
-                    drawSquare(loc, Material.BARRIER, radius, p, false);
+                    drawSquare(loc, Material.BARRIER, radius, player, false);
 
                     if (!doorInit) {
                         initializeDoorLocation(random, loc, doorLoc, radius);
                         doorInit = true;
                     }
 
-                    drawDoor(doorLoc, p);
+                    drawDoor(doorLoc, player);
 
                     if (doorLoc.getWorld() == null)
                         return;
@@ -107,7 +130,8 @@ public class SpaceConcealment extends Ability implements Listener {
                     teleportEntities(doorLoc);
 
                     if (stopped) {
-                        drawSquare(loc, Material.AIR, radius, p, false);
+                        drawSquare(loc, Material.AIR, radius, player, false);
+                        getPathway().getSequence().getUsesAbilities()[identifier - 1] = false;
                         cancel();
                     }
                 } catch (Exception e) {
@@ -200,14 +224,14 @@ public class SpaceConcealment extends Ability implements Listener {
 
     @Override
     public void leftClick() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         radiusAdjust++;
 
         if (radiusAdjust > 15)
             radiusAdjust = 4;
 
-        p.sendMessage("§5Радіус встановлено на " + radiusAdjust);
+        player.sendMessage("§5Радіус встановлено на " + radiusAdjust);
     }
 
     final int o = 0;
@@ -264,7 +288,7 @@ public class SpaceConcealment extends Ability implements Listener {
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(255, 251, 0), .4f);
                     if (j == 1)
                         dust = new Particle.DustOptions(Color.fromBGR(150, 12, 171), .55f);
-                    if (p.getInventory().getItemInMainHand().isSimilar(getItem()))
+                    if (this.player.getInventory().getItemInMainHand().isSimilar(getItem()))
                         player.spawnParticle(Particle.DUST, loc, 3, .05, .05, .05, dust);
 
                     loc.subtract(v2);
@@ -286,8 +310,8 @@ public class SpaceConcealment extends Ability implements Listener {
                         Block block = location.clone().add(x, y, z).getBlock();
                         if (!block.getType().isSolid() || block.getType() == Material.BARRIER) {
                             block.setType(material);
-                            if (!npc && p.getInventory().getItemInMainHand().isSimilar(getItem()))
-                                p.spawnParticle(Particle.WITCH, block.getLocation(), 2, 0, 0, 0, 0);
+                            if (!npc && this.player.getInventory().getItemInMainHand().isSimilar(getItem()))
+                                this.player.spawnParticle(Particle.WITCH, block.getLocation(), 2, 0, 0, 0, 0);
                             else if ((new Random().nextInt(4) == 0) && npc)
                                 GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.WITCH, block.getLocation(), 1, 0, 0, 0, 0);
                         }

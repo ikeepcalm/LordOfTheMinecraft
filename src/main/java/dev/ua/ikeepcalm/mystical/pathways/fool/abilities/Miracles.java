@@ -62,7 +62,7 @@ public class Miracles extends Ability implements Listener {
         items.addToSequenceItems(identifier - 1, sequence);
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         selected = 0;
         categories = Category.values();
@@ -92,7 +92,7 @@ public class Miracles extends Ability implements Listener {
                 continue;
 
             //Get block player is looking at
-            BlockIterator iter = new BlockIterator(p, 100);
+            BlockIterator iter = new BlockIterator(player, 100);
             Block lastBlock = iter.next();
             while (iter.hasNext()) {
                 lastBlock = iter.next();
@@ -102,28 +102,28 @@ public class Miracles extends Ability implements Listener {
                 break;
             }
             Location loc = lastBlock.getLocation();
-            disaster.spawnDisaster(p, loc);
-            p.closeInventory();
+            disaster.spawnDisaster(player, loc);
+            player.closeInventory();
         }
 
-        World world = p.getWorld();
+        World world = player.getWorld();
         if (GeneralItemsUtil.getSunnyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§6Погода прояснюється!");
+            player.sendMessage("§6Погода прояснюється!");
             world.setClearWeatherDuration(120 * 60 * 20);
-            p.closeInventory();
+            player.closeInventory();
         } else if (GeneralItemsUtil.getRainyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§3Починається дощ!");
+            player.sendMessage("§3Починається дощ!");
             world.setClearWeatherDuration(0);
             world.setStorm(true);
             world.setThunderDuration(120 * 60 * 20);
-            p.closeInventory();
+            player.closeInventory();
         } else if (GeneralItemsUtil.getStormyWeather().isSimilar(e.getCurrentItem())) {
-            p.sendMessage("§9Наближається шторм!");
+            player.sendMessage("§9Наближається шторм!");
             world.setClearWeatherDuration(0);
             world.setStorm(true);
             world.setThundering(true);
             world.setThunderDuration(120 * 60 * 20);
-            p.closeInventory();
+            player.closeInventory();
         }
 
     }
@@ -163,7 +163,7 @@ public class Miracles extends Ability implements Listener {
             final EntityType type = entityType;
 
             if (entityType == null) {
-                p.sendMessage("§c" + chatMsg + " не є дійсною сутністю!");
+                player.sendMessage("§c" + chatMsg + " не є дійсною сутністю!");
                 return;
             }
 
@@ -171,7 +171,7 @@ public class Miracles extends Ability implements Listener {
                 @Override
                 public void run() {
                     //Get block player is looking at
-                    Location loc = getLocation(p);
+                    Location loc = getLocation(player);
                     World world = loc.getWorld();
                     if (world == null)
                         return;
@@ -206,7 +206,7 @@ public class Miracles extends Ability implements Listener {
         else if (chat == Chat.TELEPORT) {
             chat = Chat.NOTHING;
             if (e.getMessage().split(" ").length != 1 && e.getMessage().split(" ").length != 3) {
-                p.sendMessage("§cВведіть координати або ім'я гравця");
+                player.sendMessage("§cВведіть координати або ім'я гравця");
                 chat = Chat.NOTHING;
                 return;
             }
@@ -215,22 +215,22 @@ public class Miracles extends Ability implements Listener {
                 public void run() {
                     if (e.getMessage().split(" ").length == 1) {
                         if (Bukkit.getPlayer(e.getMessage()) == null) {
-                            p.sendMessage("§c" + e.getMessage() + " не є дійсним гравцем!");
+                            player.sendMessage("§c" + e.getMessage() + " не є дійсним гравцем!");
                             chat = Chat.NOTHING;
                             return;
                         }
 
-                        p.teleport(Objects.requireNonNull(Bukkit.getPlayer(e.getMessage())));
+                        player.teleport(Objects.requireNonNull(Bukkit.getPlayer(e.getMessage())));
                     } else {
                         for (String msg : e.getMessage().split(" ")) {
                             if (!GeneralPurposeUtil.isInteger(msg)) {
-                                p.sendMessage("§cВведіть координати або ім'я гравця");
+                                player.sendMessage("§cВведіть координати або ім'я гравця");
                                 chat = Chat.NOTHING;
                                 return;
                             }
 
-                            Location loc = new Location(p.getWorld(), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[0]), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[1]), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[2]));
-                            p.teleport(loc);
+                            Location loc = new Location(player.getWorld(), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[0]), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[1]), GeneralPurposeUtil.parseInt(e.getMessage().split(" ")[2]));
+                            player.teleport(loc);
                         }
                     }
                     chat = Chat.NOTHING;
@@ -241,7 +241,7 @@ public class Miracles extends Ability implements Listener {
         else if (chat == Chat.BIOME) {
             chat = Chat.NOTHING;
             if (e.getMessage().split(" ").length != 1) {
-                p.sendMessage("§cВведіть назву біома");
+                player.sendMessage("§cВведіть назву біома");
                 chat = Chat.NOTHING;
                 return;
             }
@@ -257,13 +257,13 @@ public class Miracles extends Ability implements Listener {
             }
 
             if (biome == null) {
-                p.sendMessage("§c" + chatMsg + " не є дійсним біомом!");
+                player.sendMessage("§c" + chatMsg + " не є дійсним біомом!");
                 return;
             }
 
             final Biome biomeChange = biome;
-            final Location loc = p.getLocation();
-            final World world = p.getWorld();
+            final Location loc = player.getLocation();
+            final World world = player.getWorld();
 
             new BukkitRunnable() {
                 @Override
@@ -287,16 +287,16 @@ public class Miracles extends Ability implements Listener {
                         }
                     }
                     String biomeName = String.join(" ", (biomeChange.name().substring(0, 1).toUpperCase() + biomeChange.name().substring(1).toLowerCase()).split("_"));
-                    p.sendMessage("§5Біом змінено на " + biomeName);
+                    player.sendMessage("§5Біом змінено на " + biomeName);
                 }
             }.runTaskLater(LordOfTheMinecraft.instance, 0);
         }
     }
 
     private void initializeDisasters() {
-        Meteor meteor = new Meteor(p);
-        Tornado tornado = new Tornado(p);
-        Lightning lightning = new Lightning(p);
+        Meteor meteor = new Meteor(player);
+        Tornado tornado = new Tornado(player);
+        Lightning lightning = new Lightning(player);
 
         disasters.add(meteor);
         disasters.add(tornado);
@@ -315,7 +315,7 @@ public class Miracles extends Ability implements Listener {
         final ItemStack storm = GeneralItemsUtil.getStormyWeather();
 
         //Natural Disasters Inventory
-        Inventory inventoryDisaster = Bukkit.createInventory(p, 27, "§5§lСтихійні лиха");
+        Inventory inventoryDisaster = Bukkit.createInventory(player, 27, "§5§lСтихійні лиха");
         for (int i = 0; i < inventoryDisaster.getSize(); i++) {
             inventoryDisaster.setItem(i, pane);
         }
@@ -326,7 +326,7 @@ public class Miracles extends Ability implements Listener {
         inventories[0] = inventoryDisaster;
 
         //Weather Inventory
-        Inventory inventoryWeather = Bukkit.createInventory(p, 27, "§5§lКерування погодою");
+        Inventory inventoryWeather = Bukkit.createInventory(player, 27, "§5§lКерування погодою");
         for (int i = 0; i < inventoryWeather.getSize(); i++) {
             inventoryWeather.setItem(i, pane);
         }
@@ -356,7 +356,7 @@ public class Miracles extends Ability implements Listener {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().removeSpirituality(selectedCategory.spirituality);
 
         chat = Chat.NOTHING;
@@ -365,20 +365,20 @@ public class Miracles extends Ability implements Listener {
 
         //open corresponding Inventory
         if (inventories[selected] != null)
-            p.openInventory(inventories[selected]);
+            player.openInventory(inventories[selected]);
 
         switch (selected) {
             case 1 -> {
                 chat = Chat.MOB;
-                p.sendMessage("§5Яку сутність ви бажаєте покликати?");
+                player.sendMessage("§5Яку сутність ви бажаєте покликати?");
             }
             case 2 -> {
                 chat = Chat.TELEPORT;
-                p.sendMessage("§5Введіть координати або ім'я гравця, до якого ви хочете телепортуватися");
+                player.sendMessage("§5Введіть координати або ім'я гравця, до якого ви хочете телепортуватися");
             }
             case 3 -> {
                 chat = Chat.BIOME;
-                p.sendMessage("§5Введіть назву нового біому");
+                player.sendMessage("§5Введіть назву нового біому");
             }
             default -> chat = Chat.NOTHING;
         }
@@ -387,9 +387,9 @@ public class Miracles extends Ability implements Listener {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Вища Сила: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана Вища Сила: §f" + selectedCategory.name));
     }
 
     @Override

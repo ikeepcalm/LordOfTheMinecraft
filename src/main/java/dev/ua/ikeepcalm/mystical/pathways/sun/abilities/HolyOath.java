@@ -24,10 +24,10 @@ public class HolyOath extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
 
         // Particle effects
         BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -63,9 +63,9 @@ public class HolyOath extends Ability {
             public void run() {
                 try {
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 2, false, false, false));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 2, false, false, false));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 2, false, false, false));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 40, 2, false, false, false));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 2, false, false, false));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 40, 2, false, false, false));
                     });
 
                     if (pathway.getBeyonder().getSpirituality() <= 45 || !pathway.getBeyonder().online) {
@@ -73,7 +73,7 @@ public class HolyOath extends Ability {
                         cancel();
                     }
 
-                    pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 45);
+                    pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - 10);
 
                     if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                         cancel();
@@ -101,7 +101,7 @@ public class HolyOath extends Ability {
                         double x = radiusActive * Math.cos(counter);
                         double z = radiusActive * Math.sin(counter);
 
-                        Location pLoc = p.getLocation();
+                        Location pLoc = player.getLocation();
 
                         Objects.requireNonNull(pLoc.getWorld()).spawnParticle(Particle.END_ROD, pLoc.getX() + x, pLoc.getY() + counterY, pLoc.getZ() + z, 20, 0, 0, 0, 0);
 

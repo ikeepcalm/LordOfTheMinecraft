@@ -51,13 +51,13 @@ public class FrostSpear extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         double multiplier = getMultiplier();
 
         //get block player is looking at
-        BlockIterator iter = new BlockIterator(p, 40);
+        BlockIterator iter = new BlockIterator(player, 40);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {
             lastBlock = iter.next();
@@ -67,13 +67,13 @@ public class FrostSpear extends Ability {
             break;
         }
 
-        double distance = lastBlock.getLocation().distance(p.getEyeLocation());
+        double distance = lastBlock.getLocation().distance(player.getEyeLocation());
 
-        Location loc = p.getEyeLocation().add(p.getEyeLocation().getDirection().normalize().multiply(distance)).clone();
+        Location loc = player.getEyeLocation().add(player.getEyeLocation().getDirection().normalize().multiply(distance)).clone();
 
-        float angle = p.getEyeLocation().getYaw() / 60;
+        float angle = player.getEyeLocation().getYaw() / 60;
 
-        Location spearLocation = p.getEyeLocation().subtract(Math.cos(angle), 0, Math.sin(angle));
+        Location spearLocation = player.getEyeLocation().subtract(Math.cos(angle), 0, Math.sin(angle));
         Vector dir = loc.toVector().subtract(spearLocation.toVector()).normalize();
         Vector direction = dir.clone();
 
@@ -92,7 +92,7 @@ public class FrostSpear extends Ability {
                     for (Entity entity : spearLocation.getWorld().getNearbyEntities(spearLocation, 5, 5, 5)) {
                         if (entity instanceof LivingEntity) {
                             // Ignore player that initiated the shot
-                            if (entity == p) {
+                            if (entity == player) {
                                 continue;
                             }
                             Vector particleMinVector = new Vector(
@@ -108,7 +108,7 @@ public class FrostSpear extends Ability {
                             if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
 
                                 entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                ((Damageable) entity).damage(28 * multiplier, p);
+                                ((Damageable) entity).damage(28 * multiplier, player);
                                 entity.setFreezeTicks(20 * 10);
 
 
@@ -140,13 +140,13 @@ public class FrostSpear extends Ability {
                         block.setType(Material.PACKED_ICE);
                     }
 
-                    p.getWorld().spawnParticle(Particle.SNOWFLAKE, freezeLoc, 200, 5, 5, 5, 0);
+                    player.getWorld().spawnParticle(Particle.SNOWFLAKE, freezeLoc, 200, 5, 5, 5, 0);
 
-                    for (Entity entity : p.getNearbyEntities(10, 10, 10)) {
+                    for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
                         if (!(entity instanceof LivingEntity livingEntity))
                             continue;
 
-                        livingEntity.damage(8, p);
+                        livingEntity.damage(8, player);
                         livingEntity.setFreezeTicks(20 * 6);
                     }
                     cancel();

@@ -103,7 +103,7 @@ public class Beyonder implements Listener {
 
         //acting initializing
         this.digested = false;
-        this.actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
+        this.actingNeeded = Math.pow((float) (300 / pathway.getSequence().getCurrentSequence()), 2);
 
         pathway.initItems();
         start();
@@ -250,7 +250,7 @@ public class Beyonder implements Listener {
         if (!initializedOnce) {
             //acting initializing
             digested = false;
-            actingNeeded = Math.pow((float) (100 / pathway.getSequence().getCurrentSequence()), 2);
+            actingNeeded = Math.pow((float) (300 / pathway.getSequence().getCurrentSequence()), 2);
         }
 
         updateSpirituality();
@@ -402,7 +402,7 @@ public class Beyonder implements Listener {
 
     public void verifyActing() {
         if (actingNeeded == 0) {
-            actingNeeded = Math.pow((100f / pathway.getSequence().getCurrentSequence()), 2);
+            actingNeeded = Math.pow((300f / pathway.getSequence().getCurrentSequence()), 2);
         }
 
         int percentage = (int) ((actingProgress / actingNeeded) * 100);

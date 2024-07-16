@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class GenerationListener implements Listener {
 
-    private static final double[] PROBABILITY_DISTRIBUTION = {0.001, 0.003, 0.004, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05};
+    private static final double[] PROBABILITY_DISTRIBUTION = {0.0001, 0.0003, 0.0004, 0.005, 0.001, 0.02, 0.03, 0.04, 0.05};
     private static final int MIN_VALUE = 1;
 
     @EventHandler

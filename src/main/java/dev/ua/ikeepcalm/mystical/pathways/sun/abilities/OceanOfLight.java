@@ -30,11 +30,11 @@ public class OceanOfLight extends Ability {
     public void useAbility() {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         double multiplier = getMultiplier();
 
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
         ArrayList<Block> blocks = new ArrayList<>();
 
         int radius = 65;
@@ -51,7 +51,7 @@ public class OceanOfLight extends Ability {
                         for (int x = -radius; x <= radius; x++) {
                             for (int z = -radius; z <= radius; z++) {
                                 if ((x * x) + (z * z) <= Math.pow(radius, 2)) {
-                                    Block block = p.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
+                                    Block block = player.getWorld().getBlockAt((int) loc.getX() + x, (int) loc.getY() + i, (int) loc.getZ() + z);
                                     if (block.getType() == Material.AIR && block.getLocation().clone().subtract(0, 1, 0).getBlock().getType().isSolid()) {
                                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                                             block.setType(Material.LIGHT);
@@ -88,7 +88,7 @@ public class OceanOfLight extends Ability {
                             if (entity instanceof LivingEntity) {
                                 ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5, 1));
                                 if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                    ((Damageable) entity).damage(30 * multiplier, p);
+                                    ((Damageable) entity).damage(30 * multiplier, player);
                                 }
                             }
                         }

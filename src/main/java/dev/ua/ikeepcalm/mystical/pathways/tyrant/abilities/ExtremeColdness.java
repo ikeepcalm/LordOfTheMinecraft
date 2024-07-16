@@ -27,14 +27,14 @@ public class ExtremeColdness extends Ability {
     public ExtremeColdness(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         inUse = new HashMap<>();
     }
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
-        executeAbility(p.getLocation(), p, getMultiplier());
+        player = pathway.getBeyonder().getPlayer();
+        executeAbility(player.getLocation(), player, getMultiplier());
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {

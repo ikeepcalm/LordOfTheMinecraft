@@ -19,7 +19,7 @@ public class DayAndNight extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
@@ -28,7 +28,7 @@ public class DayAndNight extends Ability {
 
             @Override
             public void run() {
-                scheduler.runTask(LordOfTheMinecraft.instance, () -> p.getWorld().setTime(p.getWorld().getTime() + 150));
+                scheduler.runTask(LordOfTheMinecraft.instance, () -> player.getWorld().setTime(player.getWorld().getTime() + 150));
 
                 if (counter >= 20) {
                     scheduler.runTask(LordOfTheMinecraft.instance, () -> pathway.getSequence().removeSpirituality(1000));

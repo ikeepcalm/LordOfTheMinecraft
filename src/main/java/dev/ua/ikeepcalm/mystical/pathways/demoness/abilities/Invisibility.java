@@ -20,17 +20,17 @@ public class Invisibility extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
         new BukkitRunnable() {
             int counter = 0;
 
             @Override
             public void run() {
-                p.setInvisible(true);
+                player.setInvisible(true);
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.hidePlayer(LordOfTheMinecraft.instance, p);
+                    player.hidePlayer(LordOfTheMinecraft.instance, Invisibility.this.player);
                 }
 
                 if (pathway == null || pathway.getSequence() == null) {
@@ -45,15 +45,15 @@ public class Invisibility extends Ability {
 
                 if (counter >= 20) {
                     counter = 0;
-                    pathway.getSequence().removeSpirituality(10);
+                    pathway.getSequence().removeSpirituality(5);
                 }
 
                 if (!pathway.getSequence().getUsesAbilities()[identifier - 1]) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.showPlayer(LordOfTheMinecraft.instance, p);
+                        player.showPlayer(LordOfTheMinecraft.instance, Invisibility.this.player);
                     }
                     cancel();
-                    p.setInvisible(false);
+                    player.setInvisible(false);
                 }
             }
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
@@ -61,6 +61,6 @@ public class Invisibility extends Ability {
 
     @Override
     public ItemStack getItem() {
-        return DemonessItems.createItem(Material.GHAST_TEAR, "Невидимість", "10", identifier);
+        return DemonessItems.createItem(Material.GHAST_TEAR, "Невидимість", "5/c", identifier);
     }
 }

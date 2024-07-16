@@ -33,7 +33,7 @@ public class WindManipulation extends Ability {
     public WindManipulation(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
         items.addToSequenceItems(identifier - 1, sequence);
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
         flying = false;
     }
 
@@ -52,13 +52,13 @@ public class WindManipulation extends Ability {
 
     @Override
     public void useAbility() {
-        p = pathway.getBeyonder().getPlayer();
+        player = pathway.getBeyonder().getPlayer();
 
         switch (selectedCategory) {
-            case BLADE -> blade(p, getMultiplier());
-            case BOOST -> boost(p);
-            case FLIGHT -> flight(p);
-            case BIND -> bind(p);
+            case BLADE -> blade(player, getMultiplier());
+            case BOOST -> boost(player);
+            case FLIGHT -> flight(player);
+            case BIND -> bind(player);
         }
     }
 
@@ -347,8 +347,8 @@ public class WindManipulation extends Ability {
     @Override
     //Display selected category
     public void onHold() {
-        if (p == null)
-            p = pathway.getBeyonder().getPlayer();
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
+        if (player == null)
+            player = pathway.getBeyonder().getPlayer();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обране заклинання: §f" + selectedCategory.name));
     }
 }
