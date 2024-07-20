@@ -38,11 +38,11 @@ public class MobsHandler implements Listener {
         customEntities = new ArrayList<>();
         BeyonderMobUtil beyonderMobUtil = new BeyonderMobUtil();
 
-        spawnEntity("§9Лавовий Кальмар", "squid", 50, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
-        spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 18, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
-        spawnEntity("§0Чорнапляма Пантера", "panther", 28, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
+        spawnEntity("§9Лавовий Кальмар", "squid", 60, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
+        spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 50, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
+        spawnEntity("§0Чорнапляма Пантера", "panther", 48, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
         spawnEntity("§5Тисячоликий Мисливець", "thousand-faced", 55, BeyonderItemsUtil.getPituitaryGland(), EntityType.PILLAGER, 70, beyonderMobUtil, EntityType.ILLUSIONER, "none", true);
-        spawnEntity("§0Людиноподібна Тінь", "shadow", 35, BeyonderItemsUtil.getShadowCharacteristic(), EntityType.ENDERMAN, 70, beyonderMobUtil, null, "none", true);
+        spawnEntity("§0Людиноподібна Тінь", "shadow", 140, BeyonderItemsUtil.getShadowCharacteristic(), EntityType.ENDERMAN, 70, beyonderMobUtil, null, "none", true);
         spawnEntity("§7Древній Рейф", "wraith", 120, BeyonderItemsUtil.getWraithDust(), EntityType.SKELETON, 145, beyonderMobUtil, EntityType.VEX, "wraith", true);
         spawnEntity("§5Шестикрила Горгулья", "gargoyle", 180, BeyonderItemsUtil.getGargoyleCrystal(), EntityType.ZOMBIE, 250, beyonderMobUtil, EntityType.IRON_GOLEM, "gargoyle", true);
         spawnEntity("§5Перевертень", "bane", 40, BeyonderItemsUtil.getBizarroEye(), EntityType.WITCH, 200, beyonderMobUtil, EntityType.ALLAY, "bane", true, new BaneAbility(20));

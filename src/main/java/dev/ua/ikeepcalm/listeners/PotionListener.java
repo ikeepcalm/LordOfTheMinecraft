@@ -78,6 +78,14 @@ public class PotionListener implements Listener {
         NBT.modify(item, (nbt) -> {
             nbt.setBoolean("openAbilities", true);
         });
+        ItemStack shortcut = player.getInventory().getItem(9);
+        if (shortcut != null) {
+            if (shortcut.getType() != Material.AIR && shortcut.getType() != Material.GLOWSTONE_DUST) {
+                player.getWorld().dropItemNaturally(player.getLocation(), shortcut);
+            }
+        }
+
         player.getInventory().setItem(9, item);
+
     }
 }

@@ -127,9 +127,8 @@ public class FoolSequence extends Sequence implements Listener {
     //Passive effects
     public void initEffects() {
         PotionEffect[] effects4 = {
-                new PotionEffect(PotionEffectType.STRENGTH, 60, 1, false, false, false),
+                new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
-                new PotionEffect(PotionEffectType.RESISTANCE, 60, 1, false, false, false)
         };
         sequenceEffects.put(4, effects4);
 

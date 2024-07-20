@@ -40,6 +40,11 @@ public class TestCmd implements CommandExecutor {
             beyonder.setActingProgress(amount);
         }
 
+        if (args[0].equalsIgnoreCase("vacting")) {
+            Beyonder beyonder = LordOfTheMinecraft.beyonders.get(p.getUniqueId());
+            p.sendMessage("Your acting progress: " + beyonder.getActingProgress());
+        }
+
         if (args[0].equalsIgnoreCase("tome")) {
             p.getInventory().addItem(GeneralItemsUtil.getRandomGrimoire());
         }

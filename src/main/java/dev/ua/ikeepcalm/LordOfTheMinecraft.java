@@ -26,6 +26,7 @@ import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -50,6 +51,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     public static LordOfTheMinecraft instance;
     public static CoreProtectAPI coreProtect;
+    public static AFKPlusPlayerAPI afkPlus;
     public static String prefix;
     @Getter
     private Characteristic characteristic;
@@ -99,6 +101,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Override
     public void onEnable() {
         loadCoreProtect();
+        loadAFKPlus();
         enablePlugin();
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled. The world full of mysteries awaits you!");
@@ -106,6 +109,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         for (World world : Bukkit.getWorlds()) {
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         }
+    }
+
+    private void loadAFKPlus() {
+        afkPlus = new AFKPlusPlayerAPI();
     }
 
     private void enablePlugin() {

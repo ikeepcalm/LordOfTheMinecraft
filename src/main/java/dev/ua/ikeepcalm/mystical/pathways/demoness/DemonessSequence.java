@@ -58,18 +58,15 @@ public class DemonessSequence extends Sequence implements Listener {
     //Passive effects
     public void initEffects() {
         PotionEffect[] effects9 = {
-                new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
-                new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
-                new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 1, false, false, true),
+                new PotionEffect(PotionEffectType.SPEED, 60, 0, false, false, true),
+                new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 0, false, false, true),
         };
         sequenceEffects.put(9, effects9);
 
         PotionEffect[] effects3 = {
-                new PotionEffect(PotionEffectType.STRENGTH, 60, 0, false, false, false),
-                new PotionEffect(PotionEffectType.RESISTANCE, 60, 2, false, false, false),
                 new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, true),
-                new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 1, false, false, true),
-                new PotionEffect(PotionEffectType.NIGHT_VISION, 620, 1, false, false, true)
+                new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 0, false, false, true),
+                new PotionEffect(PotionEffectType.NIGHT_VISION, 620, 0, false, false, true)
         };
         sequenceEffects.put(3, effects3);
 
@@ -78,7 +75,7 @@ public class DemonessSequence extends Sequence implements Listener {
                 new PotionEffect(PotionEffectType.SPEED, 60, 2, false, false, true),
                 new PotionEffect(PotionEffectType.JUMP_BOOST, 60, 1, false, false, true),
                 new PotionEffect(PotionEffectType.NIGHT_VISION, 620, 1, false, false, true),
-                new PotionEffect(PotionEffectType.SATURATION, 120, 10, false, false, true)
+                new PotionEffect(PotionEffectType.RESISTANCE, 60, 2, false, false, false),
         };
         sequenceEffects.put(2, effects2);
     }

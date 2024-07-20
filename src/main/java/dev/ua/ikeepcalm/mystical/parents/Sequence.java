@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public abstract class Sequence {
     protected HashMap<Integer, PotionEffect[]> sequenceEffects;
     protected HashMap<Integer, PotionEffectType[]> sequenceResistances;
     protected HashMap<Integer, Double> sequenceMultiplier;
+    private LocalTime lastTime;
 
 
     public Sequence(Pathway pathway, int optionalSequence) {
@@ -101,7 +103,19 @@ public abstract class Sequence {
         for (Ability a : abilities) {
             if (a.getIdentifier() == ability) {
                 a.useAbility();
-                pathway.getBeyonder().updateActing(pathway.getItems().getSequenceOfAbility(a));
+                if (getIds().contains(ability)) {
+                    if (lastTime == null) {
+                        lastTime = LocalTime.now();
+                        pathway.getBeyonder().updateActing(pathway.getItems().getSequenceOfAbility(a));
+                    } else {
+                        if (LocalTime.now().isAfter(lastTime.plusSeconds(30))) {
+                            lastTime = LocalTime.now();
+                            pathway.getBeyonder().updateActing(pathway.getItems().getSequenceOfAbility(a));
+                        }
+                    }
+                } else {
+                    pathway.getBeyonder().updateActing(pathway.getItems().getSequenceOfAbility(a));
+                }
                 break;
             }
         }

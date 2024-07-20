@@ -13,6 +13,7 @@ import me.libraryaddict.disguise.disguisetypes.Disguise;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
+import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -186,7 +187,7 @@ public class Beyonder implements Listener {
 
         if (pathway.getSequence() == null) return;
 
-        actingProgress -= actingProgress * 0.4;
+        actingProgress -= actingProgress * 0.2;
         if (actingProgress < 0) actingProgress = 0;
 
         if (pathway instanceof FoolPathway && pathway.getSequence().getCurrentSequence() <= 2 && resurrections < 5 && !loosingControl) {
@@ -305,9 +306,13 @@ public class Beyonder implements Listener {
 
                 actingCounter++;
                 if (actingCounter >= 50 * 15) {
+                    AFKPlusPlayer player = LordOfTheMinecraft.afkPlus.getPlayer(uuid);
+                    if (!player.isAFK()) {
+                        addActing(1);
+                    } else {
+                        LordOfTheMinecraft.instance.log("Player " + getPlayer().getName() + " is marked as AFK and is ignored for acting.");
+                    }
                     actingCounter = 0;
-                    addActing(1);
-                    LordOfTheMinecraft.instance.saveBeyonder(Beyonder.this);
                 }
 
                 //scoreboard
@@ -445,6 +450,14 @@ public class Beyonder implements Listener {
         NBT.modify(item, (nbt) -> {
             nbt.setBoolean("openAbilities", true);
         });
+
+        ItemStack shortcut = player.getInventory().getItem(9);
+        if (shortcut != null) {
+            if (shortcut.getType() != Material.AIR && shortcut.getType() != Material.GLOWSTONE_DUST) {
+                player.getWorld().dropItemNaturally(player.getLocation(), shortcut);
+            }
+        }
+
         player.getInventory().setItem(9, item);
     }
 
@@ -548,7 +561,21 @@ public class Beyonder implements Listener {
 
     //Called from the PotionListener
     public void consumePotion(int sequence, Potion potion) {
-        if (sequence >= pathway.getSequence().getCurrentSequence()) return;
+        if (sequence > pathway.getSequence().getCurrentSequence()) return;
+
+        if (sequence == pathway.getSequence().getCurrentSequence()) {
+            if (digested) {
+                getPlayer().sendMessage("§cВи вже засвоїли це зілля!");
+                looseControl(90, 20);
+                return;
+            }
+            if (actingNeeded == 0){
+                verifyActing();
+            }
+            actingProgress += actingNeeded * 0.2;
+            getPlayer().sendMessage("§aВи відчуваєте, як зілля покращило ваше розуміння теперішнього стану речей.");
+            return;
+        }
 
         if (!getPathway().getNameNormalized().equals(potion.getName())) {
             looseControl(0, 10);
