@@ -168,6 +168,10 @@ public class InteractListener implements Listener {
             if (nbtItem.hasTag("pathway")) {
                 event.getInventory().setResult(new ItemStack(Material.AIR));
             }
+
+            if (nbtItem.hasTag("ingredient")) {
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+            }
         }
     }
 
@@ -175,19 +179,13 @@ public class InteractListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getView().getType() == InventoryType.CRAFTING) {
             if (event.getSlotType() == InventoryType.SlotType.CRAFTING) {
-                if (event.getAction() == InventoryAction.PLACE_ALL
-                    || event.getAction() == InventoryAction.PLACE_ONE
-                    || event.getAction() == InventoryAction.PLACE_SOME) {
+                if (event.getAction() == InventoryAction.PLACE_ALL || event.getAction() == InventoryAction.PLACE_ONE || event.getAction() == InventoryAction.PLACE_SOME) {
                     ItemStack item = event.getCursor();
                     if (item.getType() == Material.AIR) return;
                     if (item.hasItemMeta()) {
                         event.setCancelled(true);
                     }
-                } else if (event.getAction() == InventoryAction.UNKNOWN
-                           || event.getAction() == InventoryAction.HOTBAR_SWAP
-                           || event.getAction() == InventoryAction.SWAP_WITH_CURSOR
-                           || event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY
-                           || event.getAction() == InventoryAction.CLONE_STACK) {
+                } else if (event.getAction() == InventoryAction.UNKNOWN || event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.SWAP_WITH_CURSOR || event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY || event.getAction() == InventoryAction.CLONE_STACK) {
                     event.setCancelled(true);
                 }
 

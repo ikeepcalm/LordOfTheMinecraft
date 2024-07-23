@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
@@ -79,7 +79,7 @@ public class Blizzard extends Disaster {
                         blocks.get(temp).getLocation().clone().add(0, 1, 0).getBlock().setType(Material.SNOW);
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Blizzard");
+                    LoggerUtil.logDisasterError(e, "Blizzard");
                     cancel();
                 }
             }

@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -81,7 +81,7 @@ public class HolyLight extends Ability {
                         }
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Light");
+                    LoggerUtil.logAbilityError(e, "Holy Light");
                     cancel();
                 }
             }

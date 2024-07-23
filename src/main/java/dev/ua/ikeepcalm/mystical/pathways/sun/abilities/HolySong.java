@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -51,7 +51,7 @@ public class HolySong extends Ability {
                         pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Song");
+                    LoggerUtil.logAbilityError(e, "Holy Song");
                     cancel();
                 }
             }

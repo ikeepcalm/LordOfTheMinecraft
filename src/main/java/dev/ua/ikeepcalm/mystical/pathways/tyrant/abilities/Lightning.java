@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -54,11 +54,11 @@ public class Lightning extends Ability {
                                         break;
                                     }
                                 } catch (Exception e) {
-                                    ErrorLoggerUtil.logAbility(e, "Lightning - Entity Check");
+                                    LoggerUtil.logAbilityError(e, "Lightning - Entity Check");
                                 }
                             });
                         } catch (Exception e) {
-                            ErrorLoggerUtil.logAbility(e, "Lightning - Scheduler Task");
+                            LoggerUtil.logAbilityError(e, "Lightning - Scheduler Task");
                         }
 
                         if (i[0] >= 80 || loc.getBlock().getType().isSolid()) {
@@ -75,16 +75,16 @@ public class Lightning extends Ability {
                                 loc.getWorld().setStorm(true);
                                 loc.getWorld().setThunderDuration(120 * 60 * 20);
                             } catch (Exception e) {
-                                ErrorLoggerUtil.logAbility(e, "Lightning - Weather Control");
+                                LoggerUtil.logAbilityError(e, "Lightning - Weather Control");
                             }
                         });
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Lightning - Scheduler Task");
+                        LoggerUtil.logAbilityError(e, "Lightning - Scheduler Task");
                     }
 
                     executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Lightning");
+                    LoggerUtil.logAbilityError(e, "Lightning");
                     cancel();
                 }
             }
@@ -108,7 +108,7 @@ public class Lightning extends Ability {
                     try {
                         TyrantSequence.spawnLighting(loc, caster, multiplier, destruction, sequence);
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Lightning - Spawn Lighting");
+                        LoggerUtil.logAbilityError(e, "Lightning - Spawn Lighting");
                     }
                 }
         );

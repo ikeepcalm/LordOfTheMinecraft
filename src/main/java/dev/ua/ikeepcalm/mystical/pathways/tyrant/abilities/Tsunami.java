@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,7 +68,7 @@ public class Tsunami extends Ability implements Listener {
 
                     executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Tsunami");
+                    LoggerUtil.logAbilityError(e, "Tsunami");
                     cancel();
                 }
             }

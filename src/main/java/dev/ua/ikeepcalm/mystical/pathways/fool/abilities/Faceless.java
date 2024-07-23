@@ -12,11 +12,15 @@ import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -40,7 +44,7 @@ public class Faceless extends Ability {
     @Override
     public void useAbility() {
         List<Item> items = new ArrayList<>();
-        for (Player b : LordOfTheMinecraft.instance.getServer().getOnlinePlayers()) {
+        for (Player b : Bukkit.getOnlinePlayers()) {
             ItemStack itemStack = MI9Cmd.createHeadForPlayer(b);
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName("§a" + b.getPlayer().getName());
@@ -97,8 +101,16 @@ public class Faceless extends Ability {
     }
 
     private static class BackItem extends PageItem {
+
         public BackItem() {
             super(false);
+        }
+
+        @Override
+        public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+            if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
+                getGui().goBack();
+            }
         }
 
         @Override
@@ -117,6 +129,13 @@ public class Faceless extends Ability {
 
         public ForwardItem() {
             super(false);
+        }
+
+        @Override
+        public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+            if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
+                getGui().goForward();
+            }
         }
 
         @Override

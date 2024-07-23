@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -62,7 +62,7 @@ public class SirenSong extends Ability {
 
                     GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Siren Song");
+                    LoggerUtil.logAbilityError(e, "Siren Song");
                     cancel();
                 }
             }
@@ -84,7 +84,7 @@ public class SirenSong extends Ability {
                         GeneralPurposeUtil.effectForNearbyEntities(caster, caster.getLocation(), 20, 20, 20, new PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 1));
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Siren Song");
+                    LoggerUtil.logAbilityError(e, "Siren Song");
                     cancel();
                 }
             }
@@ -107,7 +107,7 @@ public class SirenSong extends Ability {
 
                     GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.NOTE, caster.getLocation(), 100, 10, 10, 10, 0);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Siren Song");
+                    LoggerUtil.logAbilityError(e, "Siren Song");
                     cancel();
                 }
             }
@@ -129,7 +129,7 @@ public class SirenSong extends Ability {
                         livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 8, 2, false, false));
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Siren Song");
+                    LoggerUtil.logAbilityError(e, "Siren Song");
                     cancel();
                 }
             }

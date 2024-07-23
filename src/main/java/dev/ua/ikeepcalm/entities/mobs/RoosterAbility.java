@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.mobs;
 
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -31,7 +31,7 @@ public class RoosterAbility extends MobAbility {
                     damageable.damage(16, user);
             }
         } catch (Exception e) {
-            ErrorLoggerUtil.logAbility(e, "Rooster");
+            LoggerUtil.logAbilityError(e, "Rooster");
         }
     }
 }

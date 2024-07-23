@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -94,7 +94,7 @@ public class FlaringSun extends Ability {
                         rollbackChanges(uuid);
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Flaring Sun");
+                    LoggerUtil.logAbilityError(e, "Flaring Sun");
                     cancel();
                 }
             }
@@ -153,7 +153,7 @@ public class FlaringSun extends Ability {
                         pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Flaring Sun");
+                    LoggerUtil.logAbilityError(e, "Flaring Sun");
                     cancel();
                 }
             }

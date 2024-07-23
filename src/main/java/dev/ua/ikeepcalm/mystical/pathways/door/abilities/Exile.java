@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -86,7 +86,7 @@ public class Exile extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Exile");
+                    LoggerUtil.logAbilityError(e, "Exile");
                     cancel();
                 }
             }

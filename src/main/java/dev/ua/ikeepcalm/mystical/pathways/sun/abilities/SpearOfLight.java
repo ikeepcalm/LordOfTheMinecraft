@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -179,7 +179,7 @@ public class SpearOfLight extends Ability {
                     }
                     counter++;
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Spear of Light");
+                    LoggerUtil.logAbilityError(e, "Spear of Light");
                     cancel();
                 }
             }
@@ -227,7 +227,7 @@ public class SpearOfLight extends Ability {
 
                     sphereLoc.subtract(x, y, z);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Spear of Light");
+                    LoggerUtil.logAbilityError(e, "Spear of Light");
                     cancel();
                 }
             }

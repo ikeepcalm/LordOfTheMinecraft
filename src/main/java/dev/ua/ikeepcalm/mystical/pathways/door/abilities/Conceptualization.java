@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -73,7 +73,7 @@ public class Conceptualization extends Ability {
                         spiritCounter++;
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Conceptualization");
+                    LoggerUtil.logAbilityError(e, "Conceptualization");
                     cancel();
                 }
             }

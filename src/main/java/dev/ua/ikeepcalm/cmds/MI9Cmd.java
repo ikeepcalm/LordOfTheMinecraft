@@ -2,13 +2,16 @@ package dev.ua.ikeepcalm.cmds;
 
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -26,9 +29,7 @@ import xyz.xenondevs.invui.item.impl.controlitem.PageItem;
 import xyz.xenondevs.invui.window.Window;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class MI9Cmd implements CommandExecutor {
 
@@ -89,30 +90,33 @@ public class MI9Cmd implements CommandExecutor {
                 return true;
             }
         } else if (args[0].equalsIgnoreCase("exc") || args[0].equalsIgnoreCase("excommunicado")) {
-            HashMap<UUID, Beyonder> beyonder = LordOfTheMinecraft.beyonders;
             List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
+            OfflinePlayer[] players = Bukkit.getOfflinePlayers();
             List<Item> items = new ArrayList<>();
-            for (Beyonder b : beyonder.values()) {
-                ItemStack itemStack = createHeadForPlayer(b.getPlayer());
+            for (OfflinePlayer player : players) {
+                if (player.getName() == null) continue;
+
+                ItemStack itemStack = createHeadForPlayer(player);
                 ItemMeta meta = itemStack.getItemMeta();
-                if (excList.contains(b.getPlayer().getName())) {
-                    meta.setDisplayName("§c" + b.getPlayer().getName());
+
+                if (excList.contains(player.getName())) {
+                    meta.setDisplayName("§c" + player.getName());
                     meta.setLore(List.of("§cВ розшуку!"));
                 } else {
-                    meta.setDisplayName("§a" + b.getPlayer().getName());
+                    meta.setDisplayName("§a" + player.getName());
                     meta.setLore(List.of("§aНе в розшуку!"));
                 }
                 itemStack.setItemMeta(meta);
                 NBT.modify(itemStack, (nbt) -> {
-                    nbt.setString("nickname", b.getPlayer().getName());
+                    nbt.setString("nickname", player.getName());
                     items.add(new SimpleItem(itemStack, e -> {
-                        if (excList.contains(b.getPlayer().getName())) {
-                            excList.remove(b.getPlayer().getName());
-                            p.sendMessage("§a" + b.getPlayer().getName() + " був видалений з розшуку!");
+                        if (excList.contains(player.getName())) {
+                            excList.remove(player.getName());
+                            s.sendMessage("§a" + player.getName() + " був видалений з розшуку!");
                             e.getEvent().getView().close();
                         } else {
-                            excList.add(b.getPlayer().getName());
-                            p.sendMessage("§c" + b.getPlayer().getName() + " був доданий до розшуку!");
+                            excList.add(player.getName());
+                            s.sendMessage("§c" + player.getName() + " був доданий до розшуку!");
                             e.getEvent().getView().close();
                         }
                         LordOfTheMinecraft.instance.getExcConfig().set("exc", excList);
@@ -157,9 +161,28 @@ public class MI9Cmd implements CommandExecutor {
         return item;
     }
 
+    public static @NotNull ItemStack createHeadForPlayer(OfflinePlayer player){
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta != null) {
+            meta.setOwningPlayer(player);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
+
     private static class BackItem extends PageItem {
+
+
         public BackItem() {
             super(false);
+        }
+
+        @Override
+        public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+            if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
+                getGui().goBack();
+            }
         }
 
         @Override
@@ -177,7 +200,14 @@ public class MI9Cmd implements CommandExecutor {
     private static class ForwardItem extends PageItem {
 
         public ForwardItem() {
-            super(false);
+            super(true);
+        }
+
+        @Override
+        public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+            if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) {
+                getGui().goForward();
+            }
         }
 
         @Override

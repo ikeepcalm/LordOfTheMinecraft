@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.utils;
 
+import de.tr7zw.nbtapi.NBT;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -32,6 +33,9 @@ public class BeyonderItemsUtil {
         assert magentaPaneMeta != null;
         magentaPaneMeta.setDisplayName("§4Кров Лавового Кальмара");
         item.setItemMeta(magentaPaneMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "lavos_squid_blood");
+        });
 
         list.add(item);
 
@@ -44,7 +48,9 @@ public class BeyonderItemsUtil {
         assert magentaPaneMeta != null;
         magentaPaneMeta.setDisplayName("§4Кров Глибоководного Марліна");
         item.setItemMeta(magentaPaneMeta);
-
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "marlin_blood");
+        });
         list.add(item);
 
         return item;
@@ -56,6 +62,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§5Залишки Духу");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "spirit_remains");
+        });
 
         list.add(item);
 
@@ -68,6 +77,9 @@ public class BeyonderItemsUtil {
         assert magentaPaneMeta != null;
         magentaPaneMeta.setDisplayName("§bМутована Брама");
         item.setItemMeta(magentaPaneMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "mutated_door");
+        });
 
         list.add(item);
 
@@ -80,6 +92,9 @@ public class BeyonderItemsUtil {
         assert magentaPaneMeta != null;
         magentaPaneMeta.setDisplayName("§bШлунок Пожирача Духів");
         item.setItemMeta(magentaPaneMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "spirit_pouch");
+        });
 
         list.add(item);
 
@@ -92,6 +107,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§3Зоряний Аквамарин");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "stellar_aqua_crystal");
+        });
 
         list.add(item);
 
@@ -104,6 +122,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§4Метеоритний Кристал");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "meteorite_crystal");
+        });
 
         list.add(item);
 
@@ -116,6 +137,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§7Рог Сірої Гірської Кози Горнакіс");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "goat_horn");
+        });
 
         list.add(item);
 
@@ -128,6 +152,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§4Троянда з людським обличчям");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "rose");
+        });
 
         list.add(item);
 
@@ -140,6 +167,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Кришталевий Соняшник");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "sunflower");
+        });
 
         list.add(item);
 
@@ -152,6 +182,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§9Шматок Каменю Сирени");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "siren_rock");
+        });
 
         list.add(item);
 
@@ -164,6 +197,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§4Серце Магмового Титану");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "magma_heart");
+        });
 
         list.add(item);
 
@@ -176,6 +212,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Гребінь Світанкового Півня");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "rooster_comb");
+        });
 
         list.add(item);
 
@@ -188,6 +227,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Плід Дерева Договору Духа Сяйва");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "spirit_tree_fruit");
+        });
 
         list.add(item);
 
@@ -200,6 +242,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Птах Договору Духовного Пера");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "bird_feather");
+        });
 
         list.add(item);
 
@@ -212,6 +257,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Кристалізований Корінь Дерева Старійшин");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "crystallized_root");
+        });
 
         list.add(item);
 
@@ -224,6 +272,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Білий Блискучий Камінь");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "white_brilliance_rock");
+        });
 
         list.add(item);
 
@@ -236,6 +287,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Священний Блискучий Камінь");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "holy_brilliance_rock");
+        });
 
         list.add(item);
 
@@ -248,6 +302,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Перо з Хвоста Божественного Птаха");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "tail_feather");
+        });
 
         list.add(item);
 
@@ -261,6 +318,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Червоний Гребінь Світанкового Півня");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "red_rooster_comb");
+        });
 
         list.add(item);
 
@@ -273,6 +333,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§6Корінь Туманного Дерева");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "root_of_mist_tree");
+        });
 
         list.add(item);
 
@@ -285,6 +348,9 @@ public class BeyonderItemsUtil {
         assert itemMeta != null;
         itemMeta.setDisplayName("§8Спинномозкова Рідина Чорнаплямої Пантери");
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "panther");
+        });
 
         list.add(item);
 
@@ -296,8 +362,10 @@ public class BeyonderItemsUtil {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§5Мутований гіпофіз Тисячоликого Мисливця");
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "pituitary_gland");
+        });
 
         list.add(item);
 
@@ -321,6 +389,9 @@ public class BeyonderItemsUtil {
         itemMeta.setOwnerProfile(profile);
 
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "shadow_characteristic");
+        });
 
         list.add(item);
 
@@ -332,8 +403,10 @@ public class BeyonderItemsUtil {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§7Пил Древніх Рейфів");
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "wraith_dust");
+        });
 
         list.add(item);
 
@@ -345,8 +418,10 @@ public class BeyonderItemsUtil {
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName("§5Серцевинний Кристал Шестикрилої Горгульї");
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "gargoyle_crystal");
+        });
 
         list.add(item);
 
@@ -360,8 +435,10 @@ public class BeyonderItemsUtil {
         itemMeta.setDisplayName("§5Око Перевертня");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "bizarro_eye");
+        });
 
         list.add(item);
 
@@ -375,8 +452,10 @@ public class BeyonderItemsUtil {
         itemMeta.setDisplayName("§5Духовне Тіло Розкрадача Духовного Світу");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "plunderer_body");
+        });
 
         list.add(item);
 
@@ -390,8 +469,10 @@ public class BeyonderItemsUtil {
         itemMeta.setDisplayName("§5Око Пса Фулгріма");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "wolf_eye");
+        });
 
         list.add(item);
 
@@ -405,8 +486,10 @@ public class BeyonderItemsUtil {
         itemMeta.setDisplayName("§5Трансформоване Серце Демонічного Вовка Завіси");
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
-
         item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "wolf_heart");
+        });
 
         list.add(item);
 

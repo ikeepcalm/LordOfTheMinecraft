@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,7 +63,7 @@ public class Meteor extends Disaster {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Meteor");
+                    LoggerUtil.logDisasterError(e, "Meteor");
                     cancel();
                 }
             }

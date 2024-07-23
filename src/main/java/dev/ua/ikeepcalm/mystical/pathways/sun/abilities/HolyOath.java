@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +46,7 @@ public class HolyOath extends Ability {
                         loc.getWorld().spawnParticle(Particle.END_ROD, loc.getX() + x2, loc.getY() + y, loc.getZ() + z2, 2, 0, 0, 0, 0);
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    LoggerUtil.logAbilityError(e, "Holy Oath");
                     cancel();
                 }
             }
@@ -79,7 +79,7 @@ public class HolyOath extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    LoggerUtil.logAbilityError(e, "Holy Oath");
                     cancel();
                 }
             }
@@ -118,7 +118,7 @@ public class HolyOath extends Ability {
                         }
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Oath");
+                    LoggerUtil.logAbilityError(e, "Holy Oath");
                     cancel();
                 }
             }

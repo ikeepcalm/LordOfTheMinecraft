@@ -33,7 +33,7 @@ public class TyrantSequence extends Sequence implements Listener {
 
     @Override
     public List<Integer> getIds() {
-        Integer[] ids = {};
+        Integer[] ids = {3};
         return Arrays.asList(ids);
     }
 

@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -59,13 +59,13 @@ public class LightningStorm extends Ability {
                     loc.getWorld().setStorm(true);
                     loc.getWorld().setThunderDuration(120 * 60 * 20);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Lightning Storm - Weather Control");
+                    LoggerUtil.logAbilityError(e, "Lightning Storm - Weather Control");
                 }
             });
 
             executeAbility(loc, player, getMultiplier());
         } catch (Exception e) {
-            ErrorLoggerUtil.logAbility(e, "Lightning Storm");
+            LoggerUtil.logAbilityError(e, "Lightning Storm");
         }
     }
 
@@ -96,7 +96,7 @@ public class LightningStorm extends Ability {
                     counter--;
                 }
             } catch (Exception e) {
-                ErrorLoggerUtil.logAbility(e, "Lightning Storm - Asynchronous Task");
+                LoggerUtil.logAbilityError(e, "Lightning Storm - Asynchronous Task");
             }
         });
     }
@@ -106,7 +106,7 @@ public class LightningStorm extends Ability {
             Integer sequence = pathway.getSequence().getCurrentSequence();
             TyrantSequence.spawnLighting(loc, caster, multiplier, destruction, sequence);
         } catch (Exception e) {
-            ErrorLoggerUtil.logAbility(e, "Lightning Storm - Spawn Lightning");
+            LoggerUtil.logAbilityError(e, "Lightning Storm - Spawn Lightning");
         }
     }
 

@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -99,7 +99,7 @@ public class Conceptualize extends Ability {
                         }.runTaskTimer(LordOfTheMinecraft.instance, j * 10, 1);
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Conceptualize");
+                    LoggerUtil.logAbilityError(e, "Conceptualize");
                     cancel();
                 }
             }

@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -109,7 +109,7 @@ public class FireOfLight extends Ability {
                         }
                     }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Fire of Light");
+                    LoggerUtil.logAbilityError(e, "Fire of Light");
                     cancel();
                 }
             }

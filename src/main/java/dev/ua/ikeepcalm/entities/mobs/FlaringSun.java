@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.entities.mobs;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -114,7 +114,7 @@ public class FlaringSun extends MobAbility {
                             pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Flaring Sun");
+                    LoggerUtil.logAbilityError(e, "Flaring Sun");
                     cancel();
                 }
             }

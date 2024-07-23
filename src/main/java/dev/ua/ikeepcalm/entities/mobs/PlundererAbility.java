@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.mobs;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -54,7 +54,7 @@ public class PlundererAbility extends MobAbility {
                     if (counter > 50)
                         cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Plunderer");
+                    LoggerUtil.logAbilityError(e, "Plunderer");
                     cancel();
                 }
             }

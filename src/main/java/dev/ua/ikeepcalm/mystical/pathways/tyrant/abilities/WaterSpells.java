@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -126,7 +126,7 @@ public class WaterSpells extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Water Spells");
+                    LoggerUtil.logAbilityError(e, "Water Spells");
                     cancel();
                 }
             }
@@ -180,7 +180,7 @@ public class WaterSpells extends Ability {
                     if (counter <= 0)
                         cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Water Spells");
+                    LoggerUtil.logAbilityError(e, "Water Spells");
                     cancel();
                 }
             }
@@ -251,7 +251,7 @@ public class WaterSpells extends Ability {
                         GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
                         GeneralPurposeUtil.drawParticlesForNearbyPlayers(Particle.ASH, new Location(loc.getWorld(), spiralX + loc.getX(), height + loc.getY(), spiralZ + loc.getZ()), 15, 0.1, 0, 0.1, 0);
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Water Spells");
+                        LoggerUtil.logAbilityError(e, "Water Spells");
                         cancel();
                     }
                 }
@@ -311,7 +311,7 @@ public class WaterSpells extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Water Spells");
+                    LoggerUtil.logAbilityError(e, "Water Spells");
                     cancel();
                 }
             }
@@ -379,7 +379,7 @@ public class WaterSpells extends Ability {
                     if (counter <= 0)
                         cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Water Spells");
+                    LoggerUtil.logAbilityError(e, "Water Spells");
                     cancel();
                 }
             }
@@ -448,7 +448,7 @@ public class WaterSpells extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Water Spells");
+                    LoggerUtil.logAbilityError(e, "Water Spells");
                     cancel();
                 }
             }

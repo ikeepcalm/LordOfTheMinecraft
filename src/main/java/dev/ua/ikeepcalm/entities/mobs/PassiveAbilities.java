@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.entities.mobs;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Damageable;
@@ -55,7 +55,7 @@ public class PassiveAbilities {
                         entity.getWorld().dropItem(entity.getLocation(), BeyonderItemsUtil.getRoosterComb());
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Rooster");
+                    LoggerUtil.logAbilityError(e, "Rooster");
                     cancel();
                 }
             }

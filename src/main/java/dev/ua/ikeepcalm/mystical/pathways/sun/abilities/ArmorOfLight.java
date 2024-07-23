@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -119,7 +119,7 @@ public class ArmorOfLight extends Ability implements Listener {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Armor of Light");
+                    LoggerUtil.logAbilityError(e, "Armor of Light");
                     cancel();
                 }
             }

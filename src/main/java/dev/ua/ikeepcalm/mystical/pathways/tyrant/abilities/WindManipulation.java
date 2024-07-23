@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -141,7 +141,7 @@ public class WindManipulation extends Ability {
                             player.spawnParticle(Particle.ASH, spiralX + entityLoc.getX(), height + entityLoc.getY(), spiralZ + entityLoc.getZ(), 5, 0, 0, 0, 0);
                         }
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Bind");
+                        LoggerUtil.logAbilityError(e, "Wind Manipulation - Bind");
                         cancel();
                     }
                 }
@@ -193,7 +193,7 @@ public class WindManipulation extends Ability {
                     if (!flying)
                         cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Flight");
+                    LoggerUtil.logAbilityError(e, "Wind Manipulation - Flight");
                     cancel();
                 }
             }
@@ -241,7 +241,7 @@ public class WindManipulation extends Ability {
                             cancel();
                         }
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Flight Particles");
+                        LoggerUtil.logAbilityError(e, "Wind Manipulation - Flight Particles");
                         cancel();
                     }
                 }
@@ -304,7 +304,7 @@ public class WindManipulation extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Wind Manipulation - Blade");
+                    LoggerUtil.logAbilityError(e, "Wind Manipulation - Blade");
                     cancel();
                 }
             }

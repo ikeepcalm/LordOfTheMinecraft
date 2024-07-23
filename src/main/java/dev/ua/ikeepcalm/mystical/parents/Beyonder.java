@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import me.libraryaddict.disguise.DisguiseAPI;
@@ -104,7 +105,7 @@ public class Beyonder implements Listener {
 
         //acting initializing
         this.digested = false;
-        this.actingNeeded = Math.pow((float) (300 / pathway.getSequence().getCurrentSequence()), 2);
+        this.actingNeeded = Math.pow((float) (250 / pathway.getSequence().getCurrentSequence()), 2);
 
         pathway.initItems();
         start();
@@ -251,7 +252,7 @@ public class Beyonder implements Listener {
         if (!initializedOnce) {
             //acting initializing
             digested = false;
-            actingNeeded = Math.pow((float) (300 / pathway.getSequence().getCurrentSequence()), 2);
+            actingNeeded = Math.pow((float) (250 / pathway.getSequence().getCurrentSequence()), 2);
         }
 
         updateSpirituality();
@@ -308,7 +309,7 @@ public class Beyonder implements Listener {
                 if (actingCounter >= 50 * 15) {
                     AFKPlusPlayer player = LordOfTheMinecraft.afkPlus.getPlayer(uuid);
                     if (!player.isAFK()) {
-                        addActing(1);
+                        addActing(3);
                     } else {
                         LordOfTheMinecraft.instance.log("Player " + getPlayer().getName() + " is marked as AFK and is ignored for acting.");
                     }
@@ -407,7 +408,7 @@ public class Beyonder implements Listener {
 
     public void verifyActing() {
         if (actingNeeded == 0) {
-            actingNeeded = Math.pow((300f / pathway.getSequence().getCurrentSequence()), 2);
+            actingNeeded = Math.pow((250f / pathway.getSequence().getCurrentSequence()), 2);
         }
 
         int percentage = (int) ((actingProgress / actingNeeded) * 100);
@@ -464,7 +465,9 @@ public class Beyonder implements Listener {
     //lostControl: chance of surviving
     public void looseControl(int lostControl, int timeOfLoosingControl) {
         Random random = new Random();
-        boolean survives = ((random.nextInt(100) + 1) <= lostControl);
+        int randomInt = random.nextInt(100) + 1;
+        boolean survives = (randomInt <= lostControl);
+        LoggerUtil.logPlayerLooseControl(getPlayer(), this, survives);
         loosingControl = true;
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * timeOfLoosingControl, 3, false, false));
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * timeOfLoosingControl, 3, false, false));
@@ -565,13 +568,15 @@ public class Beyonder implements Listener {
 
         if (sequence == pathway.getSequence().getCurrentSequence()) {
             if (digested) {
+                LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
                 getPlayer().sendMessage("§cВи вже засвоїли це зілля!");
                 looseControl(90, 20);
                 return;
             }
-            if (actingNeeded == 0){
+            if (actingNeeded == 0) {
                 verifyActing();
             }
+            LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), true);
             actingProgress += actingNeeded * 0.2;
             getPlayer().sendMessage("§aВи відчуваєте, як зілля покращило ваше розуміння теперішнього стану речей.");
             return;
@@ -579,6 +584,7 @@ public class Beyonder implements Listener {
 
         if (!getPathway().getNameNormalized().equals(potion.getName())) {
             looseControl(0, 10);
+            LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
             return;
         }
         if (pathway == null) {
@@ -587,6 +593,7 @@ public class Beyonder implements Listener {
         }
 
         if (!digested) {
+            LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
             looseControl(10, 12);
         } else {
             switch (getPathway().getSequence().getCurrentSequence() - 1 - sequence) {
@@ -598,6 +605,7 @@ public class Beyonder implements Listener {
         }
 
         pathway.getSequence().setCurrentSequence(sequence);
+        LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), true);
         digested = false;
         actingProgress = 0;
         verifyActing();

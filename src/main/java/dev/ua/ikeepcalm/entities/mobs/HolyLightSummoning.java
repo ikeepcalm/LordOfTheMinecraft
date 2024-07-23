@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.entities.mobs;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
@@ -139,7 +139,7 @@ public class HolyLightSummoning extends MobAbility {
                         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1);
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Holy Light Summoning");
+                    LoggerUtil.logAbilityError(e, "Holy Light Summoning");
                     cancel();
                 }
             }

@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Location;
@@ -138,7 +138,7 @@ public class Tornado extends Disaster {
                     }
 
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Tornado");
+                    LoggerUtil.logDisasterError(e, "Tornado");
                     cancel();
                 }
             }

@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PotionHandler implements Listener {
 
@@ -132,7 +133,13 @@ public class PotionHandler implements Listener {
                         break;
                     }
 
-                    if (!mainIngredients.get(j).isSimilar(potion.getMainIngredients(i)[j])) {
+                    ItemStack mainIngredient = mainIngredients.get(j);
+                    ItemStack expectedMainIngredient = potion.getMainIngredients(i)[j];
+                    boolean matchesMaterial = mainIngredient.getType() == expectedMainIngredient.getType();
+                    boolean matchesDisplayName = Objects.equals(mainIngredient.getItemMeta().displayName(), expectedMainIngredient.getItemMeta().displayName());
+                    boolean matchesAmount = mainIngredient.getAmount() == expectedMainIngredient.getAmount();
+
+                    if (!(matchesMaterial && matchesDisplayName && matchesAmount)) {
                         NBTItem actual = new NBTItem(mainIngredients.get(j));
                         NBTItem expected = new NBTItem(LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(i, potion.getName(), potion.getStringColor()));
                         if (!actual.getString("pathway").equals(expected.getString("pathway"))) {

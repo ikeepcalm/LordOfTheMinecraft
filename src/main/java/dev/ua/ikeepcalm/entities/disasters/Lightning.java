@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -48,7 +48,7 @@ public class Lightning extends Disaster {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Lightning");
+                    LoggerUtil.logDisasterError(e, "Lightning");
                     cancel();
                 }
             }

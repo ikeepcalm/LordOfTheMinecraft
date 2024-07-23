@@ -3,9 +3,11 @@ package dev.ua.ikeepcalm.mystical.parents;
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -103,6 +105,9 @@ public abstract class Sequence {
         for (Ability a : abilities) {
             if (a.getIdentifier() == ability) {
                 a.useAbility();
+                Beyonder beyonder = pathway.getBeyonder();
+                Player player = beyonder.getPlayer();
+                LoggerUtil.logPlayerAbility(player, a.getClass().getSimpleName(), (int) beyonder.getSpirituality(), (int) beyonder.getMaxSpirituality());
                 if (getIds().contains(ability)) {
                     if (lastTime == null) {
                         lastTime = LocalTime.now();

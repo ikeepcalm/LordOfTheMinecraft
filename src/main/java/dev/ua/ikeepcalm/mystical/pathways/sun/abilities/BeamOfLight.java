@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -60,7 +60,7 @@ public class BeamOfLight extends Ability {
 
                     if (counter > 25) cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    LoggerUtil.logAbilityError(e, "Beam of Light");
                     cancel();
                 }
             }
@@ -136,7 +136,7 @@ public class BeamOfLight extends Ability {
                         }
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    LoggerUtil.logAbilityError(e, "Beam of Light");
                     cancel();
                 }
             }
@@ -184,7 +184,7 @@ public class BeamOfLight extends Ability {
                         if (radius > 2.5) cancel();
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Beam of Light");
+                    LoggerUtil.logAbilityError(e, "Beam of Light");
                     cancel();
                 }
             }

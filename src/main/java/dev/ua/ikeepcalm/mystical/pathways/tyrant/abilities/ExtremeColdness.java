@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -71,13 +71,13 @@ public class ExtremeColdness extends Ability {
                                         }
                                         GeneralPurposeUtil.drawDustsForNearbyPlayers(block.getLocation(), 1, 0, 0.5, 0, new Particle.DustOptions(Color.fromRGB(88, 200, 237), 1f));
                                     } catch (Exception e) {
-                                        ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Block Modification");
+                                        LoggerUtil.logAbilityError(e, "Extreme Coldness - Block Modification");
                                         cancel();
                                     }
                                 });
                             }
                         } catch (Exception e) {
-                            ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Async Block Processing");
+                            LoggerUtil.logAbilityError(e, "Extreme Coldness - Async Block Processing");
                             cancel();
                         }
                     });
@@ -96,7 +96,7 @@ public class ExtremeColdness extends Ability {
                                             }
                                         }
                                     } catch (Exception e) {
-                                        ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Entity Damage and Ice Block Setting");
+                                        LoggerUtil.logAbilityError(e, "Extreme Coldness - Entity Damage and Ice Block Setting");
                                         cancel();
                                     }
                                 }
@@ -106,17 +106,17 @@ public class ExtremeColdness extends Ability {
                                 try {
                                     rollbackChanges(uuid);
                                 } catch (Exception e) {
-                                    ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Rollback Changes");
+                                    LoggerUtil.logAbilityError(e, "Extreme Coldness - Rollback Changes");
                                 }
                                 cancel();
                             }
                         } catch (Exception e) {
-                            ErrorLoggerUtil.logAbility(e, "Extreme Coldness - Main Task");
+                            LoggerUtil.logAbilityError(e, "Extreme Coldness - Main Task");
                             cancel();
                         }
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Extreme Coldness");
+                    LoggerUtil.logAbilityError(e, "Extreme Coldness");
                     cancel();
                 }
             }

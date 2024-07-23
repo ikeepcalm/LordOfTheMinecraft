@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.entities.mobs;
 
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -29,7 +29,7 @@ public class SpawnVex extends MobAbility {
                 user.getWorld().spawnEntity(spawnLoc, EntityType.VEX);
             }
         } catch (Exception e) {
-            ErrorLoggerUtil.logAbility(e, "SpawnVex");
+            LoggerUtil.logAbilityError(e, "SpawnVex");
         }
     }
 }

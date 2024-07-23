@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
@@ -140,7 +140,7 @@ public class LightningTornado extends Disaster {
                     }
 
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Lightning Tornado");
+                    LoggerUtil.logDisasterError(e, "Lightning Tornado");
                     cancel();
                 }
             }

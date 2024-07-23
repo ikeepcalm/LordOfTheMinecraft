@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantSequence;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -72,7 +72,7 @@ public class LightningBall extends Ability {
                                         try {
                                             TyrantSequence.spawnLighting(startLoc.clone().add(random.nextInt(-1, 1), 0, random.nextInt(-1, 1)), caster, 10, false, 1);
                                         } catch (Exception e) {
-                                            ErrorLoggerUtil.logAbility(e, "Lightning Ball - Spawn Lightning");
+                                            LoggerUtil.logAbilityError(e, "Lightning Ball - Spawn Lightning");
                                             cancel();
                                         }
 
@@ -83,7 +83,7 @@ public class LightningBall extends Ability {
                                 this.counter = 0;
                             }
                         } catch (Exception e) {
-                            ErrorLoggerUtil.logAbility(e, "Lightning Ball - Secondary Task Check");
+                            LoggerUtil.logAbilityError(e, "Lightning Ball - Secondary Task Check");
                             cancel();
                         }
                     });
@@ -93,7 +93,7 @@ public class LightningBall extends Ability {
                     counter--;
                     if (counter <= 0) cancel();
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Lightning Ball - Main Task");
+                    LoggerUtil.logAbilityError(e, "Lightning Ball - Main Task");
                     cancel();
                 }
             }

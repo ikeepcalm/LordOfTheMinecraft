@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralItemsUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -92,7 +92,7 @@ public class Tsunami extends Disaster {
                         livingEntity.damage(7, p);
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Tsunami");
+                    LoggerUtil.logDisasterError(e, "Tsunami");
                     cancel();
                 }
             }

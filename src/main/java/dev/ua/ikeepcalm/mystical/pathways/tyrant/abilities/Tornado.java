@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -50,7 +50,7 @@ public class Tornado extends Ability {
 
                     executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Tornado");
+                    LoggerUtil.logAbilityError(e, "Tornado");
                     cancel();
                 }
             }

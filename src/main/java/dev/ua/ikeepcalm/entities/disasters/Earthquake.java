@@ -2,7 +2,7 @@ package dev.ua.ikeepcalm.entities.disasters;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.entities.custom.CustomLocation;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -88,7 +88,7 @@ public class Earthquake extends Disaster implements Listener {
                     if (counter % 20 == 0)
                         world.spawnParticle(Particle.DUST, startLoc, 200, 35, 0, 35, dust);
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logDisaster(e, "Earthquake");
+                    LoggerUtil.logDisasterError(e, "Earthquake");
                     cancel();
                 }
             }

@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -131,7 +131,7 @@ public class BlackHole extends Ability {
                             }.runTaskTimer(LordOfTheMinecraft.instance, 0, 1); // Changed the interval to 1 tick for smoother movement
                         }
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Black Hole");
+                        LoggerUtil.logAbilityError(e, "Black Hole");
                         cancel();
                     }
                 }
@@ -179,7 +179,7 @@ public class BlackHole extends Ability {
                             }
                         });
                     } catch (Exception e) {
-                        ErrorLoggerUtil.logAbility(e, "Black Hole");
+                        LoggerUtil.logAbilityError(e, "Black Hole");
                         cancel();
                     }
                 }

@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.MathVectorUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -79,7 +79,7 @@ public class AirBullet extends Ability {
                             ? valuesForSequence.get(sequencePower)[0]
                             : 0.25;
 
-                    final Location locCopy = loc.clone().add(0, 2, 0);
+                    final Location locCopy = loc.clone().add(0, 1, 0);
                     final World world = loc.getWorld();
                     final Vector dir = caster.getLocation().getDirection().normalize();
 
@@ -168,7 +168,7 @@ public class AirBullet extends Ability {
                             world.createExplosion(locCopy, (int) (valuesForSequence.get(sequencePower)[2]), false, false);
                     });
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Air Bullet");
+                    LoggerUtil.logAbilityError(e, "Air Bullet");
                     cancel();
                 }
             }
@@ -177,7 +177,7 @@ public class AirBullet extends Ability {
 
     @Override
     public void useAbility() {
-        executeAbility(player.getLocation(), player);
+        executeAbility(player.getLocation().add(0, 1, 0), player);
     }
 
     @Override

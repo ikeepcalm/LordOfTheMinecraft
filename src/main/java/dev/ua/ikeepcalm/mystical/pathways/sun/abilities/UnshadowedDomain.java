@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -58,7 +58,7 @@ public class UnshadowedDomain extends Ability {
                         }
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Unshadowed Domain");
+                    LoggerUtil.logAbilityError(e, "Unshadowed Domain");
                     cancel();
                 }
             }
@@ -94,7 +94,7 @@ public class UnshadowedDomain extends Ability {
                         cancel();
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Unshadowed Domain");
+                    LoggerUtil.logAbilityError(e, "Unshadowed Domain");
                     cancel();
                 }
             }

@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -105,7 +105,7 @@ public class Epidemic extends Ability {
                         cancel();
 
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Epidemic");
+                    LoggerUtil.logAbilityError(e, "Epidemic");
                     cancel();
                 }
             }

@@ -5,9 +5,8 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunItems;
-import dev.ua.ikeepcalm.utils.ErrorLoggerUtil;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.*;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -61,9 +60,9 @@ public class CleaveOfPurification extends Ability {
                                 Location entLoc = entity.getLocation();
                                 if (entity instanceof LivingEntity livingEntity) {
                                     if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                        ((Damageable) entity).damage(28 * multiplier, player);
+                                        livingEntity.damage(28 * multiplier, player);
                                     } else {
-                                        if (entity != player) ((Damageable) entity).damage(12 * multiplier, player);
+                                        if (entity != player) livingEntity.damage(12 * multiplier, player);
                                     }
                                     Objects.requireNonNull(entLoc.getWorld()).spawnParticle(Particle.FIREWORK, entLoc, 200, 0.2, 0.2, 0.2, 0.15);
                                 }
@@ -71,7 +70,7 @@ public class CleaveOfPurification extends Ability {
                         });
                     }
                 } catch (Exception e) {
-                    ErrorLoggerUtil.logAbility(e, "Cleave of Purification");
+                    LoggerUtil.logAbilityError(e, "Cleave of Purification");
                     cancel();
                 }
             }
