@@ -46,7 +46,8 @@ public class WingsOfLight extends Ability {
     @Override
     public void useAbility() {
         player = pathway.getBeyonder().getPlayer();
-        if (pathway.getSequence().getCurrentSequence() > 1) {
+
+        if (pathway.getSequence().getCurrentSequence() > 2) {
             player.setVelocity(new Vector(0, 1, 0));
             pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
             new BukkitRunnable() {
@@ -110,7 +111,7 @@ public class WingsOfLight extends Ability {
     @Override
     public void leftClick() {
         player = pathway.getBeyonder().getPlayer();
-        if (pathway.getSequence().getCurrentSequence() > 1)
+        if (pathway.getSequence().getCurrentSequence() > 2)
             return;
 
         player.setVelocity(new Vector(0, 0, 0));

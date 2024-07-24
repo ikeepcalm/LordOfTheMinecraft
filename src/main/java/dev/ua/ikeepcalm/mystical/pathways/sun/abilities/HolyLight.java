@@ -41,45 +41,43 @@ public class HolyLight extends Ability {
                     counter++;
 
                     Particle.DustOptions dust = new Particle.DustOptions(Color.fromBGR(0, 215, 255), 1f);
-                    scheduler.runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
-                        for (double i = 0; i < 3.2; i += 0.8) {
-                            for (int j = 0; j < 50; j++) {
-                                double x = i * Math.cos(j);
-                                double z = i * Math.sin(j);
-                                scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                                    Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, dust);
-                                    loc.getWorld().spawnParticle(Particle.FIREWORK, loc.getX() + x, loc.getY() + 1, loc.getZ() + z, 1, 0, 0, 0, 0);
-                                });
-                            }
+
+                    for (double i = 0; i < 3.2; i += 0.8) {
+                        for (int j = 0; j < 50; j++) {
+                            double x = i * Math.cos(j);
+                            double z = i * Math.sin(j);
+                            scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                                Objects.requireNonNull(loc.getWorld()).spawnParticle(Particle.DUST, loc.getX() + x, loc.getY(), loc.getZ() + z, 2, dust);
+                                loc.getWorld().spawnParticle(Particle.FIREWORK, loc.getX() + x, loc.getY() + 1, loc.getZ() + z, 1, 0, 0, 0, 0);
+                            });
                         }
-                    });
+                    }
 
-                    scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                    loc.getBlock().setType(lastMaterial[0]);
+                    loc.subtract(0, 0.75, 0);
+                    lastMaterial[0] = loc.getBlock().getType();
+                    loc.getBlock().setType(Material.LIGHT);
+
+                    if ((lastMaterial[0].isSolid() && counter >= 18.6) || counter >= 200) {
                         loc.getBlock().setType(lastMaterial[0]);
-                        loc.subtract(0, 0.75, 0);
-                        lastMaterial[0] = loc.getBlock().getType();
-                        loc.getBlock().setType(Material.LIGHT);
+                        counter = 0;
+                        cancel();
+                        pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
 
-                        if ((lastMaterial[0].isSolid() && counter >= 18.6) || counter >= 200) {
-                            loc.getBlock().setType(lastMaterial[0]);
-                            counter = 0;
-                            cancel();
-                            pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
-
-                            // Damage nearby entities
-                            ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc.subtract(5, 0, 5), 10, 10, 10);
-                            for (Entity entity : nearbyEntities) {
-                                if (entity instanceof LivingEntity livingEntity) {
-                                    if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
-                                        ((Damageable) entity).damage(15 * multiplier, caster);
-                                    } else {
-                                        if (entity != caster)
-                                            ((Damageable) entity).damage(8 * multiplier, caster);
-                                    }
+                        // Damage nearby entities
+                        ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) loc.getWorld().getNearbyEntities(loc.subtract(5, 0, 5), 10, 10, 10);
+                        for (Entity entity : nearbyEntities) {
+                            if (entity instanceof LivingEntity livingEntity) {
+                                if (Tag.ENTITY_TYPES_SENSITIVE_TO_SMITE.isTagged(entity.getType())) {
+                                    ((Damageable) entity).damage(12 * multiplier, caster);
+                                } else {
+                                    if (entity != caster)
+                                        ((Damageable) entity).damage(8 * multiplier, caster);
                                 }
                             }
                         }
-                    });
+                    }
+
                 } catch (Exception e) {
                     LoggerUtil.logAbilityError(e, "Holy Light");
                     cancel();

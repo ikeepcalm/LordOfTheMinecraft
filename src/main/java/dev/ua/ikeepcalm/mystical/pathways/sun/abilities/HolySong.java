@@ -29,7 +29,9 @@ public class HolySong extends Ability {
         pathway.getSequence().getUsesAbilities()[identifier - 1] = true;
 
         BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTask(LordOfTheMinecraft.instance, () -> player.getWorld().playSound(player, Sound.MUSIC_DISC_MELLOHI, 10f, 1f));
+        Sound[] sounds = Sound.values();
+        Sound randomSound = sounds[(int) (Math.random() * sounds.length)];
+        scheduler.runTask(LordOfTheMinecraft.instance, () -> player.getWorld().playSound(player, randomSound, 10f, 1f));
 
         new BukkitRunnable() {
             int counter = 0;

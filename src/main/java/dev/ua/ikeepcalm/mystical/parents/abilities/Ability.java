@@ -74,6 +74,9 @@ public abstract class Ability {
 
     public static double getMultiplier(Pathway pathway) {
         double multiplier = 1;
+        if (pathway.getNameNormalized().equalsIgnoreCase("sun")) {
+            multiplier = 1.8;
+        }
         if (pathway.getSequence().getSequenceMultiplier().containsKey(pathway.getSequence().getCurrentSequence())) {
             multiplier = pathway.getSequence().getSequenceMultiplier().get(pathway.getSequence().getCurrentSequence());
         } else {

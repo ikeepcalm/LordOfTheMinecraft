@@ -73,7 +73,7 @@ public class Lightning extends Ability {
                             try {
                                 loc.getWorld().setClearWeatherDuration(0);
                                 loc.getWorld().setStorm(true);
-                                loc.getWorld().setThunderDuration(120 * 60 * 20);
+                                loc.getWorld().setThunderDuration(120 * 20);
                             } catch (Exception e) {
                                 LoggerUtil.logAbilityError(e, "Lightning - Weather Control");
                             }

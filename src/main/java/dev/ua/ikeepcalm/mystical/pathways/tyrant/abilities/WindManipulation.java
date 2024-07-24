@@ -6,10 +6,12 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
+import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
 import dev.ua.ikeepcalm.utils.LoggerUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -182,13 +185,25 @@ public class WindManipulation extends Ability {
             @Override
             public void run() {
                 try {
-                    if (pathway.getBeyonder().getSpirituality() <= 6) {
+                    if (pathway.getBeyonder().getSpirituality() <= 80) {
                         flying = false;
                         cancel();
                         return;
                     }
 
-                    pathway.getSequence().removeSpirituality(6);
+                    boolean foundWater = false;
+                    List<Block> blockList = GeneralPurposeUtil.getBlocksInCircleRadius(caster.getLocation().getBlock(), 8, true, Material.DIRT, Material.STONE, Material.GRASS_BLOCK);
+                    for (Block block : blockList) {
+                        if (block.getType() == Material.WATER) {
+                            foundWater = true;
+                            break;
+                        }
+                    }
+                    if (foundWater) {
+                        pathway.getSequence().removeSpirituality(8);
+                    } else {
+                        pathway.getSequence().removeSpirituality(50);
+                    }
 
                     if (!flying)
                         cancel();
