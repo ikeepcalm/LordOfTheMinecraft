@@ -4,6 +4,7 @@ import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPathway;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
+import dev.ua.ikeepcalm.mystical.pathways.priest.PriestPathway;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPathway;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPathway;
 import lombok.Getter;
@@ -65,6 +66,7 @@ public abstract class Pathway {
             case "door" -> pathwayObject = new DoorPathway(uuid, sequence, 2);
             case "demoness" -> pathwayObject = new DemonessPathway(uuid, sequence, 3);
             case "tyrant" -> pathwayObject = new TyrantPathway(uuid, sequence, 4);
+            case "priest" -> pathwayObject = new PriestPathway(uuid, sequence, 5);
             default -> {
                 return null;
             }
@@ -116,6 +118,9 @@ public abstract class Pathway {
             }
             case "tyrant" -> {
                 return TyrantPathway.getNames();
+            }
+            case "priest" -> {
+                return PriestPathway.getNames();
             }
             default -> {
                 return null;
