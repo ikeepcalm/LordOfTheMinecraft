@@ -19,7 +19,7 @@ public class PriestSequence extends Sequence {
 
     @Override
     public List<Integer> getIds() {
-        Integer[] ids = {0};
+        Integer[] ids = {2, 4, 6};
         return Arrays.asList(ids);
     }
 

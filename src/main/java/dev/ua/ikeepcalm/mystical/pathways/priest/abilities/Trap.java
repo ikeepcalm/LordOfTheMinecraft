@@ -1,14 +1,18 @@
 package dev.ua.ikeepcalm.mystical.pathways.priest.abilities;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.mystical.parents.Beyonder;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.priest.PriestItems;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
+import io.papermc.paper.event.entity.EntityMoveEvent;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -30,6 +34,7 @@ public class Trap extends Ability implements Listener {
     @Override
     public void useAbility() {
         player = pathway.getBeyonder().getPlayer();
+        player.setVisualFire(false);
         Block block = player.getTargetBlock(null, 5);
         if (block.getType() == Material.AIR) {
             return;
@@ -60,7 +65,8 @@ public class Trap extends Ability implements Listener {
                                 cancel();
                             } else {
                                 time++;
-                                block.getWorld().spawnParticle(Particle.FLAME, block.getLocation().add(0, 1, 0), 5, 0.1, 0.1, 0.1, 0.1);
+                                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromBGR(0, 40, 240), 1.0f);
+                                block.getWorld().spawnParticle(Particle.DUST, block.getLocation().add(0.5, 1.5, 0.5), 15, 0.5, 0.5, 0.5, 0.5, dustOptions);
                             }
 
                         }
@@ -71,19 +77,47 @@ public class Trap extends Ability implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
+    public void onTrapActivation(EntityMoveEvent event) {
         Block block = event.getTo().getBlock().getLocation().add(0, -1, 0).getBlock();
         if (block.hasMetadata("trap")) {
-            event.getPlayer().sendMessage("§cВи потрапили в пастку!");
-            event.getTo().getWorld().createExplosion(block.getLocation().add(0, 1, 0), 3.0f, true, false);
-            event.getPlayer().setFireTicks(60);
-            event.getPlayer().damage(5.0 * pathway.getSequence().getSequenceMultiplier().get(pathway.getSequence().getCurrentSequence()));
+            double multiplier = getMultiplier();
+            if (multiplier != 0) {
+                event.getEntity().damage(2.0 * multiplier);
+            } else {
+                event.getEntity().damage(2.0);
+            }
+            event.getEntity().setFireTicks(60);
+            event.getTo().getWorld().createExplosion(block.getLocation().add(0, 1, 0), 2.0f, true, false);
+            block.removeMetadata("trap", LordOfTheMinecraft.instance);
+        }
+    }
+
+    @EventHandler
+    public void onTrapActivation(PlayerMoveEvent event) {
+        Block block = event.getTo().getBlock().getLocation().add(0, -1, 0).getBlock();
+        double multiplier = getMultiplier();
+        Player player = event.getPlayer();
+        if (block.hasMetadata("trap")) {
+            if (LordOfTheMinecraft.beyonders.containsKey(player.getUniqueId())) {
+                Beyonder beyonder = LordOfTheMinecraft.beyonders.get(player.getUniqueId());
+                if (beyonder.getPathway().getNameNormalized().equalsIgnoreCase("priest")) {
+                    return;
+                }
+            }
+            player.sendMessage("§cВи потрапили в пастку!");
+            if (multiplier != 0) {
+                player.damage(5.0 * multiplier);
+            } else {
+                player.damage(5.0);
+            }
+            player.setFireTicks(60);
+            event.getTo().getWorld().createExplosion(block.getLocation().add(0, 1, 0), 2.0f, true, false);
             block.removeMetadata("trap", LordOfTheMinecraft.instance);
         }
     }
 
     @Override
     public ItemStack getItem() {
-        return PriestItems.createItem(Material.SILVERFISH_SPAWN_EGG, "Пастка", "30", identifier);
+        return PriestItems.createItem(Material.FERMENTED_SPIDER_EYE, "Пастка", "30", identifier);
     }
 }

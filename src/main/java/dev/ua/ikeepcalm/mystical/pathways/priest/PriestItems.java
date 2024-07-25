@@ -3,7 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.priest;
 import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
-import dev.ua.ikeepcalm.mystical.pathways.priest.abilities.Trap;
+import dev.ua.ikeepcalm.mystical.pathways.priest.abilities.*;
 import dev.ua.ikeepcalm.utils.LocalizationUtil;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,12 +27,12 @@ public class PriestItems extends Items {
         HashMap<Integer, String> names = Objects.requireNonNull(Pathway.getNamesForPathway(pathway.getNameNormalized()));
         String[] s9 = formatAbilityInfo(pathway.getStringColor(), "9: " + names.get(9),
                 LocalizationUtil.getLocalizedString("priest", "abilities", "trap-master"),
-                LocalizationUtil.getLocalizedString("priest", "abilities", "hunter-being")
+                LocalizationUtil.getLocalizedString("priest", "abilities", "tracking")
         );
         abilityInfo.put(9, s9);
 
         String[] s8 = formatAbilityInfo(pathway.getStringColor(), "8: " + names.get(8),
-                LocalizationUtil.getLocalizedString("priest", "abilities", "provocation")
+                LocalizationUtil.getLocalizedString("priest", "abilities", "provoke")
         );
         abilityInfo.put(8, s8);
 
@@ -40,7 +40,7 @@ public class PriestItems extends Items {
                 LocalizationUtil.getLocalizedString("priest", "abilities", "fire-raven"),
                 LocalizationUtil.getLocalizedString("priest", "abilities", "blazing-spear"),
                 LocalizationUtil.getLocalizedString("priest", "abilities", "wall-of-fire"),
-                LocalizationUtil.getLocalizedString("priest", "abilities", "fireball")
+                LocalizationUtil.getLocalizedString("priest", "abilities", "fire-armor")
         );
         abilityInfo.put(7, s7);
     }
@@ -58,7 +58,11 @@ public class PriestItems extends Items {
 
     private void createItems() {
         addAbility(new Trap(1, pathway, 9, this));
-//        addAbility(new HolyLight(2, pathway, 9, this));
+        addAbility(new Tracking(2, pathway, 9, this));
+        addAbility(new Provoke(3, pathway, 8, this));
+        addAbility(new FireRaven(4, pathway, 7, this));
+        addAbility(new BlazingSpear(5, pathway, 7, this));
+        addAbility(new FlameArmor(6, pathway, 7, this));
     }
 
     public void addAbility(Ability ability) {

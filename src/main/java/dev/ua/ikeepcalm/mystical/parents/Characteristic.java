@@ -33,6 +33,7 @@ public class Characteristic {
         blocksForPathway.put("door", new URL("http://textures.minecraft.net/texture/5f1e18cd9f9d3822196f0ccf1a8e071d87bb32ab50df4d6cfed93a1a948835ca"));
         blocksForPathway.put("demoness", new URL("http://textures.minecraft.net/texture/b21f8f3e52fa21b45ff56f3f73dd21661ff257d97bd52ed958f2d757be89a961"));
         blocksForPathway.put("tyrant", new URL("http://textures.minecraft.net/texture/de73a8675ec1be13b1932627533212b1ded2b1773e54b06ea489a35d9744d615"));
+        blocksForPathway.put("priest", new URL("http://textures.minecraft.net/texture/49841ce86bfc39591e88579203ec4c8ef2c86a23aea0924591b931ea85efa"));
 
         allCharacteristics = new HashMap<>();
         for (int i = 9; i > 0; i--) {
@@ -41,6 +42,7 @@ public class Characteristic {
             allCharacteristics.put(getCharacteristic(i, "door", "§b"), new int[]{2, i});
             allCharacteristics.put(getCharacteristic(i, "demoness", "§d"), new int[]{3, i});
             allCharacteristics.put(getCharacteristic(i, "tyrant", "§9"), new int[]{4, i});
+            allCharacteristics.put(getCharacteristic(i, "priest", "§c"), new int[]{5, i});
         }
 
     }
@@ -82,6 +84,7 @@ public class Characteristic {
             case "door" -> "Брама";
             case "demoness" -> "Демонеса";
             case "tyrant" -> "Тиран";
+            case "priest" -> "Червоний Жрець";
             default -> "Невідомий";
         };
     }

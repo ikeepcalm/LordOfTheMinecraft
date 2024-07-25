@@ -128,6 +128,9 @@ public class TestCmd implements CommandExecutor {
             case "tyrant" -> {
                 return 4;
             }
+            case "priest" -> {
+                return 5;
+            }
             default -> {
                 return -1;
             }

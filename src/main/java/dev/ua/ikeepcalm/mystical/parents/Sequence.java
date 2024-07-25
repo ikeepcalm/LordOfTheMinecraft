@@ -137,6 +137,11 @@ public abstract class Sequence {
         return pathway.getItems().returnItemsFromSequence(currentSequence).contains(checkItem);
     }
 
+
+    public void addSpirituality(double add) {
+        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() + add);
+    }
+
     public void removeSpirituality(double remove) {
         pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() - remove);
     }
