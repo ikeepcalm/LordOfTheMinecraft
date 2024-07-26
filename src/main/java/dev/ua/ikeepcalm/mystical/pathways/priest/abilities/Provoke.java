@@ -30,9 +30,6 @@ public class Provoke extends Ability {
 
     @Override
     public void useAbility() {
-        if (!pathway.getBeyonder().isBeyonder()) {
-            return;
-        }
         player = pathway.getBeyonder().getPlayer();
         Location loc = player.getLocation();
         final int random = (int) (Math.random() * 3);

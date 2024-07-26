@@ -39,10 +39,21 @@ public class PriestItems extends Items {
         String[] s7 = formatAbilityInfo(pathway.getStringColor(), "7: " + names.get(7),
                 LocalizationUtil.getLocalizedString("priest", "abilities", "fire-raven"),
                 LocalizationUtil.getLocalizedString("priest", "abilities", "blazing-spear"),
-                LocalizationUtil.getLocalizedString("priest", "abilities", "wall-of-fire"),
-                LocalizationUtil.getLocalizedString("priest", "abilities", "fire-armor")
+                LocalizationUtil.getLocalizedString("priest", "abilities", "flame-armor")
         );
         abilityInfo.put(7, s7);
+
+        String[] s6 = formatAbilityInfo(pathway.getStringColor(), "6: " + names.get(6),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "flame-wall"),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "conspiracy")
+        );
+
+        abilityInfo.put(6, s6);
+
+        String[] s5 = formatAbilityInfo(pathway.getStringColor(), "5: " + names.get(5),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "cull")
+        );
+        abilityInfo.put(5, s5);
     }
 
     @Override
@@ -63,6 +74,9 @@ public class PriestItems extends Items {
         addAbility(new FireRaven(4, pathway, 7, this));
         addAbility(new BlazingSpear(5, pathway, 7, this));
         addAbility(new FlameArmor(6, pathway, 7, this));
+        addAbility(new FlameWall(7, pathway, 6, this));
+        addAbility(new Conspiracy(8, pathway, 6, this));
+        addAbility(new Cull(9, pathway, 5, this));
     }
 
     public void addAbility(Ability ability) {

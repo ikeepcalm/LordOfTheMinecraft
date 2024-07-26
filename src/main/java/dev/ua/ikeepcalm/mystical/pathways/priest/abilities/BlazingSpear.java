@@ -203,9 +203,11 @@ public class BlazingSpear extends Ability {
 
     @Override
     public void leftClick() {
-        teleport = !teleport;
-        if (player != null) {
-            player.sendMessage("§cТелепорт " + (teleport ? "увімкнено" : "вимкнено"));
+        if (pathway.getSequence().getCurrentSequence() < 7) {
+            teleport = !teleport;
+            if (player != null) {
+                player.sendMessage("§cТелепорт " + (teleport ? "увімкнено" : "вимкнено"));
+            }
         }
     }
 

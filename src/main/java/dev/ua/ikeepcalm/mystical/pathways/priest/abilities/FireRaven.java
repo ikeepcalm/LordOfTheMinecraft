@@ -11,12 +11,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FireRaven extends Ability {
@@ -61,6 +63,17 @@ public class FireRaven extends Ability {
                 for (Block block : blocks) {
                     if (block.getType().isSolid()) {
                         bullet.getWorld().createExplosion(bulletLocation, 2, true, false);
+                        bullet.remove();
+                        cancel();
+                        return;
+                    }
+                }
+
+                Collection<Entity> entities = bulletLocation.getNearbyEntities(2, 2, 2);
+                for (Entity entity : entities) {
+                    if (entity != player) {
+                        entity.setFireTicks(80);
+                        ((org.bukkit.entity.Damageable) entity).damage(5 * getMultiplier());
                         bullet.remove();
                         cancel();
                         return;

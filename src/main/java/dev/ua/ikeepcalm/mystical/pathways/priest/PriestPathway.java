@@ -32,6 +32,8 @@ public class PriestPathway extends Pathway {
         names.put(9, LocalizationUtil.getLocalizedString("priest", "sequences", "9"));
         names.put(8, LocalizationUtil.getLocalizedString("priest", "sequences", "8"));
         names.put(7, LocalizationUtil.getLocalizedString("priest", "sequences", "7"));
+        names.put(6, LocalizationUtil.getLocalizedString("priest", "sequences", "6"));
+        names.put(5, LocalizationUtil.getLocalizedString("priest", "sequences", "5"));
         return names;
     }
 

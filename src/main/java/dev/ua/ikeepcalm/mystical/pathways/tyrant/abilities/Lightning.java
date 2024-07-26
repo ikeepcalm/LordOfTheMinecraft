@@ -68,6 +68,25 @@ public class Lightning extends Ability {
                         loc.add(dir);
                     }
 
+                    try {
+                        scheduler.runTask(LordOfTheMinecraft.instance, () -> {
+                            try {
+                                player.setPlayerWeather(org.bukkit.WeatherType.DOWNFALL);
+                                scheduler.runTaskLater(LordOfTheMinecraft.instance,
+                                        () -> {
+                                            try {
+                                                player.resetPlayerWeather();
+                                            } catch (Exception e) {
+                                                LoggerUtil.logAbilityError(e, "Lightning - Weather Clear");
+                                            }
+                                        }, 20 * 20);
+                            } catch (Exception e) {
+                                LoggerUtil.logAbilityError(e, "Lightning - Weather Control");
+                            }
+                        });
+                    } catch (Exception e) {
+                        LoggerUtil.logAbilityError(e, "Lightning - Scheduler Task");
+                    }
 
                     executeAbility(loc, player, getMultiplier());
                 } catch (Exception e) {
