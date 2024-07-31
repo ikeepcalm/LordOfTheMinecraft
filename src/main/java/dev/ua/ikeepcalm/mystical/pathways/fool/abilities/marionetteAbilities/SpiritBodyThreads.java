@@ -7,6 +7,8 @@ import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolItems;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Color;
@@ -17,7 +19,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -25,8 +26,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 
 public class SpiritBodyThreads extends Ability implements Listener {
 
-    private static final Logger log = LoggerFactory.getLogger(SpiritBodyThreads.class);
     private boolean controlling;
     private Entity currentEntity;
     private int index;
@@ -71,16 +69,16 @@ public class SpiritBodyThreads extends Ability implements Listener {
         dustBlue = new Particle.DustOptions(Color.fromRGB(0, 128, 255), .75f);
 
         convertTimePerLevel = new int[]{
-                0,
-                2,
-                4,
-                5,
-                6,
-                12
+                10,
+                16,
+                24,
+                36,
+                40,
+                48
         };
 
         maxDistance = new int[]{
-                1000,
+                500,
                 200,
                 150,
                 125,
@@ -113,7 +111,7 @@ public class SpiritBodyThreads extends Ability implements Listener {
             }
         }
 
-        ((LivingEntity) currentEntity).damage(0, player);
+        ((LivingEntity) currentEntity).damage(1, player);
         currentEntity.setMetadata("isBeingControlled", new FixedMetadataValue(LordOfTheMinecraft.instance, player.getUniqueId()));
 
         controlling = true;
@@ -125,23 +123,32 @@ public class SpiritBodyThreads extends Ability implements Listener {
                     player.damage(100, currentEntity);
                     player.getWorld().createExplosion(player.getLocation(), 6, false, false);
                     controlling = false;
+                    player.sendMessage(Component.text("Ваша різниця в послідовності занадто велика!").color(NamedTextColor.RED));
                     return;
                 }
                 case -3 -> {
                     player.damage(60, currentEntity);
                     player.getWorld().createExplosion(player.getLocation(), 4, false, false);
                     controlling = false;
+                    player.sendMessage(Component.text("Ваша різниця в послідовності занадто велика!").color(NamedTextColor.RED));
                     return;
                 }
                 case -2 -> {
                     player.damage(20, currentEntity);
                     player.getWorld().createExplosion(player.getLocation(), 2, false, false);
                     controlling = false;
+                    player.sendMessage(Component.text("Ваша різниця в послідовності занадто велика!").color(NamedTextColor.RED));
                     return;
                 }
                 case -1 -> convertTimeSeconds *= 10;
                 case 0 -> convertTimeSeconds *= 5;
                 case 1 -> convertTimeSeconds *= 2;
+            }
+
+            if (currentEntity instanceof Player playerTarget) {
+                playerTarget.damage(0, player);
+                playerTarget.sendTitle("§5Нитки...", "§5маріонеточника!!!", 10, 70, 20);
+                playerTarget.sendMessage(Component.text("Вас захоплено нитками маріонеточника! У вас є " + convertTimeSeconds + "c щоб розірвати дистанцію або вбити нападника!").color(NamedTextColor.DARK_PURPLE));
             }
         }
 
@@ -165,12 +172,20 @@ public class SpiritBodyThreads extends Ability implements Listener {
 
             @Override
             public void run() {
-                if (currentEntity == null || !currentEntity.isValid() || !controlling || player == null || !player.isValid()) {
+                LordOfTheMinecraft.instance.log("Controlling tick");
+                int currentSequence = pathway.getSequence().getCurrentSequence();
+                if (!player.isValid() || !currentEntity.isValid() || !controlling || countDistance(player.getLocation(), currentEntity.getLocation()) > maxDistance[currentSequence]) {
                     controlling = false;
-                    if (currentEntity != null && currentEntity.isValid())
+                    if (currentEntity != null && currentEntity.isValid()) {
                         currentEntity.removeMetadata("isBeingControlled", LordOfTheMinecraft.instance);
+                        currentEntity.sendMessage(Component.text("Вам вдалося узяти контроль над собою...").color(NamedTextColor.DARK_PURPLE));
+                    }
                     cancel();
                     return;
+                }
+
+                if (currentEntity instanceof Player playerTarget) {
+                    playerTarget.sendActionBar(Component.text("До конвертації у маріонетку - " + this.counter / 20 + "c").color(NamedTextColor.DARK_PURPLE));
                 }
 
                 drawLineToEntity(player.getEyeLocation(), currentEntity.getLocation().add(0, .5, 0), dustPurple);
@@ -186,6 +201,10 @@ public class SpiritBodyThreads extends Ability implements Listener {
             }
 
         }.runTaskTimer(LordOfTheMinecraft.instance, 0, 0);
+    }
+
+    private int countDistance(Location loc1, Location loc2) {
+        return (int) Math.round(loc1.distance(loc2));
     }
 
     private void turnIntoMarionette() {
@@ -376,13 +395,6 @@ public class SpiritBodyThreads extends Ability implements Listener {
         }
 
         getNearbyEntities();
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageEvent e) {
-        if (!controlling || e.getEntity() != currentEntity)
-            return;
-        controlling = false;
     }
 
     private void getNearbyEntities() {

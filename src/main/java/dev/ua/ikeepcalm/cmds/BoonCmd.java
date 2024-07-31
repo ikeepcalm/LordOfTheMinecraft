@@ -3,9 +3,7 @@ package dev.ua.ikeepcalm.cmds;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -13,9 +11,14 @@ public class BoonCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender s, @NonNull Command cmd, @NonNull String label, @NonNull String[] args) {
-        if (!s.isOp()) {
-            s.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
-            return true;
+
+        if (!(s instanceof ConsoleCommandSender) || !(s instanceof RemoteConsoleCommandSender)) {
+            if (s instanceof Player player) {
+                if (!player.isOp()) {
+                    player.sendMessage("§cВи не маєте дозволу на використання цієї команди!");
+                    return true;
+                }
+            }
         }
 
         if (args.length < 2 || args.length > 3) {
@@ -26,7 +29,7 @@ public class BoonCmd implements CommandExecutor {
         String pathwayName;
         int sequence;
 
-        Player target = null;
+        Player target;
         if (args.length == 3) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
@@ -60,9 +63,6 @@ public class BoonCmd implements CommandExecutor {
             return true;
         }
 
-        if (target == null) {
-            return true;
-        }
         handlePathwayAssignment(target, pathwayName, sequence);
         return true;
     }

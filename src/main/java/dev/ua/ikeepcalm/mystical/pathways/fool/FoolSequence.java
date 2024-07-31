@@ -1,9 +1,9 @@
 package dev.ua.ikeepcalm.mystical.pathways.fool;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Sequence;
+import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -32,7 +32,7 @@ public class FoolSequence extends Sequence implements Listener {
 
     @Override
     public List<Integer> getIds() {
-        Integer[] ids = {4, 14};
+        Integer[] ids = {4, 14, 8};
         return Arrays.asList(ids);
     }
 
@@ -120,7 +120,7 @@ public class FoolSequence extends Sequence implements Listener {
         if (e.getEntity() != getPathway().getBeyonder().getPlayer() || e.getCause() != EntityDamageEvent.DamageCause.FALL)
             return;
 
-        if (currentSequence < 9)
+        if (currentSequence < 8)
             e.setCancelled(true);
     }
 

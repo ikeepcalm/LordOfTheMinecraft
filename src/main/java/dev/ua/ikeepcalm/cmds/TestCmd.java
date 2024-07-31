@@ -32,7 +32,7 @@ public class TestCmd implements CommandExecutor {
             }
             averageSequence /= beyonders.size();
 
-            int sun = 0, fool = 0, door = 0, demoness = 0, tyrant = 0;
+            int sun = 0, fool = 0, door = 0, demoness = 0, tyrant = 0, priest = 0;
             for (Beyonder beyonder : beyonders) {
                 switch (beyonder.getPathway().getNameNormalized()) {
                     case "sun" -> sun++;
@@ -40,6 +40,7 @@ public class TestCmd implements CommandExecutor {
                     case "door" -> door++;
                     case "demoness" -> demoness++;
                     case "tyrant" -> tyrant++;
+                    case "priest" -> priest++;
                 }
             }
 
@@ -50,6 +51,7 @@ public class TestCmd implements CommandExecutor {
             double doorPercentage = ((double) door / totalBeyonders) * 100;
             double demonessPercentage = ((double) demoness / totalBeyonders) * 100;
             double tyrantPercentage = ((double) tyrant / totalBeyonders) * 100;
+            double priestPercentage = ((double) priest / totalBeyonders) * 100;
 
             sender.sendMessage("Beyonder Stats:");
             sender.sendMessage("Average Sequence: " + averageSequence);
@@ -58,6 +60,8 @@ public class TestCmd implements CommandExecutor {
             sender.sendMessage("Door Pathway: " + String.format("%.2f", doorPercentage) + "%");
             sender.sendMessage("Demoness Pathway: " + String.format("%.2f", demonessPercentage) + "%");
             sender.sendMessage("Tyrant Pathway: " + String.format("%.2f", tyrantPercentage) + "%");
+            sender.sendMessage("Priest Pathway: " + String.format("%.2f", priestPercentage) + "%");
+            sender.sendMessage("Total Beyonders: " + totalBeyonders);
         }
 
         if (!(sender instanceof Player p)) return true;

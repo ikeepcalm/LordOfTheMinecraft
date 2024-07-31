@@ -18,6 +18,7 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.priest.PriestPotions;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
+import dev.ua.ikeepcalm.optional.bossfights.PortalListener;
 import dev.ua.ikeepcalm.optional.crafts.StonecutterCrafts;
 import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
 import dev.ua.ikeepcalm.optional.nicknames.NicknameListener;
@@ -142,11 +143,20 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
-            registerEvents(mobsHandler, spiritHandler);
+            registerEvents(mobsHandler);
+        }
+
+        if (getConfig().getBoolean("enable-spirits")) {
+            registerEvents(spiritHandler);
         }
 
         if (!getConfig().getBoolean("enable-explosions")) {
             registerEvents(new ExplosionListener());
+        }
+
+        if (this.getConfig().getBoolean("enable-boss-realm")) {
+            this.registerEvents(new PortalListener());
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         }
 
         Objects.requireNonNull(this.getCommand("boon")).setExecutor(new BoonCmd());

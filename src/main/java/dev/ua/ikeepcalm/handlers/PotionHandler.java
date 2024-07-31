@@ -145,7 +145,7 @@ public class PotionHandler implements Listener {
                         if (!actual.getString("pathway").equals(expected.getString("pathway"))) {
                             isCorrect = false;
                         } else {
-                            if (!actual.getString("pathway").equals(expected.getString("pathway"))) {
+                            if (!actual.getString("sequence").equals(expected.getString("sequence"))) {
                                 isCorrect = false;
                             }
                         }
