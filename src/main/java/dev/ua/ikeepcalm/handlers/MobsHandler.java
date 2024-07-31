@@ -1,17 +1,15 @@
 package dev.ua.ikeepcalm.handlers;
 
-import dev.ua.ikeepcalm.utils.BeyonderMobUtil;
-import dev.ua.ikeepcalm.entities.custom.CustomEntity;
-import dev.ua.ikeepcalm.entities.mobs.BaneAbility;
-import dev.ua.ikeepcalm.entities.mobs.PlundererAbility;
-import dev.ua.ikeepcalm.entities.mobs.RoosterAbility;
-import dev.ua.ikeepcalm.entities.mobs.SpawnVex;
-import dev.ua.ikeepcalm.entities.mobs.FlaringSun;
-import dev.ua.ikeepcalm.entities.mobs.HolyLightSummoning;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
+import dev.ua.ikeepcalm.entities.custom.CustomEntity;
+import dev.ua.ikeepcalm.entities.mobs.*;
 import dev.ua.ikeepcalm.mystical.parents.abilities.MobAbility;
+import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
+import dev.ua.ikeepcalm.utils.BeyonderMobUtil;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -22,8 +20,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -34,10 +34,13 @@ public class MobsHandler implements Listener {
 
     private final ArrayList<CustomEntity> customEntities;
 
+    private final Random random = new Random();
+    private boolean isRedMoon = false;
+    private boolean onceCheck = false;
+
     public MobsHandler() {
         customEntities = new ArrayList<>();
         BeyonderMobUtil beyonderMobUtil = new BeyonderMobUtil();
-
         spawnEntity("§9Лавовий Кальмар", "squid", 60, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
         spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 50, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
         spawnEntity("§0Чорнапляма Пантера", "panther", 48, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
@@ -53,6 +56,46 @@ public class MobsHandler implements Listener {
         spawnEntity("§6Світанковий Півень", "rooster", 85, BeyonderItemsUtil.getRedRoosterComb(), EntityType.CHICKEN, 60, beyonderMobUtil, null, "rooster", true, new RoosterAbility(60));
         spawnEntity("§6Божественний Птах", "divine-bird", 185, BeyonderItemsUtil.getTailFeather(), EntityType.COW, 85, beyonderMobUtil, EntityType.PARROT, "divine-bird", true, new HolyLightSummoning(90), new FlaringSun(350));
         spawnEntity("§bПожирач Духів", "eater", 120, BeyonderItemsUtil.getSpiritPouch(), EntityType.ZOMBIFIED_PIGLIN, 30, beyonderMobUtil, EntityType.ALLAY, "eater", true);
+        startNightTracker();
+    }
+
+    private void startNightTracker() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (World world : Bukkit.getWorlds()) {
+                    long time = world.getTime();
+                    if (time >= 13000 && time < 14000) {
+                        if (!isRedMoon) {
+                            if (!onceCheck) {
+                                int chance = random.nextInt(100);
+                                isRedMoon = chance < 10;
+                                if (isRedMoon) {
+                                    Bukkit.broadcast(Component.text("Багрянцевий Місяць здіймається на світом...").color(NamedTextColor.DARK_RED));
+                                }
+                                onceCheck = true;
+                            }
+                        }
+                    } else if (time >= 23000 || time < 1000) {
+                        if (isRedMoon) {
+                            isRedMoon = false;
+                            Bukkit.broadcast(Component.text("Багрянцевий Місяць заходить...").color(NamedTextColor.DARK_RED));
+                        }
+                        onceCheck = false;
+                    }
+                }
+            }
+        }.runTaskTimer(LordOfTheMinecraft.instance, 0L, 20L);
+    }
+
+    @EventHandler
+    public void onTimeSkip(TimeSkipEvent event) {
+        if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP) {
+            if (isRedMoon) {
+                isRedMoon = false;
+                Bukkit.broadcast(Component.text("Багрянцевий Місяць розсіюється...").color(NamedTextColor.DARK_RED));
+            }
+        }
     }
 
     private void spawnEntity(String name, String id, int rarity, ItemStack drop, EntityType entityType, Integer health, BeyonderMobUtil beyonderMobUtil, EntityType spawnType, String particle, boolean repeatingParticles, MobAbility... abilities) {
@@ -61,8 +104,7 @@ public class MobsHandler implements Listener {
 
     public boolean spawnEntity(String id, Location location, World world) {
         for (CustomEntity customEntity : customEntities) {
-            if (!customEntity.id().equalsIgnoreCase(id))
-                continue;
+            if (!customEntity.id().equalsIgnoreCase(id)) continue;
 
             Entity entity = customEntity.spawnType() == null ? world.spawnEntity(location, customEntity.entityType()) : world.spawnEntity(location, customEntity.spawnType());
             entity.setCustomName(customEntity.name());
@@ -84,47 +126,43 @@ public class MobsHandler implements Listener {
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {
-        for (CustomEntity customEntity : customEntities) {
-            if (e.getEntity().getType() != customEntity.entityType())
-                continue;
+        if (isRedMoon) {
+            for (CustomEntity customEntity : customEntities) {
+                if (e.getEntity().getType() != customEntity.entityType()) continue;
 
-            Random random = new Random();
-            if (random.nextInt(customEntity.rarity()) != 0)
-                return;
+                Random random = new Random();
+                if (random.nextInt(customEntity.rarity()) != 0) return;
 
-            Entity entity;
-            if (customEntity.spawnType() == null)
-                entity = e.getEntity();
-            else {
-                entity = e.getEntity().getWorld().spawnEntity(e.getLocation(), customEntity.spawnType());
-                e.getEntity().remove();
-            }
+                Entity entity;
+                if (customEntity.spawnType() == null) entity = e.getEntity();
+                else {
+                    entity = e.getEntity().getWorld().spawnEntity(e.getLocation(), customEntity.spawnType());
+                    e.getEntity().remove();
+                }
 
-            entity.setCustomName(customEntity.name());
+                entity.setCustomName(customEntity.name());
 
-            if (entity instanceof LivingEntity livingEntity && customEntity.maxHealth() != null) {
-                Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(customEntity.maxHealth());
-                livingEntity.setHealth(customEntity.maxHealth());
-            }
+                if (entity instanceof LivingEntity livingEntity && customEntity.maxHealth() != null) {
+                    Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(customEntity.maxHealth());
+                    livingEntity.setHealth(customEntity.maxHealth());
+                }
 
-            entity.setMetadata("customEntityId", new FixedMetadataValue(LordOfTheMinecraft.instance, customEntity.id()));
+                entity.setMetadata("customEntityId", new FixedMetadataValue(LordOfTheMinecraft.instance, customEntity.id()));
 
-            if (customEntity.beyonderMobUtil() != null) {
-                customEntity.beyonderMobUtil().addMob(entity, customEntity);
+                if (customEntity.beyonderMobUtil() != null) {
+                    customEntity.beyonderMobUtil().addMob(entity, customEntity);
+                }
             }
         }
     }
 
     @EventHandler
     public void onEntityDie(EntityDamageEvent e) {
-        if (e.getEntity().getMetadata("customEntityId").isEmpty())
-            return;
+        if (e.getEntity().getMetadata("customEntityId").isEmpty()) return;
 
-        if (!(e.getEntity() instanceof LivingEntity livingEntity))
-            return;
+        if (!(e.getEntity() instanceof LivingEntity livingEntity)) return;
 
-        if (livingEntity.getHealth() > e.getDamage())
-            return;
+        if (livingEntity.getHealth() > e.getDamage()) return;
 
         for (CustomEntity customEntity : customEntities) {
             if (Objects.equals(e.getEntity().getMetadata("customEntityId").getFirst().value(), customEntity.id())) {
@@ -133,5 +171,6 @@ public class MobsHandler implements Listener {
             }
         }
     }
+
 
 }
