@@ -150,6 +150,12 @@ public class InteractListener implements Listener {
                     event.setCancelled(true);
                     event.getPlayer().sendMessage(Component.text("Ваші пальці не можуть відпустити цей предмет...").color(TextColor.color(255, 230, 120)));
                 }
+            } else {
+                NBTItem nbtItem = new NBTItem(item);
+                if (nbtItem.hasTag("ingredient")) {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(Component.text("Ваші пальці не можуть відпустити цей предмет...").color(TextColor.color(255, 230, 120)));
+                }
             }
         }
     }

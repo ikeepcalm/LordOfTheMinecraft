@@ -41,9 +41,9 @@ public class Cull extends Ability implements Listener {
                 double damage;
 
                 if (event.isCritical()) {
-                    damage = targetHealth / 2.0;
+                    damage = event.getDamage() + targetHealth / 2.0;
                 } else {
-                    damage = targetHealth / 4.0;
+                    damage = event.getDamage() + targetHealth / 4.0;
                 }
 
                 player.sendMessage("§cВідбір успішно спрацював, наносячи " + damage + " шкоди!");

@@ -54,6 +54,12 @@ public class PriestItems extends Items {
                 LocalizationUtil.getLocalizedString("priest", "abilities", "cull")
         );
         abilityInfo.put(5, s5);
+
+        String[] s4 = formatAbilityInfo(pathway.getStringColor(), "4: " + names.get(4),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "transmutation"),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "chain-of-control")
+        );
+        abilityInfo.put(4, s4);
     }
 
     @Override
@@ -77,6 +83,8 @@ public class PriestItems extends Items {
         addAbility(new FlameWall(7, pathway, 6, this));
         addAbility(new Conspiracy(8, pathway, 6, this));
         addAbility(new Cull(9, pathway, 5, this));
+        addAbility(new Transmutation(10, pathway, 4, this));
+        addAbility(new ChainControl(11, pathway, 4, this));
     }
 
     public void addAbility(Ability ability) {
