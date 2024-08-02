@@ -96,7 +96,7 @@ public class Beyonder implements Listener {
 
         this.resurrections = 0;
 
-        this.healthIndex = new int[]{0, 120, 100, 80, 70, 60, 55, 40, 30, 20};
+        this.healthIndex = new int[]{0, 100, 80, 60, 50, 40, 35, 30, 25, 20};
 
         pathway.init();
 

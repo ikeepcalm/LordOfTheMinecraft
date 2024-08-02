@@ -59,13 +59,13 @@ public class SpiritHandler implements Listener, CommandExecutor {
     }
 
     private void init() {
-        spirits.add(new FriendlySpirit(null, 15, .5f, 1, EntityType.ALLAY, false, 2, BeyonderItemsUtil.getSpiritRemains(), false, "§bДух"));
-        spirits.add(new WeakSpirit(null, 22, .25f, 5, EntityType.VEX, false, 1, BeyonderItemsUtil.getSpiritRemains(), false, "§5Слабкий Дух"));
-        spirits.add(new MediumSpirit(null, 22, 2.5f, 40, EntityType.GHAST, true, 1, null, false, "§0Злий Дух"));
-        spirits.add(new GiantSpirit(null, 50, 1, 15, EntityType.GIANT, true, 1, null, true, "§2Неживий велетень"));
-        spirits.add(new SkeletonHorse(null, 30, .6f, 3, EntityType.SKELETON_HORSE, true, 2, null, true, "§fДух Коня"));
-        spirits.add(new UndeadHorse(null, 30, .6f, 6, EntityType.ZOMBIE_HORSE, true, 1, null, true, "§2Неживий Кінь"));
-        spirits.add(new TallSkeleton(null, 55, 1, 8, EntityType.SKELETON, true, 1, null, true, "§fАмальгаматор Кісток"));
+        spirits.add(new FriendlySpirit(null, 15, .5f, 100, EntityType.ALLAY, false, 2, BeyonderItemsUtil.getSpiritRemains(), false, "§bДух"));
+        spirits.add(new WeakSpirit(null, 22, .25f, 80, EntityType.VEX, false, 1, BeyonderItemsUtil.getSpiritRemains(), false, "§5Слабкий Дух"));
+        spirits.add(new MediumSpirit(null, 22, 2.5f, 200, EntityType.GHAST, true, 1, null, false, "§0Злий Дух"));
+        spirits.add(new GiantSpirit(null, 50, 1, 100, EntityType.GIANT, true, 1, null, true, "§2Неживий велетень"));
+        spirits.add(new SkeletonHorse(null, 30, .6f, 90, EntityType.SKELETON_HORSE, true, 2, null, true, "§fДух Коня"));
+        spirits.add(new UndeadHorse(null, 30, .6f, 100, EntityType.ZOMBIE_HORSE, true, 1, null, true, "§2Неживий Кінь"));
+        spirits.add(new TallSkeleton(null, 55, 1, 70, EntityType.SKELETON, true, 1, null, true, "§fАмальгаматор Кісток"));
     }
 
     @EventHandler
@@ -77,7 +77,10 @@ public class SpiritHandler implements Listener, CommandExecutor {
         Location loc = e.getLocation();
         Entity eventEntity = e.getEntity();
 
-        spawnRandom(loc, eventEntity, true, true, false);
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            spawnRandom(loc, eventEntity, true, true, false);
+        }
 
     }
 

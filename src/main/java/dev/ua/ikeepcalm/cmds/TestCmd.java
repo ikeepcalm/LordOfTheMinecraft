@@ -90,6 +90,10 @@ public class TestCmd implements CommandExecutor {
             p.sendMessage("Your acting progress: " + beyonder.getActingProgress());
         }
 
+        if (args[0].equalsIgnoreCase("moon")) {
+            LordOfTheMinecraft.instance.getBeyonderMobsHandler().toggleRedMoon();
+        }
+
         if (args[0].equalsIgnoreCase("ingredients")) {
             int pathway = parsePathway(args[1]);
             if (pathway == -1) {

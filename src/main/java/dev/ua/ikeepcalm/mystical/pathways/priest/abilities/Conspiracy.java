@@ -26,7 +26,7 @@ import java.util.Random;
 public class Conspiracy extends Ability implements Listener {
 
     private final List<LivingEntity> spawnedMobs = new ArrayList<>();
-    private final int DURATION = 100; // 5 seconds
+    private final int DURATION = 100;
     private final int NUM_MOBS = 5;
     private Creeper specialMob;
     private Player targetPlayer;
