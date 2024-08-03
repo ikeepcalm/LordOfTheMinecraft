@@ -27,6 +27,7 @@ import java.util.Map;
 public class TravelersDoor extends Ability implements Listener {
 
     private final HashMap<Player, GameMode> teleportedPlayers;
+    private final int[] maxDistance;
 
     public TravelersDoor(int identifier, Pathway pathway, int sequence, Items items) {
         super(identifier, pathway, sequence, items);
@@ -34,6 +35,14 @@ public class TravelersDoor extends Ability implements Listener {
 
         LordOfTheMinecraft.instance.getServer().getPluginManager().registerEvents(this, LordOfTheMinecraft.instance);
         teleportedPlayers = new HashMap<>();
+        maxDistance = new int[]{
+                10000,
+                7000,
+                5000,
+                3000,
+                2500,
+                1800
+        };
     }
 
     private boolean isTeleporting;
@@ -164,7 +173,7 @@ public class TravelersDoor extends Ability implements Listener {
         e.setCancelled(true);
 
         Vector dir = player.getEyeLocation().getDirection().normalize();
-        Location loc = player.getEyeLocation().clone(); // Clone to avoid modifying original location
+        Location loc = player.getEyeLocation().clone();
 
         // Asynchronously calculate target location
         Bukkit.getScheduler().runTaskAsynchronously(LordOfTheMinecraft.instance, () -> {
@@ -204,6 +213,12 @@ public class TravelersDoor extends Ability implements Listener {
             int y = GeneralPurposeUtil.parseInt(args[1]);
             int z = GeneralPurposeUtil.parseInt(args[2]);
             Location teleportLoc = new Location(loc.getWorld(), x, y, z);
+
+            if (player.getLocation().distance(teleportLoc) > maxDistance[pathway.getSequence().getCurrentSequence() - 1]) {
+                pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
+                player.sendMessage("§cВіддаленість від точки телепорта не може перевищувати " + maxDistance[pathway.getSequence().getCurrentSequence() - 1] + " блоків");
+                return;
+            }
 
             // Synchronously handle teleportation
             Bukkit.getScheduler().runTask(LordOfTheMinecraft.instance, () -> new BukkitRunnable() {

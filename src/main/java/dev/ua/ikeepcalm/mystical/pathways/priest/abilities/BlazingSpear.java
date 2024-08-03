@@ -22,7 +22,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 public class BlazingSpear extends Ability {
 
@@ -89,9 +88,8 @@ public class BlazingSpear extends Ability {
                             if (entity.getBoundingBox().overlaps(particleMinVector, particleMaxVector)) {
 
                                 entity.setVelocity(entity.getVelocity().add(spearLocation.getDirection().normalize().multiply(1.5)));
-                                ((Damageable) entity).damage(28, player);
+                                ((Damageable) entity).damage(40 * getMultiplier(), player);
                                 entity.setFireTicks(20 * 10);
-
 
                                 pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
                                 cancel();
@@ -108,15 +106,13 @@ public class BlazingSpear extends Ability {
 
                     pathway.getSequence().getUsesAbilities()[identifier - 1] = false;
 
-                    Random random = new Random();
-
                     player.getWorld().spawnParticle(Particle.DRIPPING_LAVA, fireLoc, 200, 5, 5, 5, 0);
 
                     for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
                         if (!(entity instanceof LivingEntity livingEntity))
                             continue;
 
-                        livingEntity.damage(8, player);
+                        livingEntity.damage(30 * getMultiplier(), player);
                         livingEntity.setFireTicks(20 * 6);
                     }
                     if (teleport) {

@@ -117,7 +117,7 @@ public class Conspiracy extends Ability implements Listener {
     private void applyDebuffs(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 1));
-        player.damage(5.0 * getMultiplier());
+        player.damage(10.0 * getMultiplier());
         player.sendTitle("§cЗмова!", "§4Ви програли у битві розумів!", 10, 40, 10);
     }
 

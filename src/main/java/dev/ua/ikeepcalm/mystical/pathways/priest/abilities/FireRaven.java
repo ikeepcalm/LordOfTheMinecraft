@@ -73,7 +73,7 @@ public class FireRaven extends Ability {
                 for (Entity entity : entities) {
                     if (entity != player && !(entity instanceof ShulkerBullet)) {
                         entity.setFireTicks(80);
-                        ((org.bukkit.entity.Damageable) entity).damage(5 * getMultiplier());
+                        ((org.bukkit.entity.Damageable) entity).damage(30 * getMultiplier());
                         bullet.remove();
                         cancel();
                         return;

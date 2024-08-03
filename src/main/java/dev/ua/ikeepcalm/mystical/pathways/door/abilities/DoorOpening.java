@@ -32,8 +32,10 @@ public class DoorOpening extends Ability {
             return;
 
         for (int i = 0; i < 100; i++) {
-            if (startLoc.getBlock().getType() == Material.BEDROCK)
-                break;
+            if (startLoc.getBlock().getType() == Material.BEDROCK) {
+                player.sendMessage("§cНадто низько...");
+                return;
+            }
 
             if (!startLoc.getBlock().getType().isSolid())
                 break;
