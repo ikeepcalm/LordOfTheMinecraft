@@ -2,6 +2,8 @@ package dev.ua.ikeepcalm.utils;
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Beyonder;
+import net.coreprotect.CoreProtectAPI;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -137,6 +139,11 @@ public class LoggerUtil {
         } catch (IOException ioException) {
             logger.severe("Failed to write to log file");
         }
+    }
+
+    public static void logCoreProtect(Player player, String action, Location location) {
+        CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
+        coreProtectAPI.logPlacement("[LOTM] " + player.getName() + " used {" + action + "}", location, location.getBlock().getType(), location.getBlock().getBlockData());
     }
 
 }

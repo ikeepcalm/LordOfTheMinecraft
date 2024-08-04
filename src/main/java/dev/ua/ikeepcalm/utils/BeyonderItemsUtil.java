@@ -240,7 +240,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Птах Договору Духовного Пера");
+        itemMeta.setDisplayName("§6Перо Духовного Птаху Договору");
         item.setItemMeta(itemMeta);
         NBT.modify(item, nbt -> {
             nbt.setString("ingredient", "bird_feather");

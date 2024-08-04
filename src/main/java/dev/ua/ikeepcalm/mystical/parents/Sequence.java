@@ -108,6 +108,7 @@ public abstract class Sequence {
                 Beyonder beyonder = pathway.getBeyonder();
                 Player player = beyonder.getPlayer();
                 LoggerUtil.logPlayerAbility(player, a.getClass().getSimpleName(), (int) beyonder.getSpirituality(), (int) beyonder.getMaxSpirituality());
+                LoggerUtil.logCoreProtect(player, a.getClass().getSimpleName(), player.getLocation().subtract(0, 1, 0));
                 if (getIds().contains(ability)) {
                     if (lastTime == null) {
                         lastTime = LocalTime.now();

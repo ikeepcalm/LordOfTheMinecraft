@@ -45,11 +45,6 @@ public class MI9Cmd implements CommandExecutor {
             return true;
         }
 
-        if (args.length != 1) {
-            s.sendMessage("§cНеправильне використання: Використовуйте /mi9 <option>! (Предмети: monocle, stick, Список розшукуваних: exc, excommunicado)");
-            return true;
-        }
-
         if (args[0].equalsIgnoreCase("monocle")) {
             ItemStack monocle = new ItemStack(Material.GLOWSTONE_DUST);
             ItemMeta meta = monocle.getItemMeta();
@@ -90,60 +85,74 @@ public class MI9Cmd implements CommandExecutor {
                 return true;
             }
         } else if (args[0].equalsIgnoreCase("exc") || args[0].equalsIgnoreCase("excommunicado")) {
-            List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
-            OfflinePlayer[] players = Bukkit.getOfflinePlayers();
-            List<Item> items = new ArrayList<>();
-            for (OfflinePlayer player : players) {
-                if (player.getName() == null) continue;
-
-                ItemStack itemStack = createHeadForPlayer(player);
-                ItemMeta meta = itemStack.getItemMeta();
-
-                if (excList.contains(player.getName())) {
-                    meta.setDisplayName("§c" + player.getName());
-                    meta.setLore(List.of("§cВ розшуку!"));
+            if (args.length == 2) {
+                String nickname = args[1];
+                List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
+                if (excList.contains(nickname)) {
+                    excList.remove(nickname);
+                    s.sendMessage("§a" + nickname + " був видалений з розшуку!");
                 } else {
-                    meta.setDisplayName("§a" + player.getName());
-                    meta.setLore(List.of("§aНе в розшуку!"));
+                    excList.add(nickname);
+                    s.sendMessage("§c" + nickname + " був доданий до розшуку!");
                 }
-                itemStack.setItemMeta(meta);
-                NBT.modify(itemStack, (nbt) -> {
-                    nbt.setString("nickname", player.getName());
-                    items.add(new SimpleItem(itemStack, e -> {
-                        if (excList.contains(player.getName())) {
-                            excList.remove(player.getName());
-                            s.sendMessage("§a" + player.getName() + " був видалений з розшуку!");
-                            e.getEvent().getView().close();
-                        } else {
-                            excList.add(player.getName());
-                            s.sendMessage("§c" + player.getName() + " був доданий до розшуку!");
-                            e.getEvent().getView().close();
-                        }
-                        LordOfTheMinecraft.instance.getExcConfig().set("exc", excList);
-                        LordOfTheMinecraft.instance.saveExcConfig();
-                    }));
-                });
+                LordOfTheMinecraft.instance.getExcConfig().set("exc", excList);
+                LordOfTheMinecraft.instance.saveExcConfig();
+            } else {
+                List<String> excList = LordOfTheMinecraft.instance.getExcConfig().getStringList("exc");
+                OfflinePlayer[] players = Bukkit.getOfflinePlayers();
+                List<Item> items = new ArrayList<>();
+                for (OfflinePlayer player : players) {
+                    if (player.getName() == null) continue;
+
+                    ItemStack itemStack = createHeadForPlayer(player);
+                    ItemMeta meta = itemStack.getItemMeta();
+
+                    if (excList.contains(player.getName())) {
+                        meta.setDisplayName("§c" + player.getName());
+                        meta.setLore(List.of("§cВ розшуку!"));
+                    } else {
+                        meta.setDisplayName("§a" + player.getName());
+                        meta.setLore(List.of("§aНе в розшуку!"));
+                    }
+                    itemStack.setItemMeta(meta);
+                    NBT.modify(itemStack, (nbt) -> {
+                        nbt.setString("nickname", player.getName());
+                        items.add(new SimpleItem(itemStack, e -> {
+                            if (excList.contains(player.getName())) {
+                                excList.remove(player.getName());
+                                s.sendMessage("§a" + player.getName() + " був видалений з розшуку!");
+                                e.getEvent().getView().close();
+                            } else {
+                                excList.add(player.getName());
+                                s.sendMessage("§c" + player.getName() + " був доданий до розшуку!");
+                                e.getEvent().getView().close();
+                            }
+                            LordOfTheMinecraft.instance.getExcConfig().set("exc", excList);
+                            LordOfTheMinecraft.instance.saveExcConfig();
+                        }));
+                    });
+                }
+                Gui gui = PagedGui.items()
+                        .setStructure(
+                                "# # # # # # # # #",
+                                "# x x x x x x x #",
+                                "# x x x x x x x #",
+                                "# # # < # > # # #")
+                        .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
+                        .addIngredient('#', GeneralItemsUtil.getMagentaPane())
+                        .addIngredient('<', new BackItem())
+                        .addIngredient('>', new ForwardItem())
+                        .setContent(items)
+                        .build();
+
+
+                Window window = Window.single()
+                        .setViewer(p)
+                        .setTitle("§6Список розшукуваних")
+                        .setGui(gui)
+                        .build();
+                window.open();
             }
-            Gui gui = PagedGui.items()
-                    .setStructure(
-                            "# # # # # # # # #",
-                            "# x x x x x x x #",
-                            "# x x x x x x x #",
-                            "# # # < # > # # #")
-                    .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
-                    .addIngredient('#', GeneralItemsUtil.getMagentaPane())
-                    .addIngredient('<', new BackItem())
-                    .addIngredient('>', new ForwardItem())
-                    .setContent(items)
-                    .build();
-
-
-            Window window = Window.single()
-                    .setViewer(p)
-                    .setTitle("§6Список розшукуваних")
-                    .setGui(gui)
-                    .build();
-            window.open();
         } else {
             p.sendMessage("§cНеправильне використання: Використовуйте /mi9 <option>! (Monocle, Stick, Excommunicado)");
         }
@@ -161,7 +170,7 @@ public class MI9Cmd implements CommandExecutor {
         return item;
     }
 
-    public static @NotNull ItemStack createHeadForPlayer(OfflinePlayer player){
+    public static @NotNull ItemStack createHeadForPlayer(OfflinePlayer player) {
         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         if (meta != null) {

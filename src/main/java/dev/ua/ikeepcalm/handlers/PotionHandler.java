@@ -225,7 +225,7 @@ public class PotionHandler implements Listener {
             openInvs.remove(p);
 
             // Collect items to give back to the player
-            for (int i : new int[]{10, 11, 15, 16, 19, 20, 24, 25}) {
+            for (int i : new int[]{10, 11, 15, 16, 19, 20, 24, 25, 49}) {
                 ItemStack item = inv.getItem(i);
                 if (item != null && item.getType() != Material.AIR) {
                     p.getInventory().addItem(item);
