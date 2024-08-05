@@ -9,8 +9,6 @@ import dev.ua.ikeepcalm.mystical.pathways.priest.PriestItems;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -21,17 +19,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class ChainControl extends Ability implements Listener {
 
-    private List<UUID> subordinateList = new ArrayList<>();
-    private final int maxSubordinates = 5;
     private boolean alleviateActive = false;
     private boolean concentrateActive = false;
+    private Set<UUID> subordinates;
 
     private Category selectedCategory = Category.ALLEVIATION;
     private final Category[] categories = Category.values();
@@ -44,9 +40,9 @@ public class ChainControl extends Ability implements Listener {
     }
 
     enum Category {
-        SUBJUGATION("§cПідкорення"),
-        ALLEVIATION("§fРозсердження"),
-        CONCENTRATION("§bКонцентрація");
+        SUBJUGATION("Підкорення"),
+        ALLEVIATION("Розсердження"),
+        CONCENTRATION("Концентрація");
         private final String name;
 
         Category(String name) {
@@ -57,6 +53,7 @@ public class ChainControl extends Ability implements Listener {
     @Override
     public void useAbility() {
         player = pathway.getBeyonder().getPlayer();
+        subordinates = pathway.getSequence().getSubordinates();
 
         switch (selectedCategory) {
             case SUBJUGATION -> subjugate();
@@ -86,7 +83,7 @@ public class ChainControl extends Ability implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (alleviateActive) {
             if (event.getEntity() instanceof Player damagedPlayer) {
-                if (subordinateList.contains(damagedPlayer.getUniqueId())) {
+                if (subordinates.contains(damagedPlayer.getUniqueId())) {
                     if (player != null && player.isOnline()) {
                         double damage = event.getDamage();
                         double redirectedDamage = damage * 0.5;
@@ -100,9 +97,9 @@ public class ChainControl extends Ability implements Listener {
             if (event.getEntity() instanceof Player damagedPlayer) {
                 if (damagedPlayer.getUniqueId().equals(player.getUniqueId())) {
                     double totalDamage = event.getDamage();
-                    double individualDamage = totalDamage / subordinateList.size();
+                    double individualDamage = totalDamage / subordinates.size();
 
-                    for (UUID subordinateUUID : subordinateList) {
+                    for (UUID subordinateUUID : subordinates) {
                         Player subordinate = Bukkit.getPlayer(subordinateUUID);
                         if (subordinate != null && subordinate.isOnline()) {
                             subordinate.damage(individualDamage);
@@ -122,7 +119,7 @@ public class ChainControl extends Ability implements Listener {
 
 
     public void subjugate() {
-        if (subordinateList.size() >= maxSubordinates) {
+        if (subordinates.size() >= pathway.getSequence().getMaxSubordinates()[pathway.getSequence().getCurrentSequence()]) {
             player.sendMessage(Component.text("Ви вже підкорили максимальну кількість гравців!").color(NamedTextColor.RED));
             return;
         }
@@ -131,39 +128,31 @@ public class ChainControl extends Ability implements Listener {
                 if (entity instanceof Player target && entity != player) {
                     if (LordOfTheMinecraft.beyonders.containsKey(target.getUniqueId())) {
                         Beyonder beyonder = LordOfTheMinecraft.beyonders.get(target.getUniqueId());
-                        if (pathway.getSequence().getCurrentSequence() > beyonder.getPathway().getSequence().getCurrentSequence()) {
-                            if (!subordinateList.contains(target.getUniqueId())) {
-                                subordinateList.add(target.getUniqueId());
-                                if (player != null) {
-                                    target.sendMessage(Component.text("Вас було підкорено! Ви тепер слугуєте " + player.getName() + "!").color(NamedTextColor.RED));
-                                    player.sendMessage(Component.text("Ви підкорили " + target.getName() + "!").color(NamedTextColor.RED));
-                                }
-                            } else {
-                                subordinateList.remove(target.getUniqueId());
-                                if (player != null) {
-                                    target.sendMessage(Component.text("Вас було звільнено від кайданів підкорення!").color(NamedTextColor.RED));
-                                    player.sendMessage(Component.text("Ви звільнили " + target.getName() + " від кайданів підкорення!").color(NamedTextColor.RED));
-                                }
-                            }
+                        if (pathway.getSequence().getCurrentSequence() < beyonder.getPathway().getSequence().getCurrentSequence()) {
+                            takeCommandOf(target);
                         } else {
                             player.sendMessage(Component.text("Ви не можете підкорити цього гравця!").color(NamedTextColor.RED));
                         }
                     } else {
-                        if (!subordinateList.contains(target.getUniqueId())) {
-                            subordinateList.add(target.getUniqueId());
-                            if (player != null) {
-                                target.sendMessage(Component.text("Вас було підкорено! Ви тепер слугуєте " + player.getName() + "!").color(NamedTextColor.RED));
-                                player.sendMessage(Component.text("Ви підкорили " + target.getName() + "!").color(NamedTextColor.RED));
-                            }
-                        } else {
-                            subordinateList.remove(target.getUniqueId());
-                            if (player != null) {
-                                target.sendMessage(Component.text("Вас було звільнено від кайданів підкорення!").color(NamedTextColor.RED));
-                                player.sendMessage(Component.text("Ви звільнили " + target.getName() + " від кайданів підкорення!").color(NamedTextColor.RED));
-                            }
-                        }
+                        takeCommandOf(target);
                     }
                 }
+            }
+        }
+    }
+
+    private void takeCommandOf(Player target) {
+        if (!subordinates.contains(target.getUniqueId())) {
+            subordinates.add(target.getUniqueId());
+            if (player != null) {
+                target.sendMessage(Component.text("Вас було підкорено! Ви тепер слугуєте " + player.getName() + "!").color(NamedTextColor.RED));
+                player.sendMessage(Component.text("Ви підкорили " + target.getName() + "!").color(NamedTextColor.RED));
+            }
+        } else {
+            subordinates.remove(target.getUniqueId());
+            if (player != null) {
+                target.sendMessage(Component.text("Вас було звільнено від кайданів підкорення!").color(NamedTextColor.RED));
+                player.sendMessage(Component.text("Ви звільнили " + target.getName() + " від кайданів підкорення!").color(NamedTextColor.RED));
             }
         }
     }
@@ -176,7 +165,7 @@ public class ChainControl extends Ability implements Listener {
         }
 
         if (commander.getUniqueId().equals(player.getUniqueId())) {
-            for (UUID subordinateUUID : subordinateList) {
+            for (UUID subordinateUUID : subordinates) {
                 Player subordinate = Bukkit.getPlayer(subordinateUUID);
                 if (subordinate != null && subordinate.isOnline()) {
                     event.message(event.message().color(NamedTextColor.RED));
@@ -192,13 +181,14 @@ public class ChainControl extends Ability implements Listener {
         if (selected >= categories.length)
             selected = 0;
         selectedCategory = categories[selected];
+        player = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     public void onHold() {
-        if (player == null)
-            player = pathway.getBeyonder().getPlayer();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрано: §f" + selectedCategory.name));
+        if (player != null) {
+            player.sendActionBar(Component.text("Обрано: ").color(NamedTextColor.BLUE).append(Component.text(selectedCategory.name).color(NamedTextColor.GOLD)));
+        }
     }
 
     @Override

@@ -5,10 +5,10 @@ import dev.ua.ikeepcalm.mystical.parents.Items;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantItems;
-import dev.ua.ikeepcalm.utils.LoggerUtil;
 import dev.ua.ikeepcalm.utils.GeneralPurposeUtil;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import dev.ua.ikeepcalm.utils.LoggerUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
@@ -31,8 +31,8 @@ public class SirenSong extends Ability {
     }
 
     enum Category {
-        CHAOTIC("§9Пісня Хаосу"),
-        BOOST("§9Пісня Сили");
+        CHAOTIC("Пісня Хаосу"),
+        BOOST("Пісня Сили");
 
         private final String name;
 
@@ -149,13 +149,14 @@ public class SirenSong extends Ability {
         if (selected >= categories.length)
             selected = 0;
         selectedCategory = categories[selected];
+        player = pathway.getBeyonder().getPlayer();
     }
 
     @Override
     //Display selected category
     public void onHold() {
-        if (player == null)
-            player = pathway.getBeyonder().getPlayer();
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§5Обрана пісня: §f" + selectedCategory.name));
+        if (player != null) {
+            player.sendActionBar(Component.text("Обрана пісня: ").color(NamedTextColor.BLUE).append(Component.text(selectedCategory.name).color(NamedTextColor.GOLD)));
+        }
     }
 }

@@ -49,10 +49,9 @@ public class MI9Cmd implements CommandExecutor {
             ItemStack monocle = new ItemStack(Material.GLOWSTONE_DUST);
             ItemMeta meta = monocle.getItemMeta();
             meta.setDisplayName("§6Монокль");
-            meta.setCustomModelData(1);
             List<String> lore = List.of("§7Монокль для дослідження злочинів", "§7ПКМ - увімкнути режим дослідження", "§7ЛКМ - провести дослідження поруч");
             meta.setLore(lore);
-            meta.setCustomModelData(7);
+            meta.setCustomModelData(201);
             monocle.setItemMeta(meta);
             NBT.modify(monocle, (nbt) -> {
                 nbt.setBoolean("mi9Monocle", true);
@@ -70,7 +69,7 @@ public class MI9Cmd implements CommandExecutor {
             ItemStack stick = new ItemStack(Material.GLOWSTONE_DUST);
             ItemMeta meta = stick.getItemMeta();
             meta.setDisplayName("§6Палиця");
-            meta.setCustomModelData(6);
+            meta.setCustomModelData(200);
             stick.setItemMeta(meta);
             NBT.modify(stick, (nbt) -> {
                 nbt.setBoolean("mi9Stick", true);

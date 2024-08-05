@@ -27,6 +27,8 @@ public class HolyLightSummoning extends Ability {
     }
 
     public void executeAbility(Location loc, Entity caster, double multiplier) {
+        Location originalLoc = loc.clone(); // Store the original location
+
         loc.add(0, 14, 0);
 
         final Material[] lastMaterial = {loc.getBlock().getType()};
@@ -51,18 +53,20 @@ public class HolyLightSummoning extends Ability {
                             loc.getBlock().setType(Material.LIGHT);
 
                             if ((lastMaterial[0].isSolid() && counter >= 12) || counter >= 200) {
-                                loc.getBlock().setType(lastMaterial[0]);
+                                // Restore the original block at the original location
+                                originalLoc.getBlock().setType(lastMaterial[0]);
+
                                 counter = 0;
                                 cancel();
 
                                 // Light that stays at the ground for a bit
-                                lightGround(loc);
+                                lightGround(originalLoc);
 
                                 // Damage nearby entities
-                                damageNearbyEntities(loc, caster, multiplier);
+                                damageNearbyEntities(originalLoc, caster, multiplier);
 
                                 // Particles on ground
-                                spawnGroundParticles(loc);
+                                spawnGroundParticles(originalLoc);
                             }
                         });
                     });

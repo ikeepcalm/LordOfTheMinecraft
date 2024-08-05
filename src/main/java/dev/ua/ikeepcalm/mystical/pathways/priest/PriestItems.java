@@ -60,6 +60,24 @@ public class PriestItems extends Items {
                 LocalizationUtil.getLocalizedString("priest", "abilities", "chain-of-control")
         );
         abilityInfo.put(4, s4);
+
+        String[] s3 = formatAbilityInfo(pathway.getStringColor(), "3: " + names.get(3),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "war-cry"),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "fog-of-war")
+        );
+        abilityInfo.put(3, s3);
+
+        String[] s2 = formatAbilityInfo(pathway.getStringColor(), "2: " + names.get(2),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "weather-manipulation")
+        );
+
+        abilityInfo.put(2, s2);
+
+        String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
+                LocalizationUtil.getLocalizedString("priest", "abilities", "conquering")
+        );
+
+        abilityInfo.put(1, s1);
     }
 
     @Override
@@ -85,6 +103,10 @@ public class PriestItems extends Items {
         addAbility(new Cull(9, pathway, 5, this));
         addAbility(new Transmutation(10, pathway, 4, this));
         addAbility(new ChainControl(11, pathway, 4, this));
+        addAbility(new WarCry(12, pathway, 3, this));
+        addAbility(new FogOfWar(13, pathway, 3, this));
+        addAbility(new WeatherManipulation(14, pathway, 2, this));
+        addAbility(new Conquering(15, pathway, 1, this));
     }
 
     public void addAbility(Ability ability) {

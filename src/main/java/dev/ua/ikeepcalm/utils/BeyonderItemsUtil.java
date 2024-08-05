@@ -210,7 +210,7 @@ public class BeyonderItemsUtil {
         final ItemStack item = new ItemStack(Material.FEATHER);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName("§6Гребінь Світанкового Півня");
+            itemMeta.setDisplayName("§6Гребінь Світанкового Півня");
         item.setItemMeta(itemMeta);
         NBT.modify(item, nbt -> {
             nbt.setString("ingredient", "rooster_comb");

@@ -59,8 +59,13 @@ public class PriestSequence extends Sequence {
         sequenceEffects.put(6, effects7);
 
         PotionEffect[] effects4 = {
-                new PotionEffect(PotionEffectType.RESISTANCE, 60, 2, false, false, false),
+                new PotionEffect(PotionEffectType.SATURATION, 40, 0, false, false, false),
         };
-        sequenceEffects.put(2, effects4);
+        sequenceEffects.put(4, effects4);
+
+        PotionEffect[] effects2 = {
+                new PotionEffect(PotionEffectType.SPEED, 60, 1, false, false, false),
+        };
+        sequenceEffects.put(2, effects2);
     }
 }
