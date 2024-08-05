@@ -18,10 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 public abstract class Sequence {
@@ -37,6 +34,8 @@ public abstract class Sequence {
     protected HashMap<Integer, PotionEffect[]> sequenceEffects;
     protected HashMap<Integer, PotionEffectType[]> sequenceResistances;
     protected HashMap<Integer, Double> sequenceMultiplier;
+    protected Set<UUID> subordinates = new HashSet<>();
+    protected int[] maxSubordinates = new int[]{9999, 20, 15, 10, 5};
     private LocalTime lastTime;
 
 
@@ -108,6 +107,7 @@ public abstract class Sequence {
                 Beyonder beyonder = pathway.getBeyonder();
                 Player player = beyonder.getPlayer();
                 LoggerUtil.logPlayerAbility(player, a.getClass().getSimpleName(), (int) beyonder.getSpirituality(), (int) beyonder.getMaxSpirituality());
+                LoggerUtil.logCoreProtect(player, a.getClass().getSimpleName(), player.getLocation().subtract(0, 1, 0));
                 if (getIds().contains(ability)) {
                     if (lastTime == null) {
                         lastTime = LocalTime.now();
@@ -135,6 +135,11 @@ public abstract class Sequence {
         checkItem.setAmount(1);
 
         return pathway.getItems().returnItemsFromSequence(currentSequence).contains(checkItem);
+    }
+
+
+    public void addSpirituality(double add) {
+        pathway.getBeyonder().setSpirituality(pathway.getBeyonder().getSpirituality() + add);
     }
 
     public void removeSpirituality(double remove) {

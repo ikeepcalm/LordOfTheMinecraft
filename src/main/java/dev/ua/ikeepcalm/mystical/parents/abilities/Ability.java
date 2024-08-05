@@ -15,21 +15,41 @@ import java.util.UUID;
 
 public abstract class Ability {
 
-    private final CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
     @Getter
     protected final int identifier;
     @Getter
     protected final Pathway pathway;
-    protected Player player;
     @Getter
     protected final int sequence;
     protected final Items items;
+    private final CoreProtectAPI coreProtectAPI = LordOfTheMinecraft.coreProtect;
+    protected Player player;
 
     public Ability(int identifier, Pathway pathway, int sequence, Items items) {
         this.identifier = identifier;
         this.pathway = pathway;
         this.sequence = sequence;
         this.items = items;
+    }
+
+    public static double getMultiplier(Pathway pathway) {
+        double multiplier = 1;
+        if (pathway.getNameNormalized().equalsIgnoreCase("sun")) {
+            multiplier = 1.8;
+        }
+        if (pathway.getSequence() == null) {
+            return multiplier;
+        }
+        if (pathway.getSequence().getSequenceMultiplier().containsKey(pathway.getSequence().getCurrentSequence())) {
+            multiplier = pathway.getSequence().getSequenceMultiplier().get(pathway.getSequence().getCurrentSequence());
+        } else {
+            for (int i = pathway.getSequence().getCurrentSequence(); i < 9; i++) {
+                if (pathway.getSequence().getSequenceMultiplier().containsKey(i)) {
+                    multiplier = pathway.getSequence().getSequenceMultiplier().get(i);
+                }
+            }
+        }
+        return multiplier;
     }
 
     public abstract void useAbility();
@@ -70,22 +90,5 @@ public abstract class Ability {
 
     public double getMultiplier() {
         return getMultiplier(pathway);
-    }
-
-    public static double getMultiplier(Pathway pathway) {
-        double multiplier = 1;
-        if (pathway.getNameNormalized().equalsIgnoreCase("sun")) {
-            multiplier = 1.8;
-        }
-        if (pathway.getSequence().getSequenceMultiplier().containsKey(pathway.getSequence().getCurrentSequence())) {
-            multiplier = pathway.getSequence().getSequenceMultiplier().get(pathway.getSequence().getCurrentSequence());
-        } else {
-            for (int i = pathway.getSequence().getCurrentSequence(); i < 9; i++) {
-                if (pathway.getSequence().getSequenceMultiplier().containsKey(i)) {
-                    multiplier = pathway.getSequence().getSequenceMultiplier().get(i);
-                }
-            }
-        }
-        return multiplier;
     }
 }

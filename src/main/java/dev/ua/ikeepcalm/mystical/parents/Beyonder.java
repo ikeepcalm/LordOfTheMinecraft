@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.mystical.parents;
 import cz.foresttech.api.ColorAPI;
 import de.tr7zw.nbtapi.NBT;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
+import dev.ua.ikeepcalm.listeners.RampagerListener;
 import dev.ua.ikeepcalm.mystical.parents.abilities.Ability;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPathway;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.Hiding;
@@ -95,7 +96,7 @@ public class Beyonder implements Listener {
 
         this.resurrections = 0;
 
-        this.healthIndex = new int[]{0, 180, 120, 80, 70, 55, 40, 30, 25, 20};
+        this.healthIndex = new int[]{0, 100, 80, 60, 50, 40, 35, 30, 25, 20};
 
         pathway.init();
 
@@ -529,6 +530,8 @@ public class Beyonder implements Listener {
                         }
 
                         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
+                        LordOfTheMinecraft.instance.registerEvents(new RampagerListener((Warden) rampager));
+
                         getPlayer().setHealth(0);
                         loosingControl = false;
                         removeBeyonder();
@@ -566,6 +569,17 @@ public class Beyonder implements Listener {
     public void consumePotion(int sequence, Potion potion) {
         if (sequence > pathway.getSequence().getCurrentSequence()) return;
 
+        if (!getPathway().getNameNormalized().equals(potion.getName())) {
+            looseControl(0, 10);
+            LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
+            return;
+        }
+
+        if (pathway == null) {
+            getPlayer().sendMessage("§cНевдача! Можете вважати, що вам пощастило, що ви залишилися живі...");
+            return;
+        }
+
         if (sequence == pathway.getSequence().getCurrentSequence()) {
             if (digested) {
                 LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
@@ -579,16 +593,6 @@ public class Beyonder implements Listener {
             LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), true);
             actingProgress += actingNeeded * 0.2;
             getPlayer().sendMessage("§aВи відчуваєте, як зілля покращило ваше розуміння теперішнього стану речей.");
-            return;
-        }
-
-        if (!getPathway().getNameNormalized().equals(potion.getName())) {
-            looseControl(0, 10);
-            LoggerUtil.logPlayerPotion(getPlayer(), this, sequence, potion.getName(), false);
-            return;
-        }
-        if (pathway == null) {
-            getPlayer().sendMessage("§cНевдача! Можете вважати, що вам пощастило, що ви залишилися живі...");
             return;
         }
 

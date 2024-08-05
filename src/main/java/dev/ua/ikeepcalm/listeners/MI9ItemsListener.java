@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
@@ -47,32 +46,6 @@ public class MI9ItemsListener implements Listener {
                     player.sendMessage("§bРезультати дослідження поруч з вами:");
                     player.performCommand("co near");
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onCommands(PlayerCommandPreprocessEvent event) {
-        String message = event.getMessage();
-        message = message.replace("/", "");
-        message = message.replace("coreprotect:", "");
-        message = message.replace("co", "");
-        message = message.replace(" ", "");
-        if (message.equals("i") || message.equals("inspect") || message.equals("near")) {
-            Player player = event.getPlayer();
-            if (!player.getInventory().getItemInMainHand().getType().isAir() || !player.getInventory().getItemInMainHand().isEmpty()) {
-                ItemStack item = player.getInventory().getItemInMainHand();
-                if (!NBT.get(item, (nbt) -> {
-                    return nbt.getBoolean("mi9Monocle");
-                })) {
-                    event.setCancelled(true);
-                } else {
-                    if (!player.hasPermission(new Permission("lordoftheminecraft.mi9"))) {
-                        event.setCancelled(true);
-                    }
-                }
-            } else {
-                event.setCancelled(true);
             }
         }
     }

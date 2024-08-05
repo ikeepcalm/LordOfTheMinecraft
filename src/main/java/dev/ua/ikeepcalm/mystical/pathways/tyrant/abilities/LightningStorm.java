@@ -55,9 +55,15 @@ public class LightningStorm extends Ability {
             BukkitScheduler scheduler = LordOfTheMinecraft.instance.getServer().getScheduler();
             scheduler.runTask(LordOfTheMinecraft.instance, () -> {
                 try {
-                    loc.getWorld().setClearWeatherDuration(0);
-                    loc.getWorld().setStorm(true);
-                    loc.getWorld().setThunderDuration(120 * 60 * 20);
+                    player.setPlayerWeather(org.bukkit.WeatherType.DOWNFALL);
+                    scheduler.runTaskLater(LordOfTheMinecraft.instance,
+                            () -> {
+                                try {
+                                    player.resetPlayerWeather();
+                                } catch (Exception e) {
+                                    LoggerUtil.logAbilityError(e, "Lightning - Weather Clear");
+                                }
+                            }, 20 * 20);
                 } catch (Exception e) {
                     LoggerUtil.logAbilityError(e, "Lightning Storm - Weather Control");
                 }

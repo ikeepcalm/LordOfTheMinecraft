@@ -35,7 +35,8 @@ public class GenerationListener implements Listener {
         Potion potion = LordOfTheMinecraft.instance.getPotions().get(random.nextInt(LordOfTheMinecraft.instance.getPotions().size()));
         switch (random.nextInt(6)) {
             case 1 -> item = LordOfTheMinecraft.instance.getRecipe().getRecipeForSequence(potion, sequence);
-            case 2 -> item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
+            case 2 ->
+                    item = LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(sequence, potion.getName(), potion.getStringColor());
             case 3 -> item = GeneralItemsUtil.getRandomGrimoire();
             case 4 -> item = new ItemStack(Material.SOUL_SAND);
             case 5 -> item = new ItemStack(Material.WITHER_ROSE);
@@ -45,9 +46,11 @@ public class GenerationListener implements Listener {
         if (e.getInventoryHolder() == null)
             return;
 
-        int randomIndex = random.nextInt(e.getLoot().size());
-        e.getLoot().remove(randomIndex);
-        e.getLoot().add(item);
+        if (!e.getLoot().isEmpty()) {
+            int randomIndex = random.nextInt(e.getLoot().size());
+            e.getLoot().remove(randomIndex);
+            e.getLoot().add(item);
+        }
     }
 
     @EventHandler

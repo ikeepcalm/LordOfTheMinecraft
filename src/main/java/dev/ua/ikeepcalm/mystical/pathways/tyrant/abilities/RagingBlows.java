@@ -45,15 +45,13 @@ public class RagingBlows extends Ability {
                     Random random = new Random();
                     Location startLoc = MathVectorUtils.getRelativeLocation(caster, random.nextDouble(1, 2), random.nextDouble(-1.5, 1.5), random.nextDouble(-.5, .5));
 
-                    if (world != null) {
-                        world.spawnParticle(Particle.EXPLOSION, startLoc, 10, 0, 0, 0, .25);
-                        world.spawnParticle(Particle.CRIT, startLoc, 10, 0, 0, 0, .25);
-                        world.playSound(startLoc, Sound.ENTITY_GENERIC_EXPLODE, .25f, 1f);
+                    world.spawnParticle(Particle.EXPLOSION, startLoc, 10, 0, 0, 0, .25);
+                    world.spawnParticle(Particle.CRIT, startLoc, 10, 0, 0, 0, .25);
+                    world.playSound(startLoc, Sound.ENTITY_GENERIC_EXPLODE, .25f, 1f);
 
-                        for (Entity hit : world.getNearbyEntities(startLoc, 1.2, 1.2, 1.2)) {
-                            if (hit instanceof LivingEntity livingEntity && hit.getType() != EntityType.ARMOR_STAND && hit != caster) {
-                                livingEntity.damage(6.5 * multiplier, caster);
-                            }
+                    for (Entity hit : world.getNearbyEntities(startLoc, 1.2, 1.2, 1.2)) {
+                        if (hit instanceof LivingEntity livingEntity && hit.getType() != EntityType.ARMOR_STAND && hit != caster) {
+                            livingEntity.damage(6.5 * multiplier, caster);
                         }
                     }
 

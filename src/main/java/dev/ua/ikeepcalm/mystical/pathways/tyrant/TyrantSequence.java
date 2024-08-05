@@ -88,6 +88,11 @@ public class TyrantSequence extends Sequence implements Listener {
     @Override
     public void run() {
         aquaticLifeManipulation();
+        if (getPathway().getBeyonder().getPlayer() != null) {
+            if (!getUsesAbilities()[3]) {
+                getPathway().getBeyonder().getPlayer().setAllowFlight(false);
+            }
+        }
     }
 
     private void aquaticLifeManipulation() {

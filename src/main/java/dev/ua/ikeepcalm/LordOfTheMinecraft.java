@@ -15,8 +15,10 @@ import dev.ua.ikeepcalm.mystical.pathways.demoness.DemonessPotions;
 import dev.ua.ikeepcalm.mystical.pathways.door.DoorPotions;
 import dev.ua.ikeepcalm.mystical.pathways.fool.FoolPotions;
 import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
+import dev.ua.ikeepcalm.mystical.pathways.priest.PriestPotions;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
+import dev.ua.ikeepcalm.optional.bossfights.PortalListener;
 import dev.ua.ikeepcalm.optional.crafts.StonecutterCrafts;
 import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
 import dev.ua.ikeepcalm.optional.nicknames.NicknameListener;
@@ -67,7 +69,6 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     public static Set<UUID> disguises = new HashSet<>();
     @Getter
     public FileConfiguration langConfig;
-    @Getter
     public FileConfiguration excConfig;
     @Getter
     private ArrayList<ArrayList<Entity>> concealedEntities;
@@ -142,11 +143,20 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
-            registerEvents(mobsHandler, spiritHandler);
+            registerEvents(mobsHandler);
+        }
+
+        if (getConfig().getBoolean("enable-spirits")) {
+            registerEvents(spiritHandler);
         }
 
         if (!getConfig().getBoolean("enable-explosions")) {
             registerEvents(new ExplosionListener());
+        }
+
+        if (this.getConfig().getBoolean("enable-boss-realm")) {
+            this.registerEvents(new PortalListener());
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         }
 
         Objects.requireNonNull(this.getCommand("boon")).setExecutor(new BoonCmd());
@@ -162,6 +172,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         potions.add(new DoorPotions());
         potions.add(new DemonessPotions());
         potions.add(new TyrantPotions());
+        potions.add(new PriestPotions());
 
         new StonecutterCrafts();
     }
@@ -258,16 +269,32 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         }
     }
 
-    private void createSaveExcConfig() {
-        File langConfigFile = new File(getDataFolder(), "exc.yml");
-        if (!langConfigFile.exists()) {
+    public FileConfiguration getExcConfig() {
+        File excConfigFile = new File(getDataFolder(), "exc.yml");
+        if (!excConfigFile.exists()) {
             saveResource("exc.yml", true);
         }
 
         excConfig = new YamlConfiguration();
 
         try {
-            excConfig.load(langConfigFile);
+            excConfig.load(excConfigFile);
+        } catch (InvalidConfigurationException | IOException exc) {
+            Bukkit.getConsoleSender().sendMessage(exc.getLocalizedMessage());
+        }
+        return excConfig;
+    }
+
+    private void createSaveExcConfig() {
+        File excConfigFile = new File(getDataFolder(), "exc.yml");
+        if (!excConfigFile.exists()) {
+            saveResource("exc.yml", true);
+        }
+
+        excConfig = new YamlConfiguration();
+
+        try {
+            excConfig.load(excConfigFile);
         } catch (InvalidConfigurationException | IOException exc) {
             Bukkit.getConsoleSender().sendMessage(exc.getLocalizedMessage());
         }

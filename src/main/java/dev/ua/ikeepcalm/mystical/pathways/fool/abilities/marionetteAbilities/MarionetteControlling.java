@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -102,6 +103,15 @@ public class MarionetteControlling extends Ability implements Listener {
         if (e.getEntity() == fakePlayer.getEntity()) {
             stopControlling();
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        if (controlling && e.getPlayer() == player) {
+            stopControlling();
+            player.setInvisible(false);
+            player.setInvulnerable(false);
         }
     }
 

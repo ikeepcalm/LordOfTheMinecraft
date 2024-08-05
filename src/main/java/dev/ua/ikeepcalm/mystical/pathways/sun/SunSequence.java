@@ -35,11 +35,15 @@ public class SunSequence extends Sequence {
         initEffects();
 
         sequenceMultiplier = new HashMap<>();
-        sequenceMultiplier.put(5, 1.5);
-        sequenceMultiplier.put(4, 2.0);
-        sequenceMultiplier.put(3, 2.25);
-        sequenceMultiplier.put(2, 3.5);
-        sequenceMultiplier.put(1, 5.0);
+        sequenceMultiplier.put(9, 1.0);
+        sequenceMultiplier.put(8, 1.5);
+        sequenceMultiplier.put(7, 2.0);
+        sequenceMultiplier.put(6, 2.5);
+        sequenceMultiplier.put(5, 3.0);
+        sequenceMultiplier.put(4, 4.0);
+        sequenceMultiplier.put(3, 4.5);
+        sequenceMultiplier.put(2, 5.0);
+        sequenceMultiplier.put(1, 6.0);
     }
 
     //Passive effects
