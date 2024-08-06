@@ -45,9 +45,9 @@ public class MobsHandler implements Listener {
     public MobsHandler() {
         customEntities = new ArrayList<>();
         BeyonderMobUtil beyonderMobUtil = new BeyonderMobUtil();
-        spawnEntity("§9Лавовий Кальмар", "squid", 40, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
-        spawnEntity("§4Глибоководний Марлін", "marlin", 40, BeyonderItemsUtil.getMarlinBlood(), EntityType.SQUID, 20, null, null, "none", true);
-        spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 40, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
+        spawnEntity("§9Лавовий Кальмар", "squid", 20, BeyonderItemsUtil.getLavosSquidBlood(), EntityType.SQUID, 20, null, null, "none", true);
+        spawnEntity("§4Глибоководний Марлін", "marlin", 20, BeyonderItemsUtil.getMarlinBlood(), EntityType.SQUID, 20, null, null, "none", true);
+        spawnEntity("§7Сіра Гірська Коза Горнакіс", "goat", 20, BeyonderItemsUtil.getGoatHorn(), EntityType.GOAT, 30, null, null, "none", true);
         spawnEntity("§0Чорнапляма Пантера", "panther", 48, BeyonderItemsUtil.getPanther(), EntityType.OCELOT, 60, null, null, "none", true);
         spawnEntity("§5Тисячоликий Мисливець", "thousand-faced", 55, BeyonderItemsUtil.getPituitaryGland(), EntityType.PIGLIN_BRUTE, 70, beyonderMobUtil, EntityType.ILLUSIONER, "none", true);
         spawnEntity("§0Людиноподібна Тінь", "shadow", 100, BeyonderItemsUtil.getShadowCharacteristic(), EntityType.ENDERMAN, 70, beyonderMobUtil, null, "none", true);

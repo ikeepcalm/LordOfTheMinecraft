@@ -13,13 +13,11 @@ import lombok.Setter;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import net.lapismc.afkplus.playerdata.AFKPlusPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -41,10 +39,9 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.awt.*;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.awt.Color;
+import java.util.List;
+import java.util.*;
 
 import static dev.ua.ikeepcalm.LordOfTheMinecraft.bossBarUtil;
 
@@ -147,7 +144,11 @@ public class Beyonder implements Listener {
 
         if (loosingControl) {
             if (pathway.getSequence().getCurrentSequence() <= 4) {
-                getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога"), Component.text("Цей світ здригається...")));
+                getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога").color(NamedTextColor.GOLD), Component.text("Цей світ здригається...").color(NamedTextColor.GOLD)));
+                List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+                for (Player player : players) {
+                    player.getLocation().getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1, 1);
+                }
             }
 
             LivingEntity rampager = (LivingEntity) Objects.requireNonNull(getPlayer().getLocation().getWorld()).spawnEntity(getPlayer().getLocation(), EntityType.WARDEN);
@@ -501,7 +502,11 @@ public class Beyonder implements Listener {
                     //When not survives, summons a Warden
                     if (!survives) {
                         if (pathway.getSequence().getCurrentSequence() <= 4) {
-                            getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога"), Component.text("Цей світ здригається...")));
+                            getPlayer().getWorld().showTitle(Title.title(Component.text("Смерть напівбога").color(NamedTextColor.GOLD), Component.text("Цей світ здригається...").color(NamedTextColor.GOLD)));
+                            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+                            for (Player player : players) {
+                                player.getLocation().getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1, 1);
+                            }
                         }
 
                         LivingEntity rampager = (LivingEntity) Objects.requireNonNull(getPlayer().getLocation().getWorld()).spawnEntity(getPlayer().getLocation(), EntityType.WARDEN);
@@ -614,8 +619,58 @@ public class Beyonder implements Listener {
         actingProgress = 0;
         verifyActing();
         updateSpirituality();
+        sendNotification(sequence);
 
         Objects.requireNonNull(getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(healthIndex[pathway.getSequence().getCurrentSequence()]);
+    }
+
+    private void sendNotification(int sequence) {
+        Collection<? extends Player> playerList = Bukkit.getOnlinePlayers();
+        switch (sequence) {
+            case 4 -> {
+                Component mainTitle = Component.text("Народження напів-бога").color(NamedTextColor.DARK_PURPLE);
+                Component subTitle = Component.text("що готує для нього доля?").color(NamedTextColor.DARK_PURPLE);
+                Title title = Title.title(mainTitle, subTitle);
+                Sound sound = Sound.ENTITY_ENDER_DRAGON_GROWL;
+                for (Player player : playerList) {
+                    player.showTitle(title);
+                    player.playSound(player.getLocation(), sound, 1, 1);
+                }
+            }
+            case 3 -> {
+                Component mainTitle = Component.text("Поява святого").color(NamedTextColor.DARK_AQUA);
+                Component subTitle = Component.text("що готує для нього доля?").color(NamedTextColor.DARK_AQUA);
+                Title title = Title.title(mainTitle, subTitle);
+                Sound sound = Sound.ENTITY_WARDEN_ROAR;
+                for (Player player : playerList) {
+                    player.showTitle(title);
+                    player.playSound(player.getLocation(), sound, 1, 1);
+                }
+            }
+            case 2 -> {
+                Component mainTitle = Component.text("Піднесення до Янгола").color(NamedTextColor.DARK_GREEN);
+                Component subTitle = Component.text("шлях до божественності?").color(NamedTextColor.DARK_GREEN);
+                Title title = Title.title(mainTitle, subTitle);
+                Sound sound = Sound.ENTITY_RAVAGER_ROAR;
+                for (Player player : playerList) {
+                    player.showTitle(title);
+                    player.playSound(player.getLocation(), sound, 1, 1);
+                }
+            }
+            case 1 -> {
+                Component mainTitle = Component.text("Король Янголів").color(NamedTextColor.DARK_RED);
+                Component subTitle = Component.text("світ встає на коліна").color(NamedTextColor.DARK_RED);
+                Title title = Title.title(mainTitle, subTitle);
+                Sound sound = Sound.EVENT_RAID_HORN;
+                for (Player player : playerList) {
+                    player.showTitle(title);
+                    player.playSound(player.getLocation(), sound, 1, 1);
+                }
+            }
+            default -> {
+                return;
+            }
+        }
     }
 
     public Player getPlayer() {

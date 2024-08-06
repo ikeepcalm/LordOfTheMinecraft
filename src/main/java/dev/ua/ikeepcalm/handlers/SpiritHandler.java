@@ -59,8 +59,8 @@ public class SpiritHandler implements Listener, CommandExecutor {
     }
 
     private void init() {
-        spirits.add(new FriendlySpirit(null, 15, .5f, 60, EntityType.ALLAY, false, 2, BeyonderItemsUtil.getSpiritRemains(), false, "§bДух"));
-        spirits.add(new WeakSpirit(null, 22, .25f, 80, EntityType.VEX, false, 1, BeyonderItemsUtil.getSpiritRemains(), false, "§5Слабкий Дух"));
+        spirits.add(new FriendlySpirit(null, 15, .5f, 80, EntityType.ALLAY, false, 2, BeyonderItemsUtil.getSpiritRemains(), false, "§bДух"));
+        spirits.add(new WeakSpirit(null, 22, .25f, 100, EntityType.VEX, false, 1, BeyonderItemsUtil.getSpiritRemains(), false, "§5Слабкий Дух"));
         spirits.add(new MediumSpirit(null, 22, 2.5f, 200, EntityType.GHAST, true, 1, null, false, "§0Злий Дух"));
         spirits.add(new GiantSpirit(null, 50, 1, 120, EntityType.GIANT, true, 1, null, true, "§2Неживий велетень"));
         spirits.add(new SkeletonHorse(null, 30, .6f, 120, EntityType.SKELETON_HORSE, true, 2, null, true, "§fДух Коня"));
@@ -146,7 +146,7 @@ public class SpiritHandler implements Listener, CommandExecutor {
         }
 
         for (int i = 0; i < spawnSpirit.getSpawnCount(); i++) {
-            if (spiritEntities.size() > 300) {
+            if (spiritEntities.size() > 200) {
                 spiritEntities.getFirst().getEntity().remove();
             }
 

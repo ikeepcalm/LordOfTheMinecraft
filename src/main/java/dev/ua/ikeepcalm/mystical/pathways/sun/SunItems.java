@@ -75,7 +75,7 @@ public class SunItems extends Items {
         abilityInfo.put(2, s2);
 
         String[] s1 = formatAbilityInfo(pathway.getStringColor(), "1: " + names.get(1),
-                LocalizationUtil.getLocalizedString("sun", "abilities", "day-and-night"),
+                LocalizationUtil.getLocalizedString("sun", "abilities", "nature-spirit"),
                 LocalizationUtil.getLocalizedString("sun", "abilities", "solar-flare")
         );
         abilityInfo.put(1, s1);
@@ -119,7 +119,7 @@ public class SunItems extends Items {
         addAbility(new OceanOfLight(16, pathway, 2, this));
         addAbility(new WingsOfLight(17, pathway, 2, this));
 
-        addAbility(new DayAndNight(18, pathway, 1, this));
+        addAbility(new NatureSpirit(18, pathway, 1, this));
         addAbility(new SolarFlare(19, pathway, 1, this));
     }
 
