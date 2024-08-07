@@ -121,6 +121,10 @@ public class MobsHandler implements Listener {
 
     }
 
+    public boolean getRedMoon() {
+        return isRedMoon;
+    }
+
     private void spawnEntity(String name, String id, int rarity, ItemStack drop, EntityType entityType, Integer health, BeyonderMobUtil beyonderMobUtil, EntityType spawnType, String particle, boolean repeatingParticles, MobAbility... abilities) {
         customEntities.add(new CustomEntity(name, id, rarity, drop, entityType, health, beyonderMobUtil, spawnType, particle, repeatingParticles, abilities));
     }
@@ -145,6 +149,25 @@ public class MobsHandler implements Listener {
             return true;
         }
         return false;
+    }
+
+    public void spawnRandomEntity(Location location, Location velocityLocation, World world) {
+        CustomEntity customEntity = customEntities.get(random.nextInt(customEntities.size()));
+        Entity entity = customEntity.spawnType() == null ? world.spawnEntity(location, customEntity.entityType()) : world.spawnEntity(location, customEntity.spawnType());
+        entity.setCustomName(customEntity.name());
+
+        if (entity instanceof LivingEntity livingEntity && customEntity.maxHealth() != null) {
+            Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(customEntity.maxHealth());
+            livingEntity.setHealth(customEntity.maxHealth());
+        }
+
+        entity.setMetadata("customEntityId", new FixedMetadataValue(LordOfTheMinecraft.instance, customEntity.id()));
+
+        if (customEntity.beyonderMobUtil() != null) {
+            customEntity.beyonderMobUtil().addMob(entity, customEntity);
+        }
+
+        entity.setVelocity(velocityLocation.getDirection().multiply(0.5));
     }
 
     @EventHandler

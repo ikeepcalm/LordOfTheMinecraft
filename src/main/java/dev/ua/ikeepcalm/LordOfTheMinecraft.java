@@ -18,6 +18,8 @@ import dev.ua.ikeepcalm.mystical.pathways.fool.abilities.FogOfHistory;
 import dev.ua.ikeepcalm.mystical.pathways.priest.PriestPotions;
 import dev.ua.ikeepcalm.mystical.pathways.sun.SunPotions;
 import dev.ua.ikeepcalm.mystical.pathways.tyrant.TyrantPotions;
+import dev.ua.ikeepcalm.optional.anchor.AnchorCommand;
+import dev.ua.ikeepcalm.optional.anchor.AnchorManager;
 import dev.ua.ikeepcalm.optional.bossfights.PortalListener;
 import dev.ua.ikeepcalm.optional.crafts.StonecutterCrafts;
 import dev.ua.ikeepcalm.optional.emporium.EmporiumCmd;
@@ -26,6 +28,7 @@ import dev.ua.ikeepcalm.optional.sleep.InsomniaCmd;
 import dev.ua.ikeepcalm.optional.sleep.SleepCmd;
 import dev.ua.ikeepcalm.utils.BossBarUtil;
 import lombok.Getter;
+import lombok.Setter;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.lapismc.afkplus.api.AFKPlusPlayerAPI;
@@ -60,6 +63,9 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     @Getter
     private Recipe recipe;
     private MobsHandler mobsHandler;
+    @Getter
+    @Setter
+    private AnchorManager anchorManager;
     @Getter
     private SpiritHandler spiritHandler;
     public static HashMap<UUID, Beyonder> beyonders;
@@ -104,6 +110,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         loadCoreProtect();
         loadAFKPlus();
         enablePlugin();
+        loadAnchor();
 
         Bukkit.getConsoleSender().sendMessage(prefix + "§aEnabled. The world full of mysteries awaits you!");
 
@@ -114,6 +121,18 @@ public final class LordOfTheMinecraft extends JavaPlugin {
 
     private void loadAFKPlus() {
         afkPlus = new AFKPlusPlayerAPI();
+    }
+
+    private void loadAnchor() {
+        if (anchorManager != null) {
+            anchorManager.loadAnchorLocation();
+        }
+    }
+
+    private void saveAnchor() {
+        if (anchorManager != null) {
+            anchorManager.saveAnchorLocation();
+        }
     }
 
     private void enablePlugin() {
@@ -139,7 +158,8 @@ public final class LordOfTheMinecraft extends JavaPlugin {
                 new BlockHandler(),
                 new GenerationListener(),
                 new MI9ItemsListener(),
-                new NicknameListener()
+                new NicknameListener(),
+                new FishingListener()
         );
 
         if (getConfig().getBoolean("enable-mobs")) {
@@ -154,6 +174,10 @@ public final class LordOfTheMinecraft extends JavaPlugin {
             registerEvents(new ExplosionListener());
         }
 
+        if (!Objects.equals(getConfig().getString("anchor-location"), "null")) {
+            anchorManager = new AnchorManager();
+        }
+
         if (this.getConfig().getBoolean("enable-boss-realm")) {
             this.registerEvents(new PortalListener());
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -166,6 +190,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("sleep")).setExecutor(new SleepCmd());
         Objects.requireNonNull(this.getCommand("insomnia")).setExecutor(new InsomniaCmd());
         Objects.requireNonNull(this.getCommand("emporium")).setExecutor(new EmporiumCmd());
+        Objects.requireNonNull(this.getCommand("anchor")).setExecutor(new AnchorCommand());
 
         potions.add(new SunPotions());
         potions.add(new FoolPotions());
@@ -190,6 +215,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
     public void onDisable() {
         saveBeyonders();
         saveResource("fools.yml", true);
+        saveAnchor();
 
         for (FogOfHistory foh : fogOfHistories.values()) {
             try {

@@ -30,6 +30,12 @@ commands:
   emporium:
     description: Open the emporium
     usage: /<cmd>
+  anchor:
+    description: Set the anchor location
+    usage: /<cmd>
+  clarity:
+    description: Restore anchor balance
+    usage: /<cmd>
 permissions:
   lordoftheminecraft.boon:
     description: Allows the player to become a Beyonder

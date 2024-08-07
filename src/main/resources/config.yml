@@ -15,6 +15,10 @@ enable-spirits: true
 
 enable-boss-realm: false
 
+anchor-location: null
+
+transformed-blocks: []
+
 # Sleep / Insomnia notification settings
 notification: ACTIONBAR # Possible values: ACTIONBAR, CHAT
 sleep-message: "&9☽ &7|&f Гравець &6 {player} &fбажає пропустити цю ніч"
