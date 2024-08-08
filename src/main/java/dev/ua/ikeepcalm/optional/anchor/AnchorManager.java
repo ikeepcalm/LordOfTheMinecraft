@@ -32,6 +32,7 @@ public class AnchorManager implements Listener {
     private final Map<Location, Material> transformedBlocks;
     private static final double[] PROBABILITY_DISTRIBUTION = {0.001, 0.003, 0.004, 0.05, 0.01, 0.2, 0.3, 0.4, 0.5};
     private static final int MIN_VALUE = 1;
+    private final String configFileName = "anchor.yml";
 
     public AnchorManager() {
         this.plugin = LordOfTheMinecraft.instance;
@@ -48,7 +49,7 @@ public class AnchorManager implements Listener {
     }
 
     public void loadAnchorLocation() {
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
         if (config.contains("anchor-location")) {
             anchorLocation = (Location) config.get("anchor-location");
             loadTransformedBlocks();
@@ -58,41 +59,54 @@ public class AnchorManager implements Listener {
 
     public void saveAnchorLocation() {
         if (anchorLocation != null) {
-            plugin.getConfig().set("anchor-location", anchorLocation);
+            FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
+            config.set("anchor-location", anchorLocation);
             saveTransformedBlocks();
-            plugin.saveConfig();
+            AnchorUtil.saveCustomConfig(configFileName, config);
+        } else {
+            FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
+            config.set("anchor-location", null);
+            saveTransformedBlocks();
+            AnchorUtil.saveCustomConfig(configFileName, config);
         }
     }
 
     private void loadTransformedBlocks() {
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
         if (config.contains("transformed-blocks")) {
-            for (String locString : config.getStringList("transformed-blocks")) {
-                String[] parts = locString.split(",");
-                World world = Bukkit.getWorld(parts[0]);
-                double x = Double.parseDouble(parts[1]);
-                double y = Double.parseDouble(parts[2]);
-                double z = Double.parseDouble(parts[3]);
-                Material originalType = Material.getMaterial(parts[4]);
+            for (String worldKey : config.getConfigurationSection("transformed-blocks").getKeys(false)) {
+                World world = Bukkit.getWorld(worldKey);
+                if (world != null) {
+                    for (String locString : config.getConfigurationSection("transformed-blocks." + worldKey).getKeys(false)) {
+                        String[] parts = locString.split(",");
+                        double x = Double.parseDouble(parts[0]);
+                        double y = Double.parseDouble(parts[1]);
+                        double z = Double.parseDouble(parts[2]);
+                        Material originalType = Material.getMaterial(Objects.requireNonNull(config.getString("transformed-blocks." + worldKey + "." + locString)));
 
-                if (world != null && originalType != null) {
-                    Location loc = new Location(world, x, y, z);
-                    transformedBlocks.put(loc, originalType);
+                        Location loc = new Location(world, x, y, z);
+                        if (originalType != null) {
+                            transformedBlocks.put(loc, originalType);
+                        }
+                    }
                 }
             }
         }
     }
 
-
     private void saveTransformedBlocks() {
-        Set<String> locStrings = new HashSet<>();
+        FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
+        config.set("transformed-blocks", null);
+
         for (Map.Entry<Location, Material> entry : transformedBlocks.entrySet()) {
             Location loc = entry.getKey();
             Material originalType = entry.getValue();
-            locStrings.add(loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + originalType.name());
+            String worldName = loc.getWorld().getName();
+            String path = String.format("transformed-blocks.%s.%f,%f,%f", worldName, loc.getX(), loc.getY(), loc.getZ());
+            config.set(path, originalType.name());
         }
-        plugin.getConfig().set("transformed-blocks", locStrings);
-        plugin.saveConfig();
+
+        AnchorUtil.saveCustomConfig(configFileName, config);
     }
 
 
@@ -120,12 +134,13 @@ public class AnchorManager implements Listener {
     private void spawnAnchorHeart(Location location) {
         World world = location.getWorld();
         world.getBlockAt(location).setType(Material.CRACKED_NETHER_BRICKS);
+        transformedBlocks.put(location, Material.AIR);
     }
 
     private void startTasks() {
         if (transformationTask == null) {
-            transformationTask = new TransformationTask(plugin, anchorLocation, transformedBlocks);
-            transformationTask.runTaskTimer(plugin, 0, 20 * 10);
+            transformationTask = new TransformationTask(transformedBlocks);
+            transformationTask.runTaskTimer(plugin, 0, 20 * 3);
         }
         if (radiationTask == null) {
             radiationTask = new RadiationTask(transformedBlocks.keySet());
@@ -152,7 +167,9 @@ public class AnchorManager implements Listener {
                     this.cancel();
                     Bukkit.broadcast(Component.text("Вплив Якоря більше не відчувається. Блоки відновлено.").color(net.kyori.adventure.text.format.NamedTextColor.GREEN));
                     transformedBlocks.clear();
+                    anchorLocation = null;
                     saveTransformedBlocks();
+                    saveAnchorLocation();
                 }
             }
         }.runTaskTimer(plugin, 0L, 10);

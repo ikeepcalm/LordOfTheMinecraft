@@ -56,7 +56,7 @@ public class MobsHandler implements Listener {
         spawnEntity("§5Перевертень", "bane", 60, BeyonderItemsUtil.getBizarroEye(), EntityType.WITCH, 200, beyonderMobUtil, EntityType.ALLAY, "bane", true, new BaneAbility(20));
         spawnEntity("§5Розкрадач Духовного Світу", "plunderer", 180, BeyonderItemsUtil.getPlundererBody(), EntityType.ZOMBIFIED_PIGLIN, 250, beyonderMobUtil, EntityType.VEX, "plunderer", false, new SpawnVex(70), new PlundererAbility(35));
         spawnEntity("§5Пес Фулгріма", "wolf", 70, BeyonderItemsUtil.getWolfEye(), EntityType.WOLF, 750, beyonderMobUtil, null, "wolf", true);
-        spawnEntity("§5Демонічний Вовк Завіси", "fog-wolf", 120, BeyonderItemsUtil.getWolfHeart(), EntityType.FOX, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
+        spawnEntity("§5Демонічний Вовк Завіси", "fog-wolf", 160, BeyonderItemsUtil.getWolfHeart(), EntityType.FOX, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
         spawnEntity("§4Магмовий Титан", "magma-titan", 60, BeyonderItemsUtil.getMagmaHeart(), EntityType.MAGMA_CUBE, 32, null, null, "none", true);
         spawnEntity("§6Світанковий Півень", "rooster", 85, BeyonderItemsUtil.getRedRoosterComb(), EntityType.CHICKEN, 60, beyonderMobUtil, null, "rooster", true, new RoosterAbility(60));
         spawnEntity("§6Божественний Птах", "divine-bird", 185, BeyonderItemsUtil.getTailFeather(), EntityType.COW, 120, beyonderMobUtil, EntityType.PARROT, "divine-bird", true, new HolyLightSummoning(90), new FlaringSun(350));
@@ -139,6 +139,11 @@ public class MobsHandler implements Listener {
             if (entity instanceof LivingEntity livingEntity && customEntity.maxHealth() != null) {
                 Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(customEntity.maxHealth());
                 livingEntity.setHealth(customEntity.maxHealth());
+
+                if (livingEntity.getType() == EntityType.WOLF || livingEntity.getType() == EntityType.FOX) {
+                    Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getBaseValue() * 10);
+                    Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(Objects.requireNonNull(livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).getBaseValue() * 6);
+                }
             }
 
             entity.setMetadata("customEntityId", new FixedMetadataValue(LordOfTheMinecraft.instance, customEntity.id()));

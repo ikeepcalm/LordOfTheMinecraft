@@ -6,7 +6,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -71,9 +70,6 @@ public class MobEffectsUtil {
         wolf.setAngry(true);
         wolf.setInterested(false);
 
-        Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getBaseValue() * 10);
-        Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).getBaseValue() * 6);
-
         wolf.getWorld().spawnParticle(Particle.DUST, wolf.getLocation(), 10, 1, 1, 1, dust);
 
     }
@@ -87,7 +83,6 @@ public class MobEffectsUtil {
         wolf.setAngry(true);
         wolf.setInterested(false);
 
-        Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(Objects.requireNonNull(wolf.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getBaseValue() * 10);
     }
 
     private static final boolean x = true;

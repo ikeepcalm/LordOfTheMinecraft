@@ -47,10 +47,14 @@ public class HolyLightSummoning extends Ability {
                         spawnParticles(loc);
 
                         scheduler.runTask(LordOfTheMinecraft.instance, () -> {
-                            loc.getBlock().setType(lastMaterial[0]);
+                            if (!lastMaterial[0].isSolid() && lastMaterial[0] != Material.AIR) {
+                                loc.getBlock().setType(lastMaterial[0]);
+                            }
                             loc.subtract(0, 1, 0);
                             lastMaterial[0] = loc.getBlock().getType();
-                            loc.getBlock().setType(Material.LIGHT);
+                            if (!loc.getBlock().getType().isSolid()) {
+                                loc.getBlock().setType(Material.LIGHT);
+                            }
 
                             if ((lastMaterial[0].isSolid() && counter >= 12) || counter >= 200) {
                                 // Restore the original block at the original location
@@ -128,7 +132,9 @@ public class HolyLightSummoning extends Ability {
         };
 
         for (Block b : lightBlock) {
-            b.setType(Material.LIGHT);
+            if (!b.getType().isSolid()) {
+                b.setType(Material.LIGHT);
+            }
         }
 
         new BukkitRunnable() {
