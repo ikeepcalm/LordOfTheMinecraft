@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.mystical.pathways.priest;
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
 import dev.ua.ikeepcalm.mystical.parents.Pathway;
 import dev.ua.ikeepcalm.mystical.parents.Potion;
+import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -20,9 +21,9 @@ public class PriestPotions extends Potion {
 
         putMainIntoHashMap(9, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(9, "priest", stringColor));
         putMainIntoHashMap(8, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(8, "priest", stringColor));
-        putMainIntoHashMap(7, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(7, "priest", stringColor));
-        putMainIntoHashMap(6, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(6, "priest", stringColor));
-        putMainIntoHashMap(5, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(5, "priest", stringColor));
+        putMainIntoHashMap(7, BeyonderItemsUtil.getMagmaElfCore(), BeyonderItemsUtil.getFireSalamanderBlood());
+        putMainIntoHashMap(6, BeyonderItemsUtil.getBlackSpiderEye(), BeyonderItemsUtil.getSphinxBrain());
+        putMainIntoHashMap(5, BeyonderItemsUtil.getHunterTongue(), BeyonderItemsUtil.getWolfClaws());
         putMainIntoHashMap(4, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(4, "priest", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(4, "priest", stringColor));
         putMainIntoHashMap(3, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(3, "priest", stringColor));
         putMainIntoHashMap(2, LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "priest", stringColor), LordOfTheMinecraft.instance.getCharacteristic().getCharacteristic(2, "priest", stringColor));

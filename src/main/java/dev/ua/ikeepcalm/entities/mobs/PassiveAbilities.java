@@ -2,7 +2,6 @@ package dev.ua.ikeepcalm.entities.mobs;
 
 
 import dev.ua.ikeepcalm.LordOfTheMinecraft;
-import dev.ua.ikeepcalm.utils.BeyonderItemsUtil;
 import dev.ua.ikeepcalm.utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -17,12 +16,12 @@ import java.util.Random;
 public class PassiveAbilities {
 
     public static void passiveAbility(String id, Entity entity) {
-        if (id.equals("rooster")) {
-            rooster(entity);
+        if (id.equals("rooster") || id.equals("fire-salamander") || id.equals("magma-elf")) {
+            execute(entity);
         }
     }
 
-    private static void rooster(Entity entity) {
+    private static void execute(Entity entity) {
         final HashMap<Long, Location> burnedLocations = new HashMap<>();
         Random random = new Random();
         new BukkitRunnable() {
@@ -51,9 +50,6 @@ public class PassiveAbilities {
                     } catch (Exception ignored) {
                     }
 
-                    if (random.nextInt(20 * 60 * 3) == 0) {
-                        entity.getWorld().dropItem(entity.getLocation(), BeyonderItemsUtil.getRoosterComb());
-                    }
                 } catch (Exception e) {
                     LoggerUtil.logAbilityError(e, "Rooster");
                     cancel();

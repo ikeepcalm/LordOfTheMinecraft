@@ -524,4 +524,99 @@ public class BeyonderItemsUtil {
 
         return item;
     }
+
+    public static ItemStack getMagmaElfCore() {
+        final ItemStack item = new ItemStack(Material.FIRE_CHARGE);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§cЯдро магматичного ельфа");
+        itemMeta.setCustomModelData(1);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta.addEnchant(Enchantment.CHANNELING, 1, true);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "magma_elf_core");
+        });
+
+        list.add(item);
+
+        return item;
+    }
+
+    public static ItemStack getFireSalamanderBlood() {
+        final ItemStack item = new ItemStack(Material.REDSTONE);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§cКров вогняної саламандри");
+        itemMeta.setCustomModelData(2);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "fire_salamander_blood");
+        });
+        list.add(item);
+
+        return item;
+    }
+
+    public static ItemStack getBlackSpiderEye() {
+        final ItemStack item = new ItemStack(Material.SPIDER_EYE);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§0Око мисливського павука");
+        itemMeta.setCustomModelData(1);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "black_spider_eye");
+        });
+        list.add(item);
+
+        return item;
+    }
+
+    public static ItemStack getSphinxBrain() {
+        final ItemStack item = new ItemStack(Material.BRAIN_CORAL);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§fМозок Сфінксу");
+        itemMeta.setCustomModelData(1);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "sphinx_brain");
+        });
+        list.add(item);
+
+        return item;
+    }
+
+    public static ItemStack getWolfClaws() {
+        final ItemStack item = new ItemStack(Material.TIPPED_ARROW);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§8Пазурі Демонічного Вовка");
+        itemMeta.setCustomModelData(1);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "wolf_claws");
+        });
+        list.add(item);
+
+        return item;
+    }
+
+    public static ItemStack getHunterTongue() {
+        final ItemStack item = new ItemStack(Material.FERMENTED_SPIDER_EYE);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName("§9Язик лісового мисливця");
+        itemMeta.setCustomModelData(1);
+        item.setItemMeta(itemMeta);
+        NBT.modify(item, nbt -> {
+            nbt.setString("ingredient", "hunter_tongue");
+        });
+        list.add(item);
+
+        return item;
+    }
+
+
 }

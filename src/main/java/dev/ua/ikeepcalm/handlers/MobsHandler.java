@@ -57,6 +57,14 @@ public class MobsHandler implements Listener {
         spawnEntity("§5Розкрадач Духовного Світу", "plunderer", 180, BeyonderItemsUtil.getPlundererBody(), EntityType.ZOMBIFIED_PIGLIN, 250, beyonderMobUtil, EntityType.VEX, "plunderer", false, new SpawnVex(70), new PlundererAbility(35));
         spawnEntity("§5Пес Фулгріма", "wolf", 70, BeyonderItemsUtil.getWolfEye(), EntityType.WOLF, 750, beyonderMobUtil, null, "wolf", true);
         spawnEntity("§5Демонічний Вовк Завіси", "fog-wolf", 160, BeyonderItemsUtil.getWolfHeart(), EntityType.FOX, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
+
+        spawnEntity("§5Сірий Демонічний Вовк", "hunter-wolf", 160, BeyonderItemsUtil.getWolfClaws(), EntityType.WOLF, 750, beyonderMobUtil, EntityType.WOLF, "fog-wolf", true);
+        spawnEntity("§cВогняна саламандра", "fire-salamander", 30, BeyonderItemsUtil.getFireSalamanderBlood(), EntityType.AXOLOTL, 400, beyonderMobUtil, EntityType.AXOLOTL, "rooster", true);
+        spawnEntity("§cМагмовий Ельф", "magma-elf", 80, BeyonderItemsUtil.getMagmaElfCore(), EntityType.GHAST, 250, beyonderMobUtil, EntityType.SILVERFISH, "divine-bird", true);
+        spawnEntity("§0Чорний Мисливський Павук", "black-hunting-spider", 120, BeyonderItemsUtil.getBlackSpiderEye(), EntityType.SPIDER, 250, beyonderMobUtil, EntityType.CAVE_SPIDER, "none", true);
+        spawnEntity("§fСфінкс", "sphinx", 90, BeyonderItemsUtil.getSphinxBrain(), EntityType.CAT, 120, beyonderMobUtil, EntityType.CAT, "none", true);
+        spawnEntity("§9Лісний мисливець", "forest-hunter", 150, BeyonderItemsUtil.getHunterTongue(), EntityType.SKELETON, 120, beyonderMobUtil, EntityType.WITHER_SKELETON, "wolf", true);
+
         spawnEntity("§4Магмовий Титан", "magma-titan", 60, BeyonderItemsUtil.getMagmaHeart(), EntityType.MAGMA_CUBE, 32, null, null, "none", true);
         spawnEntity("§6Світанковий Півень", "rooster", 85, BeyonderItemsUtil.getRedRoosterComb(), EntityType.CHICKEN, 60, beyonderMobUtil, null, "rooster", true, new RoosterAbility(60));
         spawnEntity("§6Божественний Птах", "divine-bird", 185, BeyonderItemsUtil.getTailFeather(), EntityType.COW, 120, beyonderMobUtil, EntityType.PARROT, "divine-bird", true, new HolyLightSummoning(90), new FlaringSun(350));
