@@ -58,17 +58,14 @@ public class AnchorManager implements Listener {
     }
 
     public void saveAnchorLocation() {
+        FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
         if (anchorLocation != null) {
-            FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
             config.set("anchor-location", anchorLocation);
-            saveTransformedBlocks();
-            AnchorUtil.saveCustomConfig(configFileName, config);
         } else {
-            FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);
             config.set("anchor-location", null);
-            saveTransformedBlocks();
-            AnchorUtil.saveCustomConfig(configFileName, config);
         }
+        saveTransformedBlocks();
+        AnchorUtil.saveCustomConfig(configFileName, config);
     }
 
     private void loadTransformedBlocks() {
@@ -140,7 +137,7 @@ public class AnchorManager implements Listener {
     private void startTasks() {
         if (transformationTask == null) {
             transformationTask = new TransformationTask(transformedBlocks);
-            transformationTask.runTaskTimer(plugin, 0, 20 * 3);
+            transformationTask.runTaskTimer(plugin, 0, 10);
         }
         if (radiationTask == null) {
             radiationTask = new RadiationTask(transformedBlocks.keySet());

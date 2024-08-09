@@ -67,6 +67,7 @@ public class Beyonder implements Listener {
     private double lastActing;
     @Getter
     private double actingNeeded;
+    @Getter
     private boolean digested;
     @Getter
     private boolean beyonder;
@@ -79,9 +80,7 @@ public class Beyonder implements Listener {
     public Beyonder(UUID uuid, Pathway pathway, int acting, int spirituality) {
         this.pathway = pathway;
         this.uuid = uuid;
-
         pathway.setBeyonder(this);
-
         this.beyonder = true;
         this.online = false;
         this.initializedOnce = false;

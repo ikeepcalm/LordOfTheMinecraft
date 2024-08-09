@@ -1,10 +1,7 @@
 package dev.ua.ikeepcalm;
 
 import cz.foresttech.api.ColorAPI;
-import dev.ua.ikeepcalm.cmds.BoonCmd;
-import dev.ua.ikeepcalm.cmds.MI9Cmd;
-import dev.ua.ikeepcalm.cmds.SpawnCmd;
-import dev.ua.ikeepcalm.cmds.TestCmd;
+import dev.ua.ikeepcalm.cmds.*;
 import dev.ua.ikeepcalm.handlers.BlockHandler;
 import dev.ua.ikeepcalm.handlers.MobsHandler;
 import dev.ua.ikeepcalm.handlers.PotionHandler;
@@ -191,6 +188,7 @@ public final class LordOfTheMinecraft extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("insomnia")).setExecutor(new InsomniaCmd());
         Objects.requireNonNull(this.getCommand("emporium")).setExecutor(new EmporiumCmd());
         Objects.requireNonNull(this.getCommand("anchor")).setExecutor(new AnchorCommand());
+        Objects.requireNonNull(this.getCommand("advance")).setExecutor(new AdvanceCmd());
 
         potions.add(new SunPotions());
         potions.add(new FoolPotions());

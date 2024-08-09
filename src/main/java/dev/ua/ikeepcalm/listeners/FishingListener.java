@@ -25,7 +25,7 @@ public class FishingListener implements Listener {
                     return;
 
                 AFKPlusPlayer player = LordOfTheMinecraft.afkPlus.getPlayer(event.getPlayer().getUniqueId());
-                if (player.isAFK()) {
+                if (!player.isAFK()) {
                     List<ItemStack> beyonderItems = BeyonderItemsUtil.returnAllItems();
                     item = beyonderItems.get(random.nextInt(beyonderItems.size()));
                     caughtItem.setItemStack(item);

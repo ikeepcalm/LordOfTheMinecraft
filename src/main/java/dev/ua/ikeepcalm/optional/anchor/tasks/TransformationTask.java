@@ -35,15 +35,18 @@ public class TransformationTask extends BukkitRunnable {
         if (world == null) return;
 
         int[][] directions = {
-                {1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
+                {0, 1, 0}, {1, 0, 0}, {-1, 0, 0}, {0, 0, 1}, {0, 0, -1}, {0, -1, 0}
         };
 
         List<Location> potentialLocations = new ArrayList<>();
         for (int[] direction : directions) {
             Location adjacentLocation = randomTransformedLocation.clone().add(direction[0], direction[1], direction[2]);
-            if (!transformedBlocks.containsKey(adjacentLocation)) {
-                Material currentType = adjacentLocation.getBlock().getType();
-                if (currentType != Material.MAGMA_BLOCK && currentType != Material.NETHER_BRICKS) {
+            Material currentType = adjacentLocation.getBlock().getType();
+
+            // Check if the block is already transformed or is an undesired type
+            if (!transformedBlocks.containsKey(adjacentLocation) &&
+                (currentType != Material.MAGMA_BLOCK && currentType != Material.NETHER_BRICKS)) {
+                if (currentType == Material.BEDROCK || (!currentType.isSolid())) {
                     potentialLocations.add(adjacentLocation);
                 }
             }
@@ -53,13 +56,21 @@ public class TransformationTask extends BukkitRunnable {
             Location selectedLocation = potentialLocations.get(random.nextInt(potentialLocations.size()));
             transformedBlocks.put(selectedLocation, selectedLocation.getBlock().getType());
             selectedLocation.getBlock().setType(Material.MAGMA_BLOCK);
-            if (transformedBlocks.size() % 500 == 0) {
-                Bukkit.broadcast(Component.text("Вплив якоря поглиблюється...").color(NamedTextColor.RED));
+
+            if (transformedBlocks.size() % 5000 == 0) {
+                Bukkit.broadcast(Component.text("Серце якоря має бути знищене негайно!").color(NamedTextColor.RED));
+                selectedLocation.getWorld().strikeLightning(selectedLocation);
+            } else if (transformedBlocks.size() % 1000 == 0) {
+                Bukkit.broadcast(Component.text("Вищі сили обіцяють нагороду за знищення якоря").color(NamedTextColor.RED));
+                selectedLocation.getWorld().strikeLightning(selectedLocation);
+            } else if (transformedBlocks.size() % 500 == 0) {
+                Bukkit.broadcast(Component.text("Вплив якоря посилюється...").color(NamedTextColor.RED));
             }
         }
 
         saveTransformedBlocks();
     }
+
 
     private void saveTransformedBlocks() {
         FileConfiguration config = AnchorUtil.getCustomConfig(configFileName);

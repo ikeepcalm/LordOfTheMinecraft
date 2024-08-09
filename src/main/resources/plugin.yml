@@ -33,8 +33,8 @@ commands:
   anchor:
     description: Set the anchor location
     usage: /<cmd>
-  clarity:
-    description: Restore anchor balance
+  advance:
+    description: Verify beyonder advancement
     usage: /<cmd>
 permissions:
   lordoftheminecraft.boon:

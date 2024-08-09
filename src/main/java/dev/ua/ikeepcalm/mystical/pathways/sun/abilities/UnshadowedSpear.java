@@ -224,7 +224,6 @@ public class UnshadowedSpear extends Ability {
     }
 
     public void buildSpear(Location loc, Vector direc) {
-        BukkitScheduler scheduler = Bukkit.getScheduler();
         new BukkitRunnable() {
             @Override
             public void run() {
